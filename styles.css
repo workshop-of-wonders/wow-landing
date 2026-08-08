@@ -910,7 +910,7 @@ main { padding-top: var(--nav-h); }
   .work-item { width: 240px; height: 170px; }
 }
 
-/* Lightbox */
+/* Case-study modal */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -919,7 +919,7 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  background: rgba(26,19,32,0.85);
+  background: rgba(10,7,13,0.9);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -927,19 +927,73 @@ main { padding-top: var(--nav-h); }
 .lightbox.is-open { opacity: 1; pointer-events: auto; }
 .lightbox-inner {
   position: relative;
-  width: min(720px, 100%);
-  background: var(--white);
+  width: min(1100px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--ink);
   border-radius: 20px;
-  overflow: hidden;
+  overflow-x: hidden;
 }
-.lightbox-img { width: 100%; max-height: 60vh; object-fit: cover; display: block; }
-.lightbox-caption { padding: var(--space-4); }
-.lightbox-caption h3 { font-size: 22px; color: var(--purple); margin-bottom: 6px; }
-.lightbox-caption p { margin: 0; color: #5a5060; }
+.lightbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--ink);
+}
+.lightbox-cell { aspect-ratio: 4 / 3; overflow: hidden; }
+.lightbox-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lightbox-caption {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--ink);
+  color: var(--white);
+}
+.lightbox-caption-main { flex: 0 0 auto; min-width: 180px; }
+.lightbox-caption h3 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  margin: 0 0 4px;
+}
+.lightbox-category {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a89fb3;
+}
+.lightbox-desc {
+  flex: 1 1 260px;
+  margin: 0;
+  align-self: center;
+  color: #cfc7d6;
+  font-size: 15px;
+}
+.lightbox-tags {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-self: center;
+}
+.lightbox-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-size: 12px;
+  white-space: nowrap;
+}
 .lightbox-close {
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
+  z-index: 2;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -948,7 +1002,11 @@ main { padding-top: var(--nav-h); }
   color: var(--purple);
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+@media (max-width: 640px) {
+  .lightbox-caption { flex-direction: column; }
 }
 
 /* Project form modal */
