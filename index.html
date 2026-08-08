@@ -21,7 +21,7 @@
     <a href="#servicios">Servicios</a>
     <a href="#labs">Labs</a>
     <a href="#trabajo">Trabajo</a>
-    <a href="#contacto" class="btn btn-primary btn-sm">Hablemos</a>
+    <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos</a>
   </nav>
 </header>
 
@@ -34,7 +34,7 @@
       <h1>Hagamos <em>maravillas</em><br>que se sientan reales</h1>
       <p class="hero-sub">Estudio de diseño y desarrollo que convierte ideas en experiencias, con la IA como herramienta de asombro.</p>
       <div class="hero-cta">
-        <a href="#contacto" class="btn btn-primary">Iniciar un proyecto</a>
+        <a href="#contacto" class="btn btn-primary" data-open-form>Iniciar un proyecto</a>
         <a href="#servicios" class="btn btn-outline">Ver trabajo</a>
       </div>
     </div>
@@ -177,22 +177,7 @@
         <span class="hub-popup-arrow"></span>
         <p id="hubPopupText"></p>
       </div>
-      <svg class="hub-arrows" viewBox="0 0 1200 640" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="hubGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#dce157" stop-opacity="0"/>
-            <stop offset="100%" stop-color="#dce157" stop-opacity="0.55"/>
-          </linearGradient>
-        </defs>
-        <path d="M340,320 C460,320 480,320 560,320 L560,300 L620,320 L560,340 L560,320" fill="url(#hubGlow)"/>
-        <g stroke="#dce157" stroke-opacity="0.45" stroke-width="2" fill="none">
-          <path d="M640,320 C740,320 760,150 900,120"/>
-          <path d="M640,320 C740,320 770,220 920,230"/>
-          <path d="M640,320 C740,320 780,300 930,320"/>
-          <path d="M640,320 C740,320 770,400 920,410"/>
-          <path d="M640,320 C740,320 760,490 900,520"/>
-        </g>
-      </svg>
+      <svg class="hub-arrows" id="hubArrows" aria-hidden="true"></svg>
 
       <div class="hub-col hub-col-left">
         <button type="button" class="hub-pill hub-lima" data-desc="Identidad visual completa: naming, logotipo, sistema de color y guías de marca listas para escalar.">Branding</button>
@@ -210,8 +195,8 @@
       </div>
 
       <button type="button" class="hub-center" id="hubCenter" aria-label="Ver logo completo de Workshop of Wonders">
-        <span class="hub-w" id="hubW">W</span>
-        <img class="hub-full-logo" id="hubFullLogo" src="design-system/logo/wow-mark.svg" alt="Workshop of Wonders">
+        <img class="hub-w" id="hubW" src="design-system/logo/wow-mark.svg" alt="">
+        <img class="hub-full-logo" id="hubFullLogo" src="design-system/logo/wow-logo-white.png" alt="Workshop of Wonders">
       </button>
 
       <div class="hub-col hub-col-right">
@@ -223,7 +208,7 @@
       </div>
     </div>
     <div class="services-cta">
-      <a href="#contacto" class="btn btn-primary">Empecemos tu proyecto</a>
+      <a href="#contacto" class="btn btn-primary" data-open-form>Empecemos tu proyecto</a>
     </div>
   </section>
 
@@ -323,6 +308,45 @@
     </div>
   </div>
 
+  <div class="project-modal" id="projectModal">
+    <div class="project-modal-inner">
+      <button type="button" class="project-modal-close" id="projectModalClose" aria-label="Cerrar">✕</button>
+      <h3 class="project-modal-title"><em>Cuéntanos</em> tu proyecto</h3>
+      <form class="project-form" id="projectForm">
+        <div class="project-field">
+          <label for="pfEmail">CORREO</label>
+          <input id="pfEmail" type="email" placeholder="tucorreo@empresa.com" required>
+        </div>
+        <div class="project-field">
+          <label for="pfName">NOMBRE COMPLETO</label>
+          <input id="pfName" type="text" placeholder="Tu nombre completo" required>
+        </div>
+        <div class="project-field">
+          <label for="pfCompany">EMPRESA</label>
+          <input id="pfCompany" type="text" placeholder="Nombre de tu empresa">
+        </div>
+        <div class="project-field">
+          <label for="pfBudget">PRESUPUESTO ESTIMADO</label>
+          <select id="pfBudget">
+            <option value="">Selecciona un rango</option>
+            <option>Menos de $5M COP</option>
+            <option>$5M – $20M COP</option>
+            <option>$20M – $50M COP</option>
+            <option>Más de $50M COP</option>
+          </select>
+        </div>
+        <div class="project-field project-field-full">
+          <label for="pfDetails">CUÉNTANOS SOBRE TU PROYECTO</label>
+          <textarea id="pfDetails" rows="3" placeholder="¿Qué tienes en mente?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary project-submit">Enviar</button>
+      </form>
+      <div class="project-form-thanks" id="projectFormThanks">
+        <p>¡Gracias! Recibimos tu mensaje y te contactaremos muy pronto.</p>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <div class="playground-wrap">
@@ -334,7 +358,7 @@
     <p class="essence-lead">Escríbenos directamente o encuéntranos en redes.</p>
     <div class="contact-links">
       <a class="contact-pill" href="mailto:hola@workshopofwonders.com">✉ hola@workshopofwonders.com</a>
-      <a class="contact-pill contact-pill-primary" href="#" target="_blank" rel="noopener">Cuéntanos tu proyecto (Formulario)</a>
+      <a class="contact-pill contact-pill-primary" href="#" data-open-form>Cuéntanos tu proyecto (Formulario)</a>
     </div>
   </section>
   <footer class="footer">
@@ -420,6 +444,48 @@ var hubDiagramEl = document.getElementById('hubDiagram');
 var hubPopup = document.getElementById('hubPopup');
 var hubPopupText = document.getElementById('hubPopupText');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
+
+/* Draw a connector line from every pill to the center W, redrawn whenever the layout changes */
+(function () {
+  var svg = document.getElementById('hubArrows');
+  var center = document.getElementById('hubCenter');
+  if (!svg || !center) return;
+  var svgNS = 'http://www.w3.org/2000/svg';
+
+  function drawLines() {
+    var diagramRect = hubDiagramEl.getBoundingClientRect();
+    var w = diagramRect.width;
+    var h = diagramRect.height;
+    if (!w || !h) return;
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.innerHTML = '';
+    var centerRect = center.getBoundingClientRect();
+    var cx = centerRect.left - diagramRect.left + centerRect.width / 2;
+    var cy = centerRect.top - diagramRect.top + centerRect.height / 2;
+    hubPills.forEach(function (pill) {
+      var r = pill.getBoundingClientRect();
+      var px = r.left - diagramRect.left + r.width / 2;
+      var py = r.top - diagramRect.top + r.height / 2;
+      var line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', cx);
+      line.setAttribute('y1', cy);
+      line.setAttribute('x2', px);
+      line.setAttribute('y2', py);
+      line.setAttribute('stroke', '#dce157');
+      line.setAttribute('stroke-opacity', '0.4');
+      line.setAttribute('stroke-width', '1.5');
+      svg.appendChild(line);
+    });
+  }
+
+  drawLines();
+  window.addEventListener('resize', drawLines);
+  window.addEventListener('load', drawLines);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
+  setTimeout(drawLines, 300);
+})();
 hubPills.forEach(function (pill) {
   pill.addEventListener('click', function (e) {
     e.stopPropagation();
@@ -470,7 +536,7 @@ document.addEventListener('click', function (e) {
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
 
-/* Hub "W": types itself in on first view, hover reveals the full WoW logo, click jumps to the contact form */
+/* Hub "W": types itself in on first view, hover reveals the full WoW logo, click opens the project form */
 (function () {
   var hubCenter = document.getElementById('hubCenter');
   if (!hubCenter) return;
@@ -486,8 +552,42 @@ document.addEventListener('click', function (e) {
     w.classList.add('is-typed');
   }
   hubCenter.addEventListener('click', function () {
-    var contact = document.getElementById('contacto');
-    if (contact) contact.scrollIntoView({ behavior: 'smooth' });
+    window.openProjectForm();
+  });
+})();
+
+/* Project form modal: opens from any [data-open-form] trigger */
+(function () {
+  var modal = document.getElementById('projectModal');
+  var closeBtn = document.getElementById('projectModalClose');
+  var form = document.getElementById('projectForm');
+  var thanks = document.getElementById('projectFormThanks');
+  if (!modal) return;
+
+  window.openProjectForm = function () {
+    form.style.display = '';
+    thanks.classList.remove('is-visible');
+    form.reset();
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  };
+  function close() {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('[data-open-form]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.openProjectForm();
+    });
+  });
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    form.style.display = 'none';
+    thanks.classList.add('is-visible');
   });
 })();
 
