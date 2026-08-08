@@ -787,13 +787,16 @@ updateScrollScrubs();
     });
   });
 
-  /* Release the dragged icon the instant the mouse button lifts, so the next click always grabs fresh */
-  document.addEventListener('mouseup', function () {
+  /* Release the dragged icon the instant the mouse/touch/pointer lifts (or leaves the window mid-drag),
+     so the next click always grabs a fresh icon instead of staying attached to the previous one */
+  function releaseDrag() {
     mouseConstraint.constraint.bodyB = null;
+    mouse.button = -1;
+  }
+  ['mouseup', 'touchend', 'touchcancel', 'pointerup'].forEach(function (evt) {
+    document.addEventListener(evt, releaseDrag, { passive: true });
   });
-  canvas.addEventListener('touchend', function () {
-    mouseConstraint.constraint.bodyB = null;
-  });
+  window.addEventListener('blur', releaseDrag);
 
   Engine.run(engine);
   Render.run(render);
