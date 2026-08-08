@@ -459,12 +459,14 @@ main { padding-top: var(--nav-h); }
     width: calc(100% + (2 * var(--page-x)));
     max-width: none;
     flex-basis: auto;
-    height: 320px;
+    flex-direction: column;
+    height: auto;
+    gap: var(--space-2);
     margin-top: 0;
     margin-bottom: 0;
     margin-left: calc(-1 * var(--page-x));
     align-self: auto;
-    overflow-x: auto;
+    overflow: hidden;
     -webkit-mask-image: none;
     mask-image: none;
   }
@@ -472,10 +474,16 @@ main { padding-top: var(--nav-h); }
     flex: 0 0 auto;
     flex-direction: row;
     align-self: stretch;
-    height: 100%;
-    animation: none !important;
+    width: max-content;
+    height: 150px;
+    gap: var(--space-2);
+    animation: heroRowLeft 32s linear infinite !important;
   }
-  .hero-media .media-card { flex: 0 0 auto; width: 140px; height: 100%; aspect-ratio: auto; }
+  .media-col-b { animation: heroRowRight 32s linear infinite !important; }
+  .media-col-c { display: none; }
+  .hero-media .media-card { flex: 0 0 auto; width: 112px; height: 100%; aspect-ratio: auto; }
+  @keyframes heroRowLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes heroRowRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 }
 @media (prefers-reduced-motion: reduce) {
   .media-col { animation: none; }
