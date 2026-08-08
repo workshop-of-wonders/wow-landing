@@ -27,6 +27,7 @@
   --space-4: 32px;
   --space-5: 40px;
   --space-6: 48px;
+  --page-x: clamp(24px, 6vw, 96px);
   --space-7: 56px;
 
   --nav-h: 88px;
@@ -112,7 +113,7 @@ h1 em, h2 em {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--page-x);
   background: transparent;
   color: var(--white);
   transition: background-color 0.3s ease;
@@ -165,7 +166,7 @@ main { padding-top: var(--nav-h); }
   background-position: center, center;
   background-size: cover, cover;
   color: var(--white);
-  padding: calc(var(--space-7) + var(--nav-h)) var(--space-5) var(--space-7);
+  padding: calc(var(--space-7) + var(--nav-h)) var(--page-x) var(--space-7);
   text-align: left;
   overflow: hidden;
 }
@@ -240,7 +241,7 @@ main { padding-top: var(--nav-h); }
   min-height: calc(100vh - var(--nav-h));
   display: flex;
   align-items: center;
-  padding: var(--space-5) var(--space-5);
+  padding: var(--space-5) var(--page-x);
   background: var(--cloud);
   overflow: hidden;
 }
@@ -460,7 +461,7 @@ main { padding-top: var(--nav-h); }
 
 /* Services */
 .services {
-  padding: var(--space-7) var(--space-5);
+  padding: var(--space-7) var(--page-x);
   background: var(--white);
 }
 .services { position: relative; isolation: isolate; cursor: none; }
@@ -507,7 +508,7 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
 }
 .labs .eyebrow, .labs h2 {
-  padding: 0 var(--space-5);
+  padding: 0 var(--page-x);
 }
 .labs h2 {
   color: var(--white);
@@ -784,7 +785,7 @@ main { padding-top: var(--nav-h); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-6) var(--space-5) var(--space-7);
+  padding: var(--space-6) var(--page-x) var(--space-7);
   background: var(--purple);
   color: var(--white);
   overflow: hidden;
@@ -839,7 +840,7 @@ main { padding-top: var(--nav-h); }
 
 /* Work — horizontal scroll gallery */
 .work {
-  padding: var(--space-7) var(--space-5);
+  padding: var(--space-7) var(--page-x);
   background: var(--cloud);
 }
 .work h2 {
@@ -1173,7 +1174,7 @@ main { padding-top: var(--nav-h); }
 .contact {
   position: relative;
   min-height: clamp(480px, 60vh, 640px);
-  padding: var(--space-4) var(--space-5) var(--space-7);
+  padding: var(--space-4) var(--page-x) var(--space-7);
   background: var(--cloud);
   text-align: center;
   overflow: hidden;
@@ -1249,7 +1250,7 @@ main { padding-top: var(--nav-h); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-6) var(--space-5) var(--space-3);
+  padding: var(--space-6) var(--page-x) var(--space-3);
   background: var(--purple);
   color: var(--cloud);
   font-size: 13px;
