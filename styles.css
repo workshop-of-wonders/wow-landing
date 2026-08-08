@@ -232,7 +232,7 @@ main { padding-top: var(--nav-h); }
 /* Toggle / switch list — pinned until every switch turns on */
 .toggle-pin {
   position: relative;
-  height: 130vh;
+  height: 190vh;
 }
 .toggle-section {
   position: sticky;
