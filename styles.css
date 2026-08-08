@@ -103,22 +103,29 @@ h1 em, h2 em {
 
 /* Nav */
 .nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
+  background: transparent;
+  color: var(--white);
+  transition: background-color 0.3s ease;
+}
+.nav.is-scrolled {
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
     url("design-system/backgrounds/wow-squiggle-texture.png");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
   background-size: cover, cover;
-  color: var(--white);
 }
+main { padding-top: var(--nav-h); }
 .logo {
   display: flex;
   align-items: center;
@@ -151,6 +158,7 @@ h1 em, h2 em {
   display: flex;
   align-items: stretch;
   height: min(620px, 80vh);
+  margin-top: calc(-1 * var(--nav-h));
   gap: var(--space-5);
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
@@ -159,7 +167,7 @@ h1 em, h2 em {
   background-position: center, center;
   background-size: cover, cover;
   color: var(--white);
-  padding: var(--space-7) var(--space-5);
+  padding: calc(var(--space-7) + var(--nav-h)) var(--space-5) var(--space-7);
   text-align: left;
   overflow: hidden;
 }
@@ -384,9 +392,9 @@ h1 em, h2 em {
   display: flex;
   gap: var(--space-2);
   align-self: stretch;
+  margin-top: calc(-1 * var(--nav-h));
+  height: calc(100% + var(--nav-h));
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 88%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 0%, black 88%, transparent 100%);
 }
 .media-col {
   display: flex;
@@ -429,7 +437,7 @@ h1 em, h2 em {
 
 @media (max-width: 900px) {
   .hero { flex-direction: column; height: auto; }
-  .hero-media { width: 100%; flex-basis: auto; height: 320px; align-self: auto; }
+  .hero-media { width: 100%; flex-basis: auto; height: 320px; margin-top: 0; align-self: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .media-col { animation: none; }

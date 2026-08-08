@@ -335,6 +335,17 @@
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
+/* Nav turns solid purple once the hero is scrolled past */
+(function () {
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  function updateNav() {
+    nav.classList.toggle('is-scrolled', window.scrollY > 40);
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+})();
+
 /* Trait cards: click to flip and reveal a second line */
 document.querySelectorAll('.trait-card').forEach(function (card) {
   card.addEventListener('click', function () { card.classList.toggle('flipped'); });
