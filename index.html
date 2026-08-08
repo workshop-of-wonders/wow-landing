@@ -773,17 +773,26 @@ updateScrollScrubs();
   World.add(engine.world, mouseConstraint);
   render.mouse = mouse;
 
-  /* Keep icons inside the zone even during fast drags (constraint solver can otherwise tunnel them through the walls) */
+  /* Keep icons inside the zone horizontally during fast drags (side walls can otherwise be tunnelled through).
+     Only clamps X — the floor is a real body with restitution, so vertical bouncing is left to the physics
+     solver instead of being damped here every frame. */
   Matter.Events.on(engine, 'afterUpdate', function () {
     icons.forEach(function (body) {
       var r = body.circleRadius || 30;
       var x = Math.min(Math.max(body.position.x, r), width - r);
-      var y = Math.min(Math.max(body.position.y, r), height - r);
-      if (x !== body.position.x || y !== body.position.y) {
-        Matter.Body.setPosition(body, { x: x, y: y });
-        Matter.Body.setVelocity(body, { x: body.velocity.x * 0.4, y: body.velocity.y * 0.4 });
+      if (x !== body.position.x) {
+        Matter.Body.setPosition(body, { x: x, y: body.position.y });
+        Matter.Body.setVelocity(body, { x: body.velocity.x * 0.4, y: body.velocity.y });
       }
     });
+  });
+
+  /* Release the dragged icon the instant the mouse button lifts, so the next click always grabs fresh */
+  document.addEventListener('mouseup', function () {
+    mouseConstraint.constraint.bodyB = null;
+  });
+  canvas.addEventListener('touchend', function () {
+    mouseConstraint.constraint.bodyB = null;
   });
 
   Engine.run(engine);
