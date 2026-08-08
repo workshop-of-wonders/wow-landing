@@ -377,13 +377,13 @@ updateScrollScrubs();
       MouseConstraint = Matter.MouseConstraint;
 
   var iconSources = [
-    'design-system/icons/icon-star.svg',
-    'design-system/icons/icon-swoosh.svg',
-    'design-system/icons/icon-arch.svg',
-    'design-system/icons/icon-bloom.svg',
-    'design-system/logo/wow-mark-purple.svg'
+    { src: 'design-system/icons/icon-star.svg', w: 1080, h: 1350 },
+    { src: 'design-system/icons/icon-swoosh.svg', w: 1080, h: 1350 },
+    { src: 'design-system/icons/icon-arch.svg', w: 1080, h: 1350 },
+    { src: 'design-system/icons/icon-bloom.svg', w: 1080, h: 1350 },
+    { src: 'design-system/logo/wow-mark-purple.svg', w: 227.14, h: 257.27 }
   ];
-  var ICON_SIZE = 62;
+  var ICON_SIZE = wrap.offsetWidth < 500 ? 34 : 62;
 
   var engine = Engine.create();
   engine.world.gravity.y = 0.85;
@@ -428,10 +428,11 @@ updateScrollScrubs();
 
   function spawnIcons() {
     clearIcons();
-    iconSources.forEach(function (src, i) {
+    iconSources.forEach(function (icon, i) {
       var startX = 50 + Math.random() * (width - 100);
       var startY = -100 - Math.random() * 1600;
       var size = ICON_SIZE * (0.9 + Math.random() * 0.5);
+      var scale = size / Math.max(icon.w, icon.h);
       var body = Bodies.circle(startX, startY, size / 2, {
         restitution: 0.5,
         friction: 0.25,
@@ -440,9 +441,9 @@ updateScrollScrubs();
         angle: Math.random() * Math.PI * 2,
         render: {
           sprite: {
-            texture: src,
-            xScale: size / 227,
-            yScale: size / 227
+            texture: icon.src,
+            xScale: scale,
+            yScale: scale
           }
         }
       });
