@@ -97,34 +97,86 @@
     </div>
   </section>
 
-  <section id="filosofia" class="toggle-section">
-    <p class="eyebrow eyebrow-dark">CÓMO PENSAMOS</p>
-    <h2>Lo que no negociamos</h2>
-    <ul class="toggle-list">
-      <li class="toggle-item toggle-on-lima">
-        <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
-        <span class="toggle-text">Datos sobre opiniones: investigamos y medimos antes de decidir.</span>
-      </li>
-      <li class="toggle-item toggle-on-orange">
-        <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
-        <span class="toggle-text">Resultados sobre promesas: KPIs claros y medición real.</span>
-      </li>
-      <li class="toggle-item toggle-on-magenta">
-        <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
-        <span class="toggle-text">Claridad sobre complejidad: sin jerga innecesaria.</span>
-      </li>
-      <li class="toggle-item toggle-on-blue">
-        <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
-        <span class="toggle-text">Dirección sobre ejecución ciega: cada táctica responde a un objetivo.</span>
-      </li>
-    </ul>
+  <section id="filosofia" class="toggle-pin">
+    <div class="toggle-section">
+      <div class="toggle-inner">
+        <div class="toggle-copy">
+          <p class="eyebrow eyebrow-dark">CÓMO PENSAMOS</p>
+          <h2>Lo que no negociamos</h2>
+          <ul class="toggle-list">
+            <li class="toggle-item toggle-on-lima">
+              <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
+              <span class="toggle-text">Datos sobre opiniones: investigamos y medimos antes de decidir.</span>
+            </li>
+            <li class="toggle-item toggle-on-orange">
+              <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
+              <span class="toggle-text">Resultados sobre promesas: KPIs claros y medición real.</span>
+            </li>
+            <li class="toggle-item toggle-on-magenta">
+              <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
+              <span class="toggle-text">Claridad sobre complejidad: sin jerga innecesaria.</span>
+            </li>
+            <li class="toggle-item toggle-on-blue">
+              <button type="button" class="switch is-on" aria-pressed="true"><span class="switch-label">ON</span><span class="switch-knob"></span></button>
+              <span class="toggle-text">Dirección sobre ejecución ciega: cada táctica responde a un objetivo.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="icon-morph" aria-hidden="true">
+          <span class="morph-icon mi-1">✦</span>
+          <span class="morph-icon mi-2">◆</span>
+          <span class="morph-icon mi-3">✧</span>
+          <span class="morph-icon mi-4">❖</span>
+          <span class="morph-icon mi-5">&amp;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="labs" class="labs">
+    <p class="eyebrow eyebrow-dark">NUESTROS LABORATORIOS</p>
+    <h2>Nuestros Labs</h2>
+    <div class="labs-panels">
+      <div class="labs-panel labs-panel-insight">
+        <span class="labs-label">Insight Lab</span>
+        <div class="labs-content">
+          <span class="labs-tag">Insight Lab</span>
+          <h3>Donde los datos se convierten en decisiones.</h3>
+          <p>Investigación de mercado, pauta digital optimizada y SEO basado en evidencia para decisiones que generan crecimiento medible.</p>
+        </div>
+      </div>
+      <div class="labs-panel labs-panel-core">
+        <span class="labs-label">Core Lab</span>
+        <div class="labs-content">
+          <span class="labs-tag">Core Lab</span>
+          <h3>Donde tu estrategia de mercado encuentra su propósito.</h3>
+          <p>La arquitectura que define cómo tu marca se posiciona y comunica en el mercado para generar impacto comercial real.</p>
+        </div>
+      </div>
+      <div class="labs-panel labs-panel-brand">
+        <span class="labs-label">Brand &amp; Experience Lab</span>
+        <div class="labs-content">
+          <span class="labs-tag">Brand &amp; Experience Lab</span>
+          <h3>Donde la marca se vuelve experiencia.</h3>
+          <p>Identidad, diseño y experiencia de marca coherentes en cada punto de contacto con tu audiencia.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section id="servicios" class="services">
+    <div class="figma-cursor" id="figmaCursor" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 3 L4 19 L8.2 15.2 L11 21.3 L13.7 20 L11 14 L17 14 Z" fill="var(--lima)" stroke="var(--purple)" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <span class="figma-cursor-label">Tú</span>
+    </div>
     <span class="outline-word outline-orange" aria-hidden="true">SERVICIOS</span>
     <h2>En qué te ayudamos</h2>
 
-    <div class="hub-diagram">
+    <div class="hub-diagram" id="hubDiagram">
+      <div class="hub-popup" id="hubPopup" role="tooltip">
+        <span class="hub-popup-arrow"></span>
+        <p id="hubPopupText"></p>
+      </div>
       <svg class="hub-arrows" viewBox="0 0 1200 640" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="hubGlow" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -170,39 +222,40 @@
       </div>
     </div>
 
-    <p class="hub-detail" id="hubDetail">Haz clic en cualquier etiqueta para ver de qué se trata.</p>
   </section>
 
-  <section id="metodologia" class="method">
-    <span class="outline-word outline-magenta" aria-hidden="true">PROCESO</span>
-    <h2>Del asombro a los resultados</h2>
-    <div class="method-timeline" aria-hidden="true">
-      <span class="rocket">🚀</span>
-      <span class="timeline-dot"></span>
-      <span class="timeline-dot"></span>
-      <span class="timeline-dot"></span>
-      <span class="timeline-dot"></span>
-    </div>
-    <div class="method-track">
-      <div class="method-step ms-1">
-        <span class="method-num">01</span>
-        <h3>Investigación y diagnóstico</h3>
-        <p>Analizamos tu marca, tu mercado y tu audiencia con datos reales antes de mover un solo píxel.</p>
+  <section id="metodologia" class="method-pin">
+    <div class="method">
+      <span class="outline-word outline-magenta" aria-hidden="true">PROCESO</span>
+      <h2>Del asombro a los resultados</h2>
+      <div class="method-timeline" aria-hidden="true">
+        <span class="rocket">🚀</span>
+        <span class="timeline-dot"></span>
+        <span class="timeline-dot"></span>
+        <span class="timeline-dot"></span>
+        <span class="timeline-dot"></span>
       </div>
-      <div class="method-step ms-2">
-        <span class="method-num">02</span>
-        <h3>Estrategia y diseño</h3>
-        <p>Diseñamos el plan creativo con objetivos claros, moodboard y sistema visual definido.</p>
-      </div>
-      <div class="method-step ms-3">
-        <span class="method-num">03</span>
-        <h3>Ejecución con IA</h3>
-        <p>Construimos rápido sin perder calidad, apoyados en herramientas de IA en cada etapa.</p>
-      </div>
-      <div class="method-step ms-4">
-        <span class="method-num">04</span>
-        <h3>Medición y ajuste</h3>
-        <p>Entregamos con transparencia y ajustamos según los resultados reales del proyecto.</p>
+      <div class="method-track">
+        <div class="method-step ms-1">
+          <span class="method-num">01</span>
+          <h3>Investigación y diagnóstico</h3>
+          <p>Analizamos tu marca, tu mercado y tu audiencia con datos reales antes de mover un solo píxel.</p>
+        </div>
+        <div class="method-step ms-2">
+          <span class="method-num">02</span>
+          <h3>Estrategia y diseño</h3>
+          <p>Diseñamos el plan creativo con objetivos claros, moodboard y sistema visual definido.</p>
+        </div>
+        <div class="method-step ms-3">
+          <span class="method-num">03</span>
+          <h3>Ejecución con IA</h3>
+          <p>Construimos rápido sin perder calidad, apoyados en herramientas de IA en cada etapa.</p>
+        </div>
+        <div class="method-step ms-4">
+          <span class="method-num">04</span>
+          <h3>Medición y ajuste</h3>
+          <p>Entregamos con transparencia y ajustamos según los resultados reales del proyecto.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -237,7 +290,6 @@
 </main>
 
 <div class="playground-wrap">
-  <canvas id="fallingCanvas" class="falling-canvas" aria-hidden="true"></canvas>
   <section id="contacto" class="contact">
     <p class="closer-line">Y si hacemos <em>maravillas</em> juntos</p>
     <p class="essence-lead">Escríbenos directamente o encuéntranos en redes.</p>
@@ -245,6 +297,9 @@
       <a class="contact-pill" href="mailto:hola@workshopofwonders.com">✉ hola@workshopofwonders.com</a>
       <a class="contact-pill" href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener">Instagram</a>
       <a class="contact-pill" href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="icon-playground">
+      <canvas id="fallingCanvas" class="falling-canvas"></canvas>
     </div>
   </section>
   <footer class="footer">
@@ -265,6 +320,20 @@ document.querySelectorAll('.trait-card').forEach(function (card) {
   card.addEventListener('click', function () { card.classList.toggle('flipped'); });
 });
 
+/* Figma-style collaborative cursor over the services diagram */
+(function () {
+  var section = document.getElementById('servicios');
+  var cursor = document.getElementById('figmaCursor');
+  if (!section || !cursor) return;
+  section.addEventListener('mousemove', function (e) {
+    cursor.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+    cursor.classList.add('is-visible');
+  });
+  section.addEventListener('mouseleave', function () {
+    cursor.classList.remove('is-visible');
+  });
+})();
+
 /* Pointer-tilt: cards react to the mouse like they have a little weight to them */
 document.querySelectorAll('.js-tilt').forEach(function (card) {
   card.addEventListener('mousemove', function (e) {
@@ -284,25 +353,47 @@ function setSwitch(btn, isOn) {
   btn.classList.toggle('is-on', isOn);
   btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
   btn.querySelector('.switch-label').textContent = isOn ? 'ON' : 'OFF';
+  var item = btn.closest('.toggle-item');
+  if (item) item.classList.toggle('text-hidden', !isOn);
 }
 document.querySelectorAll('.switch').forEach(function (btn) {
   btn.addEventListener('click', function () {
     btn.dataset.userSet = '1';
     setSwitch(btn, !btn.classList.contains('is-on'));
-    var item = btn.closest('.toggle-item');
-    if (item) item.classList.toggle('text-hidden', !btn.classList.contains('is-on'));
   });
 });
 
-/* Hub diagram: click a pill to see what it means */
-var hubDetail = document.getElementById('hubDetail');
+/* Hub diagram: click a pill to pop up its description, Figma-comment style */
+var hubDiagramEl = document.getElementById('hubDiagram');
+var hubPopup = document.getElementById('hubPopup');
+var hubPopupText = document.getElementById('hubPopupText');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
 hubPills.forEach(function (pill) {
-  pill.addEventListener('click', function () {
+  pill.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isSame = pill.classList.contains('active');
     hubPills.forEach(function (p) { p.classList.remove('active'); });
+    if (isSame) {
+      hubPopup.classList.remove('is-open');
+      return;
+    }
     pill.classList.add('active');
-    if (hubDetail) hubDetail.textContent = pill.dataset.desc;
+    hubPopupText.textContent = pill.dataset.desc;
+
+    var diagramRect = hubDiagramEl.getBoundingClientRect();
+    var pillRect = pill.getBoundingClientRect();
+    var top = pillRect.bottom - diagramRect.top + 12;
+    var left = pillRect.left - diagramRect.left + pillRect.width / 2;
+    hubPopup.style.top = top + 'px';
+    hubPopup.style.left = left + 'px';
+    hubPopup.classList.add('is-open');
   });
+});
+document.addEventListener('click', function (e) {
+  if (hubPopup.classList.contains('is-open') && !hubPopup.contains(e.target) && !e.target.classList.contains('hub-pill')) {
+    hubPopup.classList.remove('is-open');
+    hubPills.forEach(function (p) { p.classList.remove('active'); });
+  }
 });
 
 /* Utility: how far scrolled through an element, 0 (just entering bottom) to 1 (just leaving top) */
@@ -314,7 +405,17 @@ function scrollProgress(el) {
   return Math.max(0, Math.min(1, passed / total));
 }
 
+/* Utility: progress through a sticky-pinned section's pin duration specifically, 0 to 1 */
+function pinProgress(outerEl) {
+  var rect = outerEl.getBoundingClientRect();
+  var vh = window.innerHeight;
+  var pinDistance = rect.height - vh;
+  if (pinDistance <= 0) return 1;
+  return Math.max(0, Math.min(1, -rect.top / pinDistance));
+}
+
 /* Switches turn on progressively as you scroll through "cómo pensamos"; turning one off hides its text */
+var togglePin = document.querySelector('.toggle-pin');
 var toggleSection = document.querySelector('.toggle-section');
 var toggleItems = toggleSection ? [].slice.call(toggleSection.querySelectorAll('.toggle-item')) : [];
 toggleItems.forEach(function (item) {
@@ -322,6 +423,7 @@ toggleItems.forEach(function (item) {
 });
 
 /* Reveal method steps + fly the rocket along the timeline, synced to scroll */
+var methodPin = document.querySelector('.method-pin');
 var methodSection = document.querySelector('.method');
 var rocketEl = document.querySelector('.rocket');
 var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.timeline-dot')) : [];
@@ -329,19 +431,20 @@ var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.met
 
 function updateScrollScrubs() {
   if (toggleSection && toggleItems.length) {
-    var tProg = scrollProgress(toggleSection);
+    var tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
     var revealCount = Math.floor(tProg * (toggleItems.length + 1));
     toggleItems.forEach(function (item, i) {
       var shouldBeOn = i < revealCount;
-      item.classList.toggle('in-view', shouldBeOn || item.classList.contains('in-view'));
       var btn = item.querySelector('.switch');
       /* only auto-drive the switch until the user has manually touched it */
-      if (shouldBeOn && !btn.dataset.userSet) setSwitch(btn, true);
+      if (!btn.dataset.userSet && shouldBeOn !== btn.classList.contains('is-on')) {
+        setSwitch(btn, shouldBeOn);
+      }
     });
   }
 
   if (methodSection && stepEls.length) {
-    var mProg = scrollProgress(methodSection);
+    var mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
     if (mProg > 0.05) methodSection.classList.add('in-view');
     if (rocketEl) rocketEl.style.left = (mProg * 100) + '%';
     stepEls.forEach(function (step, i) {
@@ -364,13 +467,11 @@ window.addEventListener('scroll', function () {
 }, { passive: true });
 updateScrollScrubs();
 
-/* Falling icons playground: one of each icon, settles on the footer, draggable, re-falls each visit */
+/* Falling icons playground: lives in its own zone between contact and footer, always draggable */
 (function () {
   var canvas = document.getElementById('fallingCanvas');
-  var wrap = document.querySelector('.playground-wrap');
-  var contactEl = document.getElementById('contacto');
-  var footerEl = wrap && wrap.querySelector('.footer');
-  if (!canvas || !wrap || !footerEl || typeof Matter === 'undefined') return;
+  var zone = document.querySelector('.icon-playground');
+  if (!canvas || !zone || typeof Matter === 'undefined') return;
 
   var Engine = Matter.Engine, Render = Matter.Render, World = Matter.World,
       Bodies = Matter.Bodies, Mouse = Matter.Mouse,
@@ -383,13 +484,13 @@ updateScrollScrubs();
     { src: 'design-system/icons/icon-bloom.svg', w: 1080, h: 1350 },
     { src: 'design-system/logo/wow-mark-purple.svg', w: 227.14, h: 257.27 }
   ];
-  var ICON_SIZE = wrap.offsetWidth < 500 ? 34 : 62;
+  var ICON_SIZE = zone.offsetWidth < 500 ? 56 : 92;
 
   var engine = Engine.create();
   engine.world.gravity.y = 0.85;
 
-  var width = wrap.offsetWidth;
-  var height = wrap.offsetHeight;
+  var width = zone.offsetWidth;
+  var height = zone.offsetHeight;
   canvas.width = width;
   canvas.height = height;
 
@@ -405,14 +506,11 @@ updateScrollScrubs();
   });
 
   var walls = [];
-  var footerTopY = 0;
   function buildWalls() {
     World.remove(engine.world, walls);
     var t = 60;
-    footerTopY = footerEl.getBoundingClientRect().top - wrap.getBoundingClientRect().top;
     walls = [
-      /* floor sits at the top edge of the footer, so icons pile up on it, not lower */
-      Bodies.rectangle(width / 2, footerTopY + t / 2, width + t * 2, t, { isStatic: true, label: 'floor' }),
+      Bodies.rectangle(width / 2, height + t / 2, width + t * 2, t, { isStatic: true, label: 'floor' }),
       Bodies.rectangle(-t / 2, height / 2, t, height * 3, { isStatic: true }),
       Bodies.rectangle(width + t / 2, height / 2, t, height * 3, { isStatic: true })
     ];
@@ -454,21 +552,20 @@ updateScrollScrubs();
     });
   }
 
-  /* Falls as soon as the contact section is reached, and re-falls (new random spots) every visit */
-  if (contactEl && 'IntersectionObserver' in window) {
+  /* Falls as soon as this zone is reached, and re-falls (new random spots) every visit */
+  if ('IntersectionObserver' in window) {
     var wasVisible = false;
     var spawnObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting && !wasVisible) {
           wasVisible = true;
-          buildWalls();
           spawnIcons();
         } else if (!entry.isIntersecting) {
           wasVisible = false;
         }
       });
-    }, { threshold: 0 });
-    spawnObserver.observe(contactEl);
+    }, { threshold: 0.2 });
+    spawnObserver.observe(zone);
   } else {
     spawnIcons();
   }
@@ -481,21 +578,25 @@ updateScrollScrubs();
   World.add(engine.world, mouseConstraint);
   render.mouse = mouse;
 
+  /* Keep icons inside the zone even during fast drags (constraint solver can otherwise tunnel them through the walls) */
+  Matter.Events.on(engine, 'afterUpdate', function () {
+    icons.forEach(function (body) {
+      var r = body.circleRadius || 30;
+      var x = Math.min(Math.max(body.position.x, r), width - r);
+      var y = Math.min(Math.max(body.position.y, r), height - r);
+      if (x !== body.position.x || y !== body.position.y) {
+        Matter.Body.setPosition(body, { x: x, y: y });
+        Matter.Body.setVelocity(body, { x: body.velocity.x * 0.4, y: body.velocity.y * 0.4 });
+      }
+    });
+  });
+
   Engine.run(engine);
   Render.run(render);
 
-  /* Only capture pointer events over the footer band, so contact links above stay clickable */
-  function updatePointerGate(e) {
-    var footerRect = footerEl.getBoundingClientRect();
-    var y = (e.touches ? e.touches[0].clientY : e.clientY);
-    canvas.style.pointerEvents = (y >= footerRect.top) ? 'auto' : 'none';
-  }
-  window.addEventListener('mousemove', updatePointerGate, { passive: true });
-  window.addEventListener('touchstart', updatePointerGate, { passive: true });
-
   window.addEventListener('resize', function () {
-    width = wrap.offsetWidth;
-    height = wrap.offsetHeight;
+    width = zone.offsetWidth;
+    height = zone.offsetHeight;
     canvas.width = width;
     canvas.height = height;
     render.options.width = width;
