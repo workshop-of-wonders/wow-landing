@@ -221,7 +221,7 @@ main { padding-top: var(--nav-h); }
 .outline-blue { color: var(--blue); }
 .method, .clients, .toggle-section, .labs, .services, .work { position: relative; overflow: hidden; }
 .method > *:not(.outline-word), .clients > *:not(.outline-word), .toggle-inner, .labs > *:not(.outline-word),
-.services > *:not(.outline-word), .work > *:not(.outline-word) {
+.services > *:not(.outline-word):not(.figma-cursor), .work > *:not(.outline-word) {
   position: relative;
   z-index: 1;
 }
