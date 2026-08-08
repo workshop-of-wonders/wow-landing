@@ -352,7 +352,7 @@ main { padding-top: var(--nav-h); }
 .method-timeline {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--space-4);
   align-items: center;
   margin: var(--space-5) 0 var(--space-3);
@@ -791,9 +791,9 @@ main { padding-top: var(--nav-h); }
 }
 @media (max-width: 720px) {
   .method-pin { height: auto; }
-  .method { position: relative; height: auto; display: block; }
+  .method { position: relative; top: auto; height: auto; display: block; }
   .toggle-pin { height: auto; }
-  .toggle-section { position: relative; height: auto; display: block; }
+  .toggle-section { position: relative; top: auto; height: auto; min-height: 0; display: block; }
   .toggle-inner { flex-direction: column; }
 }
 .method h2 {
@@ -803,7 +803,7 @@ main { padding-top: var(--nav-h); }
 }
 .method-track {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--space-4);
 }
 .method-step {
@@ -834,7 +834,8 @@ main { padding-top: var(--nav-h); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
 
 @media (max-width: 900px) {
-  .ms-1, .ms-2, .ms-3, .ms-4 { transform: none; }
+  .ms-1, .ms-2, .ms-3, .ms-4,
+  .ms-1.in-view, .ms-2.in-view, .ms-3.in-view, .ms-4.in-view { transform: none; }
 }
 
 /* Work — horizontal scroll gallery */
@@ -1007,6 +1008,7 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 640px) {
   .lightbox-caption { flex-direction: column; }
+  .lightbox-desc { flex-basis: auto; }
 }
 
 /* Project form modal */
@@ -1292,6 +1294,6 @@ main { padding-top: var(--nav-h); }
   .nav-links { gap: var(--space-2); }
   .nav-links a:not(.btn) { display: none; }
   .trait-grid { grid-template-columns: 1fr; }
-  .hero { padding: var(--space-6) var(--space-3) 64px; }
+  .hero { padding: calc(var(--space-6) + var(--nav-h)) var(--space-3) 64px; }
   .services, .cta-band, .contact, .labs, .work { padding: var(--space-6) var(--space-3); }
 }
