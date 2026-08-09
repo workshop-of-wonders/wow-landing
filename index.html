@@ -706,12 +706,19 @@ function updateScrollScrubs() {
   }
 
   if (methodSection && stepEls.length) {
-    var mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
+    /* .method isn't sticky-pinned on mobile either, so — same fix as the philosophy switches — tie progress to the section's own entry: 0 when it's just touching the bottom of the viewport, 1 once it's fully on screen. The card-by-card reveal then rides the scroll that brings the section into view, instead of requiring extra swipes once there. */
+    var mProg;
+    if (isMobileTimeline) {
+      var methodRect = methodSection.getBoundingClientRect();
+      var methodVh = window.innerHeight;
+      mProg = Math.max(0, Math.min(1, (methodVh - methodRect.top) / methodRect.height));
+    } else {
+      mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
+    }
     methodSection.classList.toggle('in-view', mProg > 0.05);
     if (rocketEl) rocketEl.style.setProperty('--prog', mProg);
-    /* on mobile there's no long pinned scroll to spend, so cards should pop in after a short, deliberately quick scroll instead of the desktop-length threshold */
     var stepThreshold = function (i) {
-      return isMobileTimeline ? i * 0.12 : (i + 0.3) / stepEls.length;
+      return isMobileTimeline ? i / stepEls.length : (i + 0.3) / stepEls.length;
     };
     stepEls.forEach(function (step, i) {
       step.classList.toggle('in-view', mProg > stepThreshold(i));
