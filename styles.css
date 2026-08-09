@@ -192,10 +192,16 @@ main { padding-top: var(--nav-h); }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
-.nav-mobile-menu.is-open { opacity: 1; pointer-events: auto; }
+.nav-mobile-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
 .nav-mobile-panel {
   position: relative;
   width: 100%;
@@ -1218,10 +1224,11 @@ main { padding-top: var(--nav-h); }
   padding: var(--space-4);
   background: rgba(10,7,13,0.9);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
-.lightbox.is-open { opacity: 1; pointer-events: auto; }
+.lightbox.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.2s ease, visibility 0s linear 0s; }
 .lightbox-inner {
   position: relative;
   width: min(1100px, 100%);
@@ -1319,10 +1326,11 @@ main { padding-top: var(--nav-h); }
   background: rgba(26,19,32,0.82);
   backdrop-filter: blur(4px);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
 }
-.project-modal.is-open { opacity: 1; pointer-events: auto; }
+.project-modal.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.25s ease, visibility 0s linear 0s; }
 .project-modal-inner {
   position: relative;
   width: min(640px, 100%);
