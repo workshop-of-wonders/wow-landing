@@ -697,8 +697,13 @@ function updateScrollScrubs() {
     var mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
     methodSection.classList.toggle('in-view', mProg > 0.05);
     if (rocketEl) rocketEl.style.setProperty('--prog', mProg);
+    /* on mobile there's no long pinned scroll to spend, so cards should pop in after a short, deliberately quick scroll instead of the desktop-length threshold */
+    var isMobileTimeline = window.matchMedia('(max-width: 720px)').matches;
+    var stepThreshold = function (i) {
+      return isMobileTimeline ? i * 0.12 : (i + 0.3) / stepEls.length;
+    };
     stepEls.forEach(function (step, i) {
-      step.classList.toggle('in-view', mProg > (i + 0.3) / stepEls.length);
+      step.classList.toggle('in-view', mProg > stepThreshold(i));
     });
     dotEls.forEach(function (dot, i) {
       dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
@@ -706,8 +711,7 @@ function updateScrollScrubs() {
     /* each connector sits right above the step it precedes: the rocket only appears once it actually reaches that dot, and that arrival is what fires the card open */
     var lastReachedConnector = -1;
     connectorEls.forEach(function (connector, i) {
-      var stepIndex = i + 1;
-      var reached = mProg > (stepIndex + 0.3) / stepEls.length;
+      var reached = mProg > stepThreshold(i + 1);
       connector.classList.toggle('lit', reached);
       if (reached) lastReachedConnector = i;
     });
