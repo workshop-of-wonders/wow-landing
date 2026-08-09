@@ -933,8 +933,17 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 720px) {
   .method-timeline { display: none; }
-  .method-track { position: relative; }
-  .method-track::before {
+  .method-track { gap: var(--space-2); }
+  .method-step { position: relative; z-index: 1; }
+  .method-connector {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+  }
+  .method-connector::before {
     content: '';
     position: absolute;
     top: 0;
@@ -945,18 +954,10 @@ main { padding-top: var(--nav-h); }
     transform: translateX(-50%);
     z-index: 0;
   }
-  .method-step { position: relative; z-index: 1; }
-  .method-connector {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 0;
-  }
   .connector-line { display: none; }
   .connector-dot {
+    position: relative;
+    z-index: 1;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -965,9 +966,10 @@ main { padding-top: var(--nav-h); }
   }
   .method-connector.lit .connector-dot { background: var(--lima); transform: scale(1.2); }
   .connector-rocket {
+    position: relative;
+    z-index: 1;
     display: none;
     font-size: 20px;
-    transform: rotate(180deg);
   }
   .method-connector.active .connector-dot { display: none; }
   .method-connector.active .connector-rocket { display: block; }
