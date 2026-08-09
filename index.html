@@ -407,7 +407,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* Labs accordion: on touch/mobile, tap a panel to expand it (only one open at a time) */
 document.querySelectorAll('.labs-panel').forEach(function (panel) {
   panel.addEventListener('click', function (e) {
-    if (window.innerWidth > 720) return;
+    if (window.innerWidth > 900) return;
     var wasOpen = panel.classList.contains('is-open');
     document.querySelectorAll('.labs-panel').forEach(function (p) { p.classList.remove('is-open'); });
     if (!wasOpen) panel.classList.add('is-open');
