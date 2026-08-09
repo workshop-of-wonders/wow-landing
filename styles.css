@@ -1312,6 +1312,9 @@ main { padding-top: var(--nav-h); }
   justify-content: center;
 }
 .footer-socials a {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 4px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.05em;
