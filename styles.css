@@ -623,15 +623,66 @@ main { padding-top: var(--nav-h); }
   margin-bottom: var(--space-2);
 }
 .labs-tag-icon { width: 12px; height: 12px; filter: brightness(0) invert(1); }
+.labs-toggle { display: none; }
 .labs-content h3 { font-size: 22px; margin-bottom: var(--space-1); }
 .labs-content p { margin: 0; font-size: 14px; opacity: 0.9; }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
+  /* Accordion: collapsed color bars, tap to expand one at a time (matches the reference) */
   .labs-panels { flex-direction: column; height: auto; }
-  .labs-panel { flex: none !important; align-items: flex-start; padding: var(--space-3); }
-  .labs-label { position: static; writing-mode: horizontal-tb; transform: none; margin-bottom: var(--space-2); font-size: 16px; }
-  .labs-panel:hover .labs-label, .labs-panel .labs-label { opacity: 1; }
-  .labs-content { opacity: 1; transform: none; position: static; }
+  .labs-panel {
+    flex: none !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--page-x);
+    cursor: pointer;
+  }
+  .labs-label {
+    position: static;
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin-bottom: 0;
+    font-size: 17px;
+    opacity: 1;
+    order: 0;
+  }
+  .labs-toggle {
+    display: block;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    order: 1;
+  }
+  .labs-toggle span, .labs-toggle span::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 14px; height: 2px;
+    background: var(--white);
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease;
+  }
+  .labs-toggle span::before { transform: translate(-50%, -50%) rotate(90deg); }
+  .labs-panel.is-open .labs-toggle span::before { transform: translate(-50%, -50%) rotate(0deg); }
+  .labs-content {
+    order: 2;
+    flex-basis: 100%;
+    position: static;
+    max-height: 0;
+    opacity: 0;
+    transform: none;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.35s ease;
+  }
+  .labs-panel.is-open .labs-content { max-height: 640px; opacity: 1; margin-top: var(--space-2); }
+  .labs-bg-icon { opacity: 0.14; }
+  .labs-panel.is-open .labs-bg-icon { opacity: 0.18; transform: scale(1); }
 }
 
 /* Hub diagram */

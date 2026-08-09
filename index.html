@@ -128,6 +128,7 @@
       <div class="labs-panel labs-panel-insight">
         <img class="labs-bg-icon" src="design-system/icons/icon-star.svg" alt="">
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-star.svg" alt="">Insight Lab</span>
+        <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
           <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-star.svg" alt="">Insight Lab</span>
           <h3>Donde los datos se convierten en decisiones.</h3>
@@ -137,6 +138,7 @@
       <div class="labs-panel labs-panel-academy">
         <img class="labs-bg-icon" src="design-system/icons/icon-swoosh.svg" alt="">
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-swoosh.svg" alt="">Academy Lab</span>
+        <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
           <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-swoosh.svg" alt="">Academy Lab</span>
           <h3>Donde el conocimiento se convierte en criterio.</h3>
@@ -146,6 +148,7 @@
       <div class="labs-panel labs-panel-core">
         <img class="labs-bg-icon" src="design-system/icons/icon-arch.svg" alt="">
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-arch.svg" alt="">Core Lab</span>
+        <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
           <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-arch.svg" alt="">Core Lab</span>
           <h3>Donde tu estrategia de mercado encuentra su propósito.</h3>
@@ -155,6 +158,7 @@
       <div class="labs-panel labs-panel-brand">
         <img class="labs-bg-icon" src="design-system/icons/icon-bloom.svg" alt="">
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-bloom.svg" alt="">Brand &amp; Experience Lab</span>
+        <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
           <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-bloom.svg" alt="">Brand &amp; Experience Lab</span>
           <h3>Donde la marca se vuelve experiencia.</h3>
@@ -400,9 +404,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
   updateNav();
 })();
 
-/* Trait cards: click to flip and reveal a second line */
-document.querySelectorAll('.trait-card').forEach(function (card) {
-  card.addEventListener('click', function () { card.classList.toggle('flipped'); });
+/* Labs accordion: on touch/mobile, tap a panel to expand it (only one open at a time) */
+document.querySelectorAll('.labs-panel').forEach(function (panel) {
+  panel.addEventListener('click', function (e) {
+    if (window.innerWidth > 720) return;
+    var wasOpen = panel.classList.contains('is-open');
+    document.querySelectorAll('.labs-panel').forEach(function (p) { p.classList.remove('is-open'); });
+    if (!wasOpen) panel.classList.add('is-open');
+  });
 });
 
 /* Figma-style collaborative cursor over the services diagram */
