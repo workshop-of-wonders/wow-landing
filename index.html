@@ -28,10 +28,27 @@
   </button>
 </header>
 <div class="nav-mobile-menu" id="navMobileMenu">
-  <a href="#servicios">Servicios</a>
-  <a href="#labs">Labs</a>
-  <a href="#trabajo">Trabajo</a>
-  <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos</a>
+  <div class="nav-mobile-panel">
+    <div class="nav-mobile-top">
+      <a href="#top" class="logo">
+        <img src="design-system/logo/wow-logo-white.png" alt="Workshop of Wonders" class="logo-img">
+      </a>
+      <button type="button" class="nav-mobile-close" id="navMobileClose" aria-label="Cerrar menú">
+        <span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile-links">
+      <a href="#servicios"><span class="nav-mobile-link-num">01</span>Servicios</a>
+      <a href="#labs"><span class="nav-mobile-link-num">02</span>Labs</a>
+      <a href="#trabajo"><span class="nav-mobile-link-num">03</span>Trabajo</a>
+    </nav>
+    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form>Hablemos <span class="nav-mobile-cta-arrow">→</span></a>
+    <div class="nav-mobile-foot">
+      <span class="nav-mobile-foot-mark">✦</span>
+      <a href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
 </div>
 
 <main id="top">
@@ -619,10 +636,11 @@ document.addEventListener('click', function (e) {
   });
 })();
 
-/* Mobile nav burger: toggles the full-screen link menu */
+/* Mobile nav burger: toggles the floating glass menu */
 (function () {
   var burger = document.getElementById('navBurger');
   var menu = document.getElementById('navMobileMenu');
+  var closeBtn = document.getElementById('navMobileClose');
   if (!burger || !menu) return;
   function setOpen(isOpen) {
     burger.classList.toggle('is-open', isOpen);
@@ -632,6 +650,10 @@ document.addEventListener('click', function (e) {
   }
   burger.addEventListener('click', function () {
     setOpen(!menu.classList.contains('is-open'));
+  });
+  if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+  menu.addEventListener('click', function (e) {
+    if (e.target === menu) setOpen(false);
   });
   menu.querySelectorAll('a').forEach(function (a) {
     a.addEventListener('click', function () { setOpen(false); });
