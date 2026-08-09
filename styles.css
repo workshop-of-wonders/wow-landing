@@ -1437,7 +1437,7 @@ main { padding-top: var(--nav-h); }
   .trait-grid { grid-template-columns: 1fr; }
   .hero { padding: calc(var(--space-6) + var(--nav-h)) var(--space-3) 64px; }
   .services, .cta-band, .contact, .work { padding: var(--space-6) var(--space-3); }
-  .labs { padding: var(--space-6) 0; }
+  .labs { padding: var(--space-6) 0 0; }
   /* give the falling-icons playground more room to actually play with on a phone screen */
   .contact { min-height: clamp(560px, 78vh, 760px); }
 }
