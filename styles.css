@@ -814,7 +814,6 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 900px) {
   .hub-diagram { flex-direction: column; align-items: center; min-height: 0; }
-  .hub-arrows { display: none; }
   .hub-col-left, .hub-col-right {
     order: 1;
     flex-direction: row;
