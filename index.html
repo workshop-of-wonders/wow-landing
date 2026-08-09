@@ -233,16 +233,31 @@
           <h3>Investigación y diagnóstico</h3>
           <p>Analizamos tu marca, tu mercado y tu audiencia con datos reales antes de mover un solo píxel.</p>
         </div>
+        <span class="method-connector" aria-hidden="true">
+          <span class="connector-line"></span>
+          <span class="connector-dot"></span>
+          <span class="connector-rocket">🚀</span>
+        </span>
         <div class="method-step ms-2">
           <span class="method-num">02</span>
           <h3>Estrategia y diseño</h3>
           <p>Diseñamos el plan creativo con objetivos claros, moodboard y sistema visual definido.</p>
         </div>
+        <span class="method-connector" aria-hidden="true">
+          <span class="connector-line"></span>
+          <span class="connector-dot"></span>
+          <span class="connector-rocket">🚀</span>
+        </span>
         <div class="method-step ms-3">
           <span class="method-num">03</span>
           <h3>Ejecución con IA</h3>
           <p>Construimos rápido sin perder calidad, apoyados en herramientas de IA en cada etapa.</p>
         </div>
+        <span class="method-connector" aria-hidden="true">
+          <span class="connector-line"></span>
+          <span class="connector-dot"></span>
+          <span class="connector-rocket">🚀</span>
+        </span>
         <div class="method-step ms-4">
           <span class="method-num">04</span>
           <h3>Medición y ajuste</h3>
@@ -662,6 +677,7 @@ var methodSection = document.querySelector('.method');
 var rocketEl = document.querySelector('.rocket');
 var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.timeline-dot')) : [];
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
+var connectorEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-connector')) : [];
 
 function updateScrollScrubs() {
   if (toggleSection && toggleItems.length) {
@@ -686,6 +702,12 @@ function updateScrollScrubs() {
     });
     dotEls.forEach(function (dot, i) {
       dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
+    });
+    var revealedSteps = stepEls.filter(function (step) { return step.classList.contains('in-view'); }).length;
+    connectorEls.forEach(function (connector, i) {
+      var idx = i + 1;
+      connector.classList.toggle('lit', idx <= revealedSteps);
+      connector.classList.toggle('active', idx === revealedSteps);
     });
   }
 }

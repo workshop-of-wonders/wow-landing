@@ -924,6 +924,7 @@ main { padding-top: var(--nav-h); }
 }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
+.method-connector { display: none; }
 
 @media (max-width: 900px) {
   .ms-1, .ms-2, .ms-3, .ms-4,
@@ -931,29 +932,34 @@ main { padding-top: var(--nav-h); }
 }
 
 @media (max-width: 720px) {
-  .method-timeline {
+  .method-timeline { display: none; }
+  .method-connector {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: auto;
-    gap: var(--space-6);
-    margin: var(--space-5) 0;
-    padding: 0;
+    gap: 4px;
+    padding: 6px 0;
   }
-  .method-timeline::before {
-    left: 50%;
-    right: auto;
-    top: 0;
-    bottom: 0;
-    height: auto;
+  .connector-line {
     width: 2px;
-    transform: translateX(-50%);
+    height: 28px;
+    background: rgba(255,255,255,0.2);
   }
-  .rocket {
-    top: calc(var(--prog, 0) * 100%);
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(135deg);
+  .connector-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(220,225,87,0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
   }
+  .method-connector.lit .connector-dot { background: var(--lima); transform: scale(1.2); }
+  .connector-rocket {
+    display: none;
+    font-size: 20px;
+    transform: rotate(180deg);
+  }
+  .method-connector.active .connector-dot { display: none; }
+  .method-connector.active .connector-rocket { display: block; }
 }
 
 /* Work — horizontal scroll gallery */
