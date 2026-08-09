@@ -693,6 +693,7 @@ main { padding-top: var(--nav-h); }
 .services h2 {
   font-size: clamp(32px, 5vw, 52px);
   color: var(--purple);
+  margin-top: var(--space-6);
   margin-bottom: var(--space-2);
   max-width: 480px;
 }
