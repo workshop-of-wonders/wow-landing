@@ -1093,6 +1093,9 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 900px) {
   .ms-1, .ms-2, .ms-3, .ms-4,
   .ms-1.in-view, .ms-2.in-view, .ms-3.in-view, .ms-4.in-view { transform: none; }
+  /* force an explicit 2-column grid at tablet widths — auto-fit would otherwise wrap 3+1
+     depending on exact width, leaving the 4th timeline dot floating disconnected from the line */
+  .method-track, .method-timeline { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px) {
