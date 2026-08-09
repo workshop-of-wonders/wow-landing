@@ -703,11 +703,15 @@ function updateScrollScrubs() {
     dotEls.forEach(function (dot, i) {
       dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
     });
-    var revealedSteps = stepEls.filter(function (step) { return step.classList.contains('in-view'); }).length;
+    /* each connector sits right above the step it precedes, so use that step's own reveal threshold: the card pops in the instant the rocket reaches its dot */
+    var connectorActiveAssigned = false;
     connectorEls.forEach(function (connector, i) {
-      var idx = i + 1;
-      connector.classList.toggle('lit', idx <= revealedSteps);
-      connector.classList.toggle('active', idx === revealedSteps);
+      var stepIndex = i + 1;
+      var reached = mProg > (stepIndex + 0.3) / stepEls.length;
+      connector.classList.toggle('lit', reached);
+      var isActive = !reached && !connectorActiveAssigned;
+      connector.classList.toggle('active', isActive);
+      if (isActive) connectorActiveAssigned = true;
     });
   }
 }
