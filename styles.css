@@ -648,6 +648,7 @@ main { padding-top: var(--nav-h); }
     opacity: 1;
     order: 0;
   }
+  .labs-panel:hover .labs-label { opacity: 1; }
   .labs-toggle {
     display: block;
     flex: 0 0 auto;
@@ -1382,5 +1383,6 @@ main { padding-top: var(--nav-h); }
   .nav-links a:not(.btn) { display: none; }
   .trait-grid { grid-template-columns: 1fr; }
   .hero { padding: calc(var(--space-6) + var(--nav-h)) var(--space-3) 64px; }
-  .services, .cta-band, .contact, .labs, .work { padding: var(--space-6) var(--space-3); }
+  .services, .cta-band, .contact, .work { padding: var(--space-6) var(--space-3); }
+  .labs { padding: var(--space-6) 0; }
 }
