@@ -679,9 +679,18 @@ var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.time
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
 var connectorEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-connector')) : [];
 
+var isMobileTimeline = window.matchMedia('(max-width: 720px)').matches;
+
 function updateScrollScrubs() {
   if (toggleSection && toggleItems.length) {
-    var tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
+    /* .toggle-section isn't sticky-pinned on mobile, and it's shorter than the viewport there, so pinProgress/scrollProgress (both scaled to the section's own height) resolve to ~1 immediately. Drive it off a short, fixed scroll distance instead so it plays out over a quick, deliberate scroll. */
+    var tProg;
+    if (isMobileTimeline) {
+      var toggleRect = toggleSection.getBoundingClientRect();
+      tProg = Math.max(0, Math.min(1, (100 - toggleRect.top) / 260));
+    } else {
+      tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
+    }
     var revealCount = Math.floor(tProg * (toggleItems.length + 1));
     toggleItems.forEach(function (item, i) {
       var shouldBeOn = i < revealCount;
@@ -698,7 +707,6 @@ function updateScrollScrubs() {
     methodSection.classList.toggle('in-view', mProg > 0.05);
     if (rocketEl) rocketEl.style.setProperty('--prog', mProg);
     /* on mobile there's no long pinned scroll to spend, so cards should pop in after a short, deliberately quick scroll instead of the desktop-length threshold */
-    var isMobileTimeline = window.matchMedia('(max-width: 720px)').matches;
     var stepThreshold = function (i) {
       return isMobileTimeline ? i * 0.12 : (i + 0.3) / stepEls.length;
     };
