@@ -680,7 +680,7 @@ function updateScrollScrubs() {
   if (methodSection && stepEls.length) {
     var mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
     methodSection.classList.toggle('in-view', mProg > 0.05);
-    if (rocketEl) rocketEl.style.left = (mProg * 100) + '%';
+    if (rocketEl) rocketEl.style.setProperty('--prog', mProg);
     stepEls.forEach(function (step, i) {
       step.classList.toggle('in-view', mProg > (i + 0.3) / stepEls.length);
     });

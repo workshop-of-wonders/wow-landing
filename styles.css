@@ -371,12 +371,12 @@ main { padding-top: var(--nav-h); }
 .rocket {
   position: absolute;
   top: 50%;
-  left: 0;
+  left: calc(var(--prog, 0) * 100%);
   font-size: 22px;
   transform: translate(-50%, -50%) rotate(45deg);
   opacity: 0;
   z-index: 2;
-  transition: left 0.15s linear, opacity 0.3s ease;
+  transition: left 0.15s linear, top 0.15s linear, opacity 0.3s ease;
 }
 .method.in-view .rocket { opacity: 1; }
 .timeline-dot {
@@ -928,6 +928,32 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 900px) {
   .ms-1, .ms-2, .ms-3, .ms-4,
   .ms-1.in-view, .ms-2.in-view, .ms-3.in-view, .ms-4.in-view { transform: none; }
+}
+
+@media (max-width: 720px) {
+  .method-timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap: var(--space-6);
+    margin: var(--space-5) 0;
+    padding: 0;
+  }
+  .method-timeline::before {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 2px;
+    transform: translateX(-50%);
+  }
+  .rocket {
+    top: calc(var(--prog, 0) * 100%);
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(135deg);
+  }
 }
 
 /* Work — horizontal scroll gallery */
