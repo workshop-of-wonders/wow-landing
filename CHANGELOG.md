@@ -1,0 +1,61 @@
+# Changelog — Workshop of Wonders landing
+
+This file is the working log for this project. **Claude: read this file at the start of any session on this repo, and append a new entry every time you finish a piece of work** (after commit+push), instead of relying on conversation memory. Keep entries short and factual — what changed and why, not a transcript of the conversation.
+
+## How to use this file
+- Add new entries at the **top** of the "Log" section (most recent first), one entry per meaningful change/commit.
+- Each entry: date, one-line summary, commit hash if available.
+- Keep the "Pending / open items" section current — remove items once resolved, add new ones as they come up.
+- Keep the "Key decisions & conventions" section updated if a new durable pattern/convention is established (e.g. a breakpoint value, a naming rule).
+
+---
+
+## Pending / open items
+
+- **Behance images**: the "Trabajo" carousel and client-logo case-study modals still use placeholder photos from `design-system/hero-photos/` instead of real project images from https://www.behance.net/mjtamayol. Need the real images per project to swap in.
+- **Lead form backend**: the "Cuéntanos tu proyecto" modal (project form) submits nowhere — it just shows a local thank-you message. Need a destination (email, CRM, Google Sheet, Formspree, etc.) to actually wire it up.
+- **Client logo sizing**: logos are transparent + tight-cropped and rendered at a consistent height, but some may still look slightly different in visual weight due to each source file's original design (not fixable purely with CSS).
+
+## Key decisions & conventions
+
+- **Breakpoints**: `900px` is the main mobile/tablet cutoff used across the site (hero, labs accordion, nav). `720px` and `560px` are used for a few finer adjustments. When adding a new mobile override, check whether JS logic (e.g. `window.innerWidth` gates) needs to match the same breakpoint as the CSS — this caused a bug once (see 2026-08-08, labs accordion).
+- **`--page-x`**: `clamp(24px, 6vw, 96px)` — the horizontal section padding variable. Use this instead of a fixed px value for any new section's left/right padding so it scales with viewport width.
+- **Falling icons (contact section)**: Matter.js physics playground. Known-sensitive settings: `restitution: 0.9` + default solver iterations (bouncy, piles up — client's preferred feel, don't "fix" the piling/clumping without asking, it's intentional). Drag release is hardened across `mouseup/touchend/touchcancel/pointerup/blur`.
+- **`flex-basis` on axis-flip bug**: watch out — properties like `flex: 0 1 520px` written for a *row* layout become a fixed **height** if that flex container switches to `flex-direction: column` at a breakpoint (e.g. hero-content, hero-media, lightbox-desc all hit this). Always re-check/reset `flex-basis` inside mobile media queries after adding a fixed basis for desktop.
+- **Hub diagram connector lines**: drawn dynamically in JS (`hubArrows` SVG) from real pill positions, not hardcoded paths — recalculates on resize/font-load.
+- **Case-study modal**: 2x2 photo grid (project's real image + 3 seeded from the shared `hero-photos` pool) + dark bottom bar (name, category, description, tags). Triggered by `[data-lightbox]` on both work-items and client-logos.
+- **Project form modal**: triggered by any `[data-open-form]` element (nav "Hablemos", hero CTA, services CTA, contact pill, hub "W" click).
+
+---
+
+## Log
+
+**2026-08-08** — `8d92516` Fix labs accordion breakpoint mismatch (JS gated at 720px, CSS at 900px).
+
+**2026-08-08** — `aed74dd` Labs section: tap-to-expand accordion on mobile/tablet (≤900px), matching Superside reference — collapsed color bars, one open at a time.
+
+**2026-08-08** — `9ef5da8` Mobile/tablet responsive QA pass: fixed undersized footer social tap targets (16px → 40px). Full audit (overlap/overflow/tap-targets) at 320/390/768px came back otherwise clean.
+
+**2026-08-08** — `3b1d295`, `761a723`, `051e954` Rebuilt the mobile/tablet-portrait hero to match the Superside reference: centered text block, photo mosaic as horizontal scroll strip(s) instead of vertical columns. Fixed two "flex-basis becomes height on axis flip" bugs found along the way (hero-content, media-col).
+
+**2026-08-08** — `c79206b`, `6749ab0`, `0566665`, `03d7fb3` Hero desktop positioning iteration: mosaic pinned flush to the right edge via `margin-left: auto` + `flex-grow: 0` on hero-content (final state); tried and reverted a mobile "bleed to edge" approach per user feedback.
+
+**2026-08-08** — `1f74377` Added `--page-x` responsive horizontal padding variable, applied across nav/hero/sections (was a fixed 40px before, felt too tight on wide screens).
+
+**2026-08-08** — `1648840`, `56c33bd` Bigger hero mosaic cards (hero is now taller). Redesigned the project/client click modal into a Superside-style case study layout (2x2 photo grid + dark info bar with name/category/description/tags).
+
+**2026-08-08** — `52158f6`, `d57d360` Slowed the "Cómo pensamos" scroll-pin (more scroll distance before release). Swapped Trabajo/marcas marquee directions (work items left→right, brands right→left, opposite of each other).
+
+**2026-08-08** — `0a86395`, `c03876d`, `a62edf4`, `5141ac2`, `a7ecd80` Falling icons physics tuning: fixed the real bug where an `afterUpdate` handler was killing the bounce every frame; iterated restitution/solver settings back and forth per user preference to land on bouncy + pile-up behavior; hardened drag-release across mouseup/touchend/touchcancel/pointerup/blur.
+
+**2026-08-08** — `2328b18` Added the project form modal (matches a Superside-style "Book a demo" reference), dynamic JS-drawn connector lines in the services hub diagram, real wow-mark icon for the hub "W" (was plain text), and transparent/cropped client logos (flood-fill background removal via Pillow).
+
+**2026-08-08** — `41780d9` Fixed the custom cursor in Servicios rendering behind the pills (a `.services > *:not(.outline-word)` rule had higher specificity than `.figma-cursor` and was overriding its `position:fixed`/z-index).
+
+**2026-08-08** — `e6b1c59` Hero width/flex fixes, Labs/hub-W/contact/marcas visual updates, merged the brands section into Trabajo as a marquee row underneath the project carousel.
+
+**2026-08-08** — `5057b26`, `8ddf134` Hero mosaic now extends behind the (transparent-until-scroll) header with a top/bottom fade mask; fixed the mosaic's infinite-scroll loop jump (`.media-col` was stretching to the container height instead of using its real content height for the `translateY(-50%)` math).
+
+**2026-08-08** — `ae2beec` Large rework: hero, nav, labs, services hub, contact section, new Trabajo/lightbox sections — this is the session where most of the current structure (sections, JS interactions) was established. Removed the old "Esencia" section, redesigned "Cómo pensamos", labs hover panels, services hub diagram, footer socials, contact form CTA.
+
+**2026-08-07** — `e398a52`, `abfa5a5`, `0e435c3`, `bc90315`, `f918c2b` Initial build and early iteration: custom EfectoWow font, interactive services diagram, scroll-synced process timeline, physics-based falling icons (Matter.js), scroll-pinned sections, labs hover panels, hero photo marquee.
