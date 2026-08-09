@@ -692,6 +692,8 @@ function updateScrollScrubs() {
       tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
     }
     var revealCount = Math.floor(tProg * (toggleItems.length + 1));
+    /* the first switch is always on by default on mobile, just like the first process card */
+    if (isMobileTimeline) revealCount = Math.max(1, revealCount);
     toggleItems.forEach(function (item, i) {
       var shouldBeOn = i < revealCount;
       var btn = item.querySelector('.switch');
