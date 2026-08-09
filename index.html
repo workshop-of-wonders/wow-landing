@@ -703,15 +703,16 @@ function updateScrollScrubs() {
     dotEls.forEach(function (dot, i) {
       dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
     });
-    /* each connector sits right above the step it precedes, so use that step's own reveal threshold: the card pops in the instant the rocket reaches its dot */
-    var connectorActiveAssigned = false;
+    /* each connector sits right above the step it precedes: the rocket only appears once it actually reaches that dot, and that arrival is what fires the card open */
+    var lastReachedConnector = -1;
     connectorEls.forEach(function (connector, i) {
       var stepIndex = i + 1;
       var reached = mProg > (stepIndex + 0.3) / stepEls.length;
       connector.classList.toggle('lit', reached);
-      var isActive = !reached && !connectorActiveAssigned;
-      connector.classList.toggle('active', isActive);
-      if (isActive) connectorActiveAssigned = true;
+      if (reached) lastReachedConnector = i;
+    });
+    connectorEls.forEach(function (connector, i) {
+      connector.classList.toggle('active', i === lastReachedConnector);
     });
   }
 }
