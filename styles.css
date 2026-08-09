@@ -365,7 +365,7 @@ main { padding-top: var(--nav-h); }
   font-size: clamp(40px, 7vw, 110px);
   font-weight: 400;
   line-height: 1;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.04em;
   font-kerning: none;
   font-feature-settings: "kern" 0, "liga" 0;
   color: transparent;
@@ -378,6 +378,7 @@ main { padding-top: var(--nav-h); }
   text-align: right;
   z-index: 0;
 }
+.outline-word .ow-kern { margin-left: 0.05em; }
 .outline-lima { color: var(--lima); }
 .outline-orange { color: var(--orange); }
 .outline-magenta { color: var(--magenta); }
