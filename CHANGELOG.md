@@ -10,6 +10,14 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ---
 
+## Project links
+
+- **Repo**: https://github.com/workshop-of-wonders/wow-landing (branch `main`, push directly — no PR flow used so far)
+- **Live site**: https://wow-landing-beta.vercel.app/ (auto-deploys from `main` via Vercel)
+- **Vercel dashboard**: not confirmed — the Vercel MCP integration connected in this environment (team `somosefectowow-1205's projects`) does **not** list this project, so it's deployed under a different Vercel account/login than the one connected here. To check build logs or domain settings, log into vercel.com with whichever account owns `wow-landing-beta` directly (not through this session's tools).
+- **Design assets**: `design-system/` folder in the repo (icons, logo, client logos, hero photos, font). Real Behance case-study images still need to be added here (see Pending below).
+- **Behance (reference for case studies)**: https://www.behance.net/mjtamayol
+
 ## Pending / open items
 
 - **Behance images**: the "Trabajo" carousel and client-logo case-study modals still use placeholder photos from `design-system/hero-photos/` instead of real project images from https://www.behance.net/mjtamayol. Need the real images per project to swap in.
