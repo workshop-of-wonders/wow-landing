@@ -23,7 +23,16 @@
     <a href="#trabajo">Trabajo</a>
     <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos</a>
   </nav>
+  <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobileMenu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="#servicios">Servicios</a>
+  <a href="#labs">Labs</a>
+  <a href="#trabajo">Trabajo</a>
+  <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos</a>
+</div>
 
 <main id="top">
 
@@ -607,6 +616,28 @@ document.addEventListener('click', function (e) {
   }
   hubCenter.addEventListener('click', function () {
     window.openProjectForm();
+  });
+})();
+
+/* Mobile nav burger: toggles the full-screen link menu */
+(function () {
+  var burger = document.getElementById('navBurger');
+  var menu = document.getElementById('navMobileMenu');
+  if (!burger || !menu) return;
+  function setOpen(isOpen) {
+    burger.classList.toggle('is-open', isOpen);
+    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    menu.classList.toggle('is-open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function () {
+    setOpen(!menu.classList.contains('is-open'));
+  });
+  menu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setOpen(false);
   });
 })();
 
