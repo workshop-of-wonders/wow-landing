@@ -632,6 +632,7 @@ main { padding-top: var(--nav-h); }
   .labs-panels { flex-direction: column; height: auto; }
   .labs-panel {
     flex: none !important;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
@@ -673,6 +674,7 @@ main { padding-top: var(--nav-h); }
   .labs-content {
     order: 2;
     flex-basis: 100%;
+    max-width: none;
     position: static;
     max-height: 0;
     opacity: 0;
