@@ -683,11 +683,12 @@ var isMobileTimeline = window.matchMedia('(max-width: 720px)').matches;
 
 function updateScrollScrubs() {
   if (toggleSection && toggleItems.length) {
-    /* .toggle-section isn't sticky-pinned on mobile, and it's shorter than the viewport there, so pinProgress/scrollProgress (both scaled to the section's own height) resolve to ~1 immediately. Drive it off a short, fixed scroll distance instead so it plays out over a quick, deliberate scroll. */
+    /* .toggle-section isn't sticky-pinned on mobile, so it can't eat extra scroll like the desktop pin does. Instead, tie progress to the section's own entry: 0 when it's just touching the bottom of the viewport, 1 once it's fully on screen (top and bottom both visible) — so the OFF→ON animation rides the same scroll that brings the section into view and is done by the time it has fully arrived, instead of requiring extra swipes once there. */
     var tProg;
     if (isMobileTimeline) {
       var toggleRect = toggleSection.getBoundingClientRect();
-      tProg = Math.max(0, Math.min(1, (100 - toggleRect.top) / 260));
+      var vh = window.innerHeight;
+      tProg = Math.max(0, Math.min(1, (vh - toggleRect.top) / toggleRect.height));
     } else {
       tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
     }
