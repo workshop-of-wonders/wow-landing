@@ -1148,6 +1148,35 @@ main { padding-top: var(--nav-h); }
 .work-item:hover { transform: translateY(-4px); }
 .work-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* Brands without a real project photo yet: a colored card with name + tagline instead of an image */
+.work-item-color {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: var(--space-3);
+  color: var(--white);
+  cursor: default;
+}
+.work-item-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+}
+.work-item-tag {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+.work-item-prepapp { background: linear-gradient(160deg, #3B82F6, #f97316); }
+.work-item-mjstudio { background: linear-gradient(160deg, #c9a6e8, #f7c8dd 55%, #f9e28a); }
+.work-item-seedcapital { background: linear-gradient(160deg, #f97316, #14b8a6 60%, #22c55e); }
+.work-item-amstudios { background: linear-gradient(160deg, #0b0b0f, #ec4899 65%, #a5d8ff); }
+.work-item-tataphotos { background: linear-gradient(160deg, #e5e5e5, #1A1320); color: var(--ink); }
+.work-item-tataphotos .work-item-tag { color: #3a3340; }
+.work-item-geco { background: linear-gradient(160deg, #22c55e, #86a833 60%, #f97316); }
+.work-item-moonking { background: linear-gradient(160deg, #0b0b0f, #ec4899); }
+.work-item-acustica { background: linear-gradient(160deg, #6b1029, #380757); }
+
 @keyframes scrollRightWork {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
