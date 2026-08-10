@@ -1257,7 +1257,7 @@ main { padding-top: var(--nav-h); }
   flex-wrap: wrap;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  background: var(--ink);
+  background: var(--purple);
   color: var(--white);
 }
 .lightbox-caption-main { flex: 0 0 auto; min-width: 180px; }
@@ -1294,7 +1294,7 @@ main { padding-top: var(--nav-h); }
   padding: 6px 14px;
   border-radius: 999px;
   border: none;
-  background: var(--purple);
+  background: rgba(255,255,255,0.16);
   color: var(--white);
   font-size: 12px;
   white-space: nowrap;
