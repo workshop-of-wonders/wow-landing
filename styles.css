@@ -636,44 +636,69 @@ main { padding-top: var(--nav-h); }
 .door-cursor.is-visible .door-cursor-inner { opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); }
 .door-cursor-frame {
   position: relative;
-  width: 46px;
-  height: 56px;
+  width: 78px;
+  height: 92px;
   flex: 0 0 auto;
-  border-radius: 23px 23px 6px 6px;
+  border-radius: 39px 39px 8px 8px;
   background: var(--purple);
-  padding: 4px;
-  box-shadow: 0 8px 18px rgba(10, 2, 18, 0.45);
+  padding: 5px;
+  box-shadow: 0 10px 22px rgba(10, 2, 18, 0.45);
 }
 .door-cursor-leaf {
   position: absolute;
-  inset: 4px;
-  border-radius: 19px 19px 4px 4px;
-  background: linear-gradient(160deg, var(--lima), #c3c93a);
+  inset: 5px;
+  border-radius: 34px 34px 5px 5px;
+  background:
+    repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 1.5px, transparent 1.5px 14px),
+    linear-gradient(160deg, var(--lima), #c3c93a);
   box-shadow: inset 0 0 0 2px rgba(56,7,87,0.5);
   transform-origin: left center;
   transform: rotateY(8deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+  gap: 4px;
 }
 .door-cursor-handle {
   position: absolute;
-  right: 5px;
+  right: 6px;
   top: 50%;
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--purple);
+  background: radial-gradient(circle at 35% 30%, #5b1a86, var(--purple) 70%);
   transform: translateY(-50%);
 }
+.door-cursor-mark-ring {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(56,7,87,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.door-cursor-mark-ring img { width: 9px; height: 9px; opacity: 0.85; }
 .door-cursor-label {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 1.15;
   color: var(--purple);
-  background: var(--lima);
-  padding: 4px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
-  box-shadow: 0 6px 14px rgba(10, 2, 18, 0.35);
+  text-align: center;
+  text-transform: uppercase;
 }
-.door-cursor-arrow { display: inline-block; }
+.door-cursor-arrow { display: block; font-size: 10px; font-weight: 400; text-transform: none; }
+.door-cursor-spark {
+  position: absolute;
+  color: var(--lima);
+  font-size: 12px;
+  opacity: 0.85;
+}
+.door-cursor-spark-1 { top: -2px; left: 2px; }
+.door-cursor-spark-2 { top: 14px; right: -4px; }
 
 @keyframes scrollUp {
   from { transform: translateY(0); }

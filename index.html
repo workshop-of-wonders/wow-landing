@@ -502,8 +502,15 @@ document.getElementById('year').textContent = new Date().getFullYear();
      two transforms never fight over the same inline style */
   cursor.innerHTML =
     '<div class="door-cursor-inner">' +
-      '<span class="door-cursor-frame"><span class="door-cursor-leaf"><span class="door-cursor-handle"></span></span></span>' +
-      '<span class="door-cursor-label">ABRIR <span class="door-cursor-arrow">↗</span></span>' +
+      '<span class="door-cursor-spark door-cursor-spark-1">✦</span>' +
+      '<span class="door-cursor-spark door-cursor-spark-2">✧</span>' +
+      '<span class="door-cursor-frame">' +
+        '<span class="door-cursor-leaf">' +
+          '<span class="door-cursor-handle"></span>' +
+          '<span class="door-cursor-mark-ring"><img src="design-system/logo/wow-mark-purple.svg" alt=""></span>' +
+          '<span class="door-cursor-label">ABRIR<span class="door-cursor-arrow">↗</span></span>' +
+        '</span>' +
+      '</span>' +
     '</div>';
   document.body.appendChild(cursor);
 
