@@ -583,6 +583,7 @@ main { padding-top: var(--nav-h); }
 .media-col-b { animation-duration: 140s; animation-direction: reverse; }
 .media-col-c { animation-duration: 170s; }
 .media-card {
+  position: relative;
   flex: 0 0 auto;
   aspect-ratio: 2 / 3;
   width: 100%;
@@ -602,6 +603,9 @@ main { padding-top: var(--nav-h); }
   transition: transform 0.2s ease;
 }
 .media-card:hover { transform: scale(1.04); }
+@media (hover: hover) {
+  .media-card:hover { cursor: none; }
+}
 .media-col:hover { animation-play-state: paused; }
 .media-card span { font-size: 22px; }
 .media-photo {
@@ -609,6 +613,67 @@ main { padding-top: var(--nav-h); }
   background-position: center;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
 }
+
+/* Hero mosaic: the "taller" door as a custom cursor (see the door-cursor IIFE in index.html).
+   It's position:fixed and never sits inside a card's layout or DOM, so it can't cover the
+   image or interfere with the card's own click. Only ever created on hover-capable devices. */
+.door-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+.door-cursor-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7) translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.door-cursor.is-visible .door-cursor-inner { opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); }
+.door-cursor-frame {
+  position: relative;
+  width: 46px;
+  height: 56px;
+  flex: 0 0 auto;
+  border-radius: 23px 23px 6px 6px;
+  background: var(--purple);
+  padding: 4px;
+  box-shadow: 0 8px 18px rgba(10, 2, 18, 0.45);
+}
+.door-cursor-leaf {
+  position: absolute;
+  inset: 4px;
+  border-radius: 19px 19px 4px 4px;
+  background: linear-gradient(160deg, var(--lima), #c3c93a);
+  box-shadow: inset 0 0 0 2px rgba(56,7,87,0.5);
+  transform-origin: left center;
+  transform: rotateY(8deg);
+}
+.door-cursor-handle {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--purple);
+  transform: translateY(-50%);
+}
+.door-cursor-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--purple);
+  background: var(--lima);
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 6px 14px rgba(10, 2, 18, 0.35);
+}
+.door-cursor-arrow { display: inline-block; }
 
 @keyframes scrollUp {
   from { transform: translateY(0); }

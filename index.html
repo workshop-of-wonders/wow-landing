@@ -483,6 +483,68 @@ document.getElementById('year').textContent = new Date().getFullYear();
   updateNav();
 })();
 
+/* Hero mosaic: the "taller" door as a custom cursor, active only while the mouse is over
+   a project card. It's position:fixed + pointer-events:none, so it never sits in the
+   card's layout and a click always falls straight through to that card's existing
+   [data-lightbox] handler, unchanged. Skipped entirely on touch (no real cursor there). */
+(function () {
+  if (window.matchMedia('(hover: none)').matches) return;
+  var cards = document.querySelectorAll('.media-card');
+  if (!cards.length) return;
+
+  var cursor = document.createElement('div');
+  cursor.className = 'door-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  /* .door-cursor is JS-positioned (translate only, every frame); the -50%/-50% centering
+     and the enter/exit scale+opacity animation live on this inner wrapper instead, so the
+     two transforms never fight over the same inline style */
+  cursor.innerHTML =
+    '<div class="door-cursor-inner">' +
+      '<span class="door-cursor-frame"><span class="door-cursor-leaf"><span class="door-cursor-handle"></span></span></span>' +
+      '<span class="door-cursor-label">ABRIR <span class="door-cursor-arrow">↗</span></span>' +
+    '</div>';
+  document.body.appendChild(cursor);
+
+  var overCount = 0;
+  var targetX = 0, targetY = 0, curX = 0, curY = 0, raf = null;
+
+  function render() {
+    curX += (targetX - curX) * 0.35;
+    curY += (targetY - curY) * 0.35;
+    cursor.style.transform = 'translate(' + curX + 'px,' + curY + 'px)';
+    raf = requestAnimationFrame(render);
+  }
+  function startLoop() { if (!raf) raf = requestAnimationFrame(render); }
+  function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+  document.addEventListener('mousemove', function (e) {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    if (overCount > 0 && !raf) {
+      curX = targetX; curY = targetY;
+      startLoop();
+    }
+  });
+
+  cards.forEach(function (card) {
+    card.addEventListener('mouseenter', function (e) {
+      overCount++;
+      curX = e.clientX; curY = e.clientY;
+      targetX = e.clientX; targetY = e.clientY;
+      cursor.style.transform = 'translate(' + curX + 'px,' + curY + 'px)';
+      cursor.classList.add('is-visible');
+      startLoop();
+    });
+    card.addEventListener('mouseleave', function () {
+      overCount = Math.max(0, overCount - 1);
+      if (overCount === 0) {
+        cursor.classList.remove('is-visible');
+        stopLoop();
+      }
+    });
+  });
+})();
+
 /* Labs accordion: on touch/mobile, tap a panel to expand it (only one open at a time) */
 document.querySelectorAll('.labs-panel').forEach(function (panel) {
   panel.addEventListener('click', function (e) {
