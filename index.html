@@ -488,11 +488,18 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* Hero mosaic: the "taller" door as a custom cursor, active only while the mouse is over
    a project card. It's position:fixed + pointer-events:none, so it never sits in the
    card's layout and a click always falls straight through to that card's existing
-   [data-lightbox] handler, unchanged. Skipped entirely on touch (no real cursor there). */
+   [data-lightbox] handler, unchanged. Skipped entirely on touch (no real cursor there).
+
+   The cards scroll on their own (the mosaic's auto-scroll animation), so a card can slide
+   out from under a perfectly still mouse — or a new one can slide in — without any
+   mouseenter/mouseleave ever firing. Relying on those events alone left the door stuck
+   visible over content it wasn't over anymore. Instead, every frame re-checks with
+   elementFromPoint whether a card is actually under the cursor right now, so the door
+   can never drift out of sync with what's actually moving underneath it. */
 (function () {
   if (window.matchMedia('(hover: none)').matches) return;
-  var cards = document.querySelectorAll('.media-card');
-  if (!cards.length) return;
+  var zone = document.querySelector('.hero-media');
+  if (!zone) return;
 
   var cursor = document.createElement('div');
   cursor.className = 'door-cursor';
@@ -514,44 +521,33 @@ document.getElementById('year').textContent = new Date().getFullYear();
     '</div>';
   document.body.appendChild(cursor);
 
-  var overCount = 0;
-  var targetX = 0, targetY = 0, curX = 0, curY = 0, raf = null;
+  var mouseX = -9999, mouseY = -9999, curX = 0, curY = 0, raf = null, visible = false, moved = false;
+
+  function isOverCard(x, y) {
+    var el = document.elementFromPoint(x, y);
+    return !!(el && el.closest && el.closest('.media-card'));
+  }
+  function setVisible(v) {
+    if (v === visible) return;
+    visible = v;
+    cursor.classList.toggle('is-visible', v);
+  }
 
   function render() {
-    curX += (targetX - curX) * 0.35;
-    curY += (targetY - curY) * 0.35;
+    curX += (mouseX - curX) * 0.35;
+    curY += (mouseY - curY) * 0.35;
     cursor.style.transform = 'translate(' + curX + 'px,' + curY + 'px)';
+    setVisible(moved && isOverCard(mouseX, mouseY));
     raf = requestAnimationFrame(render);
   }
-  function startLoop() { if (!raf) raf = requestAnimationFrame(render); }
-  function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
 
   document.addEventListener('mousemove', function (e) {
-    targetX = e.clientX;
-    targetY = e.clientY;
-    if (overCount > 0 && !raf) {
-      curX = targetX; curY = targetY;
-      startLoop();
-    }
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!moved) { moved = true; curX = mouseX; curY = mouseY; }
+    if (!raf) raf = requestAnimationFrame(render);
   });
-
-  cards.forEach(function (card) {
-    card.addEventListener('mouseenter', function (e) {
-      overCount++;
-      curX = e.clientX; curY = e.clientY;
-      targetX = e.clientX; targetY = e.clientY;
-      cursor.style.transform = 'translate(' + curX + 'px,' + curY + 'px)';
-      cursor.classList.add('is-visible');
-      startLoop();
-    });
-    card.addEventListener('mouseleave', function () {
-      overCount = Math.max(0, overCount - 1);
-      if (overCount === 0) {
-        cursor.classList.remove('is-visible');
-        stopLoop();
-      }
-    });
-  });
+  document.addEventListener('mouseleave', function () { setVisible(false); });
 })();
 
 /* Labs accordion: on touch/mobile, tap a panel to expand it (only one open at a time) */
