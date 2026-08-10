@@ -38,6 +38,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-08-09** — `ca5d45e` Fixed the case-study lightbox modal getting an internal scrollbar on short viewports. The 2x2 photo grid used `aspect-ratio: 4/3` per cell, so its height was purely a function of modal width, not available viewport height — switched `.lightbox-inner` to a flex column so the grid flexes to fill exactly the space left after the caption, always fitting within `max-height: 90vh` with no scroll.
+
 **2026-08-09** — `222e360` Fixed falling icons (contact section) not being draggable on any desktop display with OS/HiDPI scaling ≠ 100% (e.g. Windows 125%). Root cause: `Render.setPixelRatio` scales the canvas but Matter's `Mouse` module has its own separate `pixelRatio` (default `1`) used to convert cursor position into world coordinates — left unset, the two drift apart by the scale factor and drag hit-testing silently misses. Now synced on init and on resize.
 
 **2026-08-09** — `242fa5c` Hero photos wired into the existing lightbox (reusing the Trabajo section's brand mapping), and breathing room added between the "LABS" outline word and its panel cards. (A third change — shrinking the "Cómo pensamos" scroll-pin height — was tried, then explicitly reverted per feedback: keep that section's height as original.)
