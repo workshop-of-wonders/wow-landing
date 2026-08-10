@@ -394,15 +394,15 @@ main { padding-top: var(--nav-h); }
 /* Toggle / switch list — pinned until every switch turns on */
 .toggle-pin {
   position: relative;
-  height: 110vh;
+  height: 190vh;
 }
 .toggle-section {
   position: sticky;
   top: var(--nav-h);
-  min-height: 0;
+  min-height: calc(100vh - var(--nav-h));
   display: flex;
   align-items: center;
-  padding: var(--space-6) var(--page-x);
+  padding: var(--space-5) var(--page-x);
   background: var(--cloud);
   overflow: hidden;
 }
@@ -585,10 +585,7 @@ main { padding-top: var(--nav-h); }
 .media-card {
   flex: 0 0 auto;
   aspect-ratio: 2 / 3;
-  width: 100%;
   border-radius: 18px;
-  border: none;
-  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -598,11 +595,7 @@ main { padding-top: var(--nav-h); }
   font-weight: 700;
   font-size: 14px;
   color: var(--white);
-  cursor: pointer;
-  transition: transform 0.2s ease;
 }
-.media-card:hover { transform: scale(1.04); }
-.media-col:hover { animation-play-state: paused; }
 .media-card span { font-size: 22px; }
 .media-photo {
   background-size: cover;
@@ -722,7 +715,6 @@ main { padding-top: var(--nav-h); }
   height: 520px;
   border-radius: 0;
   overflow: hidden;
-  margin-top: var(--space-4);
 }
 .labs-panel {
   position: relative;
