@@ -156,9 +156,15 @@
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-star.svg" alt="">Insight Lab</span>
         <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
-          <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-star.svg" alt="">Insight Lab</span>
+          <button type="button" class="labs-tag" aria-expanded="true"><img class="labs-tag-icon" src="design-system/icons/icon-star.svg" alt="">Insight Lab</button>
           <h3>Donde los datos se convierten en decisiones.</h3>
           <p>Investigación de mercado, pauta digital optimizada y SEO basado en evidencia para decisiones que generan crecimiento medible.</p>
+          <ul class="labs-services">
+            <li><button type="button" class="labs-service-btn" data-open-form>Investigación de mercado</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Pauta digital</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>SEO</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Analítica y KPIs</button></li>
+          </ul>
         </div>
       </div>
       <div class="labs-panel labs-panel-academy">
@@ -166,9 +172,15 @@
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-swoosh.svg" alt="">Academy Lab</span>
         <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
-          <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-swoosh.svg" alt="">Academy Lab</span>
+          <button type="button" class="labs-tag" aria-expanded="true"><img class="labs-tag-icon" src="design-system/icons/icon-swoosh.svg" alt="">Academy Lab</button>
           <h3>Donde el conocimiento se convierte en criterio.</h3>
           <p>Formación y acompañamiento para que tu equipo aprenda a usar IA y diseño estratégico en su día a día.</p>
+          <ul class="labs-services">
+            <li><button type="button" class="labs-service-btn" data-open-form>Consultoría IA</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Formación en IA</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Acompañamiento estratégico</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Talleres de equipo</button></li>
+          </ul>
         </div>
       </div>
       <div class="labs-panel labs-panel-core">
@@ -176,9 +188,15 @@
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-arch.svg" alt="">Core Lab</span>
         <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
-          <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-arch.svg" alt="">Core Lab</span>
+          <button type="button" class="labs-tag" aria-expanded="true"><img class="labs-tag-icon" src="design-system/icons/icon-arch.svg" alt="">Core Lab</button>
           <h3>Donde tu estrategia de mercado encuentra su propósito.</h3>
           <p>La arquitectura que define cómo tu marca se posiciona y comunica en el mercado para generar impacto comercial real.</p>
+          <ul class="labs-services">
+            <li><button type="button" class="labs-service-btn" data-open-form>Estrategia de marca</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Naming</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Arquitectura de marca</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Posicionamiento</button></li>
+          </ul>
         </div>
       </div>
       <div class="labs-panel labs-panel-brand">
@@ -186,9 +204,15 @@
         <span class="labs-label"><img class="labs-label-icon" src="design-system/icons/icon-bloom.svg" alt="">Brand &amp; Experience Lab</span>
         <button type="button" class="labs-toggle" aria-label="Ver más"><span></span></button>
         <div class="labs-content">
-          <span class="labs-tag"><img class="labs-tag-icon" src="design-system/icons/icon-bloom.svg" alt="">Brand &amp; Experience Lab</span>
+          <button type="button" class="labs-tag" aria-expanded="true"><img class="labs-tag-icon" src="design-system/icons/icon-bloom.svg" alt="">Brand &amp; Experience Lab</button>
           <h3>Donde la marca se vuelve experiencia.</h3>
           <p>Identidad, diseño y experiencia de marca coherentes en cada punto de contacto con tu audiencia.</p>
+          <ul class="labs-services">
+            <li><button type="button" class="labs-service-btn" data-open-form>Identidad de marca</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Web &amp; UI</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Diseño de producto</button></li>
+            <li><button type="button" class="labs-service-btn" data-open-form>Sistemas de diseño</button></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -469,6 +493,29 @@ document.querySelectorAll('.labs-panel').forEach(function (panel) {
     document.querySelectorAll('.labs-panel').forEach(function (p) { p.classList.remove('is-open'); });
     if (!wasOpen) panel.classList.add('is-open');
   });
+  /* Reset the services list when the mouse leaves a desktop hover panel, so it's back to
+     visible (the default) the next time this panel opens */
+  panel.addEventListener('mouseleave', function () {
+    panel.classList.remove('services-collapsed');
+    var tag = panel.querySelector('.labs-tag');
+    if (tag) tag.setAttribute('aria-expanded', 'true');
+  });
+});
+
+/* Labs tag: services are visible by default — click the tag to hide them, click again to bring them back */
+document.querySelectorAll('.labs-tag').forEach(function (tag) {
+  tag.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var panel = tag.closest('.labs-panel');
+    var isCollapsed = panel.classList.toggle('services-collapsed');
+    tag.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+  });
+});
+
+/* Labs service pills: stop the click from bubbling to the panel (which would toggle the
+   mobile accordion) — the project-form handler below still opens the form via [data-open-form] */
+document.querySelectorAll('.labs-service-btn').forEach(function (btn) {
+  btn.addEventListener('click', function (e) { e.stopPropagation(); });
 });
 
 /* Figma-style collaborative cursor over the services diagram */

@@ -784,18 +784,53 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
+  border: none;
   border-radius: 999px;
   background: rgba(255,255,255,0.2);
+  color: var(--white);
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: var(--space-2);
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
+.labs-tag:hover { background: rgba(255,255,255,0.32); }
 .labs-tag-icon { width: 12px; height: 12px; filter: brightness(0) invert(1); }
 .labs-toggle { display: none; }
 .labs-content h3 { font-size: 22px; margin-bottom: var(--space-1); }
 .labs-content p { margin: 0; font-size: 14px; opacity: 0.9; }
+.labs-services {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  max-height: 200px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+}
+.labs-panel.services-collapsed .labs-services {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+.labs-service-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.labs-service-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.7); }
 
 @media (max-width: 900px) {
   /* Accordion: collapsed color bars, tap to expand one at a time (matches the reference) */
