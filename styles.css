@@ -854,6 +854,8 @@ main { padding-top: var(--nav-h); }
     order: 0;
   }
   .labs-panel:hover .labs-label { opacity: 1; }
+  /* The lab name already shows in .labs-label above — the tag pill repeating it here is redundant on mobile */
+  .labs-tag { display: none; }
   .labs-toggle {
     display: block;
     flex: 0 0 auto;
