@@ -395,7 +395,6 @@ main { padding-top: var(--nav-h); }
 .toggle-pin {
   position: relative;
   height: 110vh;
-  background: var(--cloud);
 }
 .toggle-section {
   position: sticky;
