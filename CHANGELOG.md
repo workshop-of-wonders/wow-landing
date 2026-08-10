@@ -20,7 +20,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Pending / open items
 
-- **Behance images**: the "Trabajo" carousel and client-logo case-study modals still use placeholder photos from `design-system/hero-photos/` instead of real project images from https://www.behance.net/mjtamayol. Need the real images per project to swap in.
+- **Real photos still needed for 8 brands**: Prepapp, MJ Studio, Seed Capital, AM Studios, Tata's Photos, Geco., Moonking, and Acústica Eafit are in the Trabajo carousel as colored gradient cards (name + tagline, no photo, no lightbox) since there's no project photo for them yet. Once real images exist, convert each `.work-item-color` div back into a real `<button data-lightbox>` like the others (see 2026-08-09 entry).
+- **`tiny.png` client logo identity unconfirmed**: `design-system/clients/tiny.png` (teal cursive mark) visually resembles the Tin-T! logo but wasn't confirmed against a source — left its caption/title as generic "Tiny" rather than guessing. Confirm with the client and either rename to Tin-T! or correct it.
 - **Lead form backend**: the "Cuéntanos tu proyecto" modal (project form) submits nowhere — it just shows a local thank-you message. Need a destination (email, CRM, Google Sheet, Formspree, etc.) to actually wire it up.
 - **Client logo sizing**: logos are transparent + tight-cropped and rendered at a consistent height, but some may still look slightly different in visual weight due to each source file's original design (not fixable purely with CSS).
 
@@ -37,6 +38,10 @@ This file is the working log for this project. **Claude: read this file at the s
 ---
 
 ## Log
+
+**2026-08-10** — `58ae0f1` Labs panels: each lab's name pill now toggles a list of that lab's services (visible by default, click to hide/show), and clicking a service opens the project form. `a672406`/`ce52cd7` also restyled the lightbox: tag pills filled with WoW purple then the bottom caption bar itself changed from near-black to WoW purple (with tag pills switched to translucent white so they still contrast).
+
+**2026-08-09** — `54e2696` Renamed `hero-photos/hero-1..8.jpg` to their real brand names (identified from logos/watermarks visible in the photos) and corrected every title/category/description across the hero background, Trabajo carousel, and marcas marquee that had been using placeholder names (Bary, Bilac, Carlos Ravelo, etc. for the wrong photos). Added 8 brands with no photo yet as colored gradient cards. See file for the full real-brand list the user provided — still pending: real photos for the 8 colorcard brands, and confirming whether `clients/tiny.png` is actually the Tin-T! logo.
 
 **2026-08-09** — `ca5d45e` Fixed the case-study lightbox modal getting an internal scrollbar on short viewports. The 2x2 photo grid used `aspect-ratio: 4/3` per cell, so its height was purely a function of modal width, not available viewport height — switched `.lightbox-inner` to a flex column so the grid flexes to fill exactly the space left after the caption, always fitting within `max-height: 90vh` with no scroll.
 
