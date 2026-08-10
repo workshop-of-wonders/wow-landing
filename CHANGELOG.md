@@ -39,6 +39,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-08-10** — `9229d77` Replaced the Trabajo section's infinite auto-scroll marquee with an "Abrir el taller" door-reveal interaction: a small illustrated door (WoW purple + lima, not a generic button) sits after the 4 initially-visible project cards; click swings it open and the rest of the existing projects (no new ones added) rise into view with a staggered animation, click again to reverse and collapse. Also added a `data-match` micro-interaction — hovering a brand logo below highlights its matching project card (only wired for the 3 confirmed logo/photo pairs: Milán, Arlo, Orbit).
+
 **2026-08-10** — `58ae0f1` Labs panels: each lab's name pill now toggles a list of that lab's services (visible by default, click to hide/show), and clicking a service opens the project form. `a672406`/`ce52cd7` also restyled the lightbox: tag pills filled with WoW purple then the bottom caption bar itself changed from near-black to WoW purple (with tag pills switched to translucent white so they still contrast).
 
 **2026-08-09** — `54e2696` Renamed `hero-photos/hero-1..8.jpg` to their real brand names (identified from logos/watermarks visible in the photos) and corrected every title/category/description across the hero background, Trabajo carousel, and marcas marquee that had been using placeholder names (Bary, Bilac, Carlos Ravelo, etc. for the wrong photos). Added 8 brands with no photo yet as colored gradient cards. See file for the full real-brand list the user provided — still pending: real photos for the 8 colorcard brands, and confirming whether `clients/tiny.png` is actually the Tin-T! logo.
