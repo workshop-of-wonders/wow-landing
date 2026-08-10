@@ -1293,7 +1293,9 @@ main { padding-top: var(--nav-h); }
 .lightbox-tag {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
+  border: none;
+  background: var(--purple);
+  color: var(--white);
   font-size: 12px;
   white-space: nowrap;
 }
