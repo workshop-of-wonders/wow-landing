@@ -1059,7 +1059,7 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 720px) {
   .method-timeline { display: none; }
-  .method-track { gap: 0; }
+  .method-track { grid-template-columns: 1fr; gap: 0; }
   .ms-1 { opacity: 1; }
   .method-step { position: relative; z-index: 1; }
   .method-connector {
