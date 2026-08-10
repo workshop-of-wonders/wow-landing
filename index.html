@@ -896,6 +896,11 @@ updateScrollScrubs();
   }
 
   var mouse = Mouse.create(render.canvas);
+  /* Render.setPixelRatio scales the canvas for crisp rendering on HiDPI/scaled displays (e.g. Windows
+     125% scaling), but Matter's Mouse module doesn't know about that scale unless told explicitly —
+     without this, mouse.position drifts out of sync with the physics world and dragging never grabs
+     an icon. */
+  mouse.pixelRatio = render.options.pixelRatio;
   var mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
     constraint: { stiffness: 0.15, render: { visible: false } }
@@ -939,6 +944,7 @@ updateScrollScrubs();
     render.options.width = width;
     render.options.height = height;
     Render.setPixelRatio(render, window.devicePixelRatio || 1);
+    mouse.pixelRatio = render.options.pixelRatio;
     buildWalls();
   });
 })();
