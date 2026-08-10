@@ -28,7 +28,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 - **Breakpoints**: `900px` is the main mobile/tablet cutoff used across the site (hero, labs accordion, nav). `720px` and `560px` are used for a few finer adjustments. When adding a new mobile override, check whether JS logic (e.g. `window.innerWidth` gates) needs to match the same breakpoint as the CSS — this caused a bug once (see 2026-08-08, labs accordion).
 - **`--page-x`**: `clamp(24px, 6vw, 96px)` — the horizontal section padding variable. Use this instead of a fixed px value for any new section's left/right padding so it scales with viewport width.
-- **Falling icons (contact section)**: Matter.js physics playground. Known-sensitive settings: `restitution: 0.9` + default solver iterations (bouncy, piles up — client's preferred feel, don't "fix" the piling/clumping without asking, it's intentional). Drag release is hardened across `mouseup/touchend/touchcancel/pointerup/blur`.
+- **Falling icons (contact section)**: Matter.js physics playground. Known-sensitive settings: `restitution: 0.9` + default solver iterations (bouncy, piles up — client's preferred feel, don't "fix" the piling/clumping without asking, it's intentional). Drag release is hardened across `mouseup/touchend/touchcancel/pointerup/blur`. If you ever call `Render.setPixelRatio` again, remember to also set `mouse.pixelRatio` to the same value (and re-set it on resize) — Matter's `Mouse` module doesn't pick this up automatically, and drag silently breaks on any scaled/HiDPI display without it.
 - **`flex-basis` on axis-flip bug**: watch out — properties like `flex: 0 1 520px` written for a *row* layout become a fixed **height** if that flex container switches to `flex-direction: column` at a breakpoint (e.g. hero-content, hero-media, lightbox-desc all hit this). Always re-check/reset `flex-basis` inside mobile media queries after adding a fixed basis for desktop.
 - **Hub diagram connector lines**: drawn dynamically in JS (`hubArrows` SVG) from real pill positions, not hardcoded paths — recalculates on resize/font-load.
 - **Case-study modal**: 2x2 photo grid (project's real image + 3 seeded from the shared `hero-photos` pool) + dark bottom bar (name, category, description, tags). Triggered by `[data-lightbox]` on both work-items and client-logos.
@@ -37,6 +37,10 @@ This file is the working log for this project. **Claude: read this file at the s
 ---
 
 ## Log
+
+**2026-08-09** — `222e360` Fixed falling icons (contact section) not being draggable on any desktop display with OS/HiDPI scaling ≠ 100% (e.g. Windows 125%). Root cause: `Render.setPixelRatio` scales the canvas but Matter's `Mouse` module has its own separate `pixelRatio` (default `1`) used to convert cursor position into world coordinates — left unset, the two drift apart by the scale factor and drag hit-testing silently misses. Now synced on init and on resize.
+
+**2026-08-09** — `242fa5c` Hero photos wired into the existing lightbox (reusing the Trabajo section's brand mapping), and breathing room added between the "LABS" outline word and its panel cards. (A third change — shrinking the "Cómo pensamos" scroll-pin height — was tried, then explicitly reverted per feedback: keep that section's height as original.)
 
 **2026-08-08** — `8d92516` Fix labs accordion breakpoint mismatch (JS gated at 720px, CSS at 900px).
 
