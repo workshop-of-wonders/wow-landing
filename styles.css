@@ -1382,10 +1382,10 @@ main { padding-top: var(--nav-h); }
   padding-top: 34px;
   gap: 14px;
 }
-.work-door:hover .work-door-leaf { transform: rotateY(14deg); }
+.work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateZ(6px); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(48deg);
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 12px 22px rgba(10,2,18,0.4);
+  transform: rotateY(-48deg) translateZ(38px);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 12px 22px rgba(10,2,18,0.4);
 }
 .work-door-handle {
   position: absolute;
