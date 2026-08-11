@@ -1373,6 +1373,24 @@ main { padding-top: var(--nav-h); }
   transform: translateY(-50%);
   transition: transform 0.3s ease;
 }
+/* Hinge hardware fixed to the frame's left inner edge — the point the leaf pivots away
+   from. Hidden while closed (the leaf sits right on top of it); fades in once open so the
+   displaced leaf still reads as attached to something rather than floating free */
+.work-door-hinge {
+  position: absolute;
+  left: 3px;
+  z-index: 2;
+  width: 7px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #4a1a68, #2a0640);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+}
+.work-door-hinge-top { top: 30px; }
+.work-door-hinge-bottom { bottom: 30px; }
+.work-door.is-open .work-door-hinge { opacity: 1; }
 .work-door-mark-ring {
   width: 40px;
   height: 40px;
@@ -1391,7 +1409,7 @@ main { padding-top: var(--nav-h); }
 }
 .work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateX(0); }
 .work-door:hover .work-door-handle { transform: translateY(-50%) translateX(-2px); }
-.work-door.is-open .work-door-leaf { transform: translateX(158px) rotateY(-18deg); }
+.work-door.is-open .work-door-leaf { transform: translateX(128px) rotateY(-26deg); }
 .work-door-spark {
   position: absolute;
   color: var(--lima);
