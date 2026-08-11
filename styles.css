@@ -1351,7 +1351,7 @@ main { padding-top: var(--nav-h); }
    sits right on top of it; fades in once open. */
 .work-door-hinge {
   position: absolute;
-  left: 3px;
+  right: 3px;
   top: 50%;
   z-index: 2;
   width: 8px;
@@ -1373,7 +1373,7 @@ main { padding-top: var(--nav-h); }
     repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 2px, transparent 2px 34px),
     linear-gradient(160deg, var(--lima), #c3c93a);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55);
-  transform-origin: left center;
+  transform-origin: right center;
   transform: rotateY(0deg);
   transition: transform 0.55s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.55s ease;
   display: flex;
@@ -1382,14 +1382,14 @@ main { padding-top: var(--nav-h); }
   padding-top: 34px;
   gap: 14px;
 }
-.work-door:hover .work-door-leaf { transform: rotateY(-14deg); }
+.work-door:hover .work-door-leaf { transform: rotateY(14deg); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(-48deg);
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 12px 22px rgba(10,2,18,0.4);
+  transform: rotateY(48deg);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 12px 22px rgba(10,2,18,0.4);
 }
 .work-door-handle {
   position: absolute;
-  right: 18px;
+  left: 18px;
   top: 50%;
   width: 15px;
   height: 15px;
