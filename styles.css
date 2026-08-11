@@ -1332,7 +1332,14 @@ main { padding-top: var(--nav-h); }
   position: absolute;
   inset: 8px;
   border-radius: 97px 97px 8px 8px;
-  background: radial-gradient(circle at 50% 30%, #2a0640, #0a0212 80%);
+  background:
+    radial-gradient(2px 2px at 30% 20%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 55% 35%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 40% 55%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 65% 65%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 25% 70%, #fff 0, transparent 60%),
+    radial-gradient(circle at 50% 65%, rgba(220,225,87,0.35), transparent 55%),
+    radial-gradient(circle at 50% 30%, #2a0640, #0a0212 80%);
 }
 .work-door-leaf {
   position: absolute;
@@ -1381,7 +1388,7 @@ main { padding-top: var(--nav-h); }
 }
 .work-door:hover .work-door-leaf { transform: rotateY(-16deg); }
 .work-door:hover .work-door-handle { transform: translateY(-50%) translateX(-2px); }
-.work-door.is-open .work-door-leaf { transform: rotateY(-108deg); }
+.work-door.is-open .work-door-leaf { transform: rotateY(-62deg); }
 .work-door-spark {
   position: absolute;
   color: var(--lima);
