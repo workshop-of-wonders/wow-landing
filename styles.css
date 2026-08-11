@@ -1383,7 +1383,7 @@ main { padding-top: var(--nav-h); }
   gap: 14px;
 }
 .work-door:hover .work-door-leaf { transform: rotateY(-14deg); }
-.work-door.is-open .work-door-leaf { transform: rotateY(-48deg); }
+.work-door.is-open .work-door-leaf { transform: rotateY(48deg); }
 .work-door-handle {
   position: absolute;
   right: 18px;
