@@ -1317,7 +1317,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  perspective: 700px;
+  perspective: 2000px;
 }
 .work-door-frame {
   position: relative;
@@ -1388,7 +1388,7 @@ main { padding-top: var(--nav-h); }
 }
 .work-door:hover .work-door-leaf { transform: rotateY(-16deg); }
 .work-door:hover .work-door-handle { transform: translateY(-50%) translateX(-2px); }
-.work-door.is-open .work-door-leaf { transform: rotateY(-62deg); }
+.work-door.is-open .work-door-leaf { transform: rotateY(-32deg); }
 .work-door-spark {
   position: absolute;
   color: var(--lima);
