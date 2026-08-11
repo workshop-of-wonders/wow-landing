@@ -1348,51 +1348,64 @@ main { padding-top: var(--nav-h); }
   padding: 8px;
   box-shadow: 0 18px 34px rgba(56,7,87,0.32);
   transition: transform 0.2s ease;
-  display: flex;
-  overflow: hidden;
 }
 .work-door:hover .work-door-frame { transform: translateY(-3px); }
-/* Open state is two pieces side by side inside the SAME fixed frame footprint — a dark
-   starry void (grows in from 0) and the lima leaf (stays upright, never rotated, so the
-   label is always fully legible) — instead of a rotated/perspective leaf. Nothing about
-   the door's own outer size changes, so it can't ever push its grid neighbors around. */
-.work-door-void {
-  flex: 0 0 0px;
-  border-radius: 90px 0 0 8px;
+.work-door-glow {
+  position: absolute;
+  inset: 8px;
+  border-radius: 97px 97px 8px 8px;
   background:
-    radial-gradient(2px 2px at 35% 20%, #fff 0, transparent 60%),
-    radial-gradient(1.5px 1.5px at 55% 40%, #fff 0, transparent 60%),
-    radial-gradient(2px 2px at 40% 60%, #fff 0, transparent 60%),
-    radial-gradient(1.5px 1.5px at 60% 72%, #fff 0, transparent 60%),
-    radial-gradient(circle at 50% 70%, rgba(220,225,87,0.35), transparent 55%),
+    radial-gradient(2px 2px at 30% 20%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 55% 35%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 40% 55%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 65% 65%, #fff 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 25% 70%, #fff 0, transparent 60%),
+    radial-gradient(circle at 50% 65%, rgba(220,225,87,0.35), transparent 55%),
     radial-gradient(circle at 50% 30%, #2a0640, #0a0212 80%);
-  transition: flex-basis 0.5s cubic-bezier(0.22, 0.8, 0.3, 1);
 }
-.work-door:hover .work-door-void { flex-basis: 10px; }
-.work-door.is-open .work-door-void,
-.work-door.is-open:hover .work-door-void { flex-basis: 82px; }
+/* Hinge hardware fixed to the frame's right inner edge — the point the leaf actually
+   pivots around (matches transform-origin below). Hidden while closed since the leaf
+   sits right on top of it; fades in once open. */
+.work-door-hinge {
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #5b1a86, #2a0640 70%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+}
+.work-door.is-open .work-door-hinge { opacity: 1; }
 .work-door-leaf {
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
-  border-radius: 0 90px 8px 0;
+  position: absolute;
+  inset: 8px;
+  border-radius: 97px 97px 8px 8px;
   background:
     repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 2px, transparent 2px 34px),
     linear-gradient(160deg, var(--lima), #c3c93a);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55);
-  transition: box-shadow 0.5s ease;
+  transform-origin: right center;
+  transform: rotateY(0deg);
+  transition: transform 0.55s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.55s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 34px;
   gap: 14px;
 }
+.work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateZ(6px); }
 .work-door.is-open .work-door-leaf {
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -6px 8px 16px rgba(10,2,18,0.3);
+  transform: rotateY(-60deg) translateZ(48px);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 12px 22px rgba(10,2,18,0.4);
 }
 .work-door-handle {
   position: absolute;
-  left: 12px;
+  left: 18px;
   top: 50%;
   width: 15px;
   height: 15px;
