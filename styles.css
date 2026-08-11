@@ -1343,15 +1343,18 @@ main { padding-top: var(--nav-h); }
 }
 .work-door-leaf {
   position: absolute;
-  inset: 8px;
+  top: 8px;
+  bottom: 8px;
+  left: 8px;
+  width: 194px;
   border-radius: 97px 97px 8px 8px;
   background:
     repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 2px, transparent 2px 34px),
     linear-gradient(160deg, var(--lima), #c3c93a);
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55);
-  transform-origin: right center;
-  transform: rotateY(0deg);
-  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 0 10px 20px rgba(10,2,18,0.35);
+  transform-origin: left center;
+  transform: rotateY(0deg) translateX(0);
+  transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.3, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1360,7 +1363,7 @@ main { padding-top: var(--nav-h); }
 }
 .work-door-handle {
   position: absolute;
-  left: 18px;
+  right: 18px;
   top: 50%;
   width: 15px;
   height: 15px;
@@ -1386,9 +1389,9 @@ main { padding-top: var(--nav-h); }
   opacity: 0.85;
   pointer-events: none;
 }
-.work-door:hover .work-door-leaf { transform: rotateY(16deg); }
-.work-door:hover .work-door-handle { transform: translateY(-50%) translateX(2px); }
-.work-door.is-open .work-door-leaf { transform: rotateY(62deg); }
+.work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateX(0); }
+.work-door:hover .work-door-handle { transform: translateY(-50%) translateX(-2px); }
+.work-door.is-open .work-door-leaf { transform: translateX(158px) rotateY(-18deg); }
 .work-door-spark {
   position: absolute;
   color: var(--lima);
