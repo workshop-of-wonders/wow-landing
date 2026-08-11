@@ -1264,6 +1264,23 @@ main { padding-top: var(--nav-h); }
   margin-top: 0;
   transition: max-height 0.6s ease, opacity 0.4s ease, margin-top 0.5s ease;
 }
+/* Desktop: a fixed single row of exactly 5 cards (4 projects + the door as the 3rd
+   item) via CSS Grid — never wraps to a second line. The revealed "taller" content
+   below is a normal-flow grid too, so opening it just grows the page's height. */
+@media (min-width: 901px) {
+  .work-visible {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: end;
+  }
+  .work-hidden {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .work-visible .work-item,
+  .work-hidden .work-item { width: 100%; }
+  .work-door { width: 100%; max-width: 232px; margin: 0 auto; }
+}
 .work-hidden.is-open {
   max-height: 900px;
   opacity: 1;
