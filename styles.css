@@ -1282,8 +1282,12 @@ main { padding-top: var(--nav-h); }
   .work-hidden .work-item { width: 100%; }
   .work-door { width: 100%; max-width: 232px; margin: 0 auto; }
 }
+/* Was capped at 900px, which clipped the bottom row/cards once there were enough
+   items to need it (14 cards: ~5 rows at 3-col desktop, single stacked column on
+   mobile) — bumped well past any realistic content height so nothing gets cut off,
+   at any breakpoint or item count, instead of guessing a tight pixel value. */
 .work-hidden.is-open {
-  max-height: 900px;
+  max-height: 6000px;
   opacity: 1;
   margin-top: var(--space-3);
 }
@@ -1315,15 +1319,16 @@ main { padding-top: var(--nav-h); }
   padding: 0;
   overflow: hidden;
   cursor: pointer;
+  background: var(--white);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .work-item:hover { transform: translateY(-4px); }
 .work-item.is-highlighted { box-shadow: 0 0 0 3px var(--lima); transform: translateY(-4px); }
 /* Source photos are tall (1024x1536) full-page screenshots, cards are wide+short
-   (320x220) — object-fit:cover has to crop most of the image's height. Centered
-   crop was cutting off the hero/headline content that sits near the top of the
-   screenshot; anchoring to the top keeps that visible instead. */
-.work-item img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+   (320x220) — object-fit:cover always crops part of the image away no matter the
+   position. Client wants the full screenshot visible, not just an uncropped-at-top
+   slice, so this shows the whole image letterboxed instead of cropping it. */
+.work-item img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* "Abrir el taller" door — click reveals the rest of the gallery from behind it.
    Real 3D: the leaf rotates on a fixed left-edge hinge (transform-origin), no
