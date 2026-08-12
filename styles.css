@@ -1348,6 +1348,10 @@ main { padding-top: var(--nav-h); }
   padding: 8px;
   box-shadow: 0 18px 34px rgba(56,7,87,0.32);
   transition: transform 0.2s ease;
+  /* Without this, the leaf's rotateY/translateZ below gets flattened into 2D by the
+     browser before the parent's perspective ever sees it — the leaf just looked like
+     it was sliding sideways instead of swinging out in 3D. */
+  transform-style: preserve-3d;
 }
 .work-door:hover .work-door-frame { transform: translateY(-3px); }
 .work-door-glow {
@@ -1373,7 +1377,7 @@ main { padding-top: var(--nav-h); }
    sits right on top of it; fades in once open. */
 .work-door-hinge {
   position: absolute;
-  right: 3px;
+  left: 3px;
   top: 50%;
   z-index: 2;
   width: 8px;
@@ -1394,8 +1398,8 @@ main { padding-top: var(--nav-h); }
     repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 2px, transparent 2px 34px),
     linear-gradient(160deg, var(--lima), #c3c93a);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55);
-  transform-origin: right center;
-  transform: rotateY(0deg);
+  transform-origin: left center;
+  transform: rotateY(0deg) translateZ(0);
   transition: transform 0.55s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.55s ease;
   display: flex;
   flex-direction: column;
@@ -1403,10 +1407,13 @@ main { padding-top: var(--nav-h); }
   padding-top: 34px;
   gap: 14px;
 }
-.work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateZ(6px); }
+/* Hinge is the left edge (transform-origin above). Negative rotateY swings the free
+   (right) edge out toward the viewer first, then around to the right — a real door
+   opening, not a sideways slide. translateZ pushes it off the arch's plane. */
+.work-door:hover .work-door-leaf { transform: rotateY(-18deg) translateZ(14px); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(-85deg) translateZ(30px);
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 12px 22px rgba(10,2,18,0.4);
+  transform: rotateY(-62deg) translateZ(48px);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 14px 26px rgba(10,2,18,0.45);
 }
 .work-door-handle {
   position: absolute;
