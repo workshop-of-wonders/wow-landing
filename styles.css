@@ -1416,7 +1416,7 @@ main { padding-top: var(--nav-h); }
    away from the viewer instead (shrinks into an unreadable sliver). */
 .work-door:hover .work-door-leaf { transform: rotateY(18deg); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(58deg);
+  transform: rotateY(60deg);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 14px 26px rgba(10,2,18,0.45);
 }
 .work-door-handle {
