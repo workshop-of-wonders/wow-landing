@@ -743,6 +743,7 @@ main { padding-top: var(--nav-h); }
 }
 @media (prefers-reduced-motion: reduce) {
   .media-col { animation: none; }
+  .work-door.is-open .work-door-frame { animation: none; }
 }
 
 /* Services */
@@ -1354,13 +1355,32 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   padding: 3.45cqw;
   box-shadow: 0 18px 34px rgba(56,7,87,0.32);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.6s ease;
   /* Without this, the leaf's rotateY/translateZ below gets flattened into 2D by the
      browser before the parent's perspective ever sees it — the leaf just looked like
      it was sliding sideways instead of swinging out in 3D. */
   transform-style: preserve-3d;
 }
 .work-door:hover .work-door-frame { transform: translateY(-3px); }
+/* Majestic glow once open: a warm lima bloom breathing outward from the frame,
+   on top of the existing drop shadow (not replacing it). */
+.work-door.is-open .work-door-frame {
+  animation: workDoorGlowPulse 2.6s ease-in-out 0.15s infinite;
+}
+@keyframes workDoorGlowPulse {
+  0%, 100% {
+    box-shadow:
+      0 18px 34px rgba(56,7,87,0.32),
+      0 0 5cqw 1.3cqw rgba(220,225,87,0.5),
+      0 0 12cqw 3.5cqw rgba(220,225,87,0.22);
+  }
+  50% {
+    box-shadow:
+      0 18px 34px rgba(56,7,87,0.32),
+      0 0 7cqw 2cqw rgba(220,225,87,0.75),
+      0 0 16cqw 5cqw rgba(220,225,87,0.32);
+  }
+}
 .work-door-glow {
   position: absolute;
   inset: 3.45cqw;
@@ -1378,7 +1398,10 @@ main { padding-top: var(--nav-h); }
     radial-gradient(1.5px 1.5px at 25% 70%, #fff 0, transparent 60%),
     radial-gradient(circle at 50% 60%, rgba(220,225,87,0.55), transparent 60%),
     radial-gradient(circle at 50% 25%, #4a1470, #150428 85%);
+  transition: filter 0.6s ease;
 }
+/* The void itself glows brighter too once open, not just the outer frame bloom. */
+.work-door.is-open .work-door-glow { filter: brightness(1.35) saturate(1.2); }
 /* Hinge hardware fixed to the frame's right inner edge — the point the leaf actually
    pivots around (matches transform-origin below). Hidden while closed since the leaf
    sits right on top of it; fades in once open. */
