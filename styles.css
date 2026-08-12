@@ -1280,7 +1280,10 @@ main { padding-top: var(--nav-h); }
   }
   .work-visible .work-item,
   .work-hidden .work-item { width: 100%; }
-  .work-door { width: 100%; max-width: 232px; margin: 0 auto; }
+  /* .work-door's own width: clamp(...) (defined later in the file, so it already
+     wins the cascade over a same-specificity rule here) handles sizing — just
+     center it in its grid cell. */
+  .work-door { margin: 0 auto; }
 }
 /* Was capped at 900px, which clipped the bottom row/cards once there were enough
    items to need it (14 cards: ~5 rows at 3-col desktop, single stacked column on
@@ -1344,7 +1347,13 @@ main { padding-top: var(--nav-h); }
   position: relative;
   flex: 0 0 auto;
   container-type: inline-size;
-  width: clamp(150px, 40vw, 232px);
+  /* Was clamp(150px, 40vw, 232px) — 40vw blew past the 232px cap on almost any
+     viewport wider than ~580px, so the door looked frozen at its max size across
+     the entire desktop/tablet range and only actually shrank on small phones.
+     This formula instead scales continuously from ~667px down to ~1683px viewport
+     (i.e. through the whole realistic desktop/tablet range), not just at the very
+     bottom of the scale. */
+  width: clamp(110px, 12vw + 30px, 232px);
   aspect-ratio: 232 / 260;
   border: none;
   background: none;
