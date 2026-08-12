@@ -1319,7 +1319,11 @@ main { padding-top: var(--nav-h); }
 }
 .work-item:hover { transform: translateY(-4px); }
 .work-item.is-highlighted { box-shadow: 0 0 0 3px var(--lima); transform: translateY(-4px); }
-.work-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Source photos are tall (1024x1536) full-page screenshots, cards are wide+short
+   (320x220) — object-fit:cover has to crop most of the image's height. Centered
+   crop was cutting off the hero/headline content that sits near the top of the
+   screenshot; anchoring to the top keeps that visible instead. */
+.work-item img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 
 /* "Abrir el taller" door — click reveals the rest of the gallery from behind it.
    Real 3D: the leaf rotates on a fixed left-edge hinge (transform-origin), no
