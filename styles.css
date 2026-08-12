@@ -1407,14 +1407,16 @@ main { padding-top: var(--nav-h); }
   padding-top: 34px;
   gap: 14px;
 }
-/* Hinge is the right edge (transform-origin above). With the origin on the right,
-   POSITIVE rotateY is what swings the free (left) edge out toward the viewer (and
-   makes it read bigger, since it's now closer to camera) before settling into the
-   open angle — negative here sends it away from the viewer instead, which is why an
-   earlier version looked like it shrank into a thin sliver instead of a real door. */
-.work-door:hover .work-door-leaf { transform: rotateY(18deg) translateZ(14px); }
+/* Hinge is the right edge (transform-origin above), and it must stay put — no
+   translateZ here. translateZ shifts the whole box (pivot included) forward before
+   rotating, which visibly dragged the hinge corner out of place. rotateY alone
+   rotates purely around transform-origin, so the right edge stays pinned to the
+   frame while the free (left) edge swings toward the viewer. POSITIVE rotateY is
+   what brings that edge forward with the origin on the right — negative sends it
+   away from the viewer instead (shrinks into an unreadable sliver). */
+.work-door:hover .work-door-leaf { transform: rotateY(18deg); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(48deg) translateZ(40px);
+  transform: rotateY(58deg);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 14px 26px rgba(10,2,18,0.45);
 }
 .work-door-handle {
