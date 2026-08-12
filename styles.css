@@ -1407,13 +1407,15 @@ main { padding-top: var(--nav-h); }
   padding-top: 34px;
   gap: 14px;
 }
-/* Hinge is the right edge (transform-origin above). Negative rotateY swings the free
-   (left) edge out toward the viewer first, then around toward the hinge — the leaf
-   ends up open on the right, revealing the arch on the left, like a real door. */
-.work-door:hover .work-door-leaf { transform: rotateY(-18deg) translateZ(14px); }
+/* Hinge is the right edge (transform-origin above). With the origin on the right,
+   POSITIVE rotateY is what swings the free (left) edge out toward the viewer (and
+   makes it read bigger, since it's now closer to camera) before settling into the
+   open angle — negative here sends it away from the viewer instead, which is why an
+   earlier version looked like it shrank into a thin sliver instead of a real door. */
+.work-door:hover .work-door-leaf { transform: rotateY(18deg) translateZ(14px); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(-48deg) translateZ(40px);
-  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 14px 26px rgba(10,2,18,0.45);
+  transform: rotateY(48deg) translateZ(40px);
+  box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 14px 26px rgba(10,2,18,0.45);
 }
 .work-door-handle {
   position: absolute;
