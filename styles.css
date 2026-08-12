@@ -1324,11 +1324,18 @@ main { padding-top: var(--nav-h); }
    Real 3D: the leaf rotates on a fixed left-edge hinge (transform-origin), no
    translateX slide — the dark starry glow behind it is what reads as "the void",
    revealed as the rotating leaf sweeps away from covering it. */
+/* Fluid at every viewport size — width scales continuously with the viewport (clamped
+   between a usable minimum and the original desktop size) instead of jumping between
+   fixed px values at breakpoints. aspect-ratio keeps the height in lockstep. Every
+   child below is sized in cqw (% of this element's own width, via container-type)
+   rather than fixed px, so the whole door — frame, leaf, hinge, logo, label, sparks —
+   scales together as one proportional unit at any size, not just at 720px/901px. */
 .work-door {
   position: relative;
   flex: 0 0 auto;
-  width: 232px;
-  height: 260px;
+  container-type: inline-size;
+  width: clamp(150px, 40vw, 232px);
+  aspect-ratio: 232 / 260;
   border: none;
   background: none;
   padding: 0;
@@ -1341,11 +1348,11 @@ main { padding-top: var(--nav-h); }
 }
 .work-door-frame {
   position: relative;
-  width: 210px;
-  height: 250px;
-  border-radius: 105px 105px 14px 14px;
+  width: 90.5cqw;
+  height: 107.76cqw;
+  border-radius: 45.26cqw 45.26cqw 6.03cqw 6.03cqw;
   background: var(--purple);
-  padding: 8px;
+  padding: 3.45cqw;
   box-shadow: 0 18px 34px rgba(56,7,87,0.32);
   transition: transform 0.2s ease;
   /* Without this, the leaf's rotateY/translateZ below gets flattened into 2D by the
@@ -1356,8 +1363,8 @@ main { padding-top: var(--nav-h); }
 .work-door:hover .work-door-frame { transform: translateY(-3px); }
 .work-door-glow {
   position: absolute;
-  inset: 8px;
-  border-radius: 97px 97px 8px 8px;
+  inset: 3.45cqw;
+  border-radius: 41.81cqw 41.81cqw 3.45cqw 3.45cqw;
   /* A visible bright rim down the middle plus a lighter void tone (vs. the near-black
      used before) so the opening reads clearly against the purple frame instead of
      blending into it — the previous version was too close in value to the frame color
@@ -1377,11 +1384,11 @@ main { padding-top: var(--nav-h); }
    sits right on top of it; fades in once open. */
 .work-door-hinge {
   position: absolute;
-  right: 3px;
+  right: 1.29cqw;
   top: 50%;
   z-index: 2;
-  width: 8px;
-  height: 8px;
+  width: 3.45cqw;
+  height: 3.45cqw;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #5b1a86, #2a0640 70%);
   box-shadow: 0 1px 2px rgba(0,0,0,0.5);
@@ -1392,8 +1399,8 @@ main { padding-top: var(--nav-h); }
 .work-door.is-open .work-door-hinge { opacity: 1; }
 .work-door-leaf {
   position: absolute;
-  inset: 8px;
-  border-radius: 97px 97px 8px 8px;
+  inset: 3.45cqw;
+  border-radius: 41.81cqw 41.81cqw 3.45cqw 3.45cqw;
   background:
     repeating-linear-gradient(90deg, rgba(56,7,87,0.1) 0 2px, transparent 2px 34px),
     linear-gradient(160deg, var(--lima), #c3c93a);
@@ -1404,35 +1411,35 @@ main { padding-top: var(--nav-h); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 34px;
-  gap: 14px;
+  padding-top: 14.66cqw;
+  gap: 6.03cqw;
 }
-/* Hinge is the right edge (transform-origin above), and it must stay put — no
-   translateZ here. translateZ shifts the whole box (pivot included) forward before
-   rotating, which visibly dragged the hinge corner out of place. rotateY alone
-   rotates purely around transform-origin, so the right edge stays pinned to the
-   frame while the free (left) edge swings toward the viewer. POSITIVE rotateY is
-   what brings that edge forward with the origin on the right — negative sends it
-   away from the viewer instead (shrinks into an unreadable sliver). */
+/* Hinge is the right edge (transform-origin above), and it stays put — no translateZ
+   here (that shifts the whole box, pivot included, before rotating). rotateY alone
+   rotates purely around transform-origin, so the right edge stays pinned to the frame
+   while the free (left) edge swings toward the viewer and back toward the hinge,
+   revealing the arch void on the left. POSITIVE rotateY is what brings that edge
+   forward with the origin on the right — negative sends it away from the viewer
+   instead. */
 .work-door:hover .work-door-leaf { transform: rotateY(18deg); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(120deg);
+  transform: rotateY(38deg);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), -10px 14px 26px rgba(10,2,18,0.45);
 }
 .work-door-handle {
   position: absolute;
-  left: 18px;
+  left: 7.76cqw;
   top: 50%;
-  width: 15px;
-  height: 15px;
+  width: 6.47cqw;
+  height: 6.47cqw;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #5b1a86, var(--purple) 70%);
   box-shadow: 0 2px 3px rgba(0,0,0,0.35);
   transform: translateY(-50%);
 }
 .work-door-mark-ring {
-  width: 40px;
-  height: 40px;
+  width: 17.24cqw;
+  height: 17.24cqw;
   border-radius: 50%;
   border: 2px solid rgba(56,7,87,0.55);
   display: flex;
@@ -1441,36 +1448,29 @@ main { padding-top: var(--nav-h); }
   flex: 0 0 auto;
 }
 .work-door-mark {
-  width: 20px;
-  height: 20px;
+  width: 8.62cqw;
+  height: 8.62cqw;
   opacity: 0.85;
   pointer-events: none;
-}
-/* Past 90deg the leaf is showing its back to the camera, which mirrors everything
-   painted on it (the browser renders the front face's content flipped). Counter-
-   mirror the mark and label here so the logo and "CERRAR EL TALLER" still read
-   correctly instead of backwards. */
-.work-door.is-open .work-door-mark-ring,
-.work-door.is-open .work-door-label {
-  transform: scaleX(-1);
 }
 .work-door-spark {
   position: absolute;
   color: var(--lima);
-  font-size: 16px;
+  font-size: 6.9cqw;
   opacity: 0.75;
   transition: opacity 0.3s ease, transform 0.3s ease;
   transform: scale(0.85);
 }
-.work-door-spark-1 { top: 4px; left: 2px; }
-.work-door-spark-2 { top: 26px; right: -4px; }
-.work-door-spark-3 { bottom: 34px; left: -8px; }
+.work-door-spark-1 { top: 1.72cqw; left: 0.86cqw; }
+.work-door-spark-2 { top: 11.21cqw; right: -1.72cqw; }
+.work-door-spark-3 { bottom: 14.66cqw; left: -3.45cqw; }
 .work-door:hover .work-door-spark,
 .work-door.is-open .work-door-spark { opacity: 1; transform: scale(1.15); }
 .work-door-label {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 20px;
+  /* Floor keeps the label legible on the smallest doors instead of shrinking forever. */
+  font-size: clamp(12px, 8.62cqw, 20px);
   line-height: 1.2;
   color: var(--purple);
   text-align: center;
@@ -1481,8 +1481,8 @@ main { padding-top: var(--nav-h); }
 .work-door.is-open .work-door-label-close { display: block; }
 .work-door-arrow {
   display: block;
-  margin-top: 4px;
-  font-size: 18px;
+  margin-top: 1.72cqw;
+  font-size: 0.9em;
   font-weight: 400;
   text-transform: none;
 }
@@ -1541,8 +1541,7 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) {
   .work-item { width: 240px; height: 170px; }
   .work-visible, .work-hidden { justify-content: center; }
-  .work-door { width: 170px; height: 200px; }
-  .work-door-frame { width: 128px; height: 164px; }
+  /* .work-door is fluid via clamp()/cqw now — no fixed-size override needed here. */
 }
 
 /* Case-study modal */
