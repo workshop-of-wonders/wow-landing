@@ -1446,6 +1446,14 @@ main { padding-top: var(--nav-h); }
   opacity: 0.85;
   pointer-events: none;
 }
+/* Past 90deg the leaf is showing its back to the camera, which mirrors everything
+   painted on it (the browser renders the front face's content flipped). Counter-
+   mirror the mark and label here so the logo and "CERRAR EL TALLER" still read
+   correctly instead of backwards. */
+.work-door.is-open .work-door-mark-ring,
+.work-door.is-open .work-door-label {
+  transform: scaleX(-1);
+}
 .work-door-spark {
   position: absolute;
   color: var(--lima);
