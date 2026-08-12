@@ -1405,7 +1405,7 @@ main { padding-top: var(--nav-h); }
 }
 .work-door:hover .work-door-leaf { transform: rotateY(-14deg) translateZ(6px); }
 .work-door.is-open .work-door-leaf {
-  transform: rotateY(-60deg);
+  transform: rotateY(-85deg) translateZ(30px);
   box-shadow: inset 0 0 0 4px rgba(56,7,87,0.55), 10px 12px 22px rgba(10,2,18,0.4);
 }
 .work-door-handle {
@@ -1490,10 +1490,6 @@ main { padding-top: var(--nav-h); }
 .work-item-prepapp { background: linear-gradient(160deg, #3B82F6, #f97316); }
 .work-item-mjstudio { background: linear-gradient(160deg, #c9a6e8, #f7c8dd 55%, #f9e28a); }
 .work-item-seedcapital { background: linear-gradient(160deg, #f97316, #14b8a6 60%, #22c55e); }
-.work-item-amstudios { background: linear-gradient(160deg, #0b0b0f, #ec4899 65%, #a5d8ff); }
-.work-item-tataphotos { background: linear-gradient(160deg, #e5e5e5, #1A1320); color: var(--ink); }
-.work-item-tataphotos .work-item-tag { color: #3a3340; }
-.work-item-geco { background: linear-gradient(160deg, #22c55e, #86a833 60%, #f97316); }
 .work-item-moonking { background: linear-gradient(160deg, #0b0b0f, #ec4899); }
 .work-item-acustica { background: linear-gradient(160deg, #6b1029, #380757); }
 
