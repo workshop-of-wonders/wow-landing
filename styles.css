@@ -1107,6 +1107,21 @@ main { padding-top: var(--nav-h); }
 }
 .hub-popup.is-open { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
 .hub-popup p { margin: 0; }
+.hub-popup-cta {
+  display: inline-block;
+  margin-top: var(--space-2);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--purple);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.hub-popup-cta:hover { color: var(--magenta); }
 .hub-popup-arrow {
   position: absolute;
   top: -6px;

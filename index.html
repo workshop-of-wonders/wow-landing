@@ -250,6 +250,7 @@
       <div class="hub-popup" id="hubPopup" role="tooltip">
         <span class="hub-popup-arrow"></span>
         <p id="hubPopupText"></p>
+        <button type="button" class="hub-popup-cta" id="hubPopupCta">Hablemos de esto →</button>
       </div>
       <svg class="hub-arrows" id="hubArrows" aria-hidden="true"></svg>
 
@@ -677,6 +678,7 @@ document.querySelectorAll('.switch').forEach(function (btn) {
 var hubDiagramEl = document.getElementById('hubDiagram');
 var hubPopup = document.getElementById('hubPopup');
 var hubPopupText = document.getElementById('hubPopupText');
+var hubPopupCta = document.getElementById('hubPopupCta');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
 
 /* Draw a connector line from every pill to the center W, redrawn whenever the layout changes */
@@ -731,6 +733,10 @@ hubPills.forEach(function (pill) {
     }
     pill.classList.add('active');
     hubPopupText.textContent = pill.dataset.desc;
+    hubPopupCta.onclick = function (ev) {
+      ev.stopPropagation();
+      window.openProjectForm('Me interesa: ' + pill.textContent.trim());
+    };
 
     var diagramRect = hubDiagramEl.getBoundingClientRect();
     var pillRect = pill.getBoundingClientRect();
@@ -849,10 +855,11 @@ document.addEventListener('click', function (e) {
   var thanks = document.getElementById('projectFormThanks');
   if (!modal) return;
 
-  window.openProjectForm = function () {
+  window.openProjectForm = function (prefill) {
     form.style.display = '';
     thanks.classList.remove('is-visible');
     form.reset();
+    if (prefill) document.getElementById('pfDetails').value = prefill;
     modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
   };
