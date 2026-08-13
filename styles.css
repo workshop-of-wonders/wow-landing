@@ -1019,7 +1019,16 @@ main { padding-top: var(--nav-h); }
   gap: 10px;
   max-width: 380px;
 }
-.hub-col-left { justify-content: flex-end; }
+.hub-col-left {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 460px;
+}
+.hub-col-left .hub-pill {
+  white-space: normal;
+  justify-content: center;
+  text-align: center;
+}
 .hub-col-right { flex-direction: column; align-items: flex-start; max-width: 220px; }
 .hub-pill {
   display: inline-flex;
