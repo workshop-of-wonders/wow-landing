@@ -311,8 +311,11 @@
   <section id="metodologia" class="method-pin">
     <div class="method">
       <span class="outline-word outline-magenta" aria-hidden="true">PROCESO</span>
+      <div class="method-body">
+      <div class="method-header">
       <h2>Un ciclo continuo de insight, estrategia y experiencia</h2>
       <p class="method-intro">Nuestro proceso no es lineal. Es circular: cada experiencia genera nuevos datos, comportamientos y aprendizajes que regresan a Insight para alimentar el siguiente ciclo.</p>
+      </div>
       <div class="method-loop">
         <svg class="method-loop-svg" viewBox="0 0 100 100" aria-hidden="true">
           <circle class="method-loop-track" cx="50" cy="50" r="32"></circle>
@@ -343,6 +346,7 @@
           <h3>We learn &amp; optimize.</h3>
           <p>Las experiencias que creamos generan nuevos datos, comportamientos y aprendizajes que regresan a Insight para alimentar el siguiente ciclo.</p>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -922,7 +926,7 @@ var loopProgressCircumference = 201.06; // 2 * PI * r(32), matches the SVG circl
 var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.loop-dot')) : [];
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
 
-var mobileTimelineQuery = window.matchMedia('(max-width: 720px)');
+var mobileTimelineQuery = window.matchMedia('(max-width: 1023px)');
 
 function updateScrollScrubs() {
   /* re-read on every call (not cached at load) so rotating a phone or resizing across the breakpoint doesn't leave the scroll math out of sync with the CSS */
