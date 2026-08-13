@@ -1020,14 +1020,16 @@ main { padding-top: var(--nav-h); }
   max-width: 380px;
 }
 .hub-col-left {
-  /* Natural flex-wrap: each pill keeps its own text width, and the browser packs
-     as many as fit per line — smaller font/padding here (vs. the base .hub-pill)
-     means several short-to-medium pills share a row, matching the dense reference
-     grid, without forcing an exact column count. */
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  /* Each .hub-row is capped at 3 pills and is its own flex container, so a row's
+     pills size to their own text width independently of other rows (a shared grid
+     column would force one width down the whole column — see git history) while
+     still hard-capping the row at 3, which plain flex-wrap can't guarantee. */
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
   max-width: 620px;
 }
+.hub-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .hub-col-left .hub-pill { padding: 7px 13px; font-size: 12px; }
 .hub-col-right { flex-direction: column; align-items: flex-start; max-width: 220px; }
 .hub-pill {
@@ -1152,7 +1154,8 @@ main { padding-top: var(--nav-h); }
     max-width: 100%;
     row-gap: 8px;
   }
-  .hub-col-left { justify-content: center; max-width: 100%; }
+  .hub-col-left { align-items: center; max-width: 100%; }
+  .hub-row { justify-content: center; }
   .hub-center { margin: var(--space-4) 0; }
   .hub-pill { padding: 8px 14px; font-size: 13px; }
 }
