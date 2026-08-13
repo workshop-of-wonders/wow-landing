@@ -1027,9 +1027,13 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
-  max-width: 620px;
+  max-width: 700px;
 }
-.hub-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+/* nowrap: a .hub-row must never break onto a second line — if it doesn't fit in
+   700px, that's a row to rebalance in the HTML, not something to auto-wrap (an
+   auto-wrap would visually orphan a pill onto its own line, which reads exactly
+   like the standalone "…y mucho más" row and defeats the point of grouping). */
+.hub-row { display: flex; flex-wrap: nowrap; justify-content: flex-end; gap: 10px; }
 .hub-col-left .hub-pill { padding: 7px 13px; }
 .hub-col-right { flex-direction: column; align-items: flex-start; max-width: 220px; }
 .hub-pill {
@@ -1156,7 +1160,7 @@ main { padding-top: var(--nav-h); }
     row-gap: 8px;
   }
   .hub-col-left { align-items: center; max-width: 100%; }
-  .hub-row { justify-content: center; }
+  .hub-row { justify-content: center; flex-wrap: wrap; }
   .hub-center { margin: var(--space-4) 0; }
   .hub-pill { padding: 8px 14px; font-size: 13px; }
 }
