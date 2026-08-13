@@ -313,44 +313,31 @@
       <span class="outline-word outline-magenta" aria-hidden="true">PROCESO</span>
       <h2>Un ciclo continuo de insight, estrategia y experiencia</h2>
       <p class="method-intro">Nuestro proceso no es lineal. Es circular: cada experiencia genera nuevos datos, comportamientos y aprendizajes que regresan a Insight para alimentar el siguiente ciclo.</p>
-      <div class="method-timeline" aria-hidden="true">
-        <span class="rocket">🚀</span>
-        <span class="timeline-dot"></span>
-        <span class="timeline-dot"></span>
-        <span class="timeline-dot"></span>
-        <span class="timeline-dot"></span>
-      </div>
-      <div class="method-track">
+      <div class="method-loop">
+        <svg class="method-loop-svg" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="method-loop-track" cx="50" cy="50" r="32"></circle>
+          <circle class="method-loop-progress" id="methodLoopProgress" cx="50" cy="50" r="32"></circle>
+        </svg>
+        <span class="loop-dot loop-dot-1" aria-hidden="true"></span>
+        <span class="loop-dot loop-dot-2" aria-hidden="true"></span>
+        <span class="loop-dot loop-dot-3" aria-hidden="true"></span>
+        <span class="loop-dot loop-dot-4" aria-hidden="true"></span>
+        <span class="method-rocket" id="methodRocket" aria-hidden="true">🚀</span>
         <div class="method-step ms-1">
           <span class="method-num">01 — INSIGHT</span>
           <h3>We understand.</h3>
           <p>Identificamos oportunidades a partir de datos, mercado, consumidores, comportamiento y resultados.</p>
         </div>
-        <span class="method-connector" aria-hidden="true">
-          <span class="connector-line"></span>
-          <span class="connector-dot"></span>
-          <span class="connector-rocket">🚀</span>
-        </span>
         <div class="method-step ms-2">
           <span class="method-num">02 — CORE</span>
           <h3>We define.</h3>
           <p>Convertimos los insights en estrategia, posicionamiento, dirección y decisiones de negocio.</p>
         </div>
-        <span class="method-connector" aria-hidden="true">
-          <span class="connector-line"></span>
-          <span class="connector-dot"></span>
-          <span class="connector-rocket">🚀</span>
-        </span>
         <div class="method-step ms-3">
           <span class="method-num">03 — BRAND + EXPERIENCE</span>
           <h3>We create.</h3>
           <p>Transformamos la estrategia en marcas, experiencias y puntos de contacto.</p>
         </div>
-        <span class="method-connector" aria-hidden="true">
-          <span class="connector-line"></span>
-          <span class="connector-dot"></span>
-          <span class="connector-rocket">🚀</span>
-        </span>
         <div class="method-step ms-4">
           <span class="method-num">↻ BACK TO INSIGHT</span>
           <h3>We learn &amp; optimize.</h3>
@@ -929,10 +916,11 @@ toggleItems.forEach(function (item) {
 /* Reveal method steps + fly the rocket along the timeline, synced to scroll */
 var methodPin = document.querySelector('.method-pin');
 var methodSection = document.querySelector('.method');
-var rocketEl = document.querySelector('.rocket');
-var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.timeline-dot')) : [];
+var rocketEl = document.getElementById('methodRocket');
+var loopProgressEl = document.getElementById('methodLoopProgress');
+var loopProgressCircumference = 201.06; // 2 * PI * r(32), matches the SVG circle's radius
+var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.loop-dot')) : [];
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
-var connectorEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-connector')) : [];
 
 var mobileTimelineQuery = window.matchMedia('(max-width: 720px)');
 
@@ -973,7 +961,25 @@ function updateScrollScrubs() {
       mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
     }
     methodSection.classList.toggle('in-view', mProg > 0.05);
-    if (rocketEl) rocketEl.style.setProperty('--prog', mProg);
+    if (!isMobileTimeline && rocketEl) {
+      /* Fly the rocket clockwise around the circle, starting at the top (12 o'clock,
+         above card 1) — standard math angle convention (0deg = 3 o'clock, increasing
+         clockwise in screen/SVG space since y grows downward) means "start at top" is
+         -90deg, and a full lap is +360deg of progress. */
+      var angleDeg = -90 + mProg * 360;
+      var angleRad = angleDeg * Math.PI / 180;
+      var rocketX = 50 + 32 * Math.cos(angleRad);
+      var rocketY = 50 + 32 * Math.sin(angleRad);
+      rocketEl.style.left = rocketX + '%';
+      rocketEl.style.top = rocketY + '%';
+      /* +90 to point along the direction of travel (tangent to the circle) instead of
+         outward/radial, -45 because the 🚀 glyph itself already faces up-and-right at
+         rotate(0), so that's its "zero" heading. */
+      rocketEl.style.transform = 'translate(-50%, -50%) rotate(' + (angleDeg + 90 - 45) + 'deg)';
+    }
+    if (!isMobileTimeline && loopProgressEl) {
+      loopProgressEl.style.strokeDashoffset = (loopProgressCircumference * (1 - mProg)).toFixed(2);
+    }
     var stepThreshold = function (i) {
       return isMobileTimeline ? i / stepEls.length : (i + 0.3) / stepEls.length;
     };
@@ -982,16 +988,6 @@ function updateScrollScrubs() {
     });
     dotEls.forEach(function (dot, i) {
       dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
-    });
-    /* each connector sits right above the step it precedes: the rocket only appears once it actually reaches that dot, and that arrival is what fires the card open */
-    var lastReachedConnector = -1;
-    connectorEls.forEach(function (connector, i) {
-      var reached = mProg > stepThreshold(i + 1);
-      connector.classList.toggle('lit', reached);
-      if (reached) lastReachedConnector = i;
-    });
-    connectorEls.forEach(function (connector, i) {
-      connector.classList.toggle('active', i === lastReachedConnector);
     });
   }
 }

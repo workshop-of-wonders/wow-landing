@@ -511,48 +511,8 @@ main { padding-top: var(--nav-h); }
 .toggle-text { font-size: 16px; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
 .toggle-item.text-hidden .toggle-text { opacity: 0; }
 
-/* Method timeline — grid matches .method-track so dots sit centered above each box */
-.method-timeline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-4);
-  align-items: center;
-  margin: var(--space-5) 0 var(--space-3);
-  padding: 10px 0;
-}
-.method-timeline::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 2px;
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-50%);
-}
-.rocket {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--prog, 0) * 100%);
-  font-size: 22px;
-  transform: translate(-50%, -50%) rotate(45deg);
-  opacity: 0;
-  z-index: 2;
-  transition: left 0.15s linear, top 0.15s linear, opacity 0.3s ease;
-}
-.method.in-view .rocket { opacity: 1; }
-.timeline-dot {
-  justify-self: center;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(220,225,87,0.25);
-  transition: background 0.3s ease, transform 0.3s ease;
-  position: relative;
-  z-index: 1;
-}
-.timeline-dot.lit { background: var(--lima); transform: scale(1.3); }
+/* Method loop — see .method-loop and friends further down for the circular
+   scroll-driven rocket/track (this used to be a straight left-to-right timeline). */
 
 /* Hero media marquee */
 .hero-media {
@@ -1201,11 +1161,19 @@ main { padding-top: var(--nav-h); }
   max-width: 560px;
   margin: 0 0 var(--space-6);
 }
-.method-track {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+/* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
+   on small screens). At 721px+ it becomes a real circle: the 4 cards move to
+   absolute compass positions (top/right/bottom/left) around an SVG ring, and
+   the rocket + progress arc fly around it in sync with scroll (JS sets the
+   rocket's left/top/rotation and the progress circle's stroke-dashoffset every
+   tick — see updateScrollScrubs in the script at the bottom of this file). */
+.method-loop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
 }
+.method-loop-svg, .loop-dot, .method-rocket { display: none; }
 .method-step {
   position: relative;
   padding: var(--space-4) var(--space-3) var(--space-3);
@@ -1214,15 +1182,9 @@ main { padding-top: var(--nav-h); }
   border: 1px solid rgba(255,255,255,0.1);
   opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(20px);
 }
-.ms-1 { transform: translateY(30px); }
-.ms-2 { transform: translateY(52px); }
-.ms-3 { transform: translateY(26px); }
-.ms-4 { transform: translateY(46px); }
-.ms-1.in-view { opacity: 1; transform: translateY(0); }
-.ms-2.in-view { opacity: 1; transform: translateY(22px); }
-.ms-3.in-view { opacity: 1; transform: translateY(-4px); }
-.ms-4.in-view { opacity: 1; transform: translateY(16px); }
+.method-step.in-view { opacity: 1; transform: translateY(0); }
 .method-num {
   display: block;
   font-family: var(--font-mono);
@@ -1232,59 +1194,80 @@ main { padding-top: var(--nav-h); }
 }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
-.method-connector { display: none; }
 
-@media (max-width: 900px) {
-  .ms-1, .ms-2, .ms-3, .ms-4,
-  .ms-1.in-view, .ms-2.in-view, .ms-3.in-view, .ms-4.in-view { transform: none; }
-  /* force an explicit 2-column grid at tablet widths — auto-fit would otherwise wrap 3+1
-     depending on exact width, leaving the 4th timeline dot floating disconnected from the line */
-  .method-track, .method-timeline { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 720px) {
-  .method-timeline { display: none; }
-  .method-track { grid-template-columns: 1fr; gap: 0; }
-  .ms-1 { opacity: 1; }
-  .method-step { position: relative; z-index: 1; }
-  .method-connector {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
+@media (min-width: 721px) {
+  .method-loop {
+    display: block;
+    width: min(640px, 100%);
+    aspect-ratio: 1;
+    margin: var(--space-5) auto var(--space-6);
   }
-  .method-connector::before {
-    content: '';
+  .method-loop-svg {
+    display: block;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: rgba(255,255,255,0.2);
-    transform: translateX(-50%);
-    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
-  .connector-line { display: none; }
-  .connector-dot {
-    position: relative;
-    z-index: 1;
+  .method-loop-track { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 1.5; }
+  .method-loop-progress {
+    fill: none;
+    stroke: var(--lima);
+    stroke-width: 2;
+    stroke-linecap: round;
+    /* circumference of r=32 circle (2 * PI * 32 ≈ 201.06), fully hidden at rest —
+       JS dials stroke-dashoffset down from this as scroll progress advances. */
+    stroke-dasharray: 201.06;
+    stroke-dashoffset: 201.06;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+  }
+  .loop-dot {
+    display: block;
+    position: absolute;
     width: 12px;
     height: 12px;
+    margin: -6px;
     border-radius: 50%;
     background: rgba(220,225,87,0.25);
     transition: background 0.3s ease, transform 0.3s ease;
-  }
-  .method-connector.lit .connector-dot { background: var(--lima); transform: scale(1.2); }
-  .connector-rocket {
-    position: relative;
     z-index: 1;
-    display: none;
-    font-size: 20px;
   }
-  .method-connector.active .connector-dot { display: none; }
-  .method-connector.active .connector-rocket { display: block; }
+  .loop-dot.lit { background: var(--lima); transform: scale(1.3); }
+  .loop-dot-1 { top: 18%; left: 50%; }
+  .loop-dot-2 { top: 50%; left: 82%; }
+  .loop-dot-3 { top: 82%; left: 50%; }
+  .loop-dot-4 { top: 50%; left: 18%; }
+  .method-rocket {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 22px;
+    line-height: 1;
+    margin: -12px;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    /* left/top/rotation set inline by JS each scroll tick — CSS can't do the
+       trig needed to move something around a circle via a single custom prop. */
+  }
+  .method.in-view .method-rocket { opacity: 1; }
+  .method-step {
+    position: absolute;
+    width: 230px;
+    opacity: 0;
+    transform: none;
+  }
+  .method-step.in-view { opacity: 1; }
+  /* Anchored at the ring's dot positions (18%/50%/82%, matching .loop-dot below),
+     then pushed fully outside the ring by the card's own size + a 20px gap — not
+     anchored to the container's 0%/50%/100% edges, which put the card right on
+     top of the ring itself since the card is much taller than the ring's margin. */
+  .method-step.ms-1 { top: 18%; left: 50%; transform: translate(-50%, calc(-100% - 20px)); text-align: center; }
+  .method-step.ms-2 { top: 50%; left: 82%; transform: translate(20px, -50%); }
+  .method-step.ms-3 { top: 82%; left: 50%; transform: translate(-50%, 20px); text-align: center; }
+  .method-step.ms-4 { top: 50%; left: 18%; transform: translate(calc(-100% - 20px), -50%); text-align: right; }
 }
 
 /* Work — horizontal scroll gallery */
