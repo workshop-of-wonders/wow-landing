@@ -1020,15 +1020,15 @@ main { padding-top: var(--nav-h); }
   max-width: 380px;
 }
 .hub-col-left {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 460px;
+  /* Natural flex-wrap: each pill keeps its own text width, and the browser packs
+     as many as fit per line — smaller font/padding here (vs. the base .hub-pill)
+     means several short-to-medium pills share a row, matching the dense reference
+     grid, without forcing an exact column count. */
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 620px;
 }
-.hub-col-left .hub-pill {
-  white-space: normal;
-  justify-content: center;
-  text-align: center;
-}
+.hub-col-left .hub-pill { padding: 7px 13px; font-size: 12px; }
 .hub-col-right { flex-direction: column; align-items: flex-start; max-width: 220px; }
 .hub-pill {
   display: inline-flex;
@@ -1144,13 +1144,15 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 900px) {
   .hub-diagram { flex-direction: column; align-items: center; min-height: 0; }
-  .hub-col-left, .hub-col-right {
+  .hub-col-right {
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     max-width: 100%;
     row-gap: 8px;
   }
+  .hub-col-left { justify-content: center; max-width: 100%; }
   .hub-center { margin: var(--space-4) 0; }
   .hub-pill { padding: 8px 14px; font-size: 13px; }
 }
