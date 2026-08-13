@@ -1183,7 +1183,7 @@ main { padding-top: var(--nav-h); }
     justify-content: space-between;
     gap: var(--space-6);
   }
-  .method-header { flex: 0 1 380px; }
+  .method-header { flex: 0 1 340px; }
   .method-loop { flex: 0 0 auto; }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
@@ -1227,7 +1227,7 @@ main { padding-top: var(--nav-h); }
        viewport (.method's own height) — this used to be 640px, centered, which
        together with the cards poking out above/below was taller than the
        viewport and got clipped by .method's overflow:hidden. */
-    width: clamp(340px, 28vw, 420px);
+    width: clamp(380px, 30vw, 460px);
     aspect-ratio: 1;
   }
   .method-loop-svg {
@@ -1296,10 +1296,10 @@ main { padding-top: var(--nav-h); }
      then pushed fully outside the ring by the card's own size + a 20px gap — not
      anchored to the container's 0%/50%/100% edges, which put the card right on
      top of the ring itself since the card is much taller than the ring's margin. */
-  .method-step.ms-1 { top: 18%; left: 50%; transform: translate(-50%, calc(-100% - 12px)); text-align: center; }
-  .method-step.ms-2 { top: 50%; left: 82%; transform: translate(12px, -50%); }
-  .method-step.ms-3 { top: 82%; left: 50%; transform: translate(-50%, 12px); text-align: center; }
-  .method-step.ms-4 { top: 50%; left: 18%; transform: translate(calc(-100% - 12px), -50%); text-align: right; }
+  .method-step.ms-1 { top: 14%; left: 50%; transform: translate(-50%, calc(-100% - 22px)); text-align: center; }
+  .method-step.ms-2 { top: 50%; left: 86%; transform: translate(22px, -50%); }
+  .method-step.ms-3 { top: 86%; left: 50%; transform: translate(-50%, 22px); text-align: center; }
+  .method-step.ms-4 { top: 50%; left: 14%; transform: translate(calc(-100% - 22px), -50%); text-align: right; }
 }
 
 /* Work — horizontal scroll gallery */
