@@ -1054,6 +1054,7 @@ main { padding-top: var(--nav-h); }
 .hub-orange { background: var(--orange); color: var(--white); }
 .hub-cloud { background: var(--cloud); }
 .hub-ink { background: var(--ink); color: var(--white); }
+.hub-purple { background: var(--purple); color: var(--white); }
 .hub-center {
   position: relative;
   z-index: 1;
