@@ -1247,6 +1247,14 @@ main { padding-top: var(--nav-h); }
     flex: 0 0 auto;
     margin-left: auto;
     margin-right: calc(var(--card-w) + var(--card-push) - 0.14 * var(--loop-w));
+    /* Clears the fixed "PROCESO" watermark (.outline-word, absolutely
+       positioned at the top of .method, independent of this flow — it can't
+       move). The ms-1 card is pushed further up above the ring than any
+       other card (see .method-step.ms-1 below), so on short/wide viewports
+       it was the one colliding with the watermark's letters. Scales with vw
+       so it keeps enough clearance at wider widths, where the watermark's
+       clamp() font-size is also larger. */
+    margin-top: clamp(24px, 4vw, 80px);
   }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
@@ -1293,7 +1301,7 @@ main { padding-top: var(--nav-h); }
        Ring made smaller than before (was 420-520px) specifically to leave more
        room for wider cards within the same available width. */
     --loop-w: clamp(260px, 16vw, 300px);
-    --card-w: clamp(220px, 14vw, 260px);
+    --card-w: clamp(220px, 18vw, 340px);
     --card-push: 24px;
     width: var(--loop-w);
     aspect-ratio: 1;
