@@ -1345,20 +1345,20 @@ main { padding-top: var(--nav-h); }
   .method-rocket {
     display: block;
     position: absolute;
-    /* Parked permanently at the top of the ring (12 o'clock, above card 1) —
-       used to fly clockwise around the circle in sync with scroll; now just
-       sits still here. Same point the flight math used to start from
-       (angle -90deg: x = 50 + 32*cos(-90) = 50, y = 50 + 32*sin(-90) = 18),
-       rotated to match its resting heading in the old animation. */
-    top: 18%;
+    top: 50%;
     left: 50%;
     font-size: 22px;
     line-height: 1;
     margin: -12px;
     opacity: 0;
     z-index: 2;
-    transform: translate(-50%, -50%) rotate(-45deg);
     transition: opacity 0.3s ease;
+    /* left/top set inline by JS each scroll tick to fly it around the ring —
+       CSS can't do the trig needed to move something around a circle via a
+       single custom prop. Rotation is NOT set by JS: the glyph always keeps
+       this fixed "sideways" heading (doesn't turn to face its direction of
+       travel) as it orbits. */
+    transform: translate(-50%, -50%) rotate(-45deg);
   }
   .method.in-view .method-rocket { opacity: 1; }
   .method-step {

@@ -38,9 +38,9 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ---
 
-## Log
+**2026-08-14** — Corrected the above: client actually wanted the rocket to keep flying around the ring with scroll, just always facing the same "sideways" direction instead of rotating to follow the circle's tangent. Restored the JS position trig (`angleDeg`/`rocketX`/`rocketY` → inline `left`/`top`) in `updateScrollScrubs()`, but this time left rotation out of it — `.method-rocket` in `styles.css` now carries a fixed `transform: rotate(-45deg)` that JS never touches, so the glyph's heading stays constant all the way around the loop.
 
-**2026-08-14** — Parked the Proceso loop's rocket permanently at the top of the ring (12 o'clock, above card 1) instead of flying it clockwise around the circle in sync with scroll — client liked it staying at that resting spot. Removed the per-tick trig (`angleDeg`/`rocketX`/`rocketY`) from `updateScrollScrubs()` in `index.html` and replaced the JS-driven inline `left`/`top`/`transform` with a fixed `top:18%; left:50%; transform: rotate(-45deg)` on `.method-rocket` in `styles.css` (same point/heading the animation used to start from). The progress-ring arc and step-card reveals are untouched — still scroll-driven.
+**2026-08-14** — (superseded a few minutes later, see entry above) Parked the Proceso loop's rocket permanently at the top of the ring (12 o'clock, above card 1) instead of flying it clockwise around the circle in sync with scroll.
 
 **2026-08-14** — Fixed the Proceso circular loop's `ms-1` ("01 — INSIGHT") card overlapping the fixed "PROCESO" watermark (`.outline-word`) on wide/short desktop viewports — reported with a screenshot at ~1920px wide. The watermark can't move (absolutely positioned, independent of the loop). Fix: added `margin-top: clamp(24px, 4vw, 80px)` to `.method-loop` at the `min-width:1300px` breakpoint to push the whole ring+cards group down for clearance, and widened `--card-w` from `clamp(220px,14vw,260px)` to `clamp(220px,18vw,340px)` so cards get wider (not taller) on big screens — shorter card height means less upward push needed for `ms-1`, which is anchored above the ring. Verified at 1440px and 1920px: watermark and card no longer intersect.
 
