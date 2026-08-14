@@ -1079,16 +1079,16 @@ main { padding-top: var(--nav-h); }
 }
 .hub-cta-link {
   font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lima);
   text-decoration: underline;
   text-underline-offset: 3px;
-  opacity: 0.85;
+  opacity: 1;
   transition: opacity 0.15s ease;
   white-space: nowrap;
 }
-.hub-cta-link:hover { opacity: 1; }
+.hub-cta-link:hover { opacity: 0.75; }
 .hub-popup {
   position: absolute;
   z-index: 10;
