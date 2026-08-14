@@ -1077,20 +1077,26 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   gap: var(--space-2);
 }
+/* Same plain-underline-link style as .hub-popup-cta ("Hablemos de esto →" in the
+   pill tooltip) — no button box, just bold underlined text. That one uses
+   var(--purple) since its popup has a white background; this sits directly on
+   the section's dark purple background, so --purple-accent (lighter) is used
+   instead to stay legible while keeping the same plain-link mechanics. */
 .hub-cta-link {
+  display: inline-block;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--purple-accent);
   font-family: var(--font-body);
-  font-size: 13px;
   font-weight: 700;
-  color: var(--white);
-  background: var(--purple-accent);
-  padding: 7px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.25);
-  text-decoration: none;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
   white-space: nowrap;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
 }
-.hub-cta-link:hover { background: #5b1a86; border-color: rgba(255,255,255,0.45); }
+.hub-cta-link:hover { color: var(--white); }
 .hub-popup {
   position: absolute;
   z-index: 10;
