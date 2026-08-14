@@ -1066,22 +1066,9 @@ function updateScrollScrubs() {
       mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
     }
     methodSection.classList.toggle('in-view', mProg > 0.05);
-    if (!isMobileTimeline && rocketEl) {
-      /* Fly the rocket clockwise around the circle, starting at the top (12 o'clock,
-         above card 1) — standard math angle convention (0deg = 3 o'clock, increasing
-         clockwise in screen/SVG space since y grows downward) means "start at top" is
-         -90deg, and a full lap is +360deg of progress. */
-      var angleDeg = -90 + mProg * 360;
-      var angleRad = angleDeg * Math.PI / 180;
-      var rocketX = 50 + 32 * Math.cos(angleRad);
-      var rocketY = 50 + 32 * Math.sin(angleRad);
-      rocketEl.style.left = rocketX + '%';
-      rocketEl.style.top = rocketY + '%';
-      /* +90 to point along the direction of travel (tangent to the circle) instead of
-         outward/radial, -45 because the 🚀 glyph itself already faces up-and-right at
-         rotate(0), so that's its "zero" heading. */
-      rocketEl.style.transform = 'translate(-50%, -50%) rotate(' + (angleDeg + 90 - 45) + 'deg)';
-    }
+    /* Rocket used to fly clockwise around the circle in sync with mProg — now
+       parked permanently at the top (see .method-rocket in styles.css), so
+       there's nothing left to compute here each scroll tick. */
     if (!isMobileTimeline && loopProgressEl) {
       loopProgressEl.style.strokeDashoffset = (loopProgressCircumference * (1 - mProg)).toFixed(2);
     }
