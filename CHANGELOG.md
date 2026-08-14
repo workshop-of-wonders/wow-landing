@@ -41,6 +41,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-08-14** — Rounded out the mega menu with several more service-gap additions from the client, each with its own popup description: Growth Marketing gained "Consultoría en marketing digital", "Marketing de contenidos", "GEO (posicionamiento en IA)", "Email & SMS marketing", "Manejo de redes sociales", and "CRO" (now 12 items, the longest column); Marketing Intelligence gained "Reportería y dashboards", "Investigación de mercado", "Segmentación de audiencias" (was a single-item column before); Brand + Creative gained "Estrategia creativa", "Diseño gráfico", and "Producción gráfica y fotográfica" — client explicitly asked for production *without* video, since they don't offer video services. Verified the dropdown layout still holds up with Growth Marketing at 12 items and Brand + Creative at 10 — no overflow, columns just grow to different heights as expected from CSS grid.
+
 **2026-08-14** — Added two new services to the mega menu after discussing service-gap analysis with the client vs. what agencies typically offer: "SEO local & Google Business Profile" (Growth Marketing column, after SEO) and "Creación de posts gráficos para pauta" (Paid Media column, after TikTok Ads). Each with its own `data-desc` for the click-to-see-description popup.
 
 **2026-08-14** — Split more combined mega-menu entries per client feedback: "Diseño editorial y presentaciones" → "Diseño editorial" / "Presentaciones"; "Packaging & Merch" → "Packaging" / "Merch". Also renamed "IA & Automatización" to just "IA" — the "Automatización" half was redundant now that "Automatizaciones" already exists as its own entry in the same column (Growth Marketing) since the previous split.
