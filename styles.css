@@ -1070,11 +1070,25 @@ main { padding-top: var(--nav-h); }
 }
 .hub-center:hover .hub-w, .hub-center.is-open .hub-w { opacity: 0; }
 .hub-center:hover .hub-full-logo, .hub-center.is-open .hub-full-logo { opacity: 1; transform: scale(1); }
-.services-cta {
+.hub-center-wrap {
+  flex: 0 0 auto;
   display: flex;
-  justify-content: center;
-  margin-top: var(--space-6);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
 }
+.hub-cta-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+.hub-cta-link:hover { opacity: 1; }
 .hub-popup {
   position: absolute;
   z-index: 10;
