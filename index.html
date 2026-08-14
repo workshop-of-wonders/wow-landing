@@ -437,23 +437,20 @@
   <div class="lightbox" id="lightbox">
     <div class="lightbox-inner">
       <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
-      <div class="lightbox-grid" id="lightboxGrid">
-        <div class="lightbox-cell"><img id="lightboxImg1" src="" alt=""></div>
-        <div class="lightbox-cell"><img id="lightboxImg2" src="" alt=""></div>
-        <div class="lightbox-cell"><img id="lightboxImg3" src="" alt=""></div>
-        <div class="lightbox-cell"><img id="lightboxImg4" src="" alt=""></div>
-      </div>
+      <div class="project-collage" id="lightboxCollage"></div>
       <div class="lightbox-caption">
-        <div class="lightbox-caption-main">
-          <h3 id="lightboxTitle"></h3>
-          <p class="lightbox-category" id="lightboxCategory"></p>
+        <div class="lightbox-caption-col lightbox-caption-col-main">
+          <div class="lightbox-caption-main">
+            <h3 id="lightboxTitle"></h3>
+            <p class="lightbox-category" id="lightboxCategory"></p>
+          </div>
+          <p class="lightbox-desc" id="lightboxDesc"></p>
         </div>
-        <p class="lightbox-desc" id="lightboxDesc"></p>
-        <div class="lightbox-work-block" id="lightboxWorkBlock">
+        <div class="lightbox-caption-col lightbox-work-block" id="lightboxWorkBlock">
           <p class="lightbox-label">Work</p>
           <p class="lightbox-work" id="lightboxWork"></p>
         </div>
-        <div class="lightbox-tags-block" id="lightboxTagsBlock">
+        <div class="lightbox-caption-col lightbox-tags-block" id="lightboxTagsBlock">
           <p class="lightbox-label">Capabilities</p>
           <div class="lightbox-tags" id="lightboxTags"></div>
         </div>
@@ -776,11 +773,84 @@ document.addEventListener('click', function (e) {
   }
 });
 
-/* Case-study modal: click a work item or client logo for a 4-photo grid + name, category, summary and tags */
+/* Automatic Editorial Horizontal Collage System — generic, reusable, no
+   per-project knowledge. Given any list of image URLs it measures each
+   image's real aspect ratio, decides which ones deserve to span both rows
+   (a "tall" module) vs. sit in a single row, computes each item's pixel
+   width from --pc-row-h so the image is never cropped/stretched, then lets
+   CSS grid's own dense packing (grid-auto-flow: column dense, defined in
+   styles.css on .project-collage) fill the 2-row strip with no gaps. */
+var ProjectCollage = (function () {
+  function loadDimensions(src) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.onload = function () { resolve({ w: img.naturalWidth || 1, h: img.naturalHeight || 1 }); };
+      img.onerror = function () { resolve({ w: 4, h: 3 }); };
+      img.src = src;
+    });
+  }
+
+  function normalize(images) {
+    return images.map(function (item) {
+      return typeof item === 'string' ? { src: item, priority: 1 } : { src: item.src, priority: item.priority || 1 };
+    });
+  }
+
+  async function render(container, images, opts) {
+    opts = opts || {};
+    var rowHVar = getComputedStyle(container).getPropertyValue('--pc-row-h') || '190px';
+    var rowH = parseFloat(rowHVar) || 190;
+    var items = normalize(images);
+    if (!items.length) { container.innerHTML = ''; return; }
+
+    var dims = await Promise.all(items.map(function (it) { return loadDimensions(it.src); }));
+    var pieces = items.map(function (it, i) {
+      var ratio = dims[i].w / dims[i].h;
+      return { src: it.src, priority: it.priority, ratio: ratio };
+    });
+
+    // Decide which pieces become tall (span both rows) modules: portrait-ish
+    // images (ratio < 0.85) naturally read better tall, and a handful of
+    // higher-priority pieces get promoted to tall regardless of ratio so a
+    // "hero" image can anchor the composition. Cap how many go tall so the
+    // strip keeps a 2-row rhythm instead of turning into one long row.
+    var maxTall = Math.max(1, Math.min(3, Math.ceil(pieces.length / 3)));
+    var tallCount = 0;
+    var byPriorityDesc = pieces.map(function (p, i) { return i; }).sort(function (a, b) { return pieces[b].priority - pieces[a].priority; });
+    var promoted = {};
+    byPriorityDesc.forEach(function (i) {
+      if (tallCount >= maxTall) return;
+      if (pieces[i].priority > 1 || pieces[i].ratio < 0.85) { promoted[i] = true; tallCount++; }
+    });
+
+    var gap = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 3;
+    container.innerHTML = '';
+    pieces.forEach(function (piece, i) {
+      var isTall = !!promoted[i];
+      var height = isTall ? (rowH * 2 + gap) : rowH;
+      var width = Math.round(height * piece.ratio);
+      var el = document.createElement('div');
+      el.className = 'pc-item' + (isTall ? ' pc-span2' : '');
+      el.style.width = width + 'px';
+      var img = document.createElement('img');
+      img.src = piece.src;
+      img.alt = opts.alt || '';
+      img.loading = 'lazy';
+      el.appendChild(img);
+      container.appendChild(el);
+    });
+  }
+
+  return { render: render };
+})();
+
+/* Case-study modal: click a work item or client logo for an editorial
+   image collage (built by ProjectCollage above) + name, category, summary
+   and tags */
 (function () {
   var lightbox = document.getElementById('lightbox');
   if (!lightbox) return;
-  var imgs = [1, 2, 3, 4].map(function (n) { return document.getElementById('lightboxImg' + n); });
+  var collageEl = document.getElementById('lightboxCollage');
   var title = document.getElementById('lightboxTitle');
   var category = document.getElementById('lightboxCategory');
   var desc = document.getElementById('lightboxDesc');
@@ -798,10 +868,17 @@ document.addEventListener('click', function (e) {
   document.querySelectorAll('[data-lightbox]').forEach(function (el) {
     el.addEventListener('click', function () {
       var mainImg = el.dataset.img;
-      var seed = (el.dataset.title || '').split('').reduce(function (a, c) { return a + c.charCodeAt(0); }, 0);
-      var set = [mainImg];
-      for (var i = 0; i < 3; i++) set.push(pool[(seed + i * 2) % pool.length]);
-      imgs.forEach(function (imgEl, i) { imgEl.src = set[i]; });
+      var images;
+      if (el.dataset.images) {
+        // A project can list its own set of images as JSON, e.g.
+        // data-images='["a.png","b.png",{"src":"c.png","priority":2}]'
+        try { images = JSON.parse(el.dataset.images); } catch (e) { images = [mainImg]; }
+      } else {
+        var seed = (el.dataset.title || '').split('').reduce(function (a, c) { return a + c.charCodeAt(0); }, 0);
+        images = [{ src: mainImg, priority: 2 }];
+        for (var i = 0; i < 3; i++) images.push(pool[(seed + i * 2) % pool.length]);
+      }
+      ProjectCollage.render(collageEl, images, { alt: el.dataset.title || '' });
 
       title.textContent = el.dataset.title || '';
       category.textContent = (el.dataset.category || '').toUpperCase();

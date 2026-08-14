@@ -1743,28 +1743,68 @@ main { padding-top: var(--nav-h); }
   border-radius: 20px;
   overflow: hidden;
 }
-.lightbox-grid {
+/* Automatic Editorial Horizontal Collage System — generic, reusable, no
+   per-project knowledge. Given any set of images it builds an asymmetric
+   2-row strip sized from each image's own aspect ratio (ProjectCollage.render
+   in the script at the bottom of this file does the measuring/placement;
+   this just defines the grid + row-height/gap tokens it reads). Exactly 2
+   rows always (grid-template-rows), columns grow as needed (grid-auto-flow:
+   column dense lets the browser's own packer fill 1-row gaps with the next
+   fitting item instead of us hand-placing anything), and overflow-x:auto
+   instead of ever shrinking images to fit. */
+.project-collage {
+  --pc-row-h: 190px;
+  --pc-gap: 16px;
+  --pc-radius: 14px;
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 2px;
+  grid-template-rows: repeat(2, var(--pc-row-h));
+  grid-auto-flow: column dense;
+  grid-auto-columns: max-content;
+  gap: var(--pc-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
   background: var(--ink);
+  padding: var(--pc-gap);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
 }
-.lightbox-cell { overflow: hidden; }
-.lightbox-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.project-collage::-webkit-scrollbar { height: 6px; }
+.project-collage::-webkit-scrollbar-track { background: transparent; }
+.project-collage::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 999px; }
+.pc-item {
+  height: 100%;
+  border-radius: var(--pc-radius);
+  overflow: hidden;
+  background: #000;
+}
+.pc-item.pc-span2 { grid-row: span 2; }
+/* Never crop — width is set inline per-image (computed from its real aspect
+   ratio at the row height above), height simply fills its row(s). No
+   object-fit:cover anywhere; the box IS the image's own proportions. */
+.pc-item img { display: block; height: 100%; width: 100%; border-radius: inherit; }
+@media (max-width: 720px) {
+  .project-collage { --pc-row-h: 130px; --pc-gap: 10px; --pc-radius: 10px; }
+}
 .lightbox-caption {
   flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  align-items: start;
+  gap: var(--space-5);
   padding: var(--space-4) var(--space-5);
   background: var(--purple);
   color: var(--white);
 }
-.lightbox-caption-main { flex: 0 0 auto; min-width: 180px; }
+.lightbox-caption-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.lightbox-caption-main { display: flex; flex-direction: column; gap: 4px; }
 .lightbox-caption h3 {
   font-family: 'Playfair Display', serif;
   font-style: italic;
@@ -1781,7 +1821,6 @@ main { padding-top: var(--nav-h); }
   color: #a89fb3;
 }
 .lightbox-desc {
-  width: 100%;
   margin: 0;
   color: #cfc7d6;
   font-size: 15px;
@@ -1794,7 +1833,6 @@ main { padding-top: var(--nav-h); }
   text-transform: uppercase;
   color: var(--lima);
 }
-.lightbox-work-block, .lightbox-tags-block { width: 100%; }
 .lightbox-work {
   margin: 0;
   color: #cfc7d6;
@@ -1832,8 +1870,7 @@ main { padding-top: var(--nav-h); }
 }
 
 @media (max-width: 640px) {
-  .lightbox-caption { flex-direction: column; }
-  .lightbox-desc { flex-basis: auto; }
+  .lightbox-caption { grid-template-columns: 1fr; }
 }
 
 /* Project form modal */
