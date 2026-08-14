@@ -499,7 +499,11 @@
   <div class="lightbox" id="lightbox">
     <div class="lightbox-inner">
       <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
-      <div class="project-collage" id="lightboxCollage"></div>
+      <div class="project-collage-wrap">
+        <div class="project-collage" id="lightboxCollage"></div>
+        <button type="button" class="pc-nav pc-nav-prev" id="pcNavPrev" aria-label="Anterior">←</button>
+        <button type="button" class="pc-nav pc-nav-next" id="pcNavNext" aria-label="Siguiente">→</button>
+      </div>
       <div class="lightbox-caption">
         <div class="lightbox-caption-col lightbox-caption-col-main">
           <div class="lightbox-caption-main">
@@ -990,7 +994,7 @@ var ProjectCollage = (function () {
         images = [{ src: mainImg, priority: 2 }];
         for (var i = 0; i < 3; i++) images.push(pool[(seed + i * 2) % pool.length]);
       }
-      ProjectCollage.render(collageEl, images, { alt: el.dataset.title || '' });
+      ProjectCollage.render(collageEl, images, { alt: el.dataset.title || '' }).then(updatePcNav);
 
       title.textContent = el.dataset.title || '';
       category.textContent = (el.dataset.category || '').toUpperCase();
@@ -1019,6 +1023,61 @@ var ProjectCollage = (function () {
   closeBtn.addEventListener('click', close);
   lightbox.addEventListener('click', function (e) { if (e.target === lightbox) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  /* No visible scrollbar (see .project-collage in styles.css) — instead,
+     getting the mouse near the collage's left/right edge auto-scrolls it in
+     that direction for as long as it stays there, plus two round arrow
+     buttons for an explicit click-driven option. Native touch/trackpad
+     scrolling and keyboard arrows still work untouched underneath. */
+  var navPrev = document.getElementById('pcNavPrev');
+  var navNext = document.getElementById('pcNavNext');
+
+  function updatePcNav() {
+    var max = collageEl.scrollWidth - collageEl.clientWidth;
+    navPrev.classList.toggle('is-hidden', max <= 1 || collageEl.scrollLeft <= 1);
+    navNext.classList.toggle('is-hidden', max <= 1 || collageEl.scrollLeft >= max - 1);
+  }
+  collageEl.addEventListener('scroll', updatePcNav, { passive: true });
+  window.addEventListener('resize', updatePcNav);
+
+  navPrev.addEventListener('click', function () {
+    collageEl.scrollBy({ left: -collageEl.clientWidth * 0.8, behavior: 'smooth' });
+  });
+  navNext.addEventListener('click', function () {
+    collageEl.scrollBy({ left: collageEl.clientWidth * 0.8, behavior: 'smooth' });
+  });
+
+  var EDGE_ZONE = 90; // px from the left/right edge that counts as "near it"
+  var MAX_SPEED = 16; // px/frame right at the very edge
+  var edgeDir = 0; // -1 left, 0 none, 1 right
+  var edgeSpeed = 0;
+  var rafId = null;
+
+  function edgeScrollTick() {
+    if (edgeDir !== 0) {
+      collageEl.scrollLeft += edgeDir * edgeSpeed;
+      rafId = requestAnimationFrame(edgeScrollTick);
+    } else {
+      rafId = null;
+    }
+  }
+  collageEl.addEventListener('mousemove', function (e) {
+    var rect = collageEl.getBoundingClientRect();
+    var distFromLeft = e.clientX - rect.left;
+    var distFromRight = rect.right - e.clientX;
+    var prevDir = edgeDir;
+    if (distFromLeft < EDGE_ZONE) {
+      edgeDir = -1;
+      edgeSpeed = MAX_SPEED * (1 - Math.max(distFromLeft, 0) / EDGE_ZONE);
+    } else if (distFromRight < EDGE_ZONE) {
+      edgeDir = 1;
+      edgeSpeed = MAX_SPEED * (1 - Math.max(distFromRight, 0) / EDGE_ZONE);
+    } else {
+      edgeDir = 0;
+    }
+    if (edgeDir !== 0 && prevDir === 0 && rafId === null) rafId = requestAnimationFrame(edgeScrollTick);
+  });
+  collageEl.addEventListener('mouseleave', function () { edgeDir = 0; });
 })();
 
 /* Hub "W": types itself in on first view, hover reveals the full WoW logo, click opens the project form */

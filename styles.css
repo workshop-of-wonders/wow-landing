@@ -1965,12 +1965,19 @@ main { padding-top: var(--nav-h); }
    column dense lets the browser's own packer fill 1-row gaps with the next
    fitting item instead of us hand-placing anything), and overflow-x:auto
    instead of ever shrinking images to fit. */
+.project-collage-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+}
 .project-collage {
   --pc-row-h: 190px;
   --pc-gap: 16px;
   --pc-radius: 14px;
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
   display: grid;
   grid-template-rows: repeat(2, var(--pc-row-h));
   grid-auto-flow: column dense;
@@ -1980,12 +1987,14 @@ main { padding-top: var(--nav-h); }
   overflow-y: hidden;
   background: var(--ink);
   padding: var(--pc-gap);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.25) transparent;
+  /* Scrollbar hidden — hovering near an edge auto-scrolls that direction
+     (see the mousemove handler in index.html), and the pc-nav arrow buttons
+     are the click-driven option, so there's no visible scrollbar track.
+     Still a native scroll container underneath (touch/trackpad scroll and
+     keyboard still work), just undecorated. */
+  scrollbar-width: none;
 }
-.project-collage::-webkit-scrollbar { height: 6px; }
-.project-collage::-webkit-scrollbar-track { background: transparent; }
-.project-collage::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 999px; }
+.project-collage::-webkit-scrollbar { display: none; }
 .pc-item {
   height: 100%;
   border-radius: var(--pc-radius);
@@ -1997,6 +2006,39 @@ main { padding-top: var(--nav-h); }
    ratio at the row height above), height simply fills its row(s). No
    object-fit:cover anywhere; the box IS the image's own proportions. */
 .pc-item img { display: block; height: 100%; width: 100%; border-radius: inherit; }
+.pc-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--lima);
+  color: var(--purple);
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  opacity: 0.95;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.pc-nav:hover { opacity: 1; transform: translateY(-50%) scale(1.06); }
+.pc-nav-prev { left: 16px; transform: translateY(-50%); }
+.pc-nav-prev:hover { transform: translateY(-50%) scale(1.06); }
+.pc-nav-next { right: 16px; transform: translateY(-50%); }
+.pc-nav-next:hover { transform: translateY(-50%) scale(1.06); }
+/* Hidden entirely once there's nowhere left to scroll that direction —
+   JS toggles this via .is-hidden rather than unmounting the buttons. */
+.pc-nav.is-hidden { display: none; }
+@media (max-width: 720px) {
+  .pc-nav { width: 38px; height: 38px; font-size: 15px; }
+  .pc-nav-prev { left: 8px; }
+  .pc-nav-next { right: 8px; }
+}
 @media (max-width: 720px) {
   .project-collage { --pc-row-h: 130px; --pc-gap: 10px; --pc-radius: 10px; }
 }
