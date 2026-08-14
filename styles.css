@@ -1141,6 +1141,13 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   color: var(--white);
   overflow: hidden;
+  /* Forces its own GPU compositor layer. Without this, a sticky element whose
+     children get their inline transform/left/top rewritten every scroll frame
+     (the rocket + progress ring here) can occasionally leave a stale painted
+     frame behind during fast scrolling — reads as a "ghost" duplicate of the
+     circle until the next full repaint catches up. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 @media (max-width: 720px) {
   .toggle-pin { height: auto; }
@@ -1184,7 +1191,21 @@ main { padding-top: var(--nav-h); }
     gap: var(--space-6);
   }
   .method-header { flex: 0 1 340px; }
-  .method-loop { flex: 0 0 auto; }
+  .method-loop { flex: 0 0 auto; margin-left: auto; }
+  /* The PROCESO watermark normally spans the section's full width — confine it
+     to roughly the header's column and drop it to the bottom-left instead,
+     so it can never visually collide with the loop/cards on the right no
+     matter the viewport height (a vertical-clearance fix would only have
+     worked at some heights, not all). */
+  .method .outline-word {
+    left: var(--page-x);
+    right: auto;
+    top: auto;
+    bottom: var(--space-4);
+    max-width: 420px;
+    text-align: left;
+    white-space: normal;
+  }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
    on small screens). At 721px+ it becomes a real circle: the 4 cards move to
