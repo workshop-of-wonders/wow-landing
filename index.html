@@ -1061,7 +1061,13 @@ var ProjectCollage = (function () {
       rafId = null;
     }
   }
-  collageEl.addEventListener('mousemove', function (e) {
+  /* Bound to the wrapper (which also contains the two pc-nav buttons),
+     not collageEl itself — the buttons sit visually on top of collageEl's
+     edges, and binding to collageEl meant hovering a button fired collageEl's
+     mouseleave (pointer now "over" the button, a sibling), stopping the
+     auto-scroll right where the client most wanted it to keep going. */
+  var collageWrap = collageEl.parentElement;
+  collageWrap.addEventListener('mousemove', function (e) {
     var rect = collageEl.getBoundingClientRect();
     var distFromLeft = e.clientX - rect.left;
     var distFromRight = rect.right - e.clientX;
@@ -1077,7 +1083,7 @@ var ProjectCollage = (function () {
     }
     if (edgeDir !== 0 && prevDir === 0 && rafId === null) rafId = requestAnimationFrame(edgeScrollTick);
   });
-  collageEl.addEventListener('mouseleave', function () { edgeDir = 0; });
+  collageWrap.addEventListener('mouseleave', function () { edgeDir = 0; });
 })();
 
 /* Hub "W": types itself in on first view, hover reveals the full WoW logo, click opens the project form */
