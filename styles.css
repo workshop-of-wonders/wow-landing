@@ -1071,6 +1071,13 @@ main { padding-top: var(--nav-h); }
 .hub-center:hover .hub-w, .hub-center.is-open .hub-w { opacity: 0; }
 .hub-center:hover .hub-full-logo, .hub-center.is-open .hub-full-logo { opacity: 1; transform: scale(1); }
 .hub-center-wrap {
+  /* position+z-index needed so this (and the CTA link inside it) paints above
+     .hub-arrows — that SVG is position:absolute with z-index:0, and per CSS
+     stacking rules a positioned element always paints above a non-positioned
+     one regardless of DOM order, so without this the invisible SVG silently
+     ate every click meant for the link underneath it. */
+  position: relative;
+  z-index: 1;
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
