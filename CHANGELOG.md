@@ -41,6 +41,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-08-14** — Sorted each mega-menu column's services alphabetically (was ad-hoc order from however each was added over the session). Category order (Brand Strategy → Brand + Creative → Digital Experience → Growth Marketing → Paid Media → Marketing Intelligence) left as-is, only the items within each column were reordered.
+
 **2026-08-14** — Cleaned up mega-menu redundancy flagged in a review: removed "Naming" (Brand Strategy), "Dashboards en Power BI" (redundant with "Reportería y dashboards"), "Diseño gráfico" (redundant umbrella over the specific Brand+Creative items), "Analítica e Insights" (redundant with the other Marketing Intelligence items, esp. "Segmentación de audiencias" which its own description already mentioned), and all three "Consultoría" entries (de marca / en marketing digital / con base en métricas). Merged "Packaging" and "Merch" back into one "Packaging & Merch" entry. Explicitly kept Google Ads/Meta Ads/TikTok Ads despite them overlapping with "Pauta digital" — client's call, they want those exact keyword strings on the page for their own SEO.
 
 **2026-08-14** — Renamed "CRO" to "CRO (Optimización de la Tasa de Conversión)" and removed "Optimización de embudos" — the two had become redundant once CRO was added (both describing conversion optimization), client kept the spelled-out CRO entry.
