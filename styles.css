@@ -215,15 +215,93 @@ main { padding-top: var(--nav-h); }
 .nav-dot-orange { background: var(--orange); }
 .nav-dot-ink { background: var(--white); }
 .nav-dot-cloud { background: var(--cloud); }
-.nav-dropdown-col a {
+.nav-dropdown-col a,
+.nav-dropdown-link {
+  display: block;
+  /* Shrink to fit the text (not stretched to the column's full width by the
+     flex column's default align-items:stretch) — the popup's arrow is
+     centered using this element's own getBoundingClientRect(), so it needs
+     to end at the text, not the whole row's clickable width. */
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
   font-family: var(--font-body);
   font-size: 14px;
   text-transform: none;
   letter-spacing: normal;
   color: #d9d2e0;
+  cursor: pointer;
   transition: color 0.15s ease;
 }
-.nav-dropdown-col a:hover { color: var(--lima); }
+.nav-dropdown-col a:hover,
+.nav-dropdown-link:hover,
+.nav-dropdown-link.active { color: var(--lima); }
+/* Click a service to see a short description — same white-card popup
+   pattern as .hub-popup (services section), positioned relative to
+   .nav-dropdown (which is itself the containing block, being
+   position:fixed) instead of #hubDiagram. */
+.nav-service-popup {
+  position: absolute;
+  z-index: 10;
+  /* Vertically centered on the clicked link via translateY(-50%) (top is set
+     in JS to the link's own vertical center) — the horizontal position is
+     plain px set in JS (not a transform), since it flips from "right of the
+     link" to "left of the link" depending on available space, and mixing
+     that flip with a translateX(-50%)-style trick gets confusing fast. */
+  top: 0;
+  left: 0;
+  transform: translateY(-50%) translateX(6px) scale(0.96);
+  width: 240px;
+  max-width: 70vw;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--purple);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.nav-service-popup.is-open { opacity: 1; transform: translateY(-50%) translateX(0) scale(1); pointer-events: auto; }
+.nav-service-popup.is-flip { transform: translateY(-50%) translateX(-6px) scale(0.96); }
+.nav-service-popup.is-flip.is-open { transform: translateY(-50%) translateX(0) scale(1); }
+.nav-service-popup p { margin: 0; }
+.nav-service-popup-cta {
+  display: inline-block;
+  margin-top: var(--space-2);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--purple);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.nav-service-popup-cta:hover { color: var(--magenta); }
+.nav-service-popup-arrow {
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: var(--white);
+  border-radius: 2px;
+}
+/* Flipped when there isn't enough room to the right (links in the last
+   column or two) — popup sits to the left of the link instead, so the
+   arrow needs to move to the popup's right edge. */
+.nav-service-popup.is-flip .nav-service-popup-arrow { left: auto; right: -6px; }
 .nav-dropdown-cta {
   align-self: flex-start;
   font-family: var(--font-mono);
