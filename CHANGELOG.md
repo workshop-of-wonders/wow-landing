@@ -22,6 +22,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 - **Real photos still needed for 4 brands**: Prepapp, MJ Studio, Seed Capital, and Moonking are still colored gradient cards (name + tagline, no photo, no lightbox) — Acústica Eafit is the 5th. AM Studios, Tata's Photos, and Geco. got real photos 2026-08-11 (see log) and were converted back to real `<button data-lightbox>` items; do the same for the rest once photos exist.
 - **`tiny.png` client logo identity unconfirmed**: `design-system/clients/tiny.png` (teal cursive mark) visually resembles the Tin-T! logo but wasn't confirmed against a source — left its caption/title as generic "Tiny" rather than guessing. Confirm with the client and either rename to Tin-T! or correct it.
+- **4 client-logo marquee entries have placeholder copy + wrong lightbox photos**: Bary, Bilac, Tiny, and Amlogo (in `.work-brands-track`, `index.html` ~405-418) all share the identical generic `data-desc="Desarrollo de Marca"` instead of real per-client copy. Worse, Bary/Bilac/Tiny's `data-img` points at an unrelated *other* project's hero photo (Bary→`tin-t.png`, Bilac→`lamparas-milan.png`, Tiny→`aja-waffles.png`), so clicking their logo opens the wrong image in the lightbox. Need real descriptions + correct source images for these 4 (found 2026-08-14 while removing the separate "Epikastore" duplicate below; not fixed yet, no real copy available to fill in).
 - **Lead form backend**: the "Cuéntanos tu proyecto" modal (project form) submits nowhere — it just shows a local thank-you message. Need a destination (email, CRM, Google Sheet, Formspree, etc.) to actually wire it up.
 - **Client logo sizing**: logos are transparent + tight-cropped and rendered at a consistent height, but some may still look slightly different in visual weight due to each source file's original design (not fixable purely with CSS).
 
@@ -39,6 +40,8 @@ This file is the working log for this project. **Claude: read this file at the s
 ---
 
 ## Log
+
+**2026-08-14** — Removed a duplicate client-logo marquee entry: "Epikastore" (`index.html`, both copies of the doubled marquee loop) was a logo-only stand-in for the same client already shown as the real "Epika Store" project (hero mosaic + full work-item case study). Found while reviewing the site for duplicated copy — see the new pending item above for 4 other marquee entries (Bary, Bilac, Tiny, Amlogo) that share identical placeholder text and, for 3 of them, point their lightbox image at the wrong project's photo; those weren't touched since there's no real copy/images to replace them with yet.
 
 **2026-08-14** — Synced each Proceso step card's reveal (and its dot lighting up) to the exact moment the rocket arrives at that step's dot, instead of an offset guess. The rocket's angle formula (`angleDeg = -90 + mProg*360`) puts it on dot `i` exactly when `mProg === i/4`, so `stepThreshold` and the dot-lit check in `updateScrollScrubs()` (`index.html`) now both use that same `i/N` fraction — was `(i+0.3)/N` for cards and `(i+0.5)/N` for dots, two different offsets that didn't line up with either the rocket or each other. Verified at `mProg≈0.25`: rocket sits exactly on dot 2 and "02 — CORE" is the only card past card 1 that's visible.
 
