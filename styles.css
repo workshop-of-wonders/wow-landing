@@ -1154,11 +1154,11 @@ main { padding-top: var(--nav-h); }
   .toggle-section { position: relative; top: auto; height: auto; min-height: 0; display: block; }
   .toggle-inner { flex-direction: column; }
 }
-/* Method's mobile-fallback cutoff is wider than most (1499px, not 720px) because
+/* Method's mobile-fallback cutoff is wider than most (1300px, not 720px) because
    the circular loop needs real room to breathe — see .method-loop below. Below
    this it drops the scroll-pin/circle entirely for the plain stacked-cards view,
    rather than trying to squeeze a circle into a cramped tablet width. */
-@media (max-width: 1499px) {
+@media (max-width: 1299px) {
   .method-pin { height: auto; }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
@@ -1179,7 +1179,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   gap: var(--space-5);
 }
-@media (min-width: 1500px) {
+@media (min-width: 1300px) {
   /* Text stays left; the loop sits to the right, not centered on the page — and
      everything here is sized to fit within one sticky viewport (.method's own
      height) with no vertical overflow, since .method clips overflow rather than
@@ -1193,15 +1193,15 @@ main { padding-top: var(--nav-h); }
   .method-header { flex: 0 1 340px; }
   /* margin-right reserves room for the ms-2 card, which pokes out well past the
      ring's own right edge (anchored at the ring, then pushed further out by its
-     own width + gap) — without this buffer it can clip past the viewport edge
-     on narrower desktop widths since margin-left:auto pushes the ring flush to
-     the container's right boundary with no slack left for the card. */
-  .method-loop { flex: 0 0 auto; margin-left: auto; margin-right: 250px; }
-  /* The PROCESO watermark normally spans the section's full width — confine it
-     to roughly the header's column and drop it to the bottom-left instead,
-     so it can never visually collide with the loop/cards on the right no
-     matter the viewport height (a vertical-clearance fix would only have
-     worked at some heights, not all). */
+     own width + gap). Computed with calc() off the same --loop-w/--card-w custom
+     properties the ring and cards use below (both vw-based clamps), so the
+     reserved space always exactly matches the actual protrusion at any viewport
+     width instead of a fixed px guess that only worked at one width. */
+  .method-loop {
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-right: calc(var(--card-w) + var(--card-push) - 0.14 * var(--loop-w));
+  }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
    on small screens). At 721px+ it becomes a real circle: the 4 cards move to
@@ -1237,14 +1237,19 @@ main { padding-top: var(--nav-h); }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
 
-@media (min-width: 1500px) {
+@media (min-width: 1300px) {
   .method-loop {
     display: block;
-    /* Sized to comfortably clear the header text + nav/padding within one sticky
-       viewport (.method's own height) — this used to be 640px, centered, which
-       together with the cards poking out above/below was taller than the
-       viewport and got clipped by .method's overflow:hidden. */
-    width: clamp(420px, 32vw, 520px);
+    /* --loop-w/--card-w/--card-push drive the ring, the cards, AND the
+       margin-right buffer above off the same numbers, so shrinking/growing the
+       ring, or making the cards wider/narrower, automatically keeps everything
+       fitting — no more re-tuning three separate hardcoded values by hand.
+       Ring made smaller than before (was 420-520px) specifically to leave more
+       room for wider cards within the same available width. */
+    --loop-w: clamp(280px, 22vw, 360px);
+    --card-w: clamp(230px, 20vw, 320px);
+    --card-push: 24px;
+    width: var(--loop-w);
     aspect-ratio: 1;
   }
   .method-loop-svg {
@@ -1300,7 +1305,7 @@ main { padding-top: var(--nav-h); }
   .method.in-view .method-rocket { opacity: 1; }
   .method-step {
     position: absolute;
-    width: 270px;
+    width: var(--card-w);
     padding: var(--space-4) var(--space-4) var(--space-3);
     opacity: 0;
     transform: none;
@@ -1313,10 +1318,10 @@ main { padding-top: var(--nav-h); }
      then pushed fully outside the ring by the card's own size + a gap — not
      anchored to the container's 0%/50%/100% edges, which put the card right on
      top of the ring itself since the card is much taller than the ring's margin. */
-  .method-step.ms-1 { top: 14%; left: 50%; transform: translate(-50%, calc(-100% - 26px)); text-align: center; }
-  .method-step.ms-2 { top: 50%; left: 86%; transform: translate(26px, -50%); }
-  .method-step.ms-3 { top: 86%; left: 50%; transform: translate(-50%, 26px); text-align: center; }
-  .method-step.ms-4 { top: 50%; left: 14%; transform: translate(calc(-100% - 26px), -50%); text-align: right; }
+  .method-step.ms-1 { top: 14%; left: 50%; transform: translate(-50%, calc(-100% - var(--card-push))); text-align: center; }
+  .method-step.ms-2 { top: 50%; left: 86%; transform: translate(var(--card-push), -50%); }
+  .method-step.ms-3 { top: 86%; left: 50%; transform: translate(-50%, var(--card-push)); text-align: center; }
+  .method-step.ms-4 { top: 50%; left: 14%; transform: translate(calc(-100% - var(--card-push)), -50%); text-align: right; }
 }
 
 /* Work — horizontal scroll gallery */

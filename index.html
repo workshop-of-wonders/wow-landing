@@ -926,7 +926,7 @@ var loopProgressCircumference = 201.06; // 2 * PI * r(32), matches the SVG circl
 var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.loop-dot')) : [];
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
 
-var mobileTimelineQuery = window.matchMedia('(max-width: 1499px)');
+var mobileTimelineQuery = window.matchMedia('(max-width: 1299px)');
 
 function updateScrollScrubs() {
   /* re-read on every call (not cached at load) so rotating a phone or resizing across the breakpoint doesn't leave the scroll math out of sync with the CSS */
