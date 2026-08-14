@@ -729,6 +729,11 @@ main { padding-top: var(--nav-h); }
   will-change: transform;
 }
 .figma-cursor.is-visible { opacity: 1; }
+/* Swap arrow → hand over clickable elements, same Figma-collaborator look
+   (lima fill, purple stroke, "Tú" tag) either way — just the icon shape. */
+.cursor-hand { display: none; }
+.figma-cursor.is-pointer .cursor-arrow { display: none; }
+.figma-cursor.is-pointer .cursor-hand { display: block; }
 .figma-cursor-label {
   margin-top: 14px;
   padding: 2px 8px;
