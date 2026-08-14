@@ -38,6 +38,10 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ---
 
+## Log
+
+**2026-08-14** — Synced each Proceso step card's reveal (and its dot lighting up) to the exact moment the rocket arrives at that step's dot, instead of an offset guess. The rocket's angle formula (`angleDeg = -90 + mProg*360`) puts it on dot `i` exactly when `mProg === i/4`, so `stepThreshold` and the dot-lit check in `updateScrollScrubs()` (`index.html`) now both use that same `i/N` fraction — was `(i+0.3)/N` for cards and `(i+0.5)/N` for dots, two different offsets that didn't line up with either the rocket or each other. Verified at `mProg≈0.25`: rocket sits exactly on dot 2 and "02 — CORE" is the only card past card 1 that's visible.
+
 **2026-08-14** — Corrected the above: client actually wanted the rocket to keep flying around the ring with scroll, just always facing the same "sideways" direction instead of rotating to follow the circle's tangent. Restored the JS position trig (`angleDeg`/`rocketX`/`rocketY` → inline `left`/`top`) in `updateScrollScrubs()`, but this time left rotation out of it — `.method-rocket` in `styles.css` now carries a fixed `transform: rotate(-45deg)` that JS never touches, so the glyph's heading stays constant all the way around the loop.
 
 **2026-08-14** — (superseded a few minutes later, see entry above) Parked the Proceso loop's rocket permanently at the top of the ring (12 o'clock, above card 1) instead of flying it clockwise around the circle in sync with scroll.

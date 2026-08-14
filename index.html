@@ -1083,14 +1083,19 @@ function updateScrollScrubs() {
     if (!isMobileTimeline && loopProgressEl) {
       loopProgressEl.style.strokeDashoffset = (loopProgressCircumference * (1 - mProg)).toFixed(2);
     }
+    /* Desktop: card i sits at dot i, and the rocket's angle formula above
+       (angleDeg = -90 + mProg*360) puts it exactly on dot i when
+       mProg === i/N — so the card and its dot use that same fraction as
+       their reveal threshold, instead of an offset guess, to make the card
+       pop in right as the rocket arrives at its dot. */
     var stepThreshold = function (i) {
-      return isMobileTimeline ? i / stepEls.length : (i + 0.3) / stepEls.length;
+      return i / stepEls.length;
     };
     stepEls.forEach(function (step, i) {
       step.classList.toggle('in-view', mProg > stepThreshold(i));
     });
     dotEls.forEach(function (dot, i) {
-      dot.classList.toggle('lit', mProg > (i + 0.5) / dotEls.length);
+      dot.classList.toggle('lit', mProg > i / dotEls.length);
     });
   }
 }
