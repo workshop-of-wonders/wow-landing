@@ -1154,11 +1154,11 @@ main { padding-top: var(--nav-h); }
   .toggle-section { position: relative; top: auto; height: auto; min-height: 0; display: block; }
   .toggle-inner { flex-direction: column; }
 }
-/* Method's mobile-fallback cutoff is wider than most (1359px, not 720px) because
+/* Method's mobile-fallback cutoff is wider than most (1499px, not 720px) because
    the circular loop needs real room to breathe — see .method-loop below. Below
    this it drops the scroll-pin/circle entirely for the plain stacked-cards view,
    rather than trying to squeeze a circle into a cramped tablet width. */
-@media (max-width: 1359px) {
+@media (max-width: 1499px) {
   .method-pin { height: auto; }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
@@ -1179,7 +1179,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   gap: var(--space-5);
 }
-@media (min-width: 1360px) {
+@media (min-width: 1500px) {
   /* Text stays left; the loop sits to the right, not centered on the page — and
      everything here is sized to fit within one sticky viewport (.method's own
      height) with no vertical overflow, since .method clips overflow rather than
@@ -1196,7 +1196,7 @@ main { padding-top: var(--nav-h); }
      own width + gap) — without this buffer it can clip past the viewport edge
      on narrower desktop widths since margin-left:auto pushes the ring flush to
      the container's right boundary with no slack left for the card. */
-  .method-loop { flex: 0 0 auto; margin-left: auto; margin-right: 190px; }
+  .method-loop { flex: 0 0 auto; margin-left: auto; margin-right: 250px; }
   /* The PROCESO watermark normally spans the section's full width — confine it
      to roughly the header's column and drop it to the bottom-left instead,
      so it can never visually collide with the loop/cards on the right no
@@ -1237,7 +1237,7 @@ main { padding-top: var(--nav-h); }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
 
-@media (min-width: 1360px) {
+@media (min-width: 1500px) {
   .method-loop {
     display: block;
     /* Sized to comfortably clear the header text + nav/padding within one sticky
@@ -1300,14 +1300,14 @@ main { padding-top: var(--nav-h); }
   .method.in-view .method-rocket { opacity: 1; }
   .method-step {
     position: absolute;
-    width: 210px;
-    padding: var(--space-4) var(--space-3) var(--space-3);
+    width: 270px;
+    padding: var(--space-4) var(--space-4) var(--space-3);
     opacity: 0;
     transform: none;
   }
   .method-step .method-num { font-size: 12px; margin-bottom: var(--space-1); }
-  .method-step h3 { font-size: 18px; margin-bottom: 4px; }
-  .method-step p { font-size: 13px; line-height: 1.45; }
+  .method-step h3 { font-size: 19px; margin-bottom: 4px; }
+  .method-step p { font-size: 14px; line-height: 1.5; }
   .method-step.in-view { opacity: 1; }
   /* Anchored at the ring's dot positions (18%/50%/82%, matching .loop-dot below),
      then pushed fully outside the ring by the card's own size + a gap — not
