@@ -1246,8 +1246,8 @@ main { padding-top: var(--nav-h); }
        fitting — no more re-tuning three separate hardcoded values by hand.
        Ring made smaller than before (was 420-520px) specifically to leave more
        room for wider cards within the same available width. */
-    --loop-w: clamp(280px, 22vw, 360px);
-    --card-w: clamp(230px, 20vw, 320px);
+    --loop-w: clamp(260px, 16vw, 300px);
+    --card-w: clamp(220px, 14vw, 260px);
     --card-push: 24px;
     width: var(--loop-w);
     aspect-ratio: 1;
@@ -1306,13 +1306,13 @@ main { padding-top: var(--nav-h); }
   .method-step {
     position: absolute;
     width: var(--card-w);
-    padding: var(--space-4) var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-3) var(--space-2);
     opacity: 0;
     transform: none;
   }
-  .method-step .method-num { font-size: 12px; margin-bottom: var(--space-1); }
-  .method-step h3 { font-size: 19px; margin-bottom: 4px; }
-  .method-step p { font-size: 14px; line-height: 1.5; }
+  .method-step .method-num { font-size: 11px; margin-bottom: 4px; }
+  .method-step h3 { font-size: 16px; margin-bottom: 3px; }
+  .method-step p { font-size: 12px; line-height: 1.4; }
   .method-step.in-view { opacity: 1; }
   /* Anchored at the ring's dot positions (18%/50%/82%, matching .loop-dot below),
      then pushed fully outside the ring by the card's own size + a gap — not
