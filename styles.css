@@ -1757,9 +1757,8 @@ main { padding-top: var(--nav-h); }
 .lightbox-caption {
   flex: 0 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   background: var(--purple);
@@ -1782,18 +1781,30 @@ main { padding-top: var(--nav-h); }
   color: #a89fb3;
 }
 .lightbox-desc {
-  flex: 1 1 260px;
+  width: 100%;
   margin: 0;
-  align-self: center;
   color: #cfc7d6;
   font-size: 15px;
 }
+.lightbox-label {
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lima);
+}
+.lightbox-work-block, .lightbox-tags-block { width: 100%; }
+.lightbox-work {
+  margin: 0;
+  color: #cfc7d6;
+  font-size: 14px;
+  line-height: 1.5;
+}
 .lightbox-tags {
-  flex: 0 0 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  align-self: center;
 }
 .lightbox-tag {
   padding: 6px 14px;
