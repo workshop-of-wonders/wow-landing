@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><text y=%2220%22 font-size=%2220%22>✦</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Playfair+Display:ital@1&family=Open+Sans:wght@800&family=Bree+Serif&family=Quicksand:wght@700&family=Coustard&family=Fredoka:wght@600&family=Teko:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Playfair+Display:ital@1&family=Open+Sans:wght@800&family=Montserrat:wght@600&family=Bree+Serif&family=Quicksand:wght@700&family=Coustard&family=Fredoka:wght@600&family=Teko:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -926,20 +926,23 @@ var ProjectCollage = (function () {
   // Real brand typefaces (from the client's brand board) that are also
   // freely available on Google Fonts — used for the kinetic type tile
   // instead of the site's own display font, so it shows each project's
-  // actual typography. Brands not listed here (or whose real fonts aren't
-  // on Google Fonts) just fall back to the site font.
+  // actual typography: "Aa" in the brand's primary face, "123" in its
+  // secondary one. Most brands only had one of their two real fonts
+  // available on Google Fonts, so "secondary" just falls back to
+  // "primary" for those — only Seed Capital and Orbit have a genuinely
+  // distinct second face available.
   var TYPE_FONT_BY_SLUG = {
-    'seed-capital': "'Open Sans', sans-serif",
-    'arlo': "'Bree Serif', serif",
-    'indeleble': "'Bree Serif', serif",
-    'pretty-pets': "'Quicksand', sans-serif",
-    'clinica-del-cerebro': "'Poppins', sans-serif",
-    'lamparas-milan': "'Coustard', serif",
-    'tatas-photos': "'Poppins', sans-serif",
-    'am-studios': "'Poppins', sans-serif",
-    'aja-waffles': "'Fredoka', sans-serif",
-    'orbit': "'Teko', sans-serif",
-    'prepapp': "'Fredoka', sans-serif"
+    'seed-capital': { primary: "'Open Sans', sans-serif", primaryWeight: 800, secondary: "'Montserrat', sans-serif", secondaryWeight: 600 },
+    'arlo': { primary: "'Bree Serif', serif" },
+    'indeleble': { primary: "'Bree Serif', serif" },
+    'pretty-pets': { primary: "'Quicksand', sans-serif", primaryWeight: 700 },
+    'clinica-del-cerebro': { primary: "'Poppins', sans-serif", primaryWeight: 600 },
+    'lamparas-milan': { primary: "'Coustard', serif" },
+    'tatas-photos': { primary: "'Poppins', sans-serif", primaryWeight: 600 },
+    'am-studios': { primary: "'Poppins', sans-serif", primaryWeight: 600 },
+    'aja-waffles': { primary: "'Fredoka', sans-serif", primaryWeight: 600 },
+    'orbit': { primary: "'Teko', sans-serif", primaryWeight: 500, secondary: "'Teko', sans-serif", secondaryWeight: 700 },
+    'prepapp': { primary: "'Fredoka', sans-serif", primaryWeight: 600 }
   };
 
   function loadImage(src) {
@@ -1026,10 +1029,15 @@ var ProjectCollage = (function () {
         el.style.setProperty('--pc-c1', colors[0]);
         el.style.setProperty('--pc-c2', colors[1]);
         var slugMatch = piece.src.match(/portfolio\/([^/]+)\/type\.webp$/);
-        var typeFont = slugMatch && TYPE_FONT_BY_SLUG[slugMatch[1]];
+        var fonts = slugMatch && TYPE_FONT_BY_SLUG[slugMatch[1]];
         var l1 = document.createElement('span'); l1.className = 'pc-type-line'; l1.textContent = 'Aa';
         var l2 = document.createElement('span'); l2.className = 'pc-type-line'; l2.textContent = '123';
-        if (typeFont) { l1.style.fontFamily = typeFont; l2.style.fontFamily = typeFont; }
+        if (fonts) {
+          l1.style.fontFamily = fonts.primary;
+          if (fonts.primaryWeight) l1.style.fontWeight = fonts.primaryWeight;
+          l2.style.fontFamily = fonts.secondary || fonts.primary;
+          if (fonts.secondaryWeight || fonts.primaryWeight) l2.style.fontWeight = fonts.secondaryWeight || fonts.primaryWeight;
+        }
         el.appendChild(l1);
         el.appendChild(l2);
         container.appendChild(el);
