@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><text y=%2220%22 font-size=%2220%22>✦</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Playfair+Display:ital@1&family=Open+Sans:wght@800&family=Bree+Serif&family=Quicksand:wght@700&family=Coustard&family=Fredoka:wght@600&family=Teko:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -923,6 +923,25 @@ document.addEventListener('click', function (e) {
    CSS grid's own dense packing (grid-auto-flow: column dense, defined in
    styles.css on .project-collage) fill the 2-row strip with no gaps. */
 var ProjectCollage = (function () {
+  // Real brand typefaces (from the client's brand board) that are also
+  // freely available on Google Fonts — used for the kinetic type tile
+  // instead of the site's own display font, so it shows each project's
+  // actual typography. Brands not listed here (or whose real fonts aren't
+  // on Google Fonts) just fall back to the site font.
+  var TYPE_FONT_BY_SLUG = {
+    'seed-capital': "'Open Sans', sans-serif",
+    'arlo': "'Bree Serif', serif",
+    'indeleble': "'Bree Serif', serif",
+    'pretty-pets': "'Quicksand', sans-serif",
+    'clinica-del-cerebro': "'Poppins', sans-serif",
+    'lamparas-milan': "'Coustard', serif",
+    'tatas-photos': "'Poppins', sans-serif",
+    'am-studios': "'Poppins', sans-serif",
+    'aja-waffles': "'Fredoka', sans-serif",
+    'orbit': "'Teko', sans-serif",
+    'prepapp': "'Fredoka', sans-serif"
+  };
+
   function loadImage(src) {
     return new Promise(function (resolve) {
       var img = new Image();
@@ -1000,13 +1019,17 @@ var ProjectCollage = (function () {
       el.style.width = width + 'px';
       if (isType && piece.img) {
         // Kinetic type specimen instead of the static "Aa123" image — same
-        // two brand colors (sampled from the source image), animated.
+        // two brand colors (sampled from the source image), animated, set
+        // in the brand's own real typeface where that's on Google Fonts.
         el.className = 'pc-item pc-item-type';
         var colors = sampleTwoColors(piece.img);
         el.style.setProperty('--pc-c1', colors[0]);
         el.style.setProperty('--pc-c2', colors[1]);
+        var slugMatch = piece.src.match(/portfolio\/([^/]+)\/type\.webp$/);
+        var typeFont = slugMatch && TYPE_FONT_BY_SLUG[slugMatch[1]];
         var l1 = document.createElement('span'); l1.className = 'pc-type-line'; l1.textContent = 'Aa';
         var l2 = document.createElement('span'); l2.className = 'pc-type-line'; l2.textContent = '123';
+        if (typeFont) { l1.style.fontFamily = typeFont; l2.style.fontFamily = typeFont; }
         el.appendChild(l1);
         el.appendChild(l2);
         container.appendChild(el);
