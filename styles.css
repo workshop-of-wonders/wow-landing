@@ -120,7 +120,7 @@ h1 em, h2 em {
 .nav.is-scrolled {
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
-    url("design-system/backgrounds/wow-squiggle-texture.png");
+    url("design-system/backgrounds/wow-squiggle-texture.webp");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
   background-size: cover, cover;
@@ -171,7 +171,7 @@ main { padding-top: var(--nav-h); }
   padding: var(--space-5) var(--page-x);
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
-    url("design-system/backgrounds/wow-squiggle-texture.png");
+    url("design-system/backgrounds/wow-squiggle-texture.webp");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
   background-size: cover, cover;
@@ -490,7 +490,7 @@ main { padding-top: var(--nav-h); }
   margin-top: calc(-1 * var(--nav-h));
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
-    url("design-system/backgrounds/wow-squiggle-texture.png");
+    url("design-system/backgrounds/wow-squiggle-texture.webp");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
   background-size: cover, cover;
