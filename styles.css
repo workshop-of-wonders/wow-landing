@@ -1953,7 +1953,12 @@ main { padding-top: var(--nav-h); }
   to { transform: translateX(-50%); }
 }
 
-@media (max-width: 720px) {
+/* Was max-width: 720px, leaving a 721-900px gap where neither this nor the
+   min-width:901px grid rule applied — cards fell back to the base 320px
+   width in a plain flex-wrap, so shrinking the window into that gap made
+   cards look bigger, not smaller. 900px closes the gap exactly at the grid's
+   own breakpoint. */
+@media (max-width: 900px) {
   .work-item { width: 240px; }
   .work-visible, .work-hidden { justify-content: center; }
   /* .work-door is fluid via clamp()/cqw now — no fixed-size override needed here. */
