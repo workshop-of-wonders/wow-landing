@@ -735,8 +735,16 @@ main { padding-top: var(--nav-h); }
 .media-col:hover { animation-play-state: paused; }
 .media-card span { font-size: 22px; }
 .media-photo {
-  background-size: cover;
+  /* contain, not cover: the card's aspect-ratio can change across
+     breakpoints (see the mobile override further down, which drops
+     aspect-ratio to auto), so a fixed image ratio can't always match the
+     box — contain guarantees the full photo is always visible instead of
+     cropping it whenever ratio and box disagree. background-color is the
+     letterbox fill for the space that opens up on either side. */
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
+  background-color: var(--purple);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
 }
 
@@ -1637,11 +1645,13 @@ main { padding-top: var(--nav-h); }
 }
 .work-item:hover { transform: translateY(-4px); }
 .work-item.is-highlighted { box-shadow: 0 0 0 3px var(--lima); transform: translateY(-4px); }
-/* Source photos are tall (1024x1536) full-page screenshots, cards are wide+short
-   (320x220) — cover fills the card edge-to-edge (no letterboxing) but has to crop
-   most of the image's height; anchoring to the top keeps the hero/headline area
-   (the most representative part of each screenshot) instead of a centered slice. */
-.work-item img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+/* contain, not cover: .work-item resizes across breakpoints (240x170 on
+   mobile vs 320x220 on desktop — different ratios), so a fixed image can't
+   always match the box exactly. contain guarantees the full photo is
+   always visible instead of cropping whenever ratio and box disagree;
+   .work-item's own white background (see below) fills the letterboxed
+   space. */
+.work-item img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* "Abrir el taller" door — click reveals the rest of the gallery from behind it.
    Real 3D: the leaf rotates on a fixed left-edge hinge (transform-origin), no
