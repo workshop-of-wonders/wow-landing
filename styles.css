@@ -1605,9 +1605,10 @@ main { padding-top: var(--nav-h); }
   }
   .work-visible .work-item,
   .work-hidden .work-item { width: 100%; }
-  /* .work-door's own width: clamp(...) (defined later in the file, so it already
-     wins the cascade over a same-specificity rule here) handles sizing — just
-     center it in its grid cell. */
+  /* Match the door's height to the photo cards in its row (which set the row's
+     height via their own aspect-ratio) instead of the door's own width-driven
+     clamp() — width then follows from the door art's fixed aspect-ratio. */
+  .work-visible .work-door { width: auto; height: 100%; }
   .work-door { margin: 0 auto; }
 }
 /* Was capped at 900px, which clipped the bottom row/cards once there were enough
