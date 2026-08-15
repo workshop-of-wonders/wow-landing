@@ -968,7 +968,11 @@ var ProjectCollage = (function () {
       var isLogo = isLogoAsset.test(piece.src);
       var isTall = !isLogo && (isSingle || piece.ratio < 0.85);
       var height = isTall ? (rowH * 2 + gap) : rowH;
-      var width = isLogo ? height : Math.round(height * piece.ratio);
+      // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
+      // every logo tile to a 1:1 square shrinks those down to near-illegible.
+      // Follow the real ratio like photos do, just clamped to a sane 1:1–1:2.2
+      // range so a square icon doesn't go narrower than square either.
+      var width = isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio);
       var el = document.createElement('div');
       el.className = 'pc-item' + (isTall ? ' pc-span2' : '') + (isLogo ? ' pc-item-logo' : '');
       el.style.width = width + 'px';
