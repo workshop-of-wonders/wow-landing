@@ -1864,13 +1864,16 @@ main { padding-top: var(--nav-h); }
   text-transform: none;
 }
 
-/* Brands without a real project photo yet: a colored card with name + tagline instead of an image */
+/* Brands without a real project photo yet: a colored card with name + tagline instead of an image.
+   These have no <img> to derive a height from (unlike photo .work-item cards), so they need their
+   own aspect-ratio to avoid collapsing to just the text's height. */
 .work-item-color {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 6px;
   padding: var(--space-3);
+  aspect-ratio: 3 / 2;
   color: var(--white);
   cursor: default;
 }
@@ -1884,7 +1887,6 @@ main { padding-top: var(--nav-h); }
   opacity: 0.9;
 }
 .work-item-prepapp { background: linear-gradient(160deg, #3B82F6, #f97316); }
-.work-item-mjstudio { background: linear-gradient(160deg, #c9a6e8, #f7c8dd 55%, #f9e28a); }
 .work-item-seedcapital { background: linear-gradient(160deg, #f97316, #14b8a6 60%, #22c55e); }
 .work-item-moonking { background: linear-gradient(160deg, #0b0b0f, #ec4899); }
 
@@ -1901,6 +1903,7 @@ main { padding-top: var(--nav-h); }
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3);
+  aspect-ratio: 3 / 2;
   color: var(--white);
   text-align: center;
   cursor: pointer;
