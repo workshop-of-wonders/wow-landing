@@ -1596,9 +1596,12 @@ main { padding-top: var(--nav-h); }
     grid-template-columns: repeat(5, minmax(0, 1fr));
     align-items: end;
   }
+  /* Same 5 columns as .work-visible above — was 3, which made the (wider) columns
+     produce visibly bigger photo cards than the row above once cards started
+     sizing to each photo's own ratio instead of a shared fixed box. */
   .work-hidden {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .work-visible .work-item,
   .work-hidden .work-item { width: 100%; }
