@@ -871,7 +871,11 @@ main { padding-top: var(--nav-h); }
   }
   .media-col-b { animation: heroRowRight 32s linear infinite !important; }
   .media-col-c { display: none; }
-  .hero-media .media-card { flex: 0 0 auto; width: 112px; height: 100%; aspect-ratio: auto; }
+  /* aspect-ratio 2/3 matches these photos' real ratio almost exactly, so the
+     card's width now derives from the row's fixed height instead of being a
+     separate guess (112px) that didn't match — that mismatch was letterboxing
+     every card in this row. */
+  .hero-media .media-card { flex: 0 0 auto; width: auto; height: 100%; aspect-ratio: 2 / 3; }
   @keyframes heroRowLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes heroRowRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 }
@@ -1634,7 +1638,6 @@ main { padding-top: var(--nav-h); }
 .work-item {
   flex: 0 0 auto;
   width: 320px;
-  height: 220px;
   border-radius: 18px;
   border: none;
   padding: 0;
@@ -1645,13 +1648,10 @@ main { padding-top: var(--nav-h); }
 }
 .work-item:hover { transform: translateY(-4px); }
 .work-item.is-highlighted { box-shadow: 0 0 0 3px var(--lima); transform: translateY(-4px); }
-/* contain, not cover: .work-item resizes across breakpoints (240x170 on
-   mobile vs 320x220 on desktop — different ratios), so a fixed image can't
-   always match the box exactly. contain guarantees the full photo is
-   always visible instead of cropping whenever ratio and box disagree;
-   .work-item's own white background (see below) fills the letterboxed
-   space. */
-.work-item img { width: 100%; height: 100%; object-fit: contain; display: block; }
+/* No fixed height and no object-fit games: the card's own height comes from
+   the image's intrinsic aspect ratio, so the box always matches the photo
+   instead of the photo being fitted (and letterboxed) into a fixed box. */
+.work-item img { width: 100%; height: auto; display: block; }
 
 /* "Abrir el taller" door — click reveals the rest of the gallery from behind it.
    Real 3D: the leaf rotates on a fixed left-edge hinge (transform-origin), no
@@ -1951,7 +1951,7 @@ main { padding-top: var(--nav-h); }
 }
 
 @media (max-width: 720px) {
-  .work-item { width: 240px; height: 170px; }
+  .work-item { width: 240px; }
   .work-visible, .work-hidden { justify-content: center; }
   /* .work-door is fluid via clamp()/cqw now — no fixed-size override needed here. */
 }
