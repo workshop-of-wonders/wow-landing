@@ -2086,7 +2086,7 @@ main { padding-top: var(--nav-h); }
   justify-content: center;
   background: linear-gradient(90deg, var(--pc-c1) 50%, var(--pc-c2) 50%);
   background-size: 220% 100%;
-  animation: pcTypeSlide 9s ease-in-out infinite alternate;
+  animation: pcTypeSlide 2s ease-in-out infinite alternate;
   overflow: hidden;
 }
 .pc-type-line {
