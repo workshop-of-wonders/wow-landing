@@ -923,13 +923,33 @@ document.addEventListener('click', function (e) {
    CSS grid's own dense packing (grid-auto-flow: column dense, defined in
    styles.css on .project-collage) fill the 2-row strip with no gaps. */
 var ProjectCollage = (function () {
-  function loadDimensions(src) {
+  function loadImage(src) {
     return new Promise(function (resolve) {
       var img = new Image();
-      img.onload = function () { resolve({ w: img.naturalWidth || 1, h: img.naturalHeight || 1 }); };
-      img.onerror = function () { resolve({ w: 4, h: 3 }); };
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { resolve(null); };
       img.src = src;
     });
+  }
+
+  // The static "Aa123" type-specimen image is just two flat color halves —
+  // sampled here so the kinetic tile below can reuse each brand's own two
+  // colors instead of a generic palette.
+  function sampleTwoColors(img) {
+    try {
+      var c = document.createElement('canvas');
+      c.width = 20; c.height = 20;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, 20, 20);
+      // Sample near the corners, not the center — the specimen's bold white
+      // "Aa 123" glyphs sit in the middle of each half, so a center sample
+      // picks up text pixels and washes the color out.
+      var d1 = ctx.getImageData(2, 2, 1, 1).data;
+      var d2 = ctx.getImageData(17, 2, 1, 1).data;
+      return ['rgb(' + d1[0] + ',' + d1[1] + ',' + d1[2] + ')', 'rgb(' + d2[0] + ',' + d2[1] + ',' + d2[2] + ')'];
+    } catch (e) {
+      return ['#7c3aed', '#ec4899'];
+    }
   }
 
   function normalize(images) {
@@ -945,10 +965,11 @@ var ProjectCollage = (function () {
     var items = normalize(images);
     if (!items.length) { container.innerHTML = ''; return; }
 
-    var dims = await Promise.all(items.map(function (it) { return loadDimensions(it.src); }));
+    var loaded = await Promise.all(items.map(function (it) { return loadImage(it.src); }));
     var pieces = items.map(function (it, i) {
-      var ratio = dims[i].w / dims[i].h;
-      return { src: it.src, priority: it.priority, ratio: ratio };
+      var img = loaded[i];
+      var ratio = img ? (img.naturalWidth || 1) / (img.naturalHeight || 1) : 4 / 3;
+      return { src: it.src, priority: it.priority, ratio: ratio, img: img };
     });
 
     // Every piece is one row tall by default — no .pc-span2 — with two
@@ -963,10 +984,12 @@ var ProjectCollage = (function () {
     // the mark with no breathing room. These get a padded card treatment
     // instead (see .pc-item-logo in styles.css).
     var isLogoAsset = /\/(?:portfolio\/[^/]+\/(?:logo|icon)|clients\/[^/]+)\.webp$/;
+    var isTypeAsset = /\/type\.webp$/;
     container.innerHTML = '';
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
-      var isTall = !isLogo && (isSingle || piece.ratio < 0.85);
+      var isType = isTypeAsset.test(piece.src);
+      var isTall = !isLogo && !isType && (isSingle || piece.ratio < 0.85);
       var height = isTall ? (rowH * 2 + gap) : rowH;
       // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
       // every logo tile to a 1:1 square shrinks those down to near-illegible.
@@ -974,8 +997,22 @@ var ProjectCollage = (function () {
       // range so a square icon doesn't go narrower than square either.
       var width = isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio);
       var el = document.createElement('div');
-      el.className = 'pc-item' + (isTall ? ' pc-span2' : '') + (isLogo ? ' pc-item-logo' : '');
       el.style.width = width + 'px';
+      if (isType && piece.img) {
+        // Kinetic type specimen instead of the static "Aa123" image — same
+        // two brand colors (sampled from the source image), animated.
+        el.className = 'pc-item pc-item-type';
+        var colors = sampleTwoColors(piece.img);
+        el.style.setProperty('--pc-c1', colors[0]);
+        el.style.setProperty('--pc-c2', colors[1]);
+        var l1 = document.createElement('span'); l1.className = 'pc-type-line'; l1.textContent = 'Aa';
+        var l2 = document.createElement('span'); l2.className = 'pc-type-line'; l2.textContent = '123';
+        el.appendChild(l1);
+        el.appendChild(l2);
+        container.appendChild(el);
+        return;
+      }
+      el.className += 'pc-item' + (isTall ? ' pc-span2' : '') + (isLogo ? ' pc-item-logo' : '');
       var img = document.createElement('img');
       img.src = piece.src;
       img.alt = opts.alt || '';

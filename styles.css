@@ -2074,6 +2074,42 @@ main { padding-top: var(--nav-h); }
   box-sizing: border-box;
 }
 .pc-item-logo img { width: 100%; height: 100%; object-fit: contain; animation: none; }
+/* Kinetic type specimen (replaces the old static "Aa123" screenshot): the
+   same two brand colors as the original swatch, now animated — the split
+   drifts side to side and each line breathes at its own pace so it doesn't
+   look like a frozen product shot. */
+.pc-item-type {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, var(--pc-c1) 50%, var(--pc-c2) 50%);
+  background-size: 220% 100%;
+  animation: pcTypeSlide 9s ease-in-out infinite alternate;
+  overflow: hidden;
+}
+.pc-type-line {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  font-size: calc(var(--pc-row-h, 190px) * 0.22);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  animation: pcTypePulse 4s ease-in-out infinite;
+}
+.pc-type-line:last-child { animation-delay: -2s; }
+@keyframes pcTypeSlide {
+  from { background-position: 0% 0; }
+  to { background-position: 100% 0; }
+}
+@keyframes pcTypePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-item-type, .pc-type-line { animation: none; }
+}
 .pc-nav {
   position: absolute;
   top: 50%;
