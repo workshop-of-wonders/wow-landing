@@ -1928,6 +1928,7 @@ main { padding-top: var(--nav-h); }
 .work-item-caminosdelavida { background: linear-gradient(160deg, #052e16, #22c55e); }
 .work-item-lamarquessa { background: linear-gradient(160deg, #500724, #ec4899); }
 .work-item-serninos { background: linear-gradient(160deg, #1e3a8a, #3b82f6); }
+.work-item-walkmate { background: linear-gradient(160deg, #0e2f3d, #2fbad6); }
 
 .work-brands-label {
   margin: var(--space-6) 0 var(--space-2);
@@ -2044,6 +2045,35 @@ main { padding-top: var(--nav-h); }
    ratio at the row height above), height simply fills its row(s). No
    object-fit:cover anywhere; the box IS the image's own proportions. */
 .pc-item img { display: block; height: 100%; width: 100%; border-radius: inherit; }
+/* Slow, subtle Ken Burns drift on real photos only — a static grid of
+   thumbnails reads as inert, this keeps the collage feeling alive without
+   being distracting. Excluded on logo/type tiles (below), where a zooming
+   mark would just look like it's cropping in and out. */
+.pc-item:not(.pc-item-logo) img {
+  animation: pcKenBurns 16s ease-in-out infinite alternate;
+}
+.pc-item:nth-child(3n+1) img { animation-delay: -2s; }
+.pc-item:nth-child(3n+2) img { animation-delay: -7s; }
+.pc-item:nth-child(3n+3) img { animation-delay: -12s; }
+@keyframes pcKenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-item img { animation: none; }
+}
+/* Logo/icon marks: a padded card instead of an edge-to-edge photo crop, so
+   the mark has breathing room and reads clearly against its own transparent
+   canvas — matches how logos are presented everywhere else on the site. */
+.pc-item-logo {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14%;
+  box-sizing: border-box;
+}
+.pc-item-logo img { width: 100%; height: 100%; object-fit: contain; animation: none; }
 .pc-nav {
   position: absolute;
   top: 50%;
