@@ -2081,31 +2081,40 @@ main { padding-top: var(--nav-h); }
 .pc-item-type {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(90deg, var(--pc-c1) 50%, var(--pc-c2) 50%);
-  background-size: 220% 100%;
-  animation: pcTypeSlide 2s ease-in-out infinite alternate;
+  background: linear-gradient(135deg, var(--pc-c1) 50%, var(--pc-c2) 50%);
+  background-size: 220% 220%;
+  animation: pcTypeSlide 4s ease-in-out infinite;
   overflow: hidden;
 }
+/* Cycles through a horizontal sweep, then a diagonal one, then a vertical
+   one, then repeats — not just back-and-forth on one axis. */
+/* Both lines stack in the same spot and take turns being visible — "Aa",
+   then "123", then back — instead of sitting side by side at once. */
 .pc-type-line {
+  position: absolute;
   font-family: var(--font-display);
   font-weight: 700;
   color: var(--white);
   line-height: 1;
-  font-size: calc(var(--pc-row-h, 190px) * 0.22);
+  font-size: calc(var(--pc-row-h, 190px) * 0.3);
   text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-  animation: pcTypePulse 4s ease-in-out infinite;
+  opacity: 0;
+  animation: pcTypeCycle 4s ease-in-out infinite;
 }
 .pc-type-line:last-child { animation-delay: -2s; }
 @keyframes pcTypeSlide {
-  from { background-position: 0% 0; }
-  to { background-position: 100% 0; }
+  0%   { background-position: 100% 50%; }
+  30%  { background-position: 0% 50%; }   /* right -> left */
+  55%  { background-position: 100% 100%; } /* diagonal */
+  80%  { background-position: 100% 0%; }   /* top <-> bottom */
+  100% { background-position: 100% 50%; }
 }
-@keyframes pcTypePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.12); }
+@keyframes pcTypeCycle {
+  0%, 4% { opacity: 0; transform: scale(0.85); }
+  12%, 38% { opacity: 1; transform: scale(1); }
+  46%, 100% { opacity: 0; transform: scale(0.85); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-item-type, .pc-type-line { animation: none; }
