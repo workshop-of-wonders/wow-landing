@@ -2120,37 +2120,73 @@ main { padding-top: var(--nav-h); }
 @media (prefers-reduced-motion: reduce) {
   .pc-item-type, .pc-type-line { animation: none; }
 }
-/* Every real brand color in one tall card, scrolling in an endless vertical
-   loop — same duplicated-track technique as the hero marquee (.media-col /
-   scrollUp), just contained to this one tile instead of the whole hero. */
+/* Several small vertical strips side by side in one card, each an endless
+   scrolling loop (same duplicated-track technique as the hero marquee) at
+   its own speed/direction — not one single wide column. */
 .pc-item-palette {
   position: relative;
   height: 100%;
+  display: flex;
+  gap: 6px;
 }
+.pc-palette-col {
+  flex: 1 1 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+/* Middle column wider than the two flanking it — since each chip is a
+   square sized off its own column's width, a wider column also means
+   bigger chips, giving the offset/staggered look instead of three equal
+   strips. */
+.pc-palette-col:nth-child(2) { flex: 1.7 1 0; }
 .pc-palette-track {
-  height: 200%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  animation: scrollUp 14s linear infinite;
+  gap: 6px;
+  animation: scrollUp 16s linear infinite;
 }
+/* Square (1:1), not a tall rectangle — sized off the column's own width via
+   aspect-ratio, with a gap between chips (set on the track) instead of them
+   touching edge to edge. */
 .pc-palette-chip {
-  flex: 1 1 0;
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 1;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.3em;
   padding: 8%;
   box-sizing: border-box;
+  text-align: left;
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-palette-track { animation: none; }
 }
+/* Large color name, then the same name again in small caps, then the hex —
+   same hierarchy as a paint-chip label. */
+.pc-swatch-title {
+  font-family: var(--font-display);
+  font-size: calc(var(--pc-row-h, 190px) * 0.09);
+  font-weight: 600;
+  line-height: 1.05;
+}
+.pc-swatch-caps {
+  font-size: calc(var(--pc-row-h, 190px) * 0.045);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
 .pc-swatch-hex {
   font-family: var(--font-mono, monospace);
-  font-size: calc(var(--pc-row-h, 190px) * 0.075);
-  font-weight: 600;
+  font-size: calc(var(--pc-row-h, 190px) * 0.045);
+  font-weight: 500;
   letter-spacing: 0.02em;
-  opacity: 0.9;
+  opacity: 0.75;
 }
 .pc-nav {
   position: absolute;
