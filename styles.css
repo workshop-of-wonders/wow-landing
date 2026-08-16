@@ -2127,33 +2127,32 @@ main { padding-top: var(--nav-h); }
   position: relative;
   height: 100%;
   display: flex;
-  gap: 6px;
+  gap: 14px;
 }
 .pc-palette-col {
-  flex: 1 1 0;
+  flex: 0.85 1 0;
   height: 100%;
   overflow: hidden;
   position: relative;
 }
-/* Middle column wider than the two flanking it — since each chip is a
-   square sized off its own column's width, a wider column also means
-   bigger chips, giving the offset/staggered look instead of three equal
-   strips. */
-.pc-palette-col:nth-child(2) { flex: 1.7 1 0; }
+/* Middle column wider than the two flanking it — since each chip is sized
+   off its own column's width, a wider column also means bigger chips,
+   giving the offset/staggered look instead of three equal strips. */
+.pc-palette-col:nth-child(2) { flex: 1.6 1 0; }
 .pc-palette-track {
+  height: 200%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 6px;
+  gap: 14px;
   animation: scrollUp 16s linear infinite;
 }
-/* Square (1:1), not a tall rectangle — sized off the column's own width via
-   aspect-ratio, with a gap between chips (set on the track) instead of them
-   touching edge to edge. */
+/* Height comes from the card (a fixed share of the track), not from the
+   column's own width — so side and middle chips are equally tall rectangles,
+   just narrower or wider, instead of the thin side columns also going short. */
 .pc-palette-chip {
-  flex: 0 0 auto;
+  flex: 0 0 36%;
   width: 100%;
-  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -2161,7 +2160,20 @@ main { padding-top: var(--nav-h); }
   gap: 0.3em;
   padding: 8%;
   box-sizing: border-box;
+  overflow: hidden;
   text-align: left;
+  border-radius: calc(var(--pc-radius, 14px) * 0.5);
+}
+/* Flanking columns: label at the top instead of the bottom, and allowed to
+   spill past the chip's own (narrow) edges instead of being clipped — only
+   the middle column's text has to stay strictly inside its chip. */
+.pc-palette-chip-top {
+  justify-content: flex-start;
+  overflow: visible;
+}
+.pc-palette-chip-top .pc-swatch-title {
+  max-width: none;
+  white-space: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-palette-track { animation: none; }
@@ -2173,6 +2185,8 @@ main { padding-top: var(--nav-h); }
   font-size: calc(var(--pc-row-h, 190px) * 0.09);
   font-weight: 600;
   line-height: 1.05;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 .pc-swatch-caps {
   font-size: calc(var(--pc-row-h, 190px) * 0.045);
