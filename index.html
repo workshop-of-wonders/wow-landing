@@ -1099,7 +1099,9 @@ var ProjectCollage = (function () {
             var luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
             chip.style.color = luminance > 0.6 ? '#1a1a1a' : '#fff';
             var title = document.createElement('span'); title.className = 'pc-swatch-title'; title.textContent = nearestColorName(hex);
+            var hexEl = document.createElement('span'); hexEl.className = 'pc-swatch-hex'; hexEl.textContent = hex;
             chip.appendChild(title);
+            chip.appendChild(hexEl);
             track.appendChild(chip);
           });
           col.appendChild(track);

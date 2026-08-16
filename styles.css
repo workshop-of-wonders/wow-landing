@@ -2169,11 +2169,13 @@ main { padding-top: var(--nav-h); }
    the middle column's text has to stay strictly inside its chip. */
 .pc-palette-chip-top {
   justify-content: flex-start;
+  padding-top: 16%;
   overflow: visible;
 }
 .pc-palette-chip-top .pc-swatch-title {
   max-width: none;
   white-space: nowrap;
+  font-size: calc(var(--pc-row-h, 190px) * 0.06);
 }
 /* Left column specifically: label top-right instead of top-left. */
 .pc-palette-chip-top-right {
@@ -2193,7 +2195,15 @@ main { padding-top: var(--nav-h); }
   font-weight: 600;
   line-height: 1.05;
   max-width: 100%;
-  overflow-wrap: break-word;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+/* Middle column's chip is the only one that must never overflow or crop a
+   word — smaller type so its (possibly multi-word) name always wraps
+   cleanly at a space and fits within the chip's own bounds. */
+.pc-palette-chip:not(.pc-palette-chip-top) .pc-swatch-title {
+  font-size: calc(var(--pc-row-h, 190px) * 0.06);
+  line-height: 1.15;
 }
 .pc-swatch-caps {
   font-size: calc(var(--pc-row-h, 190px) * 0.045);
