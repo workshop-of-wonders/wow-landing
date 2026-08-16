@@ -2085,11 +2085,12 @@ main { padding-top: var(--nav-h); }
   justify-content: center;
   background: linear-gradient(135deg, var(--pc-c1) 50%, var(--pc-c2) 50%);
   background-size: 220% 220%;
-  animation: pcTypeSlide 4s ease-in-out infinite;
+  animation: pcTypeSlide 6s ease-in-out infinite;
   overflow: hidden;
 }
-/* Cycles through a horizontal sweep, then a diagonal one, then a vertical
-   one, then repeats — not just back-and-forth on one axis. */
+/* Alternates horizontal, vertical, and diagonal sweeps — each phase holds
+   briefly at its endpoint so the three read as distinct moves, not one
+   continuous blur. */
 /* Both lines stack in the same spot and take turns being visible — "Aa",
    then "123", then back — instead of sitting side by side at once. */
 .pc-type-line {
@@ -2105,11 +2106,11 @@ main { padding-top: var(--nav-h); }
 }
 .pc-type-line:last-child { animation-delay: -2s; }
 @keyframes pcTypeSlide {
-  0%   { background-position: 100% 50%; }
-  30%  { background-position: 0% 50%; }   /* right -> left */
-  55%  { background-position: 100% 100%; } /* diagonal */
-  80%  { background-position: 100% 0%; }   /* top <-> bottom */
-  100% { background-position: 100% 50%; }
+  0%, 5%   { background-position: 0% 50%; }    /* start: left-mid */
+  28%, 33% { background-position: 100% 50%; }  /* horizontal (y constant) */
+  56%, 61% { background-position: 100% 0%; }   /* vertical (x constant) */
+  84%, 89% { background-position: 0% 100%; }   /* diagonal (both change) */
+  100%     { background-position: 0% 50%; }    /* back to start */
 }
 @keyframes pcTypeCycle {
   0%, 4% { opacity: 0; transform: scale(0.85); }
@@ -2118,6 +2119,38 @@ main { padding-top: var(--nav-h); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-item-type, .pc-type-line { animation: none; }
+}
+/* Every real brand color in one tall card, scrolling in an endless vertical
+   loop — same duplicated-track technique as the hero marquee (.media-col /
+   scrollUp), just contained to this one tile instead of the whole hero. */
+.pc-item-palette {
+  position: relative;
+  height: 100%;
+}
+.pc-palette-track {
+  height: 200%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: scrollUp 14s linear infinite;
+}
+.pc-palette-chip {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 8%;
+  box-sizing: border-box;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-palette-track { animation: none; }
+}
+.pc-swatch-hex {
+  font-family: var(--font-mono, monospace);
+  font-size: calc(var(--pc-row-h, 190px) * 0.075);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
 }
 .pc-nav {
   position: absolute;
