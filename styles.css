@@ -2142,7 +2142,7 @@ main { padding-top: var(--nav-h); }
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  animation: pcPhraseScroll 7s linear infinite;
+  animation: pcPhraseScroll 10s linear infinite;
 }
 .pc-phrase-text {
   flex: 0 0 auto;
