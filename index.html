@@ -1189,13 +1189,13 @@ var ProjectCollage = (function () {
           maxLineWidthAt100 = Math.max(maxLineWidthAt100, measureEl.getBoundingClientRect().width);
         });
         document.body.removeChild(measureEl);
-        // Bleed a good bit past both edges (not just reach them) — that's
-        // the reference look: big enough that the widest line's first and
-        // last letters actually get cropped by the card, not just touch
-        // its border. The old rowH*0.19 ceiling was capping this below
-        // the width-driven size on most taglines; keep a much higher
-        // ceiling only as a safety net for pathologically short lines.
-        var fitFontSize = Math.min(rowH * 0.4, (width * 1.22) * 100 / maxLineWidthAt100);
+        // Fill the width without cropping — the widest line should reach
+        // right up to (but not past) both edges. A small margin (0.97)
+        // keeps it from touching the rounded corners exactly. The old
+        // rowH*0.19 ceiling was capping this below the width-driven size
+        // on most taglines; keep a much higher ceiling only as a safety
+        // net for pathologically short lines.
+        var fitFontSize = Math.min(rowH * 0.4, (width * 0.97) * 100 / maxLineWidthAt100);
         // Repeat the phrase vertically enough times to actually fill (and
         // slightly overflow) the card's height at that font size — a
         // short tagline repeated only twice left a big empty gap at the
