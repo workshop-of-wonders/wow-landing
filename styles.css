@@ -2147,11 +2147,12 @@ main { padding-top: var(--nav-h); }
 .pc-phrase-text {
   flex: 0 0 auto;
   margin: 0;
-  padding: 2% 6% 0;
+  padding: 2% 0 0;
   box-sizing: border-box;
   font-family: var(--font-display);
   font-weight: 800;
   text-transform: uppercase;
+  text-align: center;
   color: rgba(255,255,255,0.92);
   letter-spacing: -0.01em;
   font-size: calc(var(--pc-row-h, 190px) * 0.19);
