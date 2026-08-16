@@ -2175,6 +2175,13 @@ main { padding-top: var(--nav-h); }
   max-width: none;
   white-space: nowrap;
 }
+/* Left column specifically: label top-right instead of top-left. */
+.pc-palette-chip-top-right {
+  align-items: flex-end;
+}
+.pc-palette-chip-top-right .pc-swatch-title {
+  text-align: right;
+}
 @media (prefers-reduced-motion: reduce) {
   .pc-palette-track { animation: none; }
 }
