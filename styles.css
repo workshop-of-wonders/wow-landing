@@ -2158,7 +2158,10 @@ main { padding-top: var(--nav-h); }
   align-items: flex-start;
   justify-content: flex-end;
   gap: 0.3em;
-  padding: 8%;
+  /* Horizontal padding is a fixed amount (off the card's own row height),
+     not a % of each column's width — otherwise the narrower flanking
+     columns would sit closer to their edge than the wider middle one. */
+  padding: 8% calc(var(--pc-row-h, 190px) * 0.05);
   box-sizing: border-box;
   overflow: hidden;
   text-align: left;
