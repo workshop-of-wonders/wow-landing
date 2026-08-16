@@ -1168,20 +1168,36 @@ var ProjectCollage = (function () {
         }
         var accentFont = piece.fonts && (piece.fonts.secondary || piece.fonts.primary);
         var accentWeight = piece.fonts && (piece.fonts.secondaryWeight || piece.fonts.primaryWeight);
-        // Repeat the phrase vertically to fill the card, but only twice —
-        // each extra repeat adds `words.length` more stacked line breaks,
-        // which got unreadable fast on longer taglines now that each one
-        // is already grouped down to ~3 lines.
-        var REPEATS = 2;
         // Each word/group is forced onto its own line (below), so unlike
         // free-flowing text there's no wrap to bail it out if a line is
         // too wide for the card — it would just overflow and get clipped
-        // by the card's own edges, reading as cut-off/cramped. Size the
-        // type off the longest line's character count instead of a fixed
-        // fraction of the row height, so every tagline's widest line
-        // actually fits the box it bleeds out of.
-        var maxLineLen = Math.max.apply(null, words.map(function (w) { return w.replace(/^\*|\*$/g, '').length; }));
-        var fitFontSize = Math.min(rowH * 0.19, (width * 0.94) / (maxLineLen * 0.62));
+        // by the card's own edges, reading as cut-off/cramped. Measure the
+        // longest line's *actual* rendered width in the brand's real font
+        // (a fixed char-width guess left a gap on the right whenever the
+        // font ran narrower than assumed) and scale off that, so the
+        // widest line reaches edge-to-edge instead of stopping short.
+        var measureFont = (piece.fonts && piece.fonts.primary) || 'var(--font-display)';
+        var measureWeight = (piece.fonts && piece.fonts.primaryWeight) || 800;
+        var measureEl = document.createElement('span');
+        measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;top:-9999px;left:-9999px;text-transform:uppercase;letter-spacing:-0.01em;font-size:100px;';
+        measureEl.style.fontFamily = measureFont;
+        measureEl.style.fontWeight = measureWeight;
+        document.body.appendChild(measureEl);
+        var maxLineWidthAt100 = 0;
+        words.forEach(function (w) {
+          measureEl.textContent = w.replace(/^\*|\*$/g, '');
+          maxLineWidthAt100 = Math.max(maxLineWidthAt100, measureEl.getBoundingClientRect().width);
+        });
+        document.body.removeChild(measureEl);
+        var fitFontSize = Math.min(rowH * 0.19, (width * 1.02) * 100 / maxLineWidthAt100);
+        // Repeat the phrase vertically enough times to actually fill (and
+        // slightly overflow) the card's height at that font size — a
+        // short tagline repeated only twice left a big empty gap at the
+        // bottom on a tall card, while a long one repeated too many times
+        // just piled up unreadable line breaks. Solving for "enough to
+        // fill this specific card" avoids both.
+        var lineHeightPx = fitFontSize * 1.08;
+        var REPEATS = Math.max(2, Math.ceil((rowH * 1.15) / (words.length * lineHeightPx)));
         var track = document.createElement('div'); track.className = 'pc-phrase-track';
         for (var ti = 0; ti < 2; ti++) {
           var block = document.createElement('p'); block.className = 'pc-phrase-text';
