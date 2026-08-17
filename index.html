@@ -1273,7 +1273,7 @@ var ProjectCollage = (function () {
         // just piled up unreadable line breaks. Solving for "enough to
         // fill this specific card" avoids both.
         var lineHeightPx = fitFontSize * 1.08;
-        var REPEATS = Math.max(2, Math.ceil((rowH * 1.15) / (words.length * lineHeightPx)));
+        var REPEATS = Math.max(2, Math.ceil((rowH * 0.75) / (words.length * lineHeightPx)));
         var track = document.createElement('div'); track.className = 'pc-phrase-track';
         for (var ti = 0; ti < 2; ti++) {
           var block = document.createElement('p'); block.className = 'pc-phrase-text';
