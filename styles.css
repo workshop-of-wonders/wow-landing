@@ -2120,6 +2120,31 @@ main { padding-top: var(--nav-h); }
 @media (prefers-reduced-motion: reduce) {
   .pc-item-type, .pc-type-line { animation: none; }
 }
+/* Pattern card: the brand's own seamless print pattern, tiled and
+   scrolling sideways forever — upright the whole time (no rotation, so
+   it stays recognizable as the actual pattern, not a blur of noise)
+   with the loop distance set to exactly one tile width so there's
+   never a visible seam or jump. */
+.pc-item-pattern {
+  position: relative;
+  overflow: hidden;
+}
+.pc-pattern-scroll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + var(--pattern-tile-w, 40px));
+  height: 100%;
+  background-repeat: repeat;
+  animation: pcPatternScroll 14s linear infinite;
+}
+@keyframes pcPatternScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-1 * var(--pattern-tile-w, 40px))); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pc-pattern-scroll { animation: none; }
+}
 /* Tagline card: flat, static single brand color, with the tagline set
    huge and bold in the brand's own real typeface (same lookup the type
    specimen uses), repeated back to back so the card reads full rather

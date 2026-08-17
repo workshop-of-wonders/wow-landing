@@ -1095,6 +1095,17 @@ var ProjectCollage = (function () {
     if (opts.phrase && typePieceForPhrase) {
       pieces.push({ src: 'phrase:' + opts.phrase, priority: 1, ratio: 1, img: null, isPhrase: true, phrase: opts.phrase, colorImg: typePieceForPhrase.img, fonts: TYPE_FONT_BY_SLUG[slugForPhrase] });
     }
+    // A spinning pattern card — the brand's own seamless print pattern
+    // (from design-system/portfolio/<slug>/pattern.webp, not every brand
+    // has one), tiled and rotating forever. Probed directly by path
+    // instead of requiring it in each work-item's data-images — same
+    // "no extra data needed per item" approach as the palette tile.
+    if (slugForPhrase) {
+      var patternImg = await loadImage('design-system/portfolio/' + slugForPhrase + '/pattern.webp');
+      if (patternImg) {
+        pieces.push({ src: 'pattern:' + slugForPhrase, priority: 1, ratio: 1, img: null, isPattern: true, patternSrc: patternImg.src, colorImg: typePieceForPhrase.img });
+      }
+    }
 
     // Every piece is one row tall by default — no .pc-span2 — with two
     // exceptions: a single image (nothing to share the strip with, so it
@@ -1113,7 +1124,7 @@ var ProjectCollage = (function () {
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
       var isType = isTypeAsset.test(piece.src);
-      var isTall = !isLogo && !isType && !piece.isPalette && !piece.isPhrase && (isSingle || piece.ratio < 0.85);
+      var isTall = !isLogo && !isType && !piece.isPalette && !piece.isPhrase && !piece.isPattern && (isSingle || piece.ratio < 0.85);
       var height = isTall ? (rowH * 2 + gap) : rowH;
       // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
       // every logo tile to a 1:1 square shrinks those down to near-illegible.
@@ -1164,6 +1175,25 @@ var ProjectCollage = (function () {
           col.appendChild(track);
           el.appendChild(col);
         }
+        container.appendChild(el);
+        return;
+      }
+      if (piece.isPattern) {
+        // The brand's own seamless pattern, tiled and spinning forever.
+        // Sized off rowH so the tile scale stays consistent regardless
+        // of how big/small the card renders.
+        el.className = 'pc-item pc-item-pattern';
+        var patternColors = piece.colorImg ? sampleTwoColors(piece.colorImg) : ['#7c3aed', '#ec4899'];
+        el.style.background = patternColors[0];
+        var tileSize = Math.round(rowH * 1.4);
+        var scroll = document.createElement('div'); scroll.className = 'pc-pattern-scroll';
+        scroll.style.backgroundImage = 'url(' + piece.patternSrc + ')';
+        scroll.style.backgroundSize = tileSize + 'px';
+        // Animate by exactly one tile width so the loop has no visible
+        // seam — a fixed % or rotation would either jump-cut or blur the
+        // pattern into unrecognizable noise mid-spin.
+        scroll.style.setProperty('--pattern-tile-w', tileSize + 'px');
+        el.appendChild(scroll);
         container.appendChild(el);
         return;
       }
