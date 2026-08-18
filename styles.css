@@ -2188,7 +2188,11 @@ main { padding-top: var(--nav-h); }
   height: 100%;
   animation: pcTaglineScroll 18s linear infinite;
 }
-.pc-tagline-scroll-img {
+/* Two classes so this beats the generic ".pc-item img { width: 100% }"
+   rule (higher specificity than a class+element selector) — without it
+   the image stretched to fill the flex item's auto width instead of
+   keeping its own aspect ratio. */
+.pc-tagline-scroll .pc-tagline-scroll-img {
   flex: 0 0 auto;
   height: 100%;
   width: auto;
