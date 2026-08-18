@@ -2165,9 +2165,12 @@ main { padding-top: var(--nav-h); }
   .pc-pattern-scroll { animation: none; }
 }
 /* Tagline card: the project's own hand-designed tagline graphic
-   (design-system/portfolio/<slug>/tagline.png), two copies sitting side
-   by side and looping sideways forever — same duplicated-track,
-   translateX(-50%) technique as the pattern/palette tiles. */
+   (design-system/portfolio/<slug>/tagline.png), 3 copies visible at once
+   with generous spacing between them, looping sideways forever — same
+   duplicated-track, translateX(-50%) technique as the pattern/palette
+   tiles, just with a group of 3 (not 1) as the repeat unit. Each image's
+   own spacing margin is set inline per-piece in JS (scaled off the
+   collage's --pc-gap), not fixed here. */
 .pc-item-tagline-img {
   position: relative;
   overflow: hidden;
@@ -2183,17 +2186,13 @@ main { padding-top: var(--nav-h); }
   flex-direction: row;
   align-items: stretch;
   height: 100%;
-  animation: pcTaglineScroll 7s linear infinite;
+  animation: pcTaglineScroll 18s linear infinite;
 }
 .pc-tagline-scroll-img {
   flex: 0 0 auto;
   height: 100%;
   width: auto;
   display: block;
-  /* Margin (not track `gap`) so each image+margin pair is an identical-
-     width repeat unit — keeps the translateX(-50%) loop landing exactly
-     on the start of the second copy, gap included. */
-  margin-right: var(--pc-gap);
 }
 @keyframes pcTaglineScroll {
   from { transform: translateX(0); }

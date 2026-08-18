@@ -1398,6 +1398,15 @@ var ProjectCollage = (function () {
       // Follow the real ratio like photos do, just clamped to a sane 1:1–1:2.2
       // range so a square icon doesn't go narrower than square either.
       var width = isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio);
+      // Tagline card is sized to show 3 copies of the art at once (not
+      // just 1), with generous breathing room between each — the card's
+      // own width has to grow to fit all 3 plus their gaps, rather than
+      // following the single-image ratio like every other piece.
+      if (piece.isTaglineImg) {
+        piece.taglineGapPx = Math.round(gap * 2.5);
+        var taglineUnitW = Math.round(height * piece.ratio);
+        width = taglineUnitW * 3 + piece.taglineGapPx * 2;
+      }
       var el = document.createElement('div');
       el.style.width = width + 'px';
       if (piece.isPalette) {
@@ -1465,18 +1474,21 @@ var ProjectCollage = (function () {
         return;
       }
       if (piece.isTaglineImg) {
-        // The project's own hand-designed tagline graphic, two copies
-        // side by side looping sideways forever -- same duplicated-track,
-        // translateX(-50%) technique as the pattern/palette tiles, just
-        // with the real image instead of generated text.
+        // The project's own hand-designed tagline graphic: 3 copies
+        // visible at once, spaced apart, looping sideways forever. Two
+        // full groups of 3 sit back to back and the whole track shifts
+        // by exactly one group's width (-50%) -- same duplicated-track
+        // technique as the pattern/palette tiles, just with a group of 3
+        // as the repeat unit instead of a single image.
         el.className = 'pc-item pc-item-tagline-img';
         if (piece.taglineBg) el.style.background = piece.taglineBg;
         var taglineTrack = document.createElement('div'); taglineTrack.className = 'pc-tagline-scroll';
-        for (var tgi = 0; tgi < 2; tgi++) {
+        for (var tgi = 0; tgi < 6; tgi++) {
           var taglineEl = document.createElement('img');
           taglineEl.className = 'pc-tagline-scroll-img';
           taglineEl.src = piece.taglineSrc;
           taglineEl.alt = '';
+          taglineEl.style.marginRight = piece.taglineGapPx + 'px';
           taglineTrack.appendChild(taglineEl);
         }
         el.appendChild(taglineTrack);
