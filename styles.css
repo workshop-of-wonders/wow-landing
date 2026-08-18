@@ -2180,7 +2180,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: row;
   align-items: stretch;
   height: 100%;
-  animation: pcTaglineScroll 12s linear infinite;
+  animation: pcTaglineScroll 7s linear infinite;
 }
 .pc-tagline-scroll-img {
   flex: 0 0 auto;
