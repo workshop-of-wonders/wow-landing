@@ -2164,73 +2164,40 @@ main { padding-top: var(--nav-h); }
 @media (prefers-reduced-motion: reduce) {
   .pc-pattern-scroll { animation: none; }
 }
-/* Tagline card: flat, static single brand color, with the tagline set
-   huge and bold in the brand's own real typeface (same lookup the type
-   specimen uses), repeated back to back so the card reads full rather
-   than mostly empty, wrapping into several lines that bleed past the
-   card's top/bottom edges. One word per repeat breaks out in the
-   brand's own secondary typeface (upright, not italicized — it's
-   already a distinct face) — same idea as this site's own <em>
-   headline words, just using the brand's real second font instead of
-   a generic serif (falls back to Playfair Display italic only when a
-   project has no secondary face of its own). Two copies of the
-   whole stacked block sit side by side and loop sideways forever. */
-.pc-item-phrase {
+/* Tagline card: the project's own hand-designed tagline graphic
+   (design-system/portfolio/<slug>/tagline.png), two copies sitting side
+   by side and looping sideways forever — same duplicated-track,
+   translateX(-50%) technique as the pattern/palette tiles. */
+.pc-item-tagline-img {
   position: relative;
   overflow: hidden;
 }
-.pc-phrase-track {
+.pc-tagline-scroll {
   position: absolute;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  animation: pcPhraseScroll 10s linear infinite;
+  align-items: stretch;
+  height: 100%;
+  animation: pcTaglineScroll 12s linear infinite;
 }
-.pc-phrase-text {
+.pc-tagline-scroll-img {
   flex: 0 0 auto;
-  margin: 0;
-  padding: 2% 0 0;
-  box-sizing: border-box;
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  text-align: left;
-  color: rgba(255,255,255,0.92);
-  letter-spacing: -0.01em;
-  font-size: calc(var(--pc-row-h, 190px) * 0.19);
-}
-.pc-phrase-line {
+  height: 100%;
+  width: auto;
   display: block;
-  line-height: 1.08;
-  white-space: nowrap;
+  /* Margin (not track `gap`) so each image+margin pair is an identical-
+     width repeat unit — keeps the translateX(-50%) loop landing exactly
+     on the start of the second copy, gap included. */
+  margin-right: var(--pc-gap);
 }
-/* A little extra air after each full pass of the tagline before it
-   repeats, so the repeats read as distinct lines of the same phrase
-   instead of running straight into each other. */
-.pc-phrase-line-end {
-  margin-bottom: 0.2em;
-}
-.pc-phrase-accent {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  color: rgba(20,20,30,0.85);
-}
-/* Sampled background is dark (e.g. an all-black/white brand palette) —
-   the accent word's default dark color would be invisible on it, so
-   flip it light instead. */
-.pc-item-phrase-dark .pc-phrase-accent {
-  color: rgba(255,255,255,0.6);
-}
-@keyframes pcPhraseScroll {
+@keyframes pcTaglineScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pc-phrase-track { animation: none; }
+  .pc-tagline-scroll { animation: none; }
 }
 /* Several small vertical strips side by side in one card, each an endless
    scrolling loop (same duplicated-track technique as the hero marquee) at

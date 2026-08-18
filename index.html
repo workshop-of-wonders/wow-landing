@@ -1255,6 +1255,23 @@ var ProjectCollage = (function () {
     }
   }
 
+  // A single flat card's own background color, sampled from its corner
+  // pixel (not the center, in case art sits there) — used to color the
+  // card itself so it reads as a seamless extension of the art rather
+  // than a mismatched default.
+  function sampleCornerColor(img) {
+    try {
+      var c = document.createElement('canvas');
+      c.width = 10; c.height = 10;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, 10, 10);
+      var d = ctx.getImageData(1, 1, 1, 1).data;
+      return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
+    } catch (e) {
+      return null;
+    }
+  }
+
   // Standard CSS3 named colors, used only to label each swatch with a
   // real, recognizable color name (nearest match by RGB distance) instead
   // of a raw hex code — the swatch itself still uses the brand's exact hex.
@@ -1328,13 +1345,22 @@ var ProjectCollage = (function () {
       var paletteRatio = 1;
       pieces.push({ src: 'palette:' + slugForColors, priority: 1, ratio: paletteRatio, img: null, isPalette: true, colors: COLORS_BY_SLUG[slugForColors] });
     }
-    // A tagline card — a flat brand-color card carrying the project's own
-    // one-line description (data-desc), set in the brand's own real
-    // typeface (same lookup the type specimen uses) and scrolling as an
-    // endless marquee. Only added for real projects that already have a
-    // type specimen to sample a color from.
-    if (opts.phrase && typePieceForPhrase) {
-      pieces.push({ src: 'phrase:' + opts.phrase, priority: 1, ratio: 1, img: null, isPhrase: true, phrase: opts.phrase, colorImg: typePieceForPhrase.img, fonts: TYPE_FONT_BY_SLUG[slugForPhrase] });
+    // A tagline card — the project's own hand-designed tagline graphic
+    // (design-system/portfolio/<slug>/tagline.png, not every brand has
+    // one), scrolling sideways as an endless marquee. Probed directly by
+    // path, same "no extra data needed per item" approach as the pattern
+    // and palette tiles.
+    if (slugForPhrase) {
+      var taglineImg = await loadImage('design-system/portfolio/' + slugForPhrase + '/tagline.png');
+      if (taglineImg) {
+        var taglineRatio = (taglineImg.naturalWidth || 1) / (taglineImg.naturalHeight || 1);
+        // Sample the graphic's own corner pixel as the card's background —
+        // the art is a flat brand-color card itself, so the strip of card
+        // showing through the gap between the two looping copies should
+        // read as the same color, not a mismatched default.
+        var taglineBg = sampleCornerColor(taglineImg);
+        pieces.push({ src: 'tagline:' + slugForPhrase, priority: 1, ratio: taglineRatio, img: null, isTaglineImg: true, taglineSrc: taglineImg.src, taglineBg: taglineBg });
+      }
     }
     // A spinning pattern card — the brand's own seamless print pattern
     // (from design-system/portfolio/<slug>/pattern.webp, not every brand
@@ -1365,7 +1391,7 @@ var ProjectCollage = (function () {
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
       var isType = isTypeAsset.test(piece.src);
-      var isTall = !isLogo && !isType && !piece.isPalette && !piece.isPhrase && !piece.isPattern && (isSingle || piece.ratio < 0.85);
+      var isTall = !isLogo && !isType && !piece.isPalette && !piece.isTaglineImg && !piece.isPattern && (isSingle || piece.ratio < 0.85);
       var height = isTall ? (rowH * 2 + gap) : rowH;
       // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
       // every logo tile to a 1:1 square shrinks those down to near-illegible.
@@ -1438,116 +1464,22 @@ var ProjectCollage = (function () {
         container.appendChild(el);
         return;
       }
-      if (piece.isPhrase) {
-        // Flat single-color card (one of the two brand colors already
-        // sampled for the type specimen): the tagline set huge, bold and
-        // uppercase in the brand's own real typeface, repeated several
-        // times back to back so short taglines still pack the card full
-        // of wrapped lines that bleed past its edges. One word per
-        // repeat breaks out in the brand's own secondary typeface (its
-        // "italic" contrast face) — same idea as this site's own <em>
-        // headline words, just using the brand's real second font
-        // instead of a generic serif. The whole stack loops sideways
-        // forever.
-        el.className = 'pc-item pc-item-phrase';
-        var phraseColors = piece.colorImg ? sampleTwoColors(piece.colorImg) : ['#7c3aed', '#ec4899'];
-        el.style.background = phraseColors[0];
-        // The accent word's color is fixed dark by default (see
-        // .pc-phrase-accent) — fine on light/mid brand colors, but
-        // invisible on a near-black one (e.g. Tata's Photos, all-black
-        // palette). Flip it to light whenever the sampled background
-        // itself is dark, so the accent word stays legible either way.
-        var bgRgb = phraseColors[0].match(/^rgb\((\d+),(\d+),(\d+)\)$/);
-        if (bgRgb) {
-          var bgLuminance = (0.299 * bgRgb[1] + 0.587 * bgRgb[2] + 0.114 * bgRgb[3]) / 255;
-          if (bgLuminance < 0.45) el.classList.add('pc-item-phrase-dark');
+      if (piece.isTaglineImg) {
+        // The project's own hand-designed tagline graphic, two copies
+        // side by side looping sideways forever -- same duplicated-track,
+        // translateX(-50%) technique as the pattern/palette tiles, just
+        // with the real image instead of generated text.
+        el.className = 'pc-item pc-item-tagline-img';
+        if (piece.taglineBg) el.style.background = piece.taglineBg;
+        var taglineTrack = document.createElement('div'); taglineTrack.className = 'pc-tagline-scroll';
+        for (var tgi = 0; tgi < 2; tgi++) {
+          var taglineEl = document.createElement('img');
+          taglineEl.className = 'pc-tagline-scroll-img';
+          taglineEl.src = piece.taglineSrc;
+          taglineEl.alt = '';
+          taglineTrack.appendChild(taglineEl);
         }
-        // Splitting on a plain space (not \s+) lets a data-tagline join
-        // two words onto the same wrapped line with a literal U+00A0
-        // non-breaking space (e.g. "la semilla") — full control over
-        // where lines break without hardcoding <br> markup. A word can
-        // also be wrapped in *asterisks* to force it as the accent word
-        // instead of the auto-picked longest one.
-        var words = piece.phrase.split(' ').filter(Boolean);
-        var accentIdx = -1;
-        words.forEach(function (w, wi) { if (/^\*.+\*$/.test(w)) accentIdx = wi; });
-        if (accentIdx === -1) {
-          accentIdx = 0;
-          words.forEach(function (w, wi) { if (w.replace(/[^\w]/g, '').length > words[accentIdx].replace(/[^\w]/g, '').length) accentIdx = wi; });
-        } else {
-          words[accentIdx] = words[accentIdx].replace(/^\*|\*$/g, '');
-        }
-        var accentFont = piece.fonts && (piece.fonts.secondary || piece.fonts.primary);
-        var accentWeight = piece.fonts && (piece.fonts.secondaryWeight || piece.fonts.primaryWeight);
-        // Each word/group is forced onto its own line (below), so unlike
-        // free-flowing text there's no wrap to bail it out if a line is
-        // too wide for the card — it would just overflow and get clipped
-        // by the card's own edges, reading as cut-off/cramped. Measure the
-        // longest line's *actual* rendered width in the brand's real font
-        // (a fixed char-width guess left a gap on the right whenever the
-        // font ran narrower than assumed) and scale off that, so the
-        // widest line reaches edge-to-edge instead of stopping short.
-        var measureFont = (piece.fonts && piece.fonts.primary) || 'var(--font-display)';
-        var measureWeight = (piece.fonts && piece.fonts.primaryWeight) || 800;
-        var measureEl = document.createElement('span');
-        measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;top:-9999px;left:-9999px;text-transform:uppercase;letter-spacing:-0.01em;font-size:100px;';
-        measureEl.style.fontFamily = measureFont;
-        measureEl.style.fontWeight = measureWeight;
-        document.body.appendChild(measureEl);
-        var maxLineWidthAt100 = 0;
-        words.forEach(function (w) {
-          measureEl.textContent = w.replace(/^\*|\*$/g, '');
-          maxLineWidthAt100 = Math.max(maxLineWidthAt100, measureEl.getBoundingClientRect().width);
-        });
-        document.body.removeChild(measureEl);
-        // Fill the width without cropping — the widest line should reach
-        // right up to (but not past) both edges. A small margin (0.97)
-        // keeps it from touching the rounded corners exactly. The old
-        // rowH*0.19 ceiling was capping this below the width-driven size
-        // on most taglines; keep a much higher ceiling only as a safety
-        // net for pathologically short lines.
-        var fitFontSize = Math.min(rowH * 0.4, (width * 0.97) * 100 / maxLineWidthAt100);
-        // Repeat the phrase vertically enough times to actually fill (and
-        // slightly overflow) the card's height at that font size — a
-        // short tagline repeated only twice left a big empty gap at the
-        // bottom on a tall card, while a long one repeated too many times
-        // just piled up unreadable line breaks. Solving for "enough to
-        // fill this specific card" avoids both.
-        var lineHeightPx = fitFontSize * 1.08;
-        var REPEATS = Math.max(2, Math.ceil((rowH * 0.75) / (words.length * lineHeightPx)));
-        var track = document.createElement('div'); track.className = 'pc-phrase-track';
-        for (var ti = 0; ti < 2; ti++) {
-          var block = document.createElement('p'); block.className = 'pc-phrase-text';
-          block.style.width = width + 'px';
-          block.style.fontSize = fitFontSize + 'px';
-          if (piece.fonts) {
-            block.style.fontFamily = piece.fonts.primary;
-            if (piece.fonts.primaryWeight) block.style.fontWeight = piece.fonts.primaryWeight;
-          }
-          for (var ri = 0; ri < REPEATS; ri++) {
-            words.forEach(function (w, wi) {
-              // Each word/group renders as its own explicit line (rather
-              // than relying on the browser's own wrap) so the grouping
-              // from the data-tagline (NBSP-joined pairs) always lands
-              // on exactly one line each, with normal line spacing
-              // between them instead of the cramped, overlapping look
-              // that came from letting a too-wide unbreakable group spill
-              // past its box.
-              var line = document.createElement('span'); line.className = 'pc-phrase-line' + (wi === words.length - 1 ? ' pc-phrase-line-end' : '');
-              if (wi === accentIdx) {
-                var em = document.createElement('em'); em.className = 'pc-phrase-accent'; em.textContent = w;
-                if (accentFont) { em.style.fontFamily = accentFont; em.style.fontStyle = 'normal'; }
-                if (accentWeight) em.style.fontWeight = accentWeight;
-                line.appendChild(em);
-              } else {
-                line.textContent = w.toUpperCase();
-              }
-              block.appendChild(line);
-            });
-          }
-          track.appendChild(block);
-        }
-        el.appendChild(track);
+        el.appendChild(taglineTrack);
         container.appendChild(el);
         return;
       }
