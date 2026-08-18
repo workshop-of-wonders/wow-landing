@@ -2174,7 +2174,10 @@ main { padding-top: var(--nav-h); }
 }
 .pc-tagline-scroll {
   position: absolute;
-  top: 0;
+  /* Nudged down from the card's top edge so the art doesn't butt right
+     up against it — free to run past the bottom edge instead, hidden by
+     this card's own overflow: hidden. */
+  top: 8%;
   left: 0;
   display: flex;
   flex-direction: row;
