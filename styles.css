@@ -2151,7 +2151,10 @@ main { padding-top: var(--nav-h); }
 .pc-pattern-scroll {
   position: absolute;
   top: 0;
-  left: 0;
+  /* Buffer tile sits on the left now (not the right) so there's always
+     off-screen pattern ready to enter from the left edge as it scrolls
+     rightward. */
+  left: calc(-1 * var(--pattern-tile-w, 40px));
   width: calc(100% + var(--pattern-tile-w, 40px));
   height: 100%;
   background-repeat: repeat;
@@ -2159,7 +2162,7 @@ main { padding-top: var(--nav-h); }
 }
 @keyframes pcPatternScroll {
   from { transform: translateX(0); }
-  to { transform: translateX(calc(-1 * var(--pattern-tile-w, 40px))); }
+  to { transform: translateX(var(--pattern-tile-w, 40px)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .pc-pattern-scroll { animation: none; }
