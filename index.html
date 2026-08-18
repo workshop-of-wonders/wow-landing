@@ -631,7 +631,6 @@
   </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1877,8 +1876,16 @@ window.addEventListener('scroll', function () {
 window.addEventListener('resize', updateScrollScrubs);
 updateScrollScrubs();
 
-/* Falling icons playground: lives in its own zone between contact and footer, always draggable */
-(function () {
+/* Falling icons playground: lives in its own zone between contact and
+   footer, always draggable. Matter.js (79KB, third-party CDN) used to
+   load as a blocking <script> at the very top of this block, which
+   meant every bit of site JS below it — lightbox, nav, language toggle,
+   mega menu, all of it, none of which needs Matter at all — sat waiting
+   on that one external fetch to finish before any of it could run.
+   Loaded lazily instead: only fetched once this section actually
+   scrolls near the viewport (initFallingIcons runs once it's ready),
+   so the rest of the page's interactivity no longer depends on it. */
+function initFallingIcons() {
   var canvas = document.getElementById('fallingCanvas');
   var zone = document.querySelector('.icon-playground');
   if (!canvas || !zone || typeof Matter === 'undefined') return;
@@ -2033,6 +2040,34 @@ updateScrollScrubs();
     mouse.pixelRatio = render.options.pixelRatio;
     buildWalls();
   });
+}
+
+// Lazy-load Matter.js only once the falling-icons zone is within 600px of
+// the viewport, instead of fetching it unconditionally on every page load
+// regardless of whether the visitor ever scrolls that far.
+(function () {
+  var zone = document.querySelector('.icon-playground');
+  if (!zone) return;
+  var loaded = false;
+  function loadMatter() {
+    if (loaded) return;
+    loaded = true;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js';
+    s.onload = initFallingIcons;
+    document.body.appendChild(s);
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) {
+        loadMatter();
+        io.disconnect();
+      }
+    }, { rootMargin: '600px 0px' });
+    io.observe(zone);
+  } else {
+    loadMatter();
+  }
 })();
 </script>
 </body>
