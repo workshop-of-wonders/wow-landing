@@ -525,10 +525,19 @@ main { padding-top: var(--nav-h); }
   width: 100%;
   height: 100%;
 }
-.hero-content { position: relative; z-index: 2; flex: 0 1 520px; min-width: 280px; align-self: center; }
+/* Basis scales with viewport (clamp, same shape as the h1 font-size
+   clamp below) instead of a fixed 520px — at a fixed basis, the
+   headline's own max-width (640px, needed so "que se sientan reales" /
+   "that feel real" fits on its own line) exceeded the column it sat in
+   once the h1's font-size grew past ~57px (roughly 1600px+ viewports),
+   so on wide screens it wrapped into 3 cramped lines instead of the
+   intended 2, with a big dead gap opening up before hero-media (whose
+   own margin-left: auto pushes it to the far right regardless of how
+   little width hero-content actually uses). */
+.hero-content { position: relative; z-index: 2; flex: 0 1 clamp(520px, 40vw, 800px); min-width: 280px; align-self: center; }
 .hero h1 {
   font-size: clamp(28px, 3.6vw, 68px);
-  max-width: 640px;
+  max-width: clamp(640px, 40vw, 800px);
   margin: var(--space-2) 0 var(--space-3);
 }
 .hero-sub {
