@@ -1386,18 +1386,27 @@ var ProjectCollage = (function () {
     // the mark with no breathing room. These get a padded card treatment
     // instead (see .pc-item-logo in styles.css).
     var isLogoAsset = /\/(?:portfolio\/[^/]+\/(?:logo|icon)|clients\/[^/]+)\.webp$/;
+    // Icon marks specifically (not every brand has one, unlike logo) are
+    // always square symbols, not wordmarks — force the tile to a true 1:1
+    // instead of following the logo clamp range below (1:1–1:2.2), which
+    // exists for wordmarks and would only ever narrow an icon down, never
+    // widen it, but shouldn't apply to a mark meant to read as a square.
+    var isIconAsset = /\/portfolio\/[^/]+\/icon\.webp$/;
     var isTypeAsset = /\/type\.webp$/;
     container.innerHTML = '';
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
+      var isIcon = isIconAsset.test(piece.src);
       var isType = isTypeAsset.test(piece.src);
       var isTall = !isLogo && !isType && !piece.isPalette && !piece.isTaglineImg && !piece.isPattern && (isSingle || piece.ratio < 0.85);
       var height = isTall ? (rowH * 2 + gap) : rowH;
       // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
       // every logo tile to a 1:1 square shrinks those down to near-illegible.
       // Follow the real ratio like photos do, just clamped to a sane 1:1–1:2.2
-      // range so a square icon doesn't go narrower than square either.
-      var width = isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio);
+      // range so a square icon doesn't go narrower than square either. Icon
+      // marks specifically always get the true 1:1, ignoring their own
+      // (possibly slightly off-square) file ratio.
+      var width = isIcon ? height : (isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio));
       // Tagline card stays a 1:1 square like the other generated tiles
       // (palette/pattern) — the art itself scrolls 3 spaced-out copies
       // through that square window rather than the card growing to fit
