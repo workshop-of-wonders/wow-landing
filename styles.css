@@ -27,7 +27,7 @@
   --space-4: 32px;
   --space-5: 40px;
   --space-6: 48px;
-  --page-x: clamp(24px, 6vw, 96px);
+  --page-x: clamp(24px, 8vw, 160px);
   --space-7: 56px;
 
   --nav-h: 88px;
