@@ -1398,14 +1398,13 @@ var ProjectCollage = (function () {
       // Follow the real ratio like photos do, just clamped to a sane 1:1–1:2.2
       // range so a square icon doesn't go narrower than square either.
       var width = isLogo ? Math.round(height * Math.max(1, Math.min(2.2, piece.ratio))) : Math.round(height * piece.ratio);
-      // Tagline card is sized to show 3 copies of the art at once (not
-      // just 1), with generous breathing room between each — the card's
-      // own width has to grow to fit all 3 plus their gaps, rather than
-      // following the single-image ratio like every other piece.
+      // Tagline card stays a 1:1 square like the other generated tiles
+      // (palette/pattern) — the art itself scrolls 3 spaced-out copies
+      // through that square window rather than the card growing to fit
+      // all 3 at once.
       if (piece.isTaglineImg) {
         piece.taglineGapPx = Math.round(gap * 2.5);
-        var taglineUnitW = Math.round(height * piece.ratio);
-        width = taglineUnitW * 3 + piece.taglineGapPx * 2;
+        width = height;
       }
       var el = document.createElement('div');
       el.style.width = width + 'px';
