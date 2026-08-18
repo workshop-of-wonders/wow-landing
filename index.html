@@ -1256,17 +1256,31 @@ var ProjectCollage = (function () {
   }
 
   // A single flat card's own background color, sampled from its corner
-  // pixel (not the center, in case art sits there) — used to color the
-  // card itself so it reads as a seamless extension of the art rather
-  // than a mismatched default.
+  // pixel — used to color the card itself so it reads as a seamless
+  // extension of the art rather than a mismatched default. Takes the most
+  // common color across a whole grid of samples, not just one corner
+  // pixel: several taglines repeat their text edge-to-edge (by design, so
+  // a short phrase still fills the card), so any single fixed point can
+  // land on a letterform instead of the actual background — the
+  // background still covers most of the image, so the mode wins.
   function sampleCornerColor(img) {
     try {
+      var size = 12;
       var c = document.createElement('canvas');
-      c.width = 10; c.height = 10;
+      c.width = size; c.height = size;
       var ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0, 10, 10);
-      var d = ctx.getImageData(1, 1, 1, 1).data;
-      return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')';
+      ctx.drawImage(img, 0, 0, size, size);
+      var data = ctx.getImageData(0, 0, size, size).data;
+      var counts = {};
+      var best = null, bestCount = 0;
+      for (var i = 0; i < data.length; i += 4) {
+        // Quantize slightly so anti-aliased near-duplicates of the same
+        // color still count as one bucket.
+        var key = (data[i] >> 3) + ',' + (data[i + 1] >> 3) + ',' + (data[i + 2] >> 3);
+        counts[key] = (counts[key] || 0) + 1;
+        if (counts[key] > bestCount) { bestCount = counts[key]; best = [data[i], data[i + 1], data[i + 2]]; }
+      }
+      return best ? 'rgb(' + best[0] + ',' + best[1] + ',' + best[2] + ')' : null;
     } catch (e) {
       return null;
     }
