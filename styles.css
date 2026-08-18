@@ -2093,6 +2093,15 @@ main { padding-top: var(--nav-h); }
   box-sizing: border-box;
 }
 .pc-item-logo img { width: 100%; height: 100%; object-fit: contain; animation: none; }
+/* Icon marks specifically read as an app icon (their own square, often
+   already with rounded corners baked into the art) rather than a logo
+   floating in a big white mat — much tighter padding than the generic
+   logo treatment above so the mark fills almost the whole tile. Fixed
+   px off --pc-row-h (not a %) — percentage padding on a CSS grid item
+   whose track width is itself content-derived resolves unreliably. */
+.pc-item-icon {
+  padding: calc(var(--pc-row-h, 190px) * 0.04);
+}
 /* Kinetic type specimen (replaces the old static "Aa123" screenshot): the
    same two brand colors as the original swatch, now animated — the split
    drifts side to side and each line breathes at its own pace so it doesn't
