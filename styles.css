@@ -27,7 +27,16 @@
   --space-4: 32px;
   --space-5: 40px;
   --space-6: 48px;
-  --page-x: clamp(24px, 8vw, 160px);
+  /* Every full-bleed section (nav, hero, method, toggle-section, work,
+     labs, footer, ...) pads itself with this one variable, so capping it
+     here caps them all at once without touching each section's markup.
+     The 2nd term only takes over past ~1900px-wide viewports (it's
+     negative, so max() ignores it, below that) — beyond that point it
+     grows so the *content* width tops out around 1600px, turning any
+     extra viewport width (ultrawide "gamer" monitors, zooming out with
+     Ctrl -) into visible side margin instead of stretching every
+     section's content/images/text further and further apart. */
+  --page-x: max(clamp(24px, 8vw, 160px), calc((100vw - 1600px) / 2));
   --space-7: 56px;
 
   --nav-h: 88px;
