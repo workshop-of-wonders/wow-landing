@@ -593,7 +593,11 @@ main { padding-top: var(--nav-h); }
 .toggle-section {
   position: sticky;
   top: var(--nav-h);
-  min-height: calc(100vh - var(--nav-h));
+  /* Capped (not just 100vh - navH) — on an unusually tall/short-ratio
+     viewport, an uncapped 100vh floor stretches this section (content is
+     vertically centered) into a mostly-empty box with the toggle list
+     floating in a sea of dead space, same fix as .hero's min(96vh,960px). */
+  min-height: min(calc(100vh - var(--nav-h)), 760px);
   display: flex;
   align-items: center;
   padding: var(--space-5) var(--page-x);
@@ -1385,7 +1389,10 @@ main { padding-top: var(--nav-h); }
 .method {
   position: sticky;
   top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
+  /* Capped for the same reason as .toggle-section below — an uncapped
+     100vh - navH stretches this (content is justify-content: center)
+     into a mostly-empty box on tall/unusual-ratio viewports. */
+  height: min(calc(100vh - var(--nav-h)), 800px);
   display: flex;
   flex-direction: column;
   justify-content: center;
