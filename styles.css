@@ -2748,3 +2748,196 @@ main { padding-top: var(--nav-h); }
   .hero-cta { flex-wrap: nowrap; gap: var(--space-1); width: 100%; }
   .hero-cta .btn { flex: 1 1 0; padding: 14px 12px; font-size: 14px; white-space: nowrap; }
 }
+
+/* ------------------------------------------------------------------
+   Servicios page (servicios.html) — standalone SEO landing, shares the
+   nav/footer/contact/project-modal styles above but needs its own
+   hero/category-grid/FAQ treatment. Prefixed .svc- so it can't collide
+   with any existing selector (this stylesheet is shared with index.html).
+   ------------------------------------------------------------------ */
+.svc-hero {
+  padding: calc(var(--nav-h) + var(--space-6)) var(--page-x) var(--space-5);
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.svc-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5.5vw, 56px);
+  color: var(--purple);
+  line-height: 1.15;
+  margin: var(--space-2) 0 var(--space-2);
+}
+.svc-hero-sub {
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--ink);
+  opacity: 0.75;
+  max-width: 620px;
+  margin: 0 auto var(--space-4);
+  line-height: 1.6;
+}
+.svc-hero .hero-cta { justify-content: center; }
+
+.svc-jump {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-3);
+  padding: 0 var(--page-x) var(--space-5);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.svc-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 8px 14px;
+  border: 1px solid rgba(26,19,32,0.15);
+  border-radius: 999px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.svc-jump a:hover { border-color: var(--purple); transform: translateY(-1px); }
+.svc-jump-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.svc-category {
+  padding: var(--space-6) var(--page-x);
+  border-top: 1px solid rgba(26,19,32,0.08);
+}
+.svc-cat-head {
+  max-width: 720px;
+  margin: 0 auto var(--space-4);
+  text-align: center;
+}
+.svc-cat-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin: 0 0 var(--space-2);
+}
+.svc-cat-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.5vw, 38px);
+  color: var(--purple);
+  margin: 0 0 var(--space-2);
+}
+.svc-cat-head p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.75;
+  margin: 0;
+}
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-2);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.svc-card {
+  padding: var(--space-3);
+  border-radius: 14px;
+  background: var(--cloud);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.svc-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(26,19,32,0.1); }
+.svc-card h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--purple);
+  margin: 0 0 6px;
+}
+.svc-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  opacity: 0.75;
+  margin: 0;
+}
+
+.svc-faq {
+  padding: var(--space-6) var(--page-x);
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+.svc-faq h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--purple);
+  margin: var(--space-2) 0 var(--space-4);
+}
+.svc-faq-list { text-align: left; }
+.svc-faq-item {
+  border-bottom: 1px solid rgba(26,19,32,0.12);
+}
+.svc-faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) 4px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.svc-faq-icon {
+  flex: none;
+  font-size: 20px;
+  color: var(--purple);
+  transition: transform 0.2s ease;
+}
+.svc-faq-item.is-open .svc-faq-icon { transform: rotate(45deg); }
+.svc-faq-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.svc-faq-item.is-open .svc-faq-a { grid-template-rows: 1fr; }
+.svc-faq-a p {
+  overflow: hidden;
+  margin: 0 0 var(--space-2);
+  padding: 0 4px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.75;
+}
+.svc-faq-a > p { min-height: 0; }
+.svc-faq-a { overflow: hidden; }
+
+.svc-contact {
+  padding: var(--space-6) var(--page-x) var(--space-7);
+  background: var(--cloud);
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .svc-jump { display: none; }
+  .svc-category { padding: var(--space-5) var(--space-3); }
+  .svc-hero { padding: calc(var(--space-5) + var(--nav-h)) var(--space-3) var(--space-4); }
+  .svc-faq { padding: var(--space-5) var(--space-3); }
+  .svc-contact { padding: var(--space-5) var(--space-3) var(--space-6); }
+}
