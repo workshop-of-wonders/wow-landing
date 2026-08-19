@@ -597,7 +597,11 @@ main { padding-top: var(--nav-h); }
 /* Toggle / switch list — pinned until every switch turns on */
 .toggle-pin {
   position: relative;
-  height: 190vh;
+  /* Capped — an uncapped vh multiplier grows the scroll-pin distance (and
+     with it, the rounding error in the sticky child's stick/unstick math)
+     without bound on unusual viewports, the likely cause of a reported
+     gap appearing between this section and the next after zooming out. */
+  height: min(190vh, 1700px);
 }
 .toggle-section {
   position: sticky;
@@ -1393,7 +1397,8 @@ main { padding-top: var(--nav-h); }
 /* Method — pinned while the rocket flies, so you can't scroll past mid-flight */
 .method-pin {
   position: relative;
-  height: 260vh;
+  /* Capped for the same reason as .toggle-pin above. */
+  height: min(260vh, 2400px);
 }
 .method {
   position: sticky;
