@@ -1357,7 +1357,7 @@ var ProjectCollage = (function () {
       if (gm) { slugGuess = gm[1]; break; }
     }
     var loadedPromise = Promise.all(items.map(function (it) { return loadImage(it.src); }));
-    var taglinePromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/tagline.png') : Promise.resolve(null);
+    var taglinePromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/tagline.webp') : Promise.resolve(null);
     var patternPromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/pattern.webp') : Promise.resolve(null);
     var loaded = await loadedPromise;
     if (myToken !== renderToken) return; // a newer render started meanwhile — discard this one
@@ -1388,7 +1388,7 @@ var ProjectCollage = (function () {
       pieces.push({ src: 'palette:' + slugForColors, priority: 1, ratio: paletteRatio, img: null, isPalette: true, colors: COLORS_BY_SLUG[slugForColors] });
     }
     // A tagline card — the project's own hand-designed tagline graphic
-    // (design-system/portfolio/<slug>/tagline.png, not every brand has
+    // (design-system/portfolio/<slug>/tagline.webp, not every brand has
     // one), scrolling sideways as an endless marquee. Probed directly by
     // path, same "no extra data needed per item" approach as the pattern
     // and palette tiles.
