@@ -1324,14 +1324,43 @@ var ProjectCollage = (function () {
     });
   }
 
+  // Bumped on every render() call so a slow, still-in-flight render from a
+  // previously-clicked project can detect it's stale (a newer one started)
+  // and bail out without ever touching the DOM — otherwise, switching
+  // quickly between two projects while the first is still loading its
+  // images could let the first one "win" the race and overwrite the second's
+  // freshly-rendered collage after the fact, making the whole thing look
+  // stuck/out of sync.
+  var renderToken = 0;
+
   async function render(container, images, opts) {
     opts = opts || {};
+    var myToken = ++renderToken;
     var rowHVar = getComputedStyle(container).getPropertyValue('--pc-row-h') || '190px';
     var rowH = parseFloat(rowHVar) || 190;
     var items = normalize(images);
-    if (!items.length) { container.innerHTML = ''; return; }
+    // Clear immediately (instead of only right before the final DOM build,
+    // after every image has finished loading) and show a lightweight
+    // loading state — otherwise the *previous* project's collage just sits
+    // there frozen for however long this one's images take to fetch, which
+    // reads as the UI being stuck rather than loading.
+    container.innerHTML = '';
+    container.classList.add('is-loading');
+    if (!items.length) { container.classList.remove('is-loading'); return; }
 
-    var loaded = await Promise.all(items.map(function (it) { return loadImage(it.src); }));
+    // Fetch the main image set and the tagline/pattern probes in parallel
+    // (they used to run one after another, adding their fetch time on top
+    // of the main set's instead of overlapping with it).
+    var slugGuess = null;
+    for (var gi = 0; gi < items.length; gi++) {
+      var gm = items[gi].src.match(/portfolio\/([^/]+)\/type\.webp$/);
+      if (gm) { slugGuess = gm[1]; break; }
+    }
+    var loadedPromise = Promise.all(items.map(function (it) { return loadImage(it.src); }));
+    var taglinePromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/tagline.png') : Promise.resolve(null);
+    var patternPromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/pattern.webp') : Promise.resolve(null);
+    var loaded = await loadedPromise;
+    if (myToken !== renderToken) return; // a newer render started meanwhile — discard this one
     var pieces = items.map(function (it, i) {
       var img = loaded[i];
       var ratio = img ? (img.naturalWidth || 1) / (img.naturalHeight || 1) : 4 / 3;
@@ -1364,7 +1393,8 @@ var ProjectCollage = (function () {
     // path, same "no extra data needed per item" approach as the pattern
     // and palette tiles.
     if (slugForPhrase) {
-      var taglineImg = await loadImage('design-system/portfolio/' + slugForPhrase + '/tagline.png');
+      var taglineImg = await taglinePromise;
+      if (myToken !== renderToken) return;
       if (taglineImg) {
         var taglineRatio = (taglineImg.naturalWidth || 1) / (taglineImg.naturalHeight || 1);
         // Sample the graphic's own corner pixel as the card's background —
@@ -1381,7 +1411,8 @@ var ProjectCollage = (function () {
     // instead of requiring it in each work-item's data-images — same
     // "no extra data needed per item" approach as the palette tile.
     if (slugForPhrase) {
-      var patternImg = await loadImage('design-system/portfolio/' + slugForPhrase + '/pattern.webp');
+      var patternImg = await patternPromise;
+      if (myToken !== renderToken) return;
       if (patternImg) {
         pieces.push({ src: 'pattern:' + slugForPhrase, priority: 1, ratio: 1, img: null, isPattern: true, patternSrc: patternImg.src, colorImg: typePieceForPhrase.img });
       }
@@ -1407,6 +1438,7 @@ var ProjectCollage = (function () {
     var isIconAsset = /\/portfolio\/[^/]+\/icon\.webp$/;
     var isTypeAsset = /\/type\.webp$/;
     container.innerHTML = '';
+    container.classList.remove('is-loading');
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
       var isIcon = isIconAsset.test(piece.src);

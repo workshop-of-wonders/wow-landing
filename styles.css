@@ -2078,6 +2078,23 @@ main { padding-top: var(--nav-h); }
   scrollbar-width: none;
 }
 .project-collage::-webkit-scrollbar { display: none; }
+/* Shown for the brief moment between clicking a project and its images
+   finishing their fetch — without this the previous project's collage just
+   sits there frozen while the next one loads, which reads as the UI being
+   stuck rather than switching. */
+.project-collage.is-loading::after {
+  content: '';
+  grid-row: 1 / -1;
+  grid-column: 1;
+  width: 40px;
+  align-self: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  animation: pc-spin 0.8s linear infinite;
+}
+@keyframes pc-spin { to { transform: rotate(360deg); } }
 .pc-item {
   height: 100%;
   border-radius: var(--pc-radius);
