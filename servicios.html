@@ -124,7 +124,14 @@
 </head>
 <body>
 
-<header class="nav">
+<!-- .nav starts transparent on index.html and only gets its purple
+     background once JS adds .is-scrolled past 40px of scroll -- that
+     works there because the hero behind it is a dark full-bleed image.
+     This page's hero is light, so the nav needs to be solid purple from
+     the start for the header to read the same color on every page;
+     hardcoding .is-scrolled (no scroll listener needed) reuses the exact
+     same CSS rule instead of duplicating the gradient. -->
+<header class="nav is-scrolled">
   <a href="index.html" class="logo">
     <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
   </a>
