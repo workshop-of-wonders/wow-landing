@@ -6,9 +6,14 @@
 //
 // Uso:
 //   POSTGRES_URL="postgres://..." node scripts/migrate-seed.mjs
+//   (o DATABASE_URL, que es como lo nombra la integración Neon de Vercel)
 //
 // Correr primero contra una base de prueba/dev y revisar unas filas antes
 // de apuntar a producción (ver plan en /root/.claude/plans si aplica).
+
+if (!process.env.POSTGRES_URL && process.env.DATABASE_URL) {
+  process.env.POSTGRES_URL = process.env.DATABASE_URL;
+}
 
 import fs from 'node:fs';
 import path from 'node:path';
