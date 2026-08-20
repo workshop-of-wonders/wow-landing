@@ -127,10 +127,10 @@
     <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
   </a>
   <nav class="nav-links">
-    <a href="servicios.html" aria-current="page" data-i18n>Servicios</a>
+    <a href="servicios.html" aria-current="page">Servicios</a>
     <a href="index.html#labs">Labs</a>
-    <a href="index.html#trabajo" data-i18n>Trabajo</a>
-    <a href="#contacto" class="btn btn-primary btn-sm" data-open-form data-i18n>Hablemos</a>
+    <a href="index.html#trabajo">Trabajo</a>
+    <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos de tu proyecto</a>
   </nav>
   <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobileMenu">
     <span></span><span></span><span></span>
@@ -151,7 +151,7 @@
       <a href="index.html#labs"><span class="nav-mobile-link-num">02</span>Labs</a>
       <a href="index.html#trabajo"><span class="nav-mobile-link-num">03</span>Trabajo</a>
     </nav>
-    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form>Hablemos <span class="nav-mobile-cta-arrow">→</span></a>
+    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form>Hablemos de tu proyecto <span class="nav-mobile-cta-arrow">→</span></a>
     <div class="nav-mobile-foot">
       <span class="nav-mobile-foot-mark">✦</span>
       <a href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener">Instagram</a>
@@ -167,8 +167,8 @@
     <h1>Diseño, marca y marketing digital,<br class="svc-hero-br"> todo bajo un mismo techo</h1>
     <p class="svc-hero-sub">Desde la estrategia que define quién eres hasta la pauta que lleva tu marca a la persona correcta — un solo equipo, un solo hilo conductor.</p>
     <div class="hero-cta">
-      <a href="#contacto" class="btn btn-primary" data-open-form>Iniciar un proyecto</a>
-      <a href="index.html#trabajo" class="btn btn-outline">Ver portafolio</a>
+      <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
+      <a href="index.html#trabajo" class="btn btn-outline">Ver nuestro trabajo</a>
     </div>
   </section>
 
@@ -291,19 +291,30 @@
       <form class="project-form" id="projectForm">
         <div class="project-field">
           <label for="pfEmail">CORREO</label>
-          <input id="pfEmail" type="email" placeholder="tucorreo@empresa.com" required>
+          <input id="pfEmail" name="email" type="email" placeholder="tucorreo@empresa.com" required>
         </div>
         <div class="project-field">
           <label for="pfName">NOMBRE COMPLETO</label>
-          <input id="pfName" type="text" placeholder="Tu nombre completo" required>
+          <input id="pfName" name="name" type="text" placeholder="Tu nombre completo" required>
         </div>
         <div class="project-field">
           <label for="pfCompany">EMPRESA</label>
-          <input id="pfCompany" type="text" placeholder="Nombre de tu empresa">
+          <input id="pfCompany" name="company" type="text" placeholder="Nombre de tu empresa">
+        </div>
+        <div class="project-field">
+          <label for="pfNeed">¿QUÉ NECESITAS?</label>
+          <select id="pfNeed" name="need">
+            <option value="">Selecciona una opción</option>
+            <option>Estrategia</option>
+            <option>Branding</option>
+            <option>Web/Ecommerce</option>
+            <option>Marketing/Growth</option>
+            <option>No estoy seguro</option>
+          </select>
         </div>
         <div class="project-field">
           <label for="pfBudget">PRESUPUESTO ESTIMADO</label>
-          <select id="pfBudget">
+          <select id="pfBudget" name="budget">
             <option value="">Selecciona un rango</option>
             <option>Menos de $5M COP</option>
             <option>$5M – $20M COP</option>
@@ -313,12 +324,12 @@
         </div>
         <div class="project-field project-field-full">
           <label for="pfDetails">CUÉNTANOS SOBRE TU PROYECTO</label>
-          <textarea id="pfDetails" rows="3" placeholder="¿Qué tienes en mente?"></textarea>
+          <textarea id="pfDetails" name="details" rows="3" placeholder="¿Qué tienes en mente?"></textarea>
         </div>
         <button type="submit" class="btn btn-primary project-submit">Enviar</button>
       </form>
       <div class="project-form-thanks" id="projectFormThanks">
-        <p>¡Gracias! Recibimos tu mensaje y te contactaremos muy pronto.</p>
+        <p>¡Gracias! Te responderemos en un máximo de 1 día hábil.</p>
       </div>
     </div>
   </div>
@@ -329,14 +340,14 @@
   <p class="closer-line">Y si hacemos <em>maravillas</em> juntos</p>
   <p class="essence-lead">Cuéntanos tu proyecto o encuéntranos en redes.</p>
   <div class="contact-links">
-    <a class="contact-pill contact-pill-primary" href="#" data-open-form>Cuéntanos tu proyecto (Formulario)</a>
+    <a class="contact-pill contact-pill-primary" href="#" data-open-form>Hablemos de tu proyecto</a>
   </div>
 </section>
 <footer class="footer">
   <div class="footer-logo">
     <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="footer-logo-img" width="773" height="295">
   </div>
-  <p class="footer-quote">&ldquo;It's kind of fun to do the impossible&rdquo; &mdash; Walt Disney</p>
+  <p class="footer-quote">&ldquo;Seguimos aquí después de lanzar — porque una marca que se siente real no termina en la entrega.&rdquo;</p>
   <div class="footer-socials">
     <a href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
     <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
@@ -346,6 +357,43 @@
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Minimal modal focus trap: keeps Tab/Shift+Tab cycling within `modalEl`
+   while `isOpen()` returns true, and restores focus to whatever triggered
+   the modal when it closes. */
+function createFocusTrap(modalEl, isOpen) {
+  var lastFocused = null;
+  function focusables() {
+    return Array.prototype.slice.call(
+      modalEl.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])')
+    ).filter(function (el) { return el.offsetParent !== null; });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || !isOpen()) return;
+    var items = focusables();
+    if (!items.length) return;
+    var first = items[0];
+    var last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+  return {
+    onOpen: function () {
+      lastFocused = document.activeElement;
+      var items = focusables();
+      if (items.length) items[0].focus();
+    },
+    onClose: function () {
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+      lastFocused = null;
+    }
+  };
+}
 
 /* Mobile nav burger: toggles the floating glass menu (same behavior as index.html) */
 (function () {
@@ -373,16 +421,19 @@ document.getElementById('year').textContent = new Date().getFullYear();
   var form = document.getElementById('projectForm');
   var thanks = document.getElementById('projectFormThanks');
   if (!modal) return;
+  var projectFormFocusTrap = createFocusTrap(modal, function () { return modal.classList.contains('is-open'); });
   function open() {
     form.style.display = '';
     thanks.classList.remove('is-visible');
     form.reset();
     modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    projectFormFocusTrap.onOpen();
   }
   function close() {
     modal.classList.remove('is-open');
     document.body.style.overflow = '';
+    projectFormFocusTrap.onClose();
   }
   document.querySelectorAll('[data-open-form]').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); open(); });
@@ -392,6 +443,18 @@ document.getElementById('year').textContent = new Date().getFullYear();
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    // Structured payload, ready for a real submit integration once one is defined.
+    var projectRequest = {
+      email: form.email.value,
+      name: form.name.value,
+      company: form.company.value,
+      need: form.need.value,
+      budget: form.budget.value,
+      details: form.details.value,
+      page: location.pathname
+    };
+    // TODO: conectar aquí el backend real (email/CRM/Sheet) cuando esté definido — hoy no envía a ningún lado.
+    // Ejemplo futuro: fetch('/api/lead', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) });
     form.style.display = 'none';
     thanks.classList.add('is-visible');
   });

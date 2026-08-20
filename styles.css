@@ -344,6 +344,19 @@ main { padding-top: var(--nav-h); }
 .nav-dropdown-cta:hover { color: var(--white); }
 @media (max-width: 900px) {
   .nav-dropdown { display: none; }
+  /* Burger nav now switches on at the same 900px boundary where the desktop
+     mega-menu already turns off, instead of 720px. Between 721-900px the
+     full set of nav-links (Servicios/Labs/Trabajo/Portafolio + lang toggle +
+     CTA button) didn't fit one row and wrapped to a second line, making the
+     nav render ~20px taller than --nav-h (108px vs the 88px used everywhere
+     hero/section offsets are calculated) — that mismatch is the root cause
+     of the hero-sub / hero-sub-secondary text scrolling in partially behind
+     the opaque fixed nav on tablet widths. */
+  .nav-links { gap: var(--space-2); }
+  .nav-links a:not(.btn) { display: none; }
+  .nav-links .btn { display: none; }
+  .nav-burger { display: block; }
+  .nav-mobile-menu { display: flex; }
 }
 .nav-burger {
   display: none;
@@ -553,6 +566,13 @@ main { padding-top: var(--nav-h); }
   max-width: 480px;
   font-size: 19px;
   color: var(--cloud);
+  margin-bottom: var(--space-2);
+}
+.hero-sub-secondary {
+  max-width: 440px;
+  font-size: 15px;
+  color: var(--cloud);
+  opacity: 0.72;
   margin-bottom: var(--space-5);
 }
 .hero-cta { display: flex; gap: var(--space-2); flex-wrap: wrap; }
@@ -888,7 +908,7 @@ main { padding-top: var(--nav-h); }
   .hero { height: auto; }
   .hero-inner { flex-direction: column; height: auto; align-items: center; }
   .hero-content { text-align: center; max-width: 560px; flex: 0 1 auto; }
-  .hero h1, .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero h1, .hero-sub, .hero-sub-secondary { margin-left: auto; margin-right: auto; }
   .hero-cta { justify-content: center; }
   .hero-media {
     width: calc(100% + (2 * var(--page-x)));
@@ -1195,6 +1215,24 @@ main { padding-top: var(--nav-h); }
   .labs-panel.is-open .labs-bg-icon { opacity: 0.18; transform: scale(1); }
 }
 
+.academy-mention {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  border: 1px solid rgba(26,19,32,0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.academy-mention:hover { border-color: var(--purple); background: rgba(56,7,87,0.04); }
+.academy-mention strong { color: var(--purple); }
+
 /* Hub diagram */
 .hub-diagram {
   position: relative;
@@ -1435,6 +1473,49 @@ main { padding-top: var(--nav-h); }
   .method-pin { height: auto; }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
+
+/* No terminamos cuando lanzamos — short conceptual differential section between
+   Proceso (the mechanism) and Trabajo. Not a redesign of the circular Proceso
+   diagram: this is its own compact DEFINE→CREA→CRECE→APRENDE→DEFINE strip. */
+.diff-section {
+  position: relative;
+  padding: var(--space-7) var(--page-x);
+  background: var(--white);
+  color: var(--ink);
+  text-align: center;
+  overflow: hidden;
+}
+.diff-section h2 { max-width: 640px; margin: var(--space-2) auto var(--space-3); }
+.diff-intro { max-width: 560px; margin: 0 auto var(--space-6); font-size: 17px; color: var(--ink); opacity: 0.8; }
+.diff-cycle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 auto var(--space-5);
+}
+.diff-node {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 10px 22px;
+  border-radius: 999px;
+  color: var(--white);
+  font-size: 15px;
+}
+.diff-node-lima { background: var(--lima); color: var(--purple); }
+.diff-node-blue { background: var(--blue); color: var(--purple); }
+.diff-node-orange { background: var(--orange); }
+.diff-node-magenta { background: var(--magenta); }
+.diff-node-ghost { opacity: 0.45; }
+.diff-arrow { font-size: 18px; color: var(--ink); opacity: 0.5; }
+.diff-arrow-loop { font-size: 20px; }
+.diff-footnote { max-width: 600px; margin: 0 auto; font-size: 14px; color: var(--ink); opacity: 0.62; }
+@media (max-width: 720px) {
+  .diff-cycle { gap: var(--space-1); }
+  .diff-node { padding: 8px 14px; font-size: 13px; }
+}
 .method h2 {
   font-size: clamp(26px, 3.4vw, 38px);
   max-width: 460px;
@@ -1617,9 +1698,21 @@ main { padding-top: var(--nav-h); }
 .work h2 {
   font-size: clamp(28px, 4vw, 40px);
   color: var(--purple);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-2);
   max-width: 640px;
 }
+.work-portfolio-link {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--purple);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.work-portfolio-link:hover { color: var(--magenta); }
 .work-gallery { display: flex; flex-direction: column; }
 .work-visible {
   display: flex;
@@ -1986,6 +2079,21 @@ main { padding-top: var(--nav-h); }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8b7f96;
+}
+.work-brands-context {
+  margin: 0 0 var(--space-3);
+  font-size: 14px;
+  color: #8b7f96;
+}
+.work-brands-context-placeholder {
+  display: inline-block;
+  padding: 1px 8px;
+  border: 1px dashed #d99a2b;
+  border-radius: 4px;
+  color: #b3720f;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
 }
 .work-brands-marquee {
   overflow: hidden;
@@ -2775,11 +2883,6 @@ main { padding-top: var(--nav-h); }
 .footer-socials a:hover { color: var(--lima); }
 
 @media (max-width: 720px) {
-  .nav-links { gap: var(--space-2); }
-  .nav-links a:not(.btn) { display: none; }
-  .nav-links .btn { display: none; }
-  .nav-burger { display: block; }
-  .nav-mobile-menu { display: flex; }
   .hero { padding: calc(var(--space-6) + var(--nav-h)) var(--space-3) 64px; }
   .services, .contact, .work { padding: var(--space-6) var(--space-3); }
   .labs { padding: var(--space-6) 0 0; }
