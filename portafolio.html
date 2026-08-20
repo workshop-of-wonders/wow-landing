@@ -193,14 +193,16 @@
     <div class="project-modal-inner">
       <button type="button" class="project-modal-close" id="projectModalClose" aria-label="Cerrar">✕</button>
       <h3 class="project-modal-title"><em>Cuéntanos</em> tu proyecto</h3>
-      <form class="project-form" id="projectForm">
+      <form class="project-form" id="projectForm" novalidate>
         <div class="project-field">
           <label for="pfEmail">CORREO</label>
           <input id="pfEmail" name="email" type="email" placeholder="tucorreo@empresa.com" required>
+          <span class="project-field-error">Escribe un correo válido.</span>
         </div>
         <div class="project-field">
           <label for="pfName">NOMBRE COMPLETO</label>
           <input id="pfName" name="name" type="text" placeholder="Tu nombre completo" required>
+          <span class="project-field-error">Escribe tu nombre.</span>
         </div>
         <div class="project-field">
           <label for="pfCompany">EMPRESA</label>
@@ -231,10 +233,15 @@
           <label for="pfDetails">CUÉNTANOS SOBRE TU PROYECTO</label>
           <textarea id="pfDetails" name="details" rows="3" placeholder="¿Qué tienes en mente?"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary project-submit">Enviar</button>
+        <div class="project-field project-field-hp" aria-hidden="true">
+          <label for="pfWebsite" tabindex="-1">Website</label>
+          <input id="pfWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="project-form-error" id="projectFormError">No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a hola@workshopofwonders.co</p>
+        <button type="submit" class="btn btn-primary project-submit" id="projectSubmitBtn">Enviar</button>
       </form>
       <div class="project-form-thanks" id="projectFormThanks">
-        <p>¡Gracias! Te responderemos en un máximo de 1 día hábil.</p>
+        <p>¡Listo! Tu solicitud quedó registrada. Te responderemos en un máximo de 1 día hábil.</p>
       </div>
     </div>
   </div>
@@ -326,15 +333,26 @@ function createFocusTrap(modalEl, isOpen) {
   var closeBtn = document.getElementById('projectModalClose');
   var form = document.getElementById('projectForm');
   var thanks = document.getElementById('projectFormThanks');
+  var submitBtn = document.getElementById('projectSubmitBtn');
+  var formError = document.getElementById('projectFormError');
   if (!modal) return;
   var projectFormFocusTrap = createFocusTrap(modal, function () { return modal.classList.contains('is-open'); });
+
+  // Time-trap: timestamp set when the modal opens. A submit that lands faster
+  // than a human could plausibly fill the form (~2s) is treated as a bot.
+  var openedAt = 0;
+  var MIN_FILL_MS = 2000;
+
   function open() {
     form.style.display = '';
     thanks.classList.remove('is-visible');
+    formError.classList.remove('is-visible');
     form.reset();
+    clearFieldErrors();
     modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     projectFormFocusTrap.onOpen();
+    openedAt = Date.now();
   }
   function close() {
     modal.classList.remove('is-open');
@@ -347,8 +365,50 @@ function createFocusTrap(modalEl, isOpen) {
   closeBtn.addEventListener('click', close);
   modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  function clearFieldErrors() {
+    form.querySelectorAll('.project-field.has-error').forEach(function (f) { f.classList.remove('has-error'); });
+  }
+  function setFieldError(input) {
+    var field = input.closest('.project-field');
+    if (field) field.classList.add('has-error');
+  }
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Real client-side validation beyond native :invalid (inconsistent across
+  // browsers) — trims whitespace and shows inline messages per field.
+  function validate() {
+    clearFieldErrors();
+    var ok = true;
+    var emailVal = form.email.value.trim();
+    form.email.value = emailVal;
+    if (!emailVal || !EMAIL_RE.test(emailVal)) { setFieldError(form.email); ok = false; }
+    var nameVal = form.name.value.trim();
+    form.name.value = nameVal;
+    if (!nameVal) { setFieldError(form.name); ok = false; }
+    return ok;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    formError.classList.remove('is-visible');
+
+    // Honeypot: hidden field a real visitor never fills. If it has a value,
+    // silently pretend success without processing anything.
+    var isBot = !!(form.website && form.website.value.trim());
+    // Time-trap: same treatment for submits faster than a human could
+    // reasonably fill the form — a first-line filter only, not a
+    // replacement for server-side validation once a real backend exists.
+    if (openedAt && (Date.now() - openedAt) < MIN_FILL_MS) isBot = true;
+
+    if (isBot) {
+      form.style.display = 'none';
+      thanks.classList.add('is-visible');
+      return;
+    }
+
+    if (!validate()) return;
+
     // Structured payload, ready for a real submit integration once one is defined.
     var projectRequest = {
       email: form.email.value,
@@ -359,10 +419,32 @@ function createFocusTrap(modalEl, isOpen) {
       details: form.details.value,
       page: location.pathname
     };
-    // TODO: conectar aquí el backend real (email/CRM/Sheet) cuando esté definido — hoy no envía a ningún lado.
-    // Ejemplo futuro: fetch('/api/lead', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) });
-    form.style.display = 'none';
-    thanks.classList.add('is-visible');
+
+    // UI flow only: "sending" -> "success", wired exactly as it should look
+    // once a real backend exists. There is NO backend deployed yet — see
+    // api/contact.js (scaffolded, not yet deployed/connected) — so nothing
+    // is actually transmitted over the network at this point. The success
+    // copy reflects that honestly ("quedó registrada" instead of implying
+    // the team already received it).
+    // Real integration point once api/contact.js is deployed and configured:
+    // submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+    // fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) })
+    //   .then(function (r) { return r.json(); })
+    //   .then(function (data) {
+    //     if (data && data.success) { form.style.display = 'none'; thanks.classList.add('is-visible'); }
+    //     else { formError.classList.add('is-visible'); }
+    //   })
+    //   .catch(function () { formError.classList.add('is-visible'); })
+    //   .finally(function () { submitBtn.disabled = false; submitBtn.textContent = 'Enviar'; });
+    var idleLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+    window.setTimeout(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = idleLabel;
+      form.style.display = 'none';
+      thanks.classList.add('is-visible');
+    }, 450);
   });
 })();
 

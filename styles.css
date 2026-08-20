@@ -2733,6 +2733,44 @@ main { padding-top: var(--nav-h); }
 }
 .project-form-thanks.is-visible { display: block; }
 
+/* Honeypot: visually hidden and unreachable by keyboard/screen readers, but present in the DOM
+   (never display:none — some bots skip fields that are display:none and fill everything else). */
+.project-field-hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.project-field.has-error input,
+.project-field.has-error select,
+.project-field.has-error textarea {
+  border-color: #c0392b;
+}
+.project-field-error {
+  display: none;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #c0392b;
+}
+.project-field.has-error .project-field-error { display: block; }
+
+.project-form-error {
+  display: none;
+  grid-column: 1 / -1;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #c0392b;
+  text-align: center;
+  margin: 0;
+}
+.project-form-error.is-visible { display: block; }
+
+.project-submit[disabled] { opacity: 0.65; cursor: not-allowed; }
+
 @media (max-width: 560px) {
   .project-form { grid-template-columns: 1fr; }
   .project-submit { justify-self: stretch; }

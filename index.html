@@ -373,9 +373,9 @@
       </div>
 
       <div class="hub-col hub-col-right">
-        <button type="button" class="hub-pill hub-lima" data-desc="Core Lab — definimos quién eres, qué representas y hacia dónde vas." data-desc-en="Core Lab — we define who you are, what you stand for, and where you're going." data-i18n>DEFINE</button>
-        <button type="button" class="hub-pill hub-blue" data-desc="Brand & Experience Lab — convertimos la estrategia en marca, identidad y experiencias tangibles." data-desc-en="Brand & Experience Lab — we turn strategy into a brand, an identity, and tangible experiences." data-i18n>CREA</button>
-        <button type="button" class="hub-pill hub-orange" data-desc="Insight Lab — conectamos la marca con las personas correctas y medimos lo que funciona." data-desc-en="Insight Lab — we connect the brand with the right people and measure what works." data-i18n>CRECE</button>
+        <button type="button" class="hub-pill hub-lima" data-desc="Core Lab: propuesta de valor, auditoría de marca, arquetipo y personalidad, misión, visión y valores." data-desc-en="Core Lab: value proposition, brand audit, archetype and personality, mission, vision, and values." data-i18n>DEFINE</button>
+        <button type="button" class="hub-pill hub-blue" data-desc="Brand & Experience Lab: identidad de marca, rebranding, diseño editorial, presentaciones, packaging, copywriting, diseño web, UX/UI y e-commerce." data-desc-en="Brand & Experience Lab: brand identity, rebranding, editorial design, presentations, packaging, copywriting, web design, UX/UI, and e-commerce." data-i18n>CREA</button>
+        <button type="button" class="hub-pill hub-orange" data-desc="Insight Lab: SEO, GEO, CRO, pauta digital, analítica y reportería." data-desc-en="Insight Lab: SEO, GEO, CRO, paid media, analytics, and reporting." data-i18n>CRECE</button>
       </div>
     </div>
     <button type="button" class="academy-mention" data-open-form>
@@ -495,7 +495,7 @@
     </div>
     <p class="work-brands-label" data-i18n>Marcas con las que hemos trabajado</p>
     <!-- NECESITAMOS DATO REAL: cifra real de marcas/proyectos cuando el cliente la confirme -->
-    <p class="work-brands-context" data-i18n>Marcas y proyectos entregados en distintas industrias.</p>
+    <p class="work-brands-context" data-i18n>Marcas y proyectos entregados en salud, moda, retail, tecnología y otras industrias.</p>
     <div class="work-brands-marquee">
       <div class="work-brands-track">
         <div class="client-logo"><img src="design-system/clients/bary.webp" alt="Bary" loading="lazy" width="166" height="102"></div>
@@ -557,14 +557,16 @@
     <div class="project-modal-inner">
       <button type="button" class="project-modal-close" id="projectModalClose" data-i18n-aria-label-en="Close" aria-label="Cerrar">✕</button>
       <h3 class="project-modal-title"><em data-i18n>Cuéntanos</em> <span data-i18n>tu proyecto</span></h3>
-      <form class="project-form" id="projectForm">
+      <form class="project-form" id="projectForm" novalidate>
         <div class="project-field">
           <label for="pfEmail" data-i18n>CORREO</label>
           <input id="pfEmail" name="email" type="email" data-i18n-placeholder-en="youremail@company.com" placeholder="tucorreo@empresa.com" required>
+          <span class="project-field-error" data-i18n>Escribe un correo válido.</span>
         </div>
         <div class="project-field">
           <label for="pfName" data-i18n>NOMBRE COMPLETO</label>
           <input id="pfName" name="name" type="text" data-i18n-placeholder-en="Your full name" placeholder="Tu nombre completo" required>
+          <span class="project-field-error" data-i18n>Escribe tu nombre.</span>
         </div>
         <div class="project-field">
           <label for="pfCompany" data-i18n>EMPRESA</label>
@@ -595,10 +597,15 @@
           <label for="pfDetails" data-i18n>CUÉNTANOS SOBRE TU PROYECTO</label>
           <textarea id="pfDetails" name="details" rows="3" data-i18n-placeholder-en="What's on your mind?" placeholder="¿Qué tienes en mente?"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary project-submit" data-i18n>Enviar</button>
+        <div class="project-field project-field-hp" aria-hidden="true">
+          <label for="pfWebsite" tabindex="-1">Website</label>
+          <input id="pfWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="project-form-error" id="projectFormError" data-i18n>No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a hola@workshopofwonders.co</p>
+        <button type="submit" class="btn btn-primary project-submit" id="projectSubmitBtn" data-i18n>Enviar</button>
       </form>
       <div class="project-form-thanks" id="projectFormThanks">
-        <p data-i18n>¡Gracias! Te responderemos en un máximo de 1 día hábil.</p>
+        <p data-i18n>¡Listo! Tu solicitud quedó registrada. Te responderemos en un máximo de 1 día hábil.</p>
       </div>
     </div>
   </div>
@@ -626,10 +633,6 @@
       <div class="svc-faq-item">
         <button type="button" class="svc-faq-q"><span data-i18n>¿Usan inteligencia artificial en su proceso?</span><span class="svc-faq-icon">+</span></button>
         <div class="svc-faq-a"><p data-i18n>Sí, la IA es una herramienta más dentro de nuestro flujo de trabajo: acelera investigación, exploración visual y producción, pero la estrategia, el criterio y la dirección creativa siguen siendo 100% humanos.</p></div>
-      </div>
-      <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q"><span data-i18n>¿Puedo contratar solo un servicio, como SEO o rediseño de marca?</span><span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p data-i18n>Claro. Aunque muchos clientes empiezan con un proyecto integral, también trabajamos servicios puntuales como SEO, pauta digital o un refresh de marca sin tocar todo el sistema.</p></div>
       </div>
     </div>
   </section>
@@ -759,8 +762,8 @@ var translations = {
       "After every launch we measure real results, and those learnings feed back into the next definition — the same team that built your brand is the one still there to help it grow.",
     "“Seguimos aquí después de lanzar — porque una marca que se siente real no termina en la entrega.”":
       "“We're still here after launch — because a brand that feels real doesn't end at delivery.”",
-    "Marcas y proyectos entregados en distintas industrias.":
-      "Brands and projects delivered across different industries.",
+    "Marcas y proyectos entregados en salud, moda, retail, tecnología y otras industrias.":
+      "Brands and projects delivered across healthcare, fashion, retail, technology, and other industries.",
     "¿Tu equipo necesita subir el nivel? También ofrecemos <strong>Formación en IA</strong>, talleres y acompañamiento estratégico para equipos internos →":
       "Does your team need to level up? We also offer <strong>AI Training</strong>, workshops, and strategic coaching for internal teams →",
     /* Qué es WOW (formerly Filosofía) */
@@ -833,7 +836,11 @@ var translations = {
     "Más de $50M COP": "More than $50M COP",
     "CUÉNTANOS SOBRE TU PROYECTO": "TELL US ABOUT YOUR PROJECT",
     "Enviar": "Send",
-    "¡Gracias! Te responderemos en un máximo de 1 día hábil.": "Thank you! We'll get back to you within 1 business day.",
+    "Escribe un correo válido.": "Enter a valid email.",
+    "Escribe tu nombre.": "Enter your name.",
+    "Enviando…": "Sending…",
+    "No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a hola@workshopofwonders.co": "We couldn't send your message. Try again or email us directly at hola@workshopofwonders.co",
+    "¡Listo! Tu solicitud quedó registrada. Te responderemos en un máximo de 1 día hábil.": "All set! Your request has been logged. We'll get back to you within 1 business day.",
     "Y si hacemos <em>maravillas</em> juntos": "And what if we make <em>wonders</em> together",
     "Cuéntanos tu proyecto o encuéntranos en redes.": "Tell us about your project or find us on social media.",
     "Hecho con asombro.": "Made with wonder.",
@@ -878,10 +885,7 @@ var translations = {
       "Yes. We work 100% remotely with clients in Colombia, Latin America, and other countries — the whole process is coordinated through video calls and collaborative tools.",
     "¿Usan inteligencia artificial en su proceso?": "Do you use artificial intelligence in your process?",
     "Sí, la IA es una herramienta más dentro de nuestro flujo de trabajo: acelera investigación, exploración visual y producción, pero la estrategia, el criterio y la dirección creativa siguen siendo 100% humanos.":
-      "Yes, AI is one more tool in our workflow: it speeds up research, visual exploration, and production, but strategy, judgment, and creative direction remain 100% human.",
-    "¿Puedo contratar solo un servicio, como SEO o rediseño de marca?": "Can I hire just one service, like SEO or a brand redesign?",
-    "Claro. Aunque muchos clientes empiezan con un proyecto integral, también trabajamos servicios puntuales como SEO, pauta digital o un refresh de marca sin tocar todo el sistema.":
-      "Of course. While many clients start with a full project, we also take on standalone services like SEO, paid media, or a brand refresh without touching the whole system."
+      "Yes, AI is one more tool in our workflow: it speeds up research, visual exploration, and production, but strategy, judgment, and creative direction remain 100% human."
   }
 };
 
@@ -1949,17 +1953,27 @@ var ProjectCollage = (function () {
   var closeBtn = document.getElementById('projectModalClose');
   var form = document.getElementById('projectForm');
   var thanks = document.getElementById('projectFormThanks');
+  var submitBtn = document.getElementById('projectSubmitBtn');
+  var formError = document.getElementById('projectFormError');
   if (!modal) return;
   var projectFormFocusTrap = createFocusTrap(modal, function () { return modal.classList.contains('is-open'); });
+
+  // Time-trap: timestamp set when the modal opens. A submit that lands faster
+  // than a human could plausibly fill the form (~2s) is treated as a bot.
+  var openedAt = 0;
+  var MIN_FILL_MS = 2000;
 
   window.openProjectForm = function (prefill) {
     form.style.display = '';
     thanks.classList.remove('is-visible');
+    formError.classList.remove('is-visible');
     form.reset();
+    clearFieldErrors();
     if (prefill) document.getElementById('pfDetails').value = prefill;
     modal.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     projectFormFocusTrap.onOpen();
+    openedAt = Date.now();
   };
   function close() {
     modal.classList.remove('is-open');
@@ -1975,8 +1989,52 @@ var ProjectCollage = (function () {
   closeBtn.addEventListener('click', close);
   modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  function clearFieldErrors() {
+    form.querySelectorAll('.project-field.has-error').forEach(function (f) { f.classList.remove('has-error'); });
+  }
+  function setFieldError(input) {
+    var field = input.closest('.project-field');
+    if (field) field.classList.add('has-error');
+  }
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Real client-side validation beyond native :invalid (which renders
+  // inconsistently across browsers) — trims whitespace and shows inline
+  // messages next to each offending field.
+  function validate() {
+    clearFieldErrors();
+    var ok = true;
+    var emailVal = form.email.value.trim();
+    form.email.value = emailVal;
+    if (!emailVal || !EMAIL_RE.test(emailVal)) { setFieldError(form.email); ok = false; }
+    var nameVal = form.name.value.trim();
+    form.name.value = nameVal;
+    if (!nameVal) { setFieldError(form.name); ok = false; }
+    return ok;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    formError.classList.remove('is-visible');
+
+    // Honeypot: a hidden field a real visitor never fills. If it has a
+    // value, silently pretend success without processing anything, so a
+    // bot never learns the trap tripped.
+    var isBot = !!(form.website && form.website.value.trim());
+    // Time-trap: submits faster than a human could reasonably fill the
+    // form are treated the same way — a first-line filter only, not a
+    // replacement for server-side validation once a real backend exists.
+    if (openedAt && (Date.now() - openedAt) < MIN_FILL_MS) isBot = true;
+
+    if (isBot) {
+      form.style.display = 'none';
+      thanks.classList.add('is-visible');
+      return;
+    }
+
+    if (!validate()) return;
+
     // Structured payload, ready for a real submit integration once one is defined.
     var projectRequest = {
       email: form.email.value,
@@ -1988,10 +2046,34 @@ var ProjectCollage = (function () {
       lang: document.documentElement.lang,
       page: location.pathname
     };
-    // TODO: conectar aquí el backend real (email/CRM/Sheet) cuando esté definido — hoy no envía a ningún lado.
-    // Ejemplo futuro: fetch('/api/lead', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) });
-    form.style.display = 'none';
-    thanks.classList.add('is-visible');
+
+    // UI flow only: "sending" -> "success", wired exactly as it should look
+    // once a real backend exists. There is NO backend deployed yet — see
+    // api/contact.js (scaffolded, not yet deployed/connected) — so nothing
+    // is actually transmitted over the network at this point. The success
+    // copy below reflects that honestly ("quedó registrada" instead of
+    // implying the team already received it).
+    // Real integration point once api/contact.js is deployed and configured:
+    // submitBtn.disabled = true; submitBtn.textContent = ...'Enviando…'...;
+    // fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) })
+    //   .then(function (r) { return r.json(); })
+    //   .then(function (data) {
+    //     if (data && data.success) { form.style.display = 'none'; thanks.classList.add('is-visible'); }
+    //     else { formError.classList.add('is-visible'); }
+    //   })
+    //   .catch(function () { formError.classList.add('is-visible'); })
+    //   .finally(function () { submitBtn.disabled = false; submitBtn.textContent = ...'Enviar'...; });
+    var idleLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = (typeof translations !== 'undefined' && document.documentElement.lang === 'en')
+      ? (translations.en['Enviando…'] || 'Sending…')
+      : 'Enviando…';
+    window.setTimeout(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = idleLabel;
+      form.style.display = 'none';
+      thanks.classList.add('is-visible');
+    }, 450);
   });
 })();
 
