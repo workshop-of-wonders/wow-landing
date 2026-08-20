@@ -2042,7 +2042,15 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   background: var(--ink);
   border-radius: 20px;
-  overflow: hidden;
+  /* Was a single overflow:hidden — fine when the fixed-height collage
+     (2 rows, never shrinks) plus the caption always fit under 90vh, but a
+     project with multiple capability groups (see .lightbox-lab-group)
+     makes the caption taller, and the total can exceed 90vh. Hidden
+     silently cropped whatever didn't fit (e.g. the tail end of the Work
+     text) instead of showing it — auto on the y-axis lets it scroll
+     instead; x stays hidden so the rounded corners still clip normally. */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 /* Automatic Editorial Horizontal Collage System — generic, reusable, no
    per-project knowledge. Given any set of images it builds an asymmetric
@@ -2055,16 +2063,32 @@ main { padding-top: var(--nav-h); }
    instead of ever shrinking images to fit. */
 .project-collage-wrap {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
+  /* Must match .project-collage's own flex:0 0 auto exactly — the collage
+     inside is a fixed, non-shrinking 2-row height (see .project-collage).
+     This wrap used to be allowed to shrink (flex:1 1 auto), which let a
+     tall caption squeeze it smaller than its non-shrinking child, and the
+     child then visually overflowed past the wrap's own bottom edge,
+     overlapping/covering the top of the caption panel below it. */
+  flex: 0 0 auto;
   display: flex;
 }
 .project-collage {
-  --pc-row-h: 190px;
+  --pc-row-h: 150px;
   --pc-gap: 16px;
   --pc-radius: 14px;
-  flex: 1 1 auto;
-  min-height: 0;
+  /* Grid used to reserve exactly 2 rows via grid-template-rows, which
+     the flex parent (.project-collage-wrap) always deferred to. Flex has
+     no equivalent auto-height-from-rows mechanism, so without an explicit
+     height here the flex parent could allocate less than 2 rows' worth
+     (e.g. squeezed by the caption panel below), and overflow-y:hidden
+     silently cropped the second row instead of showing it — height +
+     flex-shrink:0 pins it to exactly 2 rows tall, same as the grid did. */
+  /* 2 rows + the gap between them + the container's own top/bottom
+     padding (box-sizing: border-box means padding eats into `height`,
+     not added on top of it — without the extra +2×gap here the content
+     area came up 32px short and the second row got clipped again). */
+  height: calc(var(--pc-row-h) * 2 + var(--pc-gap) * 3);
+  flex: 0 0 auto;
   min-width: 0;
   /* Was CSS Grid (grid-auto-flow: column dense) with grid-auto-columns:
      max-content — but a grid column's track width is the MAX of every
@@ -2465,9 +2489,8 @@ main { padding-top: var(--nav-h); }
   flex-wrap: wrap;
   gap: 8px;
 }
-.lightbox-lab-group + .lightbox-lab-group {
-  margin-top: 14px;
-}
+/* Spacing between stacked lab-groups already comes from the parent
+   .lightbox-caption-col's own `gap` — no extra margin needed here. */
 .lightbox-tag {
   padding: 6px 14px;
   border-radius: 999px;
