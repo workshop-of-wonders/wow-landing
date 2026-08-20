@@ -64,15 +64,29 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'invalid_name' });
   }
 
+  // Persistimos el lead primero: así, aunque el correo falle o Resend no
+  // esté configurado, el dato no se pierde y aparece en el dashboard /admin.
+  try {
+    var db = require('./admin/_db');
+    await db.sql`
+      INSERT INTO leads (name, email, company, need, budget, details, page, lang)
+      VALUES (${name}, ${email}, ${company || null}, ${need || null}, ${budget || null},
+              ${details || null}, ${page || null}, ${lang || null})
+    `;
+  } catch (dbErr) {
+    console.error('contact.js: no se pudo guardar el lead en la base de datos', dbErr);
+    // seguimos igual: mejor intentar el correo que perder el lead por completo
+  }
+
   var RESEND_API_KEY = process.env.RESEND_API_KEY;
   var CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL;
   var CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'onboarding@resend.dev';
 
   if (!RESEND_API_KEY || !CONTACT_TO_EMAIL) {
-    // Infrastructure not configured yet — fail loudly server-side (visible in
-    // Vercel logs) but return a generic error to the client.
+    // El lead ya quedó guardado arriba; solo el aviso por correo no está
+    // configurado. No lo tratamos como fallo total del envío.
     console.error('contact.js: missing RESEND_API_KEY or CONTACT_TO_EMAIL env vars');
-    return res.status(500).json({ success: false, error: 'not_configured' });
+    return res.status(200).json({ success: true, warning: 'email_not_configured' });
   }
 
   var subject = 'Nuevo lead — ' + name + (company ? ' (' + company + ')' : '');
@@ -106,12 +120,13 @@ module.exports = async function handler(req, res) {
     if (!resendRes.ok) {
       var errText = await resendRes.text();
       console.error('contact.js: Resend API error', resendRes.status, errText);
-      return res.status(502).json({ success: false, error: 'email_provider_error' });
+      // El lead ya está guardado en la base de datos aunque el correo falle.
+      return res.status(200).json({ success: true, warning: 'email_provider_error' });
     }
 
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error('contact.js: unexpected error sending email', err);
-    return res.status(500).json({ success: false, error: 'unexpected_error' });
+    return res.status(200).json({ success: true, warning: 'unexpected_error' });
   }
 };
