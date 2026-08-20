@@ -2066,10 +2066,16 @@ main { padding-top: var(--nav-h); }
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
-  display: grid;
-  grid-template-rows: repeat(2, var(--pc-row-h));
-  grid-auto-flow: column dense;
-  grid-auto-columns: max-content;
+  /* Was CSS Grid (grid-auto-flow: column dense) with grid-auto-columns:
+     max-content — but a grid column's track width is the MAX of every
+     item dense-packed into it, so a narrow item sharing a column with a
+     wide one (e.g. a wide wordmark logo above a narrower photo) rendered
+     inside a too-wide track, leaving a visible empty gap of background
+     to its side. Flex row of manually-built .pc-col column wrappers
+     (each sized to its own 1-2 items only, see ProjectCollage.render's
+     column-grouping pass) has no shared track, so no such gap is
+     possible. */
+  display: flex;
   gap: var(--pc-gap);
   overflow-x: auto;
   overflow-y: hidden;
@@ -2100,13 +2106,22 @@ main { padding-top: var(--nav-h); }
   animation: pc-spin 0.8s linear infinite;
 }
 @keyframes pc-spin { to { transform: rotate(360deg); } }
+/* Column wrapper built in JS — holds either one .pc-span2 item alone or
+   two regular items stacked. Sized to its own content only (flex, not a
+   shared grid track), so it can never be forced wider than what's
+   actually inside it. */
+.pc-col {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  gap: var(--pc-gap);
+}
 .pc-item {
-  height: 100%;
+  flex: none;
   border-radius: var(--pc-radius);
   overflow: hidden;
   background: #000;
 }
-.pc-item.pc-span2 { grid-row: span 2; }
 /* Never crop — width is set inline per-image (computed from its real aspect
    ratio at the row height above), height simply fills its row(s). No
    object-fit:cover anywhere; the box IS the image's own proportions. */

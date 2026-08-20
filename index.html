@@ -1409,6 +1409,7 @@ var ProjectCollage = (function () {
     var isTypeAsset = /\/type\.webp$/;
     container.innerHTML = '';
     container.classList.remove('is-loading');
+    var builtItems = [];
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
       var isIcon = isIconAsset.test(piece.src);
@@ -1432,6 +1433,12 @@ var ProjectCollage = (function () {
       }
       var el = document.createElement('div');
       el.style.width = width + 'px';
+      el.style.height = height + 'px';
+      // Generated 1:1 tiles (palette/pattern/tagline) are deliberately always
+      // square by design — excluded from the "promote a lone leftover item to
+      // full height" pass below, which only applies to real photos/logos/type
+      // specimens that just follow their own aspect ratio.
+      var promotable = !piece.isPalette && !piece.isPattern && !piece.isTaglineImg;
       if (piece.isPalette) {
         // Several small vertical strips side by side in one card (same
         // multi-column marquee technique as the hero), each scrolling the
@@ -1474,7 +1481,7 @@ var ProjectCollage = (function () {
           col.appendChild(track);
           el.appendChild(col);
         }
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (piece.isPattern) {
@@ -1493,7 +1500,7 @@ var ProjectCollage = (function () {
         // pattern into unrecognizable noise mid-spin.
         scroll.style.setProperty('--pattern-tile-w', tileSize + 'px');
         el.appendChild(scroll);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (piece.isTaglineImg) {
@@ -1515,7 +1522,7 @@ var ProjectCollage = (function () {
           taglineTrack.appendChild(taglineEl);
         }
         el.appendChild(taglineTrack);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (isType && piece.img) {
@@ -1538,7 +1545,7 @@ var ProjectCollage = (function () {
         }
         el.appendChild(l1);
         el.appendChild(l2);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       el.className += 'pc-item' + (isTall ? ' pc-span2' : '') + (isLogo ? ' pc-item-logo' : '');
@@ -1547,7 +1554,48 @@ var ProjectCollage = (function () {
       img.alt = opts.alt || '';
       img.loading = 'lazy';
       el.appendChild(img);
-      container.appendChild(el);
+      builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
+    });
+    // Group items into column wrappers instead of relying on CSS Grid's
+    // dense auto-placement: a grid column's track width is the MAX of
+    // every item packed into it, so a narrow item sharing a column with a
+    // wide one rendered inside a too-wide track, leaving a visible empty
+    // gap next to it. A .pc-span2 item fills a column alone; two regular
+    // items stack into one column together — each column is flex-sized to
+    // only its own contents, so no cross-item width mismatch is possible.
+    // A short item that ends up alone in a column (no partner to stack
+    // with) instead of being promoted would render at half the height of
+    // every other column — an oddly short, visually "incomplete" card. If
+    // it's a real photo/logo/type tile (not one of the always-square
+    // generated tiles), stretch it to the full 2-row height instead, so
+    // every column is always a complete, full-height card.
+    function promoteIfLone(item) {
+      if (!item.promotable) return;
+      var newHeight = rowH * 2 + gap;
+      var newWidth = item.isIcon ? newHeight
+        : (item.isLogo ? Math.round(newHeight * Math.max(1, Math.min(2.2, item.ratio))) : Math.round(newHeight * item.ratio));
+      item.el.style.height = newHeight + 'px';
+      item.el.style.width = newWidth + 'px';
+    }
+    var pendingShort = null;
+    var columns = [];
+    builtItems.forEach(function (item) {
+      if (item.isTall) {
+        if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); pendingShort = null; }
+        columns.push([item]);
+      } else if (pendingShort) {
+        columns.push([pendingShort, item]);
+        pendingShort = null;
+      } else {
+        pendingShort = item;
+      }
+    });
+    if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); }
+    columns.forEach(function (col) {
+      var colEl = document.createElement('div');
+      colEl.className = 'pc-col';
+      col.forEach(function (item) { colEl.appendChild(item.el); });
+      container.appendChild(colEl);
     });
   }
 

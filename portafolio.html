@@ -467,6 +467,7 @@ var ProjectCollage = (function () {
     var isTypeAsset = /\/type\.webp$/;
     container.innerHTML = '';
     container.classList.remove('is-loading');
+    var builtItems = [];
     pieces.forEach(function (piece) {
       var isLogo = isLogoAsset.test(piece.src);
       var isIcon = isIconAsset.test(piece.src);
@@ -480,6 +481,8 @@ var ProjectCollage = (function () {
       }
       var el = document.createElement('div');
       el.style.width = width + 'px';
+      el.style.height = height + 'px';
+      var promotable = !piece.isPalette && !piece.isPattern && !piece.isTaglineImg;
       if (piece.isPalette) {
         el.className = 'pc-item pc-item-palette';
         var COLS = 3;
@@ -511,7 +514,7 @@ var ProjectCollage = (function () {
           col.appendChild(track);
           el.appendChild(col);
         }
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (piece.isPattern) {
@@ -524,7 +527,7 @@ var ProjectCollage = (function () {
         scroll.style.backgroundSize = tileSize + 'px';
         scroll.style.setProperty('--pattern-tile-w', tileSize + 'px');
         el.appendChild(scroll);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (piece.isTaglineImg) {
@@ -540,7 +543,7 @@ var ProjectCollage = (function () {
           taglineTrack.appendChild(taglineEl);
         }
         el.appendChild(taglineTrack);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       if (isType && piece.img) {
@@ -560,7 +563,7 @@ var ProjectCollage = (function () {
         }
         el.appendChild(l1);
         el.appendChild(l2);
-        container.appendChild(el);
+        builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
         return;
       }
       el.className += 'pc-item' + (isTall ? ' pc-span2' : '') + (isLogo ? ' pc-item-logo' : '');
@@ -569,7 +572,35 @@ var ProjectCollage = (function () {
       img.alt = opts.alt || '';
       img.loading = 'lazy';
       el.appendChild(img);
-      container.appendChild(el);
+      builtItems.push({ el: el, isTall: isTall, promotable: promotable, ratio: piece.ratio, isLogo: isLogo, isIcon: isIcon });
+    });
+    function promoteIfLone(item) {
+      if (!item.promotable) return;
+      var newHeight = rowH * 2 + gap;
+      var newWidth = item.isIcon ? newHeight
+        : (item.isLogo ? Math.round(newHeight * Math.max(1, Math.min(2.2, item.ratio))) : Math.round(newHeight * item.ratio));
+      item.el.style.height = newHeight + 'px';
+      item.el.style.width = newWidth + 'px';
+    }
+    var pendingShort = null;
+    var columns = [];
+    builtItems.forEach(function (item) {
+      if (item.isTall) {
+        if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); pendingShort = null; }
+        columns.push([item]);
+      } else if (pendingShort) {
+        columns.push([pendingShort, item]);
+        pendingShort = null;
+      } else {
+        pendingShort = item;
+      }
+    });
+    if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); }
+    columns.forEach(function (col) {
+      var colEl = document.createElement('div');
+      colEl.className = 'pc-col';
+      col.forEach(function (item) { colEl.appendChild(item.el); });
+      container.appendChild(colEl);
     });
   }
 
