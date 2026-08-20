@@ -1,0 +1,20 @@
+{
+  "name": "wow-landing",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Workshop of Wonders — sitio + panel /admin",
+  "scripts": {
+    "migrate": "node scripts/migrate-seed.mjs",
+    "hash-password": "node scripts/hash-password.mjs"
+  },
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0",
+    "@vercel/blob": "^0.27.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "@octokit/rest": "^21.0.2"
+  },
+  "devDependencies": {
+    "node-html-parser": "^6.1.13"
+  }
+}

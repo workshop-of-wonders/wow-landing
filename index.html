@@ -2051,27 +2051,19 @@ var ProjectCollage = (function () {
     // is actually transmitted over the network at this point. The success
     // copy below reflects that honestly ("quedó registrada" instead of
     // implying the team already received it).
-    // Real integration point once api/contact.js is deployed and configured:
-    // submitBtn.disabled = true; submitBtn.textContent = ...'Enviando…'...;
-    // fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) })
-    //   .then(function (r) { return r.json(); })
-    //   .then(function (data) {
-    //     if (data && data.success) { form.style.display = 'none'; thanks.classList.add('is-visible'); }
-    //     else { formError.classList.add('is-visible'); }
-    //   })
-    //   .catch(function () { formError.classList.add('is-visible'); })
-    //   .finally(function () { submitBtn.disabled = false; submitBtn.textContent = ...'Enviar'...; });
     var idleLabel = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = (typeof translations !== 'undefined' && document.documentElement.lang === 'en')
       ? (translations.en['Enviando…'] || 'Sending…')
       : 'Enviando…';
-    window.setTimeout(function () {
-      submitBtn.disabled = false;
-      submitBtn.textContent = idleLabel;
-      form.style.display = 'none';
-      thanks.classList.add('is-visible');
-    }, 450);
+    fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.success) { form.style.display = 'none'; thanks.classList.add('is-visible'); }
+        else { formError.classList.add('is-visible'); }
+      })
+      .catch(function () { formError.classList.add('is-visible'); })
+      .finally(function () { submitBtn.disabled = false; submitBtn.textContent = idleLabel; });
   });
 })();
 
