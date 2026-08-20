@@ -258,36 +258,36 @@
     <h2>Antes de escribirnos</h2>
     <div class="svc-faq-list">
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Qué servicios ofrece Workshop of Wonders?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Trabajamos en tres frentes conectados: estrategia de marca (Core Lab), diseño e identidad (Brand & Experience Lab) y crecimiento (Insight Lab). Puedes contratar un servicio puntual o un proyecto integral de principio a fin.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA1">¿Qué servicios ofrece Workshop of Wonders?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA1"><p>Trabajamos en tres frentes conectados: estrategia de marca (Core Lab), diseño e identidad (Brand & Experience Lab) y crecimiento (Insight Lab). Puedes contratar un servicio puntual o un proyecto integral de principio a fin.</p></div>
       </div>
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Cuánto cuesta un proyecto de branding o diseño web?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Depende del alcance: un rebranding no cuesta lo mismo que una identidad desde cero, y un sitio institucional no cuesta lo mismo que un e-commerce. Cuéntanos tu proyecto y te compartimos una propuesta ajustada a tu presupuesto y objetivos.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA2">¿Cuánto cuesta un proyecto de branding o diseño web?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA2"><p>Depende del alcance: un rebranding no cuesta lo mismo que una identidad desde cero, y un sitio institucional no cuesta lo mismo que un e-commerce. Cuéntanos tu proyecto y te compartimos una propuesta ajustada a tu presupuesto y objetivos.</p></div>
       </div>
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Cuánto tiempo toma un proyecto?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Un sistema de identidad de marca suele tomar entre 4 y 8 semanas; un sitio web, entre 3 y 6. Los proyectos integrales se acuerdan por fases para que veas avances desde las primeras semanas.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA3">¿Cuánto tiempo toma un proyecto?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA3"><p>Un sistema de identidad de marca suele tomar entre 4 y 8 semanas; un sitio web, entre 3 y 6. Los proyectos integrales se acuerdan por fases para que veas avances desde las primeras semanas.</p></div>
       </div>
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Trabajan con marcas de cualquier país?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Sí. Trabajamos 100% remoto con clientes en Colombia, Latinoamérica y otros países — todo el proceso se coordina por videollamada y herramientas colaborativas.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA4">¿Trabajan con marcas de cualquier país?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA4"><p>Sí. Trabajamos 100% remoto con clientes en Colombia, Latinoamérica y otros países — todo el proceso se coordina por videollamada y herramientas colaborativas.</p></div>
       </div>
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Usan inteligencia artificial en su proceso?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Sí, la IA es una herramienta más dentro de nuestro flujo de trabajo: acelera investigación, exploración visual y producción, pero la estrategia, el criterio y la dirección creativa siguen siendo 100% humanos.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA5">¿Usan inteligencia artificial en su proceso?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA5"><p>Sí, la IA es una herramienta más dentro de nuestro flujo de trabajo: acelera investigación, exploración visual y producción, pero la estrategia, el criterio y la dirección creativa siguen siendo 100% humanos.</p></div>
       </div>
       <div class="svc-faq-item">
-        <button type="button" class="svc-faq-q">¿Puedo contratar solo un servicio, como SEO o rediseño de marca?<span class="svc-faq-icon">+</span></button>
-        <div class="svc-faq-a"><p>Claro. Aunque muchos clientes empiezan con un proyecto integral, también trabajamos servicios puntuales como SEO, pauta digital o un refresh de marca sin tocar todo el sistema.</p></div>
+        <button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="svcFaqA6">¿Puedo contratar solo un servicio, como SEO o rediseño de marca?<span class="svc-faq-icon">+</span></button>
+        <div class="svc-faq-a" id="svcFaqA6"><p>Claro. Aunque muchos clientes empiezan con un proyecto integral, también trabajamos servicios puntuales como SEO, pauta digital o un refresh de marca sin tocar todo el sistema.</p></div>
       </div>
     </div>
   </section>
 
-  <div class="project-modal" id="projectModal">
+  <div class="project-modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
     <div class="project-modal-inner">
       <button type="button" class="project-modal-close" id="projectModalClose" aria-label="Cerrar">✕</button>
-      <h3 class="project-modal-title"><em>Cuéntanos</em> tu proyecto</h3>
+      <h3 class="project-modal-title" id="projectModalTitle"><em>Cuéntanos</em> tu proyecto</h3>
       <form class="project-form" id="projectForm" novalidate>
         <div class="project-field">
           <label for="pfEmail">CORREO</label>
@@ -352,7 +352,7 @@
 </section>
 <footer class="footer">
   <div class="footer-logo">
-    <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="footer-logo-img" width="773" height="295">
+    <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="footer-logo-img" width="773" height="295" loading="lazy">
   </div>
   <p class="footer-quote">&ldquo;Seguimos aquí después de lanzar — porque una marca que se siente real no termina en la entrega.&rdquo;</p>
   <div class="footer-socials">
@@ -548,8 +548,14 @@ function createFocusTrap(modalEl, isOpen) {
     btn.addEventListener('click', function () {
       var item = btn.closest('.svc-faq-item');
       var wasOpen = item.classList.contains('is-open');
-      document.querySelectorAll('.svc-faq-item').forEach(function (i) { i.classList.remove('is-open'); });
-      if (!wasOpen) item.classList.add('is-open');
+      document.querySelectorAll('.svc-faq-item').forEach(function (i) {
+        i.classList.remove('is-open');
+        i.querySelector('.svc-faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 })();
