@@ -2450,6 +2450,9 @@ main { padding-top: var(--nav-h); }
   flex-wrap: wrap;
   gap: 8px;
 }
+.lightbox-lab-group + .lightbox-lab-group {
+  margin-top: 14px;
+}
 .lightbox-tag {
   padding: 6px 14px;
   border-radius: 999px;

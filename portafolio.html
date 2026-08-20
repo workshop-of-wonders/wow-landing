@@ -184,10 +184,7 @@
           <p class="lightbox-label">Work</p>
           <p class="lightbox-work" id="lightboxWork"></p>
         </div>
-        <div class="lightbox-caption-col lightbox-tags-block" id="lightboxTagsBlock">
-          <p class="lightbox-label">Capabilities</p>
-          <div class="lightbox-tags" id="lightboxTags"></div>
-        </div>
+        <div class="lightbox-caption-col lightbox-tags-block" id="lightboxTagsBlock"></div>
       </div>
     </div>
   </div>
@@ -586,8 +583,13 @@ var ProjectCollage = (function () {
   var title = document.getElementById('lightboxTitle');
   var category = document.getElementById('lightboxCategory');
   var desc = document.getElementById('lightboxDesc');
-  var tagsEl = document.getElementById('lightboxTags');
   var tagsBlock = document.getElementById('lightboxTagsBlock');
+  var CATEGORY_TO_LAB = {
+    'Estrategia de marca': 'DEFINE - Core Lab',
+    'Identidad y diseño de marca': 'CREA - Brand & Experience Lab',
+    'Experiencia digital': 'CREA - Brand & Experience Lab',
+    'Crecimiento y marketing digital': 'CRECE - Insight Lab'
+  };
   var workEl = document.getElementById('lightboxWork');
   var workBlock = document.getElementById('lightboxWorkBlock');
   var closeBtn = document.getElementById('lightboxClose');
@@ -612,17 +614,37 @@ var ProjectCollage = (function () {
       } else {
         workBlock.style.display = 'none';
       }
-      tagsEl.innerHTML = '';
-      var tagSource = el.dataset.capabilities ? el.dataset.capabilities.split('·') : (el.dataset.desc || '').split(/,| y /i);
-      tagSource.forEach(function (tag) {
-        tag = tag.trim();
-        if (!tag) return;
-        var pill = document.createElement('span');
-        pill.className = 'lightbox-tag';
-        pill.textContent = tag;
-        tagsEl.appendChild(pill);
+      tagsBlock.innerHTML = '';
+      var rawParts = (el.dataset.capabilities ? el.dataset.capabilities.split('·') : (el.dataset.desc || '').split(/,| y /i))
+        .map(function (t) { return t.trim(); }).filter(Boolean);
+      var labOrder = ['DEFINE - Core Lab', 'CREA - Brand & Experience Lab', 'CRECE - Insight Lab'];
+      var labMarkers = rawParts.filter(function (t) { return labOrder.indexOf(t) !== -1; });
+      var categoryTags = rawParts.filter(function (t) { return labOrder.indexOf(t) === -1; });
+      var groups = labMarkers.length
+        ? labMarkers.slice().sort(function (a, b) { return labOrder.indexOf(a) - labOrder.indexOf(b); }).map(function (lab) {
+            return { lab: lab, tags: categoryTags.filter(function (t) { return CATEGORY_TO_LAB[t] === lab; }) };
+          })
+        : [{ lab: null, tags: categoryTags }];
+      groups.forEach(function (group) {
+        if (group.lab === null && !group.tags.length) return;
+        var groupEl = document.createElement('div');
+        groupEl.className = 'lightbox-lab-group';
+        var label = document.createElement('p');
+        label.className = 'lightbox-label';
+        label.textContent = group.lab || 'Capabilities';
+        groupEl.appendChild(label);
+        var tagsEl = document.createElement('div');
+        tagsEl.className = 'lightbox-tags';
+        group.tags.forEach(function (tag) {
+          var pill = document.createElement('span');
+          pill.className = 'lightbox-tag';
+          pill.textContent = tag;
+          tagsEl.appendChild(pill);
+        });
+        groupEl.appendChild(tagsEl);
+        tagsBlock.appendChild(groupEl);
       });
-      tagsBlock.style.display = tagsEl.children.length ? '' : 'none';
+      tagsBlock.style.display = tagsBlock.children.length ? '' : 'none';
       lightbox.classList.add('is-open');
     });
   });
