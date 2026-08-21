@@ -110,32 +110,6 @@
   <a href="/" class="nf-btn">Volver al inicio →</a>
 </main>
 
-<script>
-(function () {
-  var burger = document.getElementById('navBurger');
-  var menu = document.getElementById('navMobileMenu');
-  var closeBtn = document.getElementById('navMobileClose');
-  if (!burger || !menu) return;
-  function setOpen(isOpen) {
-    burger.classList.toggle('is-open', isOpen);
-    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    menu.classList.toggle('is-open', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  }
-  burger.addEventListener('click', function () {
-    setOpen(!menu.classList.contains('is-open'));
-  });
-  if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
-  menu.addEventListener('click', function (e) {
-    if (e.target === menu) setOpen(false);
-  });
-  menu.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () { setOpen(false); });
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') setOpen(false);
-  });
-})();
-</script>
+<script src="js/common.js" defer></script>
 </body>
 </html>
