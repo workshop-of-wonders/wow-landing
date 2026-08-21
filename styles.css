@@ -113,26 +113,29 @@ h1 em, h2 em {
 /* Nav */
 .nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: var(--space-3);
+  left: var(--page-x);
+  right: var(--page-x);
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-2) var(--page-x);
-  background: transparent;
-  color: var(--white);
-  transition: background-color 0.3s ease;
-}
-.nav.is-scrolled {
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
   background:
     radial-gradient(circle at 75% 20%, var(--purple-accent) 0%, var(--purple) 55%),
     url("design-system/backgrounds/wow-squiggle-texture.webp");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center;
   background-size: cover, cover;
+  box-shadow: 0 8px 32px rgba(29, 12, 46, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.nav.is-scrolled {
+  box-shadow: 0 10px 36px rgba(29, 12, 46, 0.4);
 }
 main { padding-top: var(--nav-h); }
 .logo {
@@ -189,7 +192,7 @@ main { padding-top: var(--nav-h); }
 .nav-item:hover .nav-item-caret, .nav-item:focus-within .nav-item-caret { transform: rotateX(180deg); }
 .nav-dropdown {
   position: fixed;
-  top: var(--nav-h);
+  top: calc(var(--nav-h) + var(--space-3));
   left: 0;
   right: 0;
   z-index: 49;
