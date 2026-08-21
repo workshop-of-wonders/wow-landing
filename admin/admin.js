@@ -33,7 +33,9 @@ function renderLogin(errorMsg) {
   wrap.className = 'login-screen';
   wrap.innerHTML = `
     <div class="login-box">
-      <h1>Workshop of Wonders — Admin</h1>
+      <div class="login-mark">✦</div>
+      <h1>Workshop of Wonders</h1>
+      <p class="sub">Panel de administración</p>
       <div class="field"><label>Usuario</label><input id="u" type="text" autocomplete="username"></div>
       <div class="field"><label>Contraseña</label><input id="p" type="password" autocomplete="current-password"></div>
       <button class="btn" id="loginBtn" style="width:100%">Entrar</button>
@@ -69,10 +71,10 @@ function renderShell() {
   app.innerHTML = `
     <div class="shell">
       <div class="sidebar">
-        <h2>WOW Admin</h2>
+        <div class="brand"><div class="mark">✦</div><span>WOW Admin</span></div>
         <nav>
-          <button data-view="projects">Proyectos</button>
-          <button data-view="leads">Leads / CRM</button>
+          <button data-view="projects"><span class="dot"></span>Proyectos</button>
+          <button data-view="leads"><span class="dot"></span>Leads / CRM</button>
         </nav>
         <button class="logout" id="logoutBtn">Cerrar sesión</button>
       </div>
@@ -104,19 +106,28 @@ async function renderProjectsList() {
   try {
     const { projects } = await api('/projects');
     state.projects = projects;
+    const published = projects.filter((p) => p.published_at).length;
     const rows = projects.map((p) => `
       <tr class="clickable" data-slug="${p.slug}">
         <td>${p.title}</td>
         <td>${p.category || ''}</td>
-        <td>${p.variant}</td>
+        <td>${p.variant === 'logo' ? 'Solo logo' : 'Galería'}</td>
         <td>${p.published_at ? '<span class="badge published">Publicado</span>' : '<span class="badge draft">Sin publicar</span>'}</td>
       </tr>`).join('');
     main.innerHTML = `
-      <h1>Proyectos (${projects.length})</h1>
-      <table>
-        <thead><tr><th>Título</th><th>Categoría</th><th>Tipo</th><th>Estado</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+      <h1>Proyectos</h1>
+      <p class="subtitle">Edita el portafolio y publica los cambios al sitio en vivo.</p>
+      <div class="stat-row">
+        <div class="stat-card accent-lima"><div class="n">${projects.length}</div><div class="l">Proyectos</div></div>
+        <div class="stat-card accent-magenta"><div class="n">${published}</div><div class="l">Publicados</div></div>
+        <div class="stat-card accent-orange"><div class="n">${projects.length - published}</div><div class="l">Sin publicar</div></div>
+      </div>
+      <div class="card-panel">
+        <table>
+          <thead><tr><th>Título</th><th>Categoría</th><th>Tipo</th><th>Estado</th></tr></thead>
+          <tbody>${rows || '<tr><td colspan="4" class="empty-state">Sin proyectos todavía.</td></tr>'}</tbody>
+        </table>
+      </div>`;
     main.querySelectorAll('tr.clickable').forEach((tr) => {
       tr.addEventListener('click', () => renderProjectEditor(tr.dataset.slug));
     });
@@ -131,28 +142,31 @@ async function renderProjectEditor(slug) {
   const { project, images } = await api('/projects/' + encodeURIComponent(slug));
 
   main.innerHTML = `
-    <button class="btn secondary small" id="back">← Volver</button>
-    <h1>${project.title}</h1>
+    <button class="back-link" id="back">← Volver a proyectos</button>
+    <h1>${project.title} ${project.published_at ? '<span class="badge published">Publicado</span>' : '<span class="badge draft">Sin publicar</span>'}</h1>
+    <p class="subtitle">${project.category || ''}</p>
     <div class="editor-grid">
-      <div>
+      <div class="editor-card">
         <div class="field"><label>Título</label><input id="f-title" value="${escAttr(project.title)}"></div>
         <div class="field"><label>Categoría (separado por ·)</label><input id="f-category" value="${escAttr(project.category)}"></div>
         <div class="field"><label>Capacidades / servicios (separado por ·)</label><input id="f-capabilities" value="${escAttr(project.capabilities)}"></div>
         <div class="field"><label>Descripción corta</label><input id="f-description" value="${escAttr(project.description)}"></div>
         <div class="field"><label>Tagline (usa *palabra* para resaltar)</label><input id="f-tagline" value="${escAttr(project.tagline || '')}"></div>
         <div class="field"><label>Texto largo (case study)</label><textarea id="f-work" rows="6">${esc(project.work)}</textarea></div>
-        <div class="field">
-          <label><input type="checkbox" id="f-showindex" ${project.show_on_index ? 'checked' : ''}> Mostrar en index.html</label><br>
+        <div class="toggle-row">
+          <label><input type="checkbox" id="f-showindex" ${project.show_on_index ? 'checked' : ''}> Mostrar en index.html</label>
           <label><input type="checkbox" id="f-showport" ${project.show_on_portafolio ? 'checked' : ''}> Mostrar en portafolio.html</label>
         </div>
-        <button class="btn" id="saveBtn">Guardar cambios</button>
-        <button class="btn secondary" id="publishBtn">Publicar en el sitio</button>
-        <span id="editorMsg" style="margin-left:10px; color: var(--muted); font-size: 13px;"></span>
+        <div class="editor-actions">
+          <button class="btn" id="saveBtn">Guardar cambios</button>
+          <button class="btn secondary" id="publishBtn">Publicar en el sitio</button>
+          <span id="editorMsg" style="color: var(--muted); font-size: 13px;"></span>
+        </div>
       </div>
-      <div>
-        <label style="font-size:13px; color: var(--muted);">Fotos del collage (arrastra para reordenar)</label>
+      <div class="editor-card">
+        <label style="font-size:13px; color: var(--muted);">Fotos del collage — arrastra para reordenar</label>
         <div class="image-grid" id="imgGrid"></div>
-        <input type="file" id="fileInput" accept="image/*" style="margin-top:10px;">
+        <label class="upload-drop" for="fileInput">+ Agregar foto<input type="file" id="fileInput" accept="image/*"></label>
       </div>
     </div>`;
 
@@ -272,13 +286,23 @@ async function renderLeads() {
         <td>${l.company || ''}</td>
         <td><span class="badge ${l.status}">${labels[l.status] || l.status}</span></td>
       </tr>`).join('');
+    const counts = { new: 0, contacted: 0, won: 0, lost: 0 };
+    (state.leadFilter ? leads : leads).forEach((l) => { if (counts[l.status] != null) counts[l.status]++; });
     main.innerHTML = `
-      <h1>Leads (${leads.length})</h1>
+      <h1>Leads</h1>
+      <p class="subtitle">Cada envío del formulario de contacto llega aquí automáticamente.</p>
+      <div class="stat-row">
+        <div class="stat-card"><div class="n">${leads.length}</div><div class="l">${state.leadFilter ? labels[state.leadFilter] : 'Total'}</div></div>
+        <div class="stat-card accent-magenta"><div class="n">${counts.won}</div><div class="l">Ganados</div></div>
+        <div class="stat-card accent-orange"><div class="n">${counts.contacted}</div><div class="l">Contactados</div></div>
+      </div>
       <div class="filters">${filters}</div>
-      <table>
-        <thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Empresa</th><th>Estado</th></tr></thead>
-        <tbody>${rows || '<tr><td colspan="5">Sin leads todavía.</td></tr>'}</tbody>
-      </table>
+      <div class="card-panel">
+        <table>
+          <thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Empresa</th><th>Estado</th></tr></thead>
+          <tbody>${rows || '<tr><td colspan="5" class="empty-state">Sin leads todavía.</td></tr>'}</tbody>
+        </table>
+      </div>
       <div id="leadDetail"></div>`;
     main.querySelectorAll('.filters button').forEach((b) => {
       b.addEventListener('click', () => { state.leadFilter = b.dataset.status; renderLeads(); });
@@ -297,8 +321,8 @@ function renderLeadDetail(id) {
   const box = document.getElementById('leadDetail');
   box.innerHTML = `
     <div class="lead-detail">
-      <p><strong>${lead.name}</strong> · ${lead.email} ${lead.company ? '· ' + lead.company : ''}</p>
-      <p style="color:var(--muted); font-size:13px;">Necesidad: ${lead.need || '—'} · Presupuesto: ${lead.budget || '—'} · Página: ${lead.page || '—'}</p>
+      <p class="lead-name">${lead.name} <span class="badge ${lead.status}">${lead.status}</span></p>
+      <p class="lead-meta">${lead.email} ${lead.company ? '· ' + lead.company : ''} · Necesidad: ${lead.need || '—'} · Presupuesto: ${lead.budget || '—'} · Página: ${lead.page || '—'}</p>
       <p style="white-space: pre-wrap;">${lead.details || ''}</p>
       <div class="field">
         <label>Estado</label>
