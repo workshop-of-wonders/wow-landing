@@ -324,6 +324,37 @@ main { padding-top: var(--nav-h); }
   width: 100%;
 }
 .nav-dropdown-cta:hover { color: var(--white); }
+.nav-burger {
+  display: none;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: 51;
+}
+/* Mobile nav — a compact floating glass panel over a blurred backdrop: a creative-studio overlay, not a fullscreen modal.
+   Base display:none here (and on .nav-burger above) must stay BEFORE the @media block below: the media query's
+   display:flex/block only wins the cascade if it comes after these unconditional rules — reversing the order
+   previously made the mobile menu permanently unopenable at every viewport width, regardless of .is-open. */
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 4, 34, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
 @media (max-width: 900px) {
   .nav-dropdown { display: none; }
   /* Burger nav now switches on at the same 900px boundary where the desktop
@@ -339,17 +370,6 @@ main { padding-top: var(--nav-h); }
   .nav-links .btn { display: none; }
   .nav-burger { display: block; }
   .nav-mobile-menu { display: flex; }
-}
-.nav-burger {
-  display: none;
-  flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-  z-index: 51;
 }
 .nav-burger span {
   position: absolute;
@@ -367,23 +387,6 @@ main { padding-top: var(--nav-h); }
 .nav-burger.is-open span:nth-child(1) { transform: translateY(-1px) rotate(45deg); }
 .nav-burger.is-open span:nth-child(2) { opacity: 0; }
 .nav-burger.is-open span:nth-child(3) { transform: translateY(-1px) rotate(-45deg); }
-/* Mobile nav — a compact floating glass panel over a blurred backdrop: a creative-studio overlay, not a fullscreen modal */
-.nav-mobile-menu {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 55;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(20, 4, 34, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-}
 .nav-mobile-menu.is-open {
   opacity: 1;
   visibility: visible;
