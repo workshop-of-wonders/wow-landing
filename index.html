@@ -1437,10 +1437,8 @@ var ProjectCollage = (function () {
   var category = document.getElementById('lightboxCategory');
   var desc = document.getElementById('lightboxDesc');
   var tagsBlock = document.getElementById('lightboxTagsBlock');
-  /* Category-name → Lab mapping, mirrors servicios.html's 5 sections */
+  /* Category-name → Lab mapping, mirrors servicios.html's sections */
   var CATEGORY_TO_LAB = {
-    'Estrategia de marca': 'DEFINE - Core Lab',
-    'Identidad y diseño de marca': 'CREA - Brand & Experience Lab',
     'Experiencia digital': 'CREA - Brand & Experience Lab',
     'Crecimiento y marketing digital': 'CRECE - Insight Lab'
   };
@@ -1476,7 +1474,7 @@ var ProjectCollage = (function () {
       tagsBlock.innerHTML = '';
       var rawParts = (el.dataset.capabilities ? el.dataset.capabilities.split('·') : (el.dataset.desc || '').split(/,| y /i))
         .map(function (t) { return t.trim(); }).filter(Boolean);
-      var labOrder = ['DEFINE - Core Lab', 'CREA - Brand & Experience Lab', 'CRECE - Insight Lab'];
+      var labOrder = ['CREA - Brand & Experience Lab', 'CRECE - Insight Lab'];
       var labMarkers = rawParts.filter(function (t) { return labOrder.indexOf(t) !== -1; });
       var categoryTags = rawParts.filter(function (t) { return labOrder.indexOf(t) === -1; });
       var groups = labMarkers.length
