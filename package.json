@@ -13,8 +13,5 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "@octokit/rest": "^21.0.2"
-  },
-  "devDependencies": {
-    "node-html-parser": "^6.1.13"
   }
 }
