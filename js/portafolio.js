@@ -150,10 +150,8 @@ function createFocusTrap(modalEl, isOpen) {
       page: location.pathname
     };
 
-    // Submits to api/contact.js. The lead is always saved to the DB there;
-    // the email notification only fires once RESEND_API_KEY and
-    // CONTACT_TO_EMAIL are set in the Vercel project's env vars (see that
-    // file's header comment) — until then this still succeeds silently.
+    // Submits to api/contact.js, which validates and saves the lead to the
+    // `leads` table (reviewed from /admin — no email notification).
     var idleLabel = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando…';

@@ -3,21 +3,11 @@
 //
 // STATUS: deployed and connected — index.html, portafolio.html and
 // servicios.html all POST here from their "Cuéntanos tu proyecto" form.
-// The lead is always persisted to the `leads` table first, so it's never
-// lost even if the email step below isn't configured. To also get an email
-// notification per lead:
-//   1. Create an account with a transactional email provider (Resend is
-//      used below — https://resend.com — simple HTTP API, no SDK needed)
-//      and get an API key.
-//   2. In the Vercel project settings, add the environment variable
-//      RESEND_API_KEY with that key. Also set CONTACT_TO_EMAIL (the inbox
-//      that should receive leads) and, once you have a verified sending
-//      domain in Resend, CONTACT_FROM_EMAIL (e.g. "WOW Leads <leads@workshopofwonders.co>").
-//      Until a domain is verified in Resend, you can send from
-//      "onboarding@resend.dev" for testing.
+// Every valid submission is persisted to the `leads` Postgres table and
+// shows up in the /admin dashboard. Intentionally no email notification —
+// leads are meant to be reviewed from /admin, not by inbox.
 //
-// This function never receives or stores credentials from the client — it
-// only reads its own environment variables server-side.
+// This function never receives or stores credentials from the client.
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -58,8 +48,6 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'invalid_name' });
   }
 
-  // Persistimos el lead primero: así, aunque el correo falle o Resend no
-  // esté configurado, el dato no se pierde y aparece en el dashboard /admin.
   try {
     var db = require('./admin/_db');
     await db.sql`
@@ -69,58 +57,8 @@ module.exports = async function handler(req, res) {
     `;
   } catch (dbErr) {
     console.error('contact.js: no se pudo guardar el lead en la base de datos', dbErr);
-    // seguimos igual: mejor intentar el correo que perder el lead por completo
+    return res.status(500).json({ success: false, error: 'db_error' });
   }
 
-  var RESEND_API_KEY = process.env.RESEND_API_KEY;
-  var CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL;
-  var CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'onboarding@resend.dev';
-
-  if (!RESEND_API_KEY || !CONTACT_TO_EMAIL) {
-    // El lead ya quedó guardado arriba; solo el aviso por correo no está
-    // configurado. No lo tratamos como fallo total del envío.
-    console.error('contact.js: missing RESEND_API_KEY or CONTACT_TO_EMAIL env vars');
-    return res.status(200).json({ success: true, warning: 'email_not_configured' });
-  }
-
-  var subject = 'Nuevo lead — ' + name + (company ? ' (' + company + ')' : '');
-  var textBody = [
-    'Nombre: ' + name,
-    'Correo: ' + email,
-    'Empresa: ' + (company || '—'),
-    'Necesidad: ' + (need || '—'),
-    'Presupuesto: ' + (budget || '—'),
-    'Detalles: ' + (details || '—'),
-    'Idioma: ' + (lang || '—'),
-    'Página: ' + (page || '—')
-  ].join('\n');
-
-  try {
-    var resendRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + RESEND_API_KEY
-      },
-      body: JSON.stringify({
-        from: CONTACT_FROM_EMAIL,
-        to: [CONTACT_TO_EMAIL],
-        reply_to: email,
-        subject: subject,
-        text: textBody
-      })
-    });
-
-    if (!resendRes.ok) {
-      var errText = await resendRes.text();
-      console.error('contact.js: Resend API error', resendRes.status, errText);
-      // El lead ya está guardado en la base de datos aunque el correo falle.
-      return res.status(200).json({ success: true, warning: 'email_provider_error' });
-    }
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('contact.js: unexpected error sending email', err);
-    return res.status(200).json({ success: true, warning: 'unexpected_error' });
-  }
+  return res.status(200).json({ success: true });
 };
