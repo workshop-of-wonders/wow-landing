@@ -150,12 +150,10 @@ function createFocusTrap(modalEl, isOpen) {
       page: location.pathname
     };
 
-    // UI flow only: "sending" -> "success", wired exactly as it should look
-    // once a real backend exists. There is NO backend deployed yet — see
-    // api/contact.js (scaffolded, not yet deployed/connected) — so nothing
-    // is actually transmitted over the network at this point. The success
-    // copy reflects that honestly ("quedó registrada" instead of implying
-    // the team already received it).
+    // Submits to api/contact.js. The lead is always saved to the DB there;
+    // the email notification only fires once RESEND_API_KEY and
+    // CONTACT_TO_EMAIL are set in the Vercel project's env vars (see that
+    // file's header comment) — until then this still succeeds silently.
     var idleLabel = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando…';

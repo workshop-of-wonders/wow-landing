@@ -1,26 +1,20 @@
 // Vercel serverless function (Node runtime) — auto-detected because it lives
-// in /api, no vercel.json or build step required.
+// in /api, no vercel.json build step required.
 //
-// STATUS: scaffolded, NOT yet deployed/connected. The frontend forms
-// (index.html, portafolio.html, servicios.html) do not call this endpoint
-// yet — see the commented-out fetch() next to each form's submit handler.
-//
-// To activate:
-//   1. Deploy this repo to the Vercel project the domain already points to
-//      (wow-landing-beta.vercel.app), so this file is picked up as a
-//      function at /api/contact.
-//   2. Create an account with a transactional email provider (Resend is
+// STATUS: deployed and connected — index.html, portafolio.html and
+// servicios.html all POST here from their "Cuéntanos tu proyecto" form.
+// The lead is always persisted to the `leads` table first, so it's never
+// lost even if the email step below isn't configured. To also get an email
+// notification per lead:
+//   1. Create an account with a transactional email provider (Resend is
 //      used below — https://resend.com — simple HTTP API, no SDK needed)
 //      and get an API key.
-//   3. In the Vercel project settings, add the environment variable
+//   2. In the Vercel project settings, add the environment variable
 //      RESEND_API_KEY with that key. Also set CONTACT_TO_EMAIL (the inbox
 //      that should receive leads) and, once you have a verified sending
 //      domain in Resend, CONTACT_FROM_EMAIL (e.g. "WOW Leads <leads@workshopofwonders.co>").
 //      Until a domain is verified in Resend, you can send from
 //      "onboarding@resend.dev" for testing.
-//   4. Uncomment the fetch() calls in the three HTML files (search for
-//      "Real integration point" in each <script> block) so submits actually
-//      POST here.
 //
 // This function never receives or stores credentials from the client — it
 // only reads its own environment variables server-side.
