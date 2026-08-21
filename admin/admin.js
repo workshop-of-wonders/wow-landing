@@ -1,4 +1,4 @@
-import { upload } from 'https://esm.sh/@vercel/blob@0.27.0/client';
+import { upload } from 'https://esm.sh/@vercel/blob@2.8.0/client';
 
 const app = document.getElementById('app');
 const state = { view: 'projects', projects: [], leads: [], leadFilter: '' };
