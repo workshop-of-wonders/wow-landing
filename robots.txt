@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
+Disallow: /index-alt.html
 
 Sitemap: https://wow-landing-beta.vercel.app/sitemap.xml
