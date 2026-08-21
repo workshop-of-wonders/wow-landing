@@ -190,7 +190,6 @@ document.querySelectorAll('.switch').forEach(function (btn) {
 var hubDiagramEl = document.getElementById('hubDiagram');
 var hubPopup = document.getElementById('hubPopup');
 var hubPopupText = document.getElementById('hubPopupText');
-var hubPopupCta = document.getElementById('hubPopupCta');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
 
 /* Draw a connector line from every pill to the center W, redrawn whenever the layout changes */
@@ -245,10 +244,6 @@ hubPills.forEach(function (pill) {
     }
     pill.classList.add('active');
     hubPopupText.textContent = pill.dataset.desc;
-    hubPopupCta.onclick = function (ev) {
-      ev.stopPropagation();
-      window.openProjectForm('Me interesa: ' + pill.textContent.trim());
-    };
 
     var diagramRect = hubDiagramEl.getBoundingClientRect();
     var pillRect = pill.getBoundingClientRect();
@@ -275,7 +270,6 @@ document.addEventListener('click', function (e) {
   if (!dropdown) return;
   var popup = document.getElementById('navServicePopup');
   var popupText = document.getElementById('navServicePopupText');
-  var popupCta = document.getElementById('navServicePopupCta');
   var links = [].slice.call(dropdown.querySelectorAll('.nav-dropdown-link'));
   var POPUP_WIDTH = 240;
   var GAP = 14;
@@ -293,10 +287,6 @@ document.addEventListener('click', function (e) {
       if (isSame) return;
       link.classList.add('active');
       popupText.textContent = link.dataset.desc;
-      popupCta.onclick = function (ev) {
-        ev.stopPropagation();
-        window.openProjectForm('Me interesa: ' + link.textContent.trim());
-      };
       var dropdownRect = dropdown.getBoundingClientRect();
       var linkRect = link.getBoundingClientRect();
       var top = linkRect.top - dropdownRect.top + linkRect.height / 2;
