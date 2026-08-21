@@ -12,6 +12,7 @@
   --lima: #dce157;
   --magenta: #ec4899;
   --orange: #f97316;
+  --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
   --cloud: #F1ECF5;
   --ink: #1A1320;
@@ -80,7 +81,7 @@ a { text-decoration: none; color: inherit; }
   margin: 0 0 var(--space-2);
 }
 
-.eyebrow-dark { color: var(--orange); }
+.eyebrow-dark { color: var(--orange-text); }
 
 h1 em, h2 em {
   font-family: 'Playfair Display', serif;
