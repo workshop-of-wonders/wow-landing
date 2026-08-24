@@ -2920,16 +2920,32 @@ main { padding-top: var(--nav-h); }
 .footer-socials a:hover { color: var(--lima); }
 
 @media (max-width: 720px) {
-  .hero { padding: calc(var(--space-6) + var(--nav-h)) var(--page-x) 64px; }
+  /* More generous, editorial-feeling hero on mobile: bigger top gap under
+     the nav, more room between eyebrow/h1/sub before the CTA, and a single
+     dominant full-width primary pill with the secondary action demoted to
+     a plain text link underneath instead of a second competing button —
+     matches the reference the client pointed to (one confident CTA, not
+     two pills fighting for attention). */
+  .hero { padding: calc(var(--space-7) + var(--nav-h)) var(--page-x) 72px; }
+  .hero-sub { margin-bottom: var(--space-4); }
+  .hero-cta { flex-direction: column; align-items: center; gap: var(--space-3); }
+  .hero-cta .btn-primary { width: 100%; max-width: 400px; padding: 18px 24px; font-size: 16px; }
+  .hero-cta .btn-outline {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 4px 8px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .hero-cta .btn-outline:hover { background: none; opacity: 0.8; }
   .services, .contact, .work { padding: var(--space-6) var(--page-x); }
   .labs { padding: var(--space-6) 0 0; }
   /* give the falling-icons playground more room to actually play with on a phone screen */
   .contact { min-height: clamp(560px, 78vh, 760px); }
-  /* let the two hero buttons wrap onto their own line if they don't fit —
-     forcing nowrap here used to blow out .hero-content's min-content width
-     past its padded column at ~375px (see CHANGELOG 2026-08-23) */
-  .hero-cta { flex-wrap: wrap; gap: var(--space-2); width: 100%; }
-  .hero-cta .btn { flex: 1 1 140px; min-width: 0; padding: 14px 12px; font-size: 14px; white-space: normal; }
 }
 
 /* ------------------------------------------------------------------
