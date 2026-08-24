@@ -1283,6 +1283,10 @@ main { padding-top: var(--nav-h); }
 .hub-cloud { background: var(--cloud); }
 .hub-ink { background: var(--ink); color: var(--white); }
 .hub-purple { background: var(--purple); color: var(--white); }
+/* Match the two remaining Labs' actual panel colors (.labs-panel-brand / .labs-panel-insight)
+   so a service's pill color tells you which Lab it belongs to at a glance. */
+.hub-lab-brand { background: #A855F7; color: var(--white); }
+.hub-lab-insight { background: #3B82F6; color: var(--white); }
 .hub-center {
   position: relative;
   z-index: 1;
