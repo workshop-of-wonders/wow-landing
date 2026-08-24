@@ -1408,12 +1408,6 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 900px) {
   .hub-diagram { flex-direction: column; align-items: center; min-height: 0; }
-  /* The connector lines make sense as a spread-out desktop diagram (each pill
-     visibly tied to the center W), but stacked into one dense mobile column
-     they cross behind every pill below them and read as clutter/spaghetti
-     instead of structure — the color-coded pill groups already communicate
-     "these belong together" without the lines. */
-  .hub-arrows { display: none; }
   .hub-col-right {
     flex-direction: row;
     flex-wrap: wrap;
