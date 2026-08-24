@@ -2081,6 +2081,7 @@ main { padding-top: var(--nav-h); }
   letter-spacing: 0.02em;
 }
 .work-brands-marquee {
+  margin-top: var(--space-6);
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
