@@ -234,7 +234,6 @@ main { padding-top: var(--nav-h); }
 .nav-dot-blue { background: var(--blue); }
 .nav-dot-magenta { background: var(--magenta); }
 .nav-dot-orange { background: var(--orange); }
-.nav-dot-ink { background: var(--white); }
 .nav-dot-cloud { background: var(--cloud); }
 .nav-dropdown-col a,
 .nav-dropdown-link {
@@ -294,21 +293,6 @@ main { padding-top: var(--nav-h); }
 .nav-service-popup.is-flip { transform: translateY(-50%) translateX(-6px) scale(0.96); }
 .nav-service-popup.is-flip.is-open { transform: translateY(-50%) translateX(0) scale(1); }
 .nav-service-popup p { margin: 0; }
-.nav-service-popup-cta {
-  display: inline-block;
-  margin-top: var(--space-2);
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--purple);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-}
-.nav-service-popup-cta:hover { color: var(--magenta); }
 .nav-service-popup-arrow {
   position: absolute;
   top: 50%;
@@ -565,13 +549,6 @@ main { padding-top: var(--nav-h); }
   color: var(--cloud);
   margin-bottom: var(--space-2);
 }
-.hero-sub-secondary {
-  max-width: 440px;
-  font-size: 15px;
-  color: var(--cloud);
-  opacity: 0.72;
-  margin-bottom: var(--space-5);
-}
 .hero-cta { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 
 /* Outline word */
@@ -597,7 +574,6 @@ main { padding-top: var(--nav-h); }
   text-align: right;
   z-index: 0;
 }
-.outline-word .ow-kern { margin-left: 0.05em; }
 .outline-orange { color: var(--orange); }
 .outline-magenta { color: var(--magenta); }
 .outline-blue { color: var(--blue); }
@@ -735,8 +711,6 @@ main { padding-top: var(--nav-h); }
 .toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
 .toggle-on-orange .switch.is-on { background: var(--orange); }
 .toggle-on-magenta .switch.is-on { background: var(--magenta); }
-.toggle-on-blue .switch.is-on { background: var(--blue); }
-.toggle-on-blue .switch.is-on .switch-label { color: var(--purple); }
 .toggle-text { font-size: 16px; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
 .toggle-text strong { display: block; margin-bottom: 2px; }
 .toggle-item.text-hidden .toggle-text { opacity: 0; }
@@ -907,7 +881,7 @@ main { padding-top: var(--nav-h); }
   .hero { height: auto; }
   .hero-inner { flex-direction: column; height: auto; align-items: center; }
   .hero-content { text-align: center; max-width: 560px; flex: 0 1 auto; }
-  .hero h1, .hero-sub, .hero-sub-secondary { margin-left: auto; margin-right: auto; }
+  .hero h1, .hero-sub { margin-left: auto; margin-right: auto; }
   .hero-cta { justify-content: center; }
   .hero-media {
     width: calc(100% + (2 * var(--page-x)));
@@ -1056,8 +1030,6 @@ main { padding-top: var(--nav-h); }
 .labs-panels:hover .labs-panel { flex: 1; }
 .labs-panels .labs-panel:hover { flex: 3.2; }
 .labs-panel-insight { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
-.labs-panel-academy { background: linear-gradient(160deg, #dce157, #a3a832); }
-.labs-panel-core { background: linear-gradient(160deg, #f4677f, #EF476F); }
 .labs-panel-brand { background: linear-gradient(160deg, #c084fc, #A855F7); }
 .labs-bg-icon {
   position: absolute;
@@ -1120,37 +1092,6 @@ main { padding-top: var(--nav-h); }
 .labs-toggle { display: none; }
 .labs-content h3 { font-size: 22px; margin-bottom: var(--space-1); }
 .labs-content p { margin: 0; font-size: 14px; opacity: 0.9; }
-.labs-services {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: var(--space-2) 0 0;
-  padding: 0;
-  max-height: 420px;
-  opacity: 1;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
-}
-.labs-panel.services-collapsed .labs-services {
-  max-height: 0;
-  opacity: 0;
-  margin-top: 0;
-}
-.labs-service-btn {
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.4);
-  background: transparent;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 12px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-.labs-service-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.7); }
-
 @media (max-width: 900px) {
   /* Accordion: collapsed color bars, tap to expand one at a time (matches the reference) */
   .labs-panels { flex-direction: column; height: auto; }
@@ -1214,24 +1155,6 @@ main { padding-top: var(--nav-h); }
   .labs-panel.is-open .labs-bg-icon { opacity: 0.18; transform: scale(1); }
 }
 
-.academy-mention {
-  display: block;
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 14px 20px;
-  border: 1px solid rgba(26,19,32,0.14);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.academy-mention:hover { border-color: var(--purple); background: rgba(56,7,87,0.04); }
-.academy-mention strong { color: var(--purple); }
-
 /* Hub diagram */
 .hub-diagram {
   position: relative;
@@ -1290,13 +1213,6 @@ main { padding-top: var(--nav-h); }
 }
 .hub-pill:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 8px 18px rgba(56,7,87,0.18); }
 .hub-pill.active { border-color: var(--purple); box-shadow: 0 8px 18px rgba(56,7,87,0.25); }
-.hub-lima { background: var(--lima); }
-.hub-blue { background: var(--blue); }
-.hub-magenta { background: var(--magenta); color: var(--white); }
-.hub-orange { background: var(--orange); color: var(--white); }
-.hub-cloud { background: var(--cloud); }
-.hub-ink { background: var(--ink); color: var(--white); }
-.hub-purple { background: var(--purple); color: var(--white); }
 /* Match the two remaining Labs' actual panel colors (.labs-panel-brand / .labs-panel-insight)
    so a service's pill color tells you which Lab it belongs to at a glance. */
 .hub-lab-brand { background: #A855F7; color: var(--white); }
@@ -1353,25 +1269,6 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   gap: var(--space-2);
 }
-/* Same plain-underline-link style as .hub-popup-cta ("Hablemos de esto →" in the
-   pill tooltip) — no button box, just bold underlined text. .services has a
-   white background (not dark, despite .hub-center itself being purple), so
-   this uses the exact same colors as that reference link. */
-.hub-cta-link {
-  display: inline-block;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--purple);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  white-space: nowrap;
-  cursor: pointer;
-}
-.hub-cta-link:hover { color: var(--magenta); }
 .hub-popup {
   position: absolute;
   z-index: 10;
@@ -1393,21 +1290,6 @@ main { padding-top: var(--nav-h); }
 }
 .hub-popup.is-open { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
 .hub-popup p { margin: 0; }
-.hub-popup-cta {
-  display: inline-block;
-  margin-top: var(--space-2);
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--purple);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-}
-.hub-popup-cta:hover { color: var(--magenta); }
 .hub-popup-arrow {
   position: absolute;
   top: -6px;
@@ -1485,48 +1367,6 @@ main { padding-top: var(--nav-h); }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
 
-/* No terminamos cuando lanzamos — short conceptual differential section between
-   Proceso (the mechanism) and Trabajo. Not a redesign of the circular Proceso
-   diagram: this is its own compact DEFINE→CREA→CRECE→APRENDE→DEFINE strip. */
-.diff-section {
-  position: relative;
-  padding: var(--space-7) var(--page-x);
-  background: var(--white);
-  color: var(--ink);
-  text-align: center;
-  overflow: hidden;
-}
-.diff-section h2 { max-width: 640px; margin: var(--space-2) auto var(--space-3); }
-.diff-intro { max-width: 560px; margin: 0 auto var(--space-6); font-size: 17px; color: var(--ink); opacity: 0.8; }
-.diff-cycle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0 auto var(--space-5);
-}
-.diff-node {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 10px 22px;
-  border-radius: 999px;
-  color: var(--white);
-  font-size: 15px;
-}
-.diff-node-lima { background: var(--lima); color: var(--purple); }
-.diff-node-blue { background: var(--blue); color: var(--purple); }
-.diff-node-orange { background: var(--orange); }
-.diff-node-magenta { background: var(--magenta); }
-.diff-node-ghost { opacity: 0.45; }
-.diff-arrow { font-size: 18px; color: var(--ink); opacity: 0.5; }
-.diff-arrow-loop { font-size: 20px; }
-.diff-footnote { max-width: 600px; margin: 0 auto; font-size: 14px; color: var(--ink); opacity: 0.62; }
-@media (max-width: 720px) {
-  .diff-cycle { gap: var(--space-1); }
-  .diff-node { padding: 8px 14px; font-size: 13px; }
-}
 .method h2 {
   font-size: var(--h2-size);
   max-width: 460px;
@@ -1712,18 +1552,6 @@ main { padding-top: var(--nav-h); }
   margin-bottom: var(--space-2);
   max-width: 640px;
 }
-.work-portfolio-link {
-  display: inline-block;
-  margin-bottom: var(--space-5);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--purple);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.work-portfolio-link:hover { color: var(--magenta); }
 .work-gallery { display: flex; flex-direction: column; }
 .work-visible {
   display: flex;
@@ -2021,19 +1849,6 @@ main { padding-top: var(--nav-h); }
   text-transform: none;
 }
 
-/* Brands without a real project photo yet: a colored card with name + tagline instead of an image.
-   These have no <img> to derive a height from (unlike photo .work-item cards), so they need their
-   own aspect-ratio to avoid collapsing to just the text's height. */
-.work-item-color {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: var(--space-3);
-  aspect-ratio: 3 / 2;
-  color: var(--white);
-  cursor: default;
-}
 .work-item-name {
   font-family: var(--font-display);
   font-size: 22px;
@@ -2043,14 +1858,10 @@ main { padding-top: var(--nav-h); }
   line-height: 1.4;
   opacity: 0.9;
 }
-.work-item-prepapp { background: linear-gradient(160deg, #3B82F6, #f97316); }
-.work-item-seedcapital { background: linear-gradient(160deg, #f97316, #14b8a6 60%, #22c55e); }
-.work-item-moonking { background: linear-gradient(160deg, #0b0b0f, #ec4899); }
 
 /* Brands whose only asset is their logo (no project photo/mockup) but that
-   DO have a real case study behind them (desc/work/capabilities) — unlike
-   .work-item-color above (name+tag only, no lightbox), these stay fully
-   clickable. The logo sits on a white badge (guarantees contrast regardless
+   DO have a real case study behind them (desc/work/capabilities). The logo
+   sits on a white badge (guarantees contrast regardless
    of the logo's own colors) over a brand-colored gradient, instead of
    object-fit:cover-ing a small logo file, which would crop/distort it. */
 .work-item-logo {
@@ -2083,29 +1894,6 @@ main { padding-top: var(--nav-h); }
 .work-item-serninos { background: linear-gradient(160deg, #1e3a8a, #3b82f6); }
 .work-item-walkmate { background: linear-gradient(160deg, #0e2f3d, #2fbad6); }
 
-.work-brands-label {
-  margin: var(--space-6) 0 var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #8b7f96;
-}
-.work-brands-context {
-  margin: 0 0 var(--space-3);
-  font-size: 14px;
-  color: #8b7f96;
-}
-.work-brands-context-placeholder {
-  display: inline-block;
-  padding: 1px 8px;
-  border: 1px dashed #d99a2b;
-  border-radius: 4px;
-  color: #b3720f;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.02em;
-}
 .work-brands-marquee {
   margin-top: var(--space-6);
   overflow: hidden;
@@ -2474,13 +2262,6 @@ main { padding-top: var(--nav-h); }
   white-space: nowrap;
   font-size: calc(var(--pc-row-h, 190px) * 0.06);
 }
-/* Left column specifically: label top-right instead of top-left. */
-.pc-palette-chip-top-right {
-  align-items: flex-end;
-}
-.pc-palette-chip-top-right .pc-swatch-title {
-  text-align: right;
-}
 @media (prefers-reduced-motion: reduce) {
   .pc-palette-track { animation: none; }
 }
@@ -2501,13 +2282,6 @@ main { padding-top: var(--nav-h); }
 .pc-palette-chip:not(.pc-palette-chip-top) .pc-swatch-title {
   font-size: calc(var(--pc-row-h, 190px) * 0.06);
   line-height: 1.15;
-}
-.pc-swatch-caps {
-  font-size: calc(var(--pc-row-h, 190px) * 0.045);
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  opacity: 0.85;
 }
 .pc-swatch-hex {
   font-family: var(--font-mono, monospace);
@@ -2861,10 +2635,6 @@ main { padding-top: var(--nav-h); }
 .contact-pill-primary:hover { background: var(--lima); color: var(--purple); border-color: var(--lima); }
 
 /* Falling icons playground — integrated into the contact section itself, not a separate box */
-.playground-wrap {
-  position: relative;
-  isolation: isolate;
-}
 .icon-playground {
   position: absolute;
   inset: 0;

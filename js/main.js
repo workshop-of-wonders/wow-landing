@@ -86,29 +86,6 @@ document.querySelectorAll('.labs-panel').forEach(function (panel) {
     document.querySelectorAll('.labs-panel').forEach(function (p) { p.classList.remove('is-open'); });
     if (!wasOpen) panel.classList.add('is-open');
   });
-  /* Reset the services list when the mouse leaves a desktop hover panel, so it's back to
-     visible (the default) the next time this panel opens */
-  panel.addEventListener('mouseleave', function () {
-    panel.classList.remove('services-collapsed');
-    var tag = panel.querySelector('.labs-tag');
-    if (tag) tag.setAttribute('aria-expanded', 'true');
-  });
-});
-
-/* Labs tag: services are visible by default — click the tag to hide them, click again to bring them back */
-document.querySelectorAll('.labs-tag').forEach(function (tag) {
-  tag.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var panel = tag.closest('.labs-panel');
-    var isCollapsed = panel.classList.toggle('services-collapsed');
-    tag.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
-  });
-});
-
-/* Labs service pills: stop the click from bubbling to the panel (which would toggle the
-   mobile accordion) — the project-form handler below still opens the form via [data-open-form] */
-document.querySelectorAll('.labs-service-btn').forEach(function (btn) {
-  btn.addEventListener('click', function (e) { e.stopPropagation(); });
 });
 
 /* "Abrir el taller" door: reveals the rest of the Trabajo gallery from behind the door */
