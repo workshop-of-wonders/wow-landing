@@ -1,13 +1,11 @@
-// Catch-all: agrupa index.js + [key].js + publish.js (antes 3 funciones)
-// en una, por el límite de 12 funciones serverless del plan Hobby. Mismas
-// URLs de siempre -- ningún key de TOKEN_FIELDS es literalmente "publish".
-//   []           -> GET  /tokens
-//   ['publish']  -> POST /tokens/publish
-//   [key]        -> PUT  /tokens/:key
+// Sin rutas dinámicas de corchetes (ver projects.js para el porqué).
+//   GET  /tokens                    -> lista
+//   PUT  /tokens?key=X              -> guarda borrador de un color
+//   POST /tokens?publish=1          -> publica todos los cambios pendientes
 
-const { sql } = require('../_db');
-const { requireAuth } = require('../_auth');
-const { TOKEN_FIELDS, isValidHex, publishTokens } = require('../_tokens');
+const { sql } = require('./_db');
+const { requireAuth } = require('./_auth');
+const { TOKEN_FIELDS, isValidHex, publishTokens } = require('./_tokens');
 
 async function listTokens(req, res) {
   if (req.method !== 'GET') {
@@ -42,18 +40,17 @@ async function publishTokensRoute(req, res) {
   const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
   if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
-    console.error('tokens/[...path].js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('tokens.js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
 
   try {
-    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const result = await publishTokens(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed, keys: result.keys || [] });
   } catch (error) {
-    console.error('tokens/[...path].js (publish):', error);
+    console.error('tokens.js (publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
@@ -86,12 +83,8 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const rawPath = req.query.path;
-  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
-
-  if (segments.length === 1 && segments[0] === 'list') return listTokens(req, res);
-  if (segments.length === 1 && segments[0] === 'publish') return publishTokensRoute(req, res);
-  if (segments.length === 1) return updateToken(req, res, segments[0]);
-
-  return res.status(404).json({ success: false, error: 'not_found' });
+  if (req.query.publish) return publishTokensRoute(req, res);
+  const key = typeof req.query.key === 'string' ? req.query.key : null;
+  if (key) return updateToken(req, res, key);
+  return listTokens(req, res);
 };

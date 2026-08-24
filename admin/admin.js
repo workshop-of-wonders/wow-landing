@@ -110,7 +110,7 @@ async function renderProjectsList() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Proyectos</h1><p>Cargando…</p>';
   try {
-    const { projects } = await api('/projects/list');
+    const { projects } = await api('/projects');
     state.projects = projects;
     const published = projects.filter((p) => p.published_at).length;
     const rows = projects.map((p) => `
@@ -145,7 +145,7 @@ async function renderProjectsList() {
 async function renderProjectEditor(slug) {
   const main = document.getElementById('main');
   main.innerHTML = '<p>Cargando…</p>';
-  const { project, images } = await api('/projects/' + encodeURIComponent(slug));
+  const { project, images } = await api('/projects?slug=' + encodeURIComponent(slug));
 
   main.innerHTML = `
     <button class="back-link" id="back">← Volver a proyectos</button>
@@ -206,7 +206,7 @@ function renderImageGrid(slug, images) {
       if (from < to) tile.after(dragged); else tile.before(dragged);
       const order = Array.from(grid.querySelectorAll('.image-tile')).map((t) => Number(t.dataset.id));
       try {
-        await api('/projects/' + encodeURIComponent(slug) + '/images', { method: 'PUT', body: JSON.stringify({ order }) });
+        await api('/projects?slug=' + encodeURIComponent(slug) + '&images=1', { method: 'PUT', body: JSON.stringify({ order }) });
         toast('Orden guardado');
       } catch (err) { toast('No se pudo guardar el orden', 'err'); }
     });
@@ -216,7 +216,7 @@ function renderImageGrid(slug, images) {
     btn.addEventListener('click', async () => {
       if (!confirm('¿Eliminar esta foto del collage?')) return;
       try {
-        await api('/projects/' + encodeURIComponent(slug) + '/images/' + btn.dataset.id, { method: 'DELETE' });
+        await api('/projects?slug=' + encodeURIComponent(slug) + '&images=1&imageId=' + btn.dataset.id, { method: 'DELETE' });
         renderProjectEditor(slug);
       } catch (err) { toast('No se pudo eliminar', 'err'); }
     });
@@ -232,7 +232,7 @@ async function uploadImage(slug, file) {
       access: 'public',
       handleUploadUrl: '/api/admin/upload',
     });
-    await api('/projects/' + encodeURIComponent(slug) + '/images', { method: 'POST', body: JSON.stringify({ url: blob.url }) });
+    await api('/projects?slug=' + encodeURIComponent(slug) + '&images=1', { method: 'POST', body: JSON.stringify({ url: blob.url }) });
     msg.textContent = '';
     renderProjectEditor(slug);
   } catch (e) {
@@ -253,7 +253,7 @@ async function saveProject(slug) {
     show_on_portafolio: document.getElementById('f-showport').checked,
   };
   try {
-    await api('/projects/' + encodeURIComponent(slug), { method: 'PUT', body: JSON.stringify(body) });
+    await api('/projects?slug=' + encodeURIComponent(slug), { method: 'PUT', body: JSON.stringify(body) });
     toast('Cambios guardados. Recuerda publicar para que se vean en el sitio.');
   } catch (e) { toast('No se pudo guardar', 'err'); }
 }
@@ -262,7 +262,7 @@ async function publishProject(slug) {
   const msg = document.getElementById('editorMsg');
   msg.textContent = 'Publicando…';
   try {
-    await api('/projects/' + encodeURIComponent(slug) + '/publish', { method: 'POST' });
+    await api('/projects?slug=' + encodeURIComponent(slug) + '&publish=1', { method: 'POST' });
     msg.textContent = '';
     toast('Publicado en el sitio');
     renderProjectEditor(slug);
@@ -279,7 +279,7 @@ async function renderLeads() {
   main.innerHTML = '<h1>Leads</h1><p>Cargando…</p>';
   try {
     const q = state.leadFilter ? '?status=' + state.leadFilter : '';
-    const { leads } = await api('/leads/list' + q);
+    const { leads } = await api('/leads' + q);
     state.leads = leads;
     const statuses = ['', 'new', 'contacted', 'won', 'lost'];
     const labels = { '': 'Todos', new: 'Nuevo', contacted: 'Contactado', won: 'Ganado', lost: 'Perdido' };
@@ -344,7 +344,7 @@ function renderLeadDetail(id) {
     </div>`;
   document.getElementById('saveLead').addEventListener('click', async () => {
     try {
-      await api('/leads/' + id, {
+      await api('/leads?id=' + id, {
         method: 'PATCH',
         body: JSON.stringify({ status: document.getElementById('statusSel').value, notes: document.getElementById('notesInput').value }),
       });
@@ -362,7 +362,7 @@ async function renderContent() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Textos</h1><p>Cargando…</p>';
   try {
-    const { grouped } = await api('/content/list');
+    const { grouped } = await api('/content');
     state.contentFields = grouped;
     const pages = Object.keys(grouped);
     const sections = pages.map((page) => `
@@ -403,7 +403,7 @@ async function saveContentField(key) {
   const msg = row.querySelector('.ck-msg');
   msg.textContent = 'Guardando…';
   try {
-    await api('/content/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
+    await api('/content?key=' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
     msg.textContent = 'Guardado ✓';
     setTimeout(() => { msg.textContent = ''; }, 2500);
   } catch (e) {
@@ -416,7 +416,7 @@ async function publishContentChanges() {
   const msg = document.getElementById('contentPublishMsg');
   msg.textContent = 'Publicando…';
   try {
-    const { committed } = await api('/content/publish', { method: 'POST' });
+    const { committed } = await api('/content?publish=1', { method: 'POST' });
     msg.textContent = '';
     toast(committed && committed.length ? 'Publicado: ' + committed.join(', ') : 'No había cambios pendientes por publicar');
   } catch (e) {
@@ -431,7 +431,7 @@ async function renderTokens() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Colores</h1><p>Cargando…</p>';
   try {
-    const { tokens } = await api('/tokens/list');
+    const { tokens } = await api('/tokens');
     state.tokens = tokens;
     const rows = tokens.map((t) => `
       <div class="field" data-key="${t.key}" style="display:flex; align-items:center; gap:14px;">
@@ -475,7 +475,7 @@ async function saveToken(key) {
   const msg = row.querySelector('.tk-msg');
   msg.textContent = 'Guardando…';
   try {
-    await api('/tokens/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: input.value }) });
+    await api('/tokens?key=' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: input.value }) });
     msg.textContent = 'Guardado ✓';
     setTimeout(() => { msg.textContent = ''; }, 2500);
   } catch (e) {
@@ -488,7 +488,7 @@ async function publishTokenChanges() {
   const msg = document.getElementById('tokensPublishMsg');
   msg.textContent = 'Publicando…';
   try {
-    const { committed } = await api('/tokens/publish', { method: 'POST' });
+    const { committed } = await api('/tokens?publish=1', { method: 'POST' });
     msg.textContent = '';
     toast(committed && committed.length ? 'Publicado en styles.css' : 'No había cambios pendientes por publicar');
   } catch (e) {
@@ -506,7 +506,7 @@ async function renderSeo() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>SEO</h1><p>Cargando…</p>';
   try {
-    const data = await api('/seo/list');
+    const data = await api('/seo');
     state.seo = data;
     const pages = Object.keys(data.grouped);
 
@@ -606,7 +606,7 @@ async function saveSeoField(key) {
   const msg = row.querySelector('.seo-msg');
   msg.textContent = 'Guardando…';
   try {
-    await api('/seo/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
+    await api('/seo?key=' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
     msg.textContent = 'Guardado ✓';
     setTimeout(() => { msg.textContent = ''; }, 2500);
   } catch (e) {
@@ -619,7 +619,7 @@ async function publishSeoChanges() {
   const msg = document.getElementById('seoPublishMsg');
   msg.textContent = 'Publicando…';
   try {
-    const { committed } = await api('/seo/publish', { method: 'POST' });
+    const { committed } = await api('/seo?publish=1', { method: 'POST' });
     msg.textContent = '';
     toast(committed && committed.length ? 'Publicado: ' + committed.join(', ') : 'No había cambios pendientes por publicar');
   } catch (e) {
@@ -636,7 +636,7 @@ async function uploadFavicon(file) {
       access: 'public',
       handleUploadUrl: '/api/admin/upload',
     });
-    await api('/seo/favicon', { method: 'PUT', body: JSON.stringify({ value: blob.url }) });
+    await api('/seo?favicon=1', { method: 'PUT', body: JSON.stringify({ value: blob.url }) });
     msg.textContent = '';
     renderSeo();
   } catch (e) {
@@ -649,7 +649,7 @@ async function publishFaviconChanges() {
   const msg = document.getElementById('faviconPublishMsg');
   msg.textContent = 'Publicando…';
   try {
-    const { committed } = await api('/seo/favicon/publish', { method: 'POST' });
+    const { committed } = await api('/seo?favicon=1&publish=1', { method: 'POST' });
     msg.textContent = '';
     toast(committed && committed.length ? 'Favicon publicado en: ' + committed.join(', ') : 'No hay favicon subido para publicar');
   } catch (e) {
@@ -667,7 +667,7 @@ async function publishSlugChange(page) {
   if (!confirm('¿Publicar la nueva URL "/' + slug + '" para esta página? Esto actualiza vercel.json, los enlaces internos y crea una redirección desde la URL anterior si ya tenía una personalizada.')) return;
   msg.textContent = 'Publicando…';
   try {
-    const { committed, slug: newSlug } = await api('/seo/slugs/' + encodeURIComponent(page), { method: 'PUT', body: JSON.stringify({ slug }) });
+    const { committed, slug: newSlug } = await api('/seo?slugs=1&page=' + encodeURIComponent(page), { method: 'PUT', body: JSON.stringify({ slug }) });
     msg.textContent = '';
     toast('URL publicada: /' + newSlug + ' (' + (committed || []).length + ' archivo(s) actualizados)');
     renderSeo();
@@ -686,7 +686,7 @@ function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
 
 (async function boot() {
   try {
-    await api('/projects/list');
+    await api('/projects');
     renderShell();
   } catch (e) {
     renderLogin();

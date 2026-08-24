@@ -1,22 +1,18 @@
-// Catch-all: agrupa SEO (título/meta description), favicon y slugs de URL
-// en una sola función, por el límite de 12 funciones serverless del plan
-// Hobby de Vercel (mismo motivo que content/[[...path]].js y
-// tokens/[[...path]].js).
-//   []                      -> GET  /seo               (título/meta + favicon + slugs, todo junto)
-//   ['publish']             -> POST /seo/publish        (título/meta description)
-//   ['favicon']             -> PUT  /seo/favicon        (guarda borrador de la URL subida)
-//   ['favicon', 'publish']  -> POST /seo/favicon/publish
-//   ['slugs', page]         -> PUT  /seo/slugs/:page     (page = servicios | portafolio)
-//   ['slugs', 'publish']    -> POST /seo/slugs/publish   (body: { page, slug })
-//   [key]                   -> PUT  /seo/:key            (key de SEO_FIELDS)
+// Sin rutas dinámicas de corchetes (ver projects.js para el porqué).
+//   GET  /seo                                -> título/meta + favicon + slugs, todo junto
+//   PUT  /seo?key=X                          -> guarda borrador de título/meta
+//   POST /seo?publish=1                      -> publica título/meta
+//   PUT  /seo?favicon=1                      -> guarda borrador de la URL del favicon subido
+//   POST /seo?favicon=1&publish=1            -> publica el favicon
+//   PUT  /seo?slugs=1&page=X                 -> cambia y publica la URL de una página (body: {slug})
 
-const { sql } = require('../_db');
-const { requireAuth } = require('../_auth');
+const { sql } = require('./_db');
+const { requireAuth } = require('./_auth');
 const {
   SEO_FIELDS, seoFieldByKey, publishSeo,
   publishFavicon,
-  isValidSlug, publishSlug,
-} = require('../_seo');
+  publishSlug,
+} = require('./_seo');
 
 function getOctokitConfig() {
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -32,8 +28,6 @@ async function parseBody(req) {
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
   return body || {};
 }
-
-// ---------- GET /seo ----------
 
 async function listSeo(req, res) {
   if (req.method !== 'GET') {
@@ -71,8 +65,6 @@ async function listSeo(req, res) {
   });
 }
 
-// ---------- SEO título/meta description ----------
-
 async function updateSeoField(req, res, key) {
   if (req.method !== 'PUT') {
     res.setHeader('Allow', 'PUT');
@@ -101,22 +93,19 @@ async function publishSeoRoute(req, res) {
   }
   const cfg = getOctokitConfig();
   if (!cfg) {
-    console.error('seo/[[...path]].js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('seo.js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
-    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishSeo(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed });
   } catch (error) {
-    console.error('seo/[[...path]].js (publish):', error);
+    console.error('seo.js (publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
-
-// ---------- Favicon ----------
 
 async function updateFavicon(req, res) {
   if (req.method !== 'PUT') {
@@ -146,22 +135,19 @@ async function publishFaviconRoute(req, res) {
   }
   const cfg = getOctokitConfig();
   if (!cfg) {
-    console.error('seo/[[...path]].js (favicon publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('seo.js (favicon publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
-    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishFavicon(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed });
   } catch (error) {
-    console.error('seo/[[...path]].js (favicon publish):', error);
+    console.error('seo.js (favicon publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
-
-// ---------- Slugs ----------
 
 async function updateSlugDraft(req, res, page) {
   if (req.method !== 'PUT') {
@@ -171,20 +157,15 @@ async function updateSlugDraft(req, res, page) {
   if (page !== 'servicios' && page !== 'portafolio') {
     return res.status(404).json({ success: false, error: 'unknown_page' });
   }
-  // Nota: no hay "borrador" real para slugs -- cambiar el slug es siempre
-  // una acción de publicación directa (toca vercel.json + varios HTML a la
-  // vez), no tiene sentido guardarlo sin publicar. Este endpoint publica
-  // directamente. body: { slug }
   const body = await parseBody(req);
   const slug = typeof body.slug === 'string' ? body.slug.trim().toLowerCase() : '';
 
   const cfg = getOctokitConfig();
   if (!cfg) {
-    console.error('seo/[[...path]].js (slug): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('seo.js (slug): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
-    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishSlug(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH, page, slug);
@@ -196,7 +177,7 @@ async function updateSlugDraft(req, res, page) {
     if (error && error.message === 'slug_page_not_found') {
       return res.status(404).json({ success: false, error: 'slug_page_not_found' });
     }
-    console.error('seo/[[...path]].js (slug publish):', error);
+    console.error('seo.js (slug publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
@@ -205,15 +186,21 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const rawPath = req.query.path;
-  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
+  if (req.query.slugs) {
+    const page = typeof req.query.page === 'string' ? req.query.page : null;
+    if (!page) return res.status(400).json({ success: false, error: 'missing_page' });
+    return updateSlugDraft(req, res, page);
+  }
 
-  if (segments.length === 1 && segments[0] === 'list') return listSeo(req, res);
-  if (segments.length === 1 && segments[0] === 'publish') return publishSeoRoute(req, res);
-  if (segments.length === 1 && segments[0] === 'favicon') return updateFavicon(req, res);
-  if (segments.length === 2 && segments[0] === 'favicon' && segments[1] === 'publish') return publishFaviconRoute(req, res);
-  if (segments.length === 2 && segments[0] === 'slugs') return updateSlugDraft(req, res, segments[1]);
-  if (segments.length === 1) return updateSeoField(req, res, segments[0]);
+  if (req.query.favicon) {
+    if (req.query.publish) return publishFaviconRoute(req, res);
+    return updateFavicon(req, res);
+  }
 
-  return res.status(404).json({ success: false, error: 'not_found' });
+  if (req.query.publish) return publishSeoRoute(req, res);
+
+  const key = typeof req.query.key === 'string' ? req.query.key : null;
+  if (key) return updateSeoField(req, res, key);
+
+  return listSeo(req, res);
 };

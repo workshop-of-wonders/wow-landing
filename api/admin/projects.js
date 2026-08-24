@@ -1,19 +1,19 @@
-// Ruta catch-all: agrupa lo que antes eran 5 funciones serverless separadas
-// (index.js, [slug].js, [slug]/publish.js, [slug]/images.js,
-// [slug]/images/[id].js) en una sola, para no exceder el límite de 12
-// funciones del plan Hobby de Vercel. Las URLs públicas no cambian --
-// admin.js sigue llamando exactamente las mismas rutas de siempre.
-//
-// req.query.path es el arreglo de segmentos después de /api/admin/projects/:
-//   []                       -> GET  /projects
-//   [slug]                   -> GET/PUT/DELETE /projects/:slug
-//   [slug, 'publish']        -> POST /projects/:slug/publish
-//   [slug, 'images']         -> POST/PUT /projects/:slug/images
-//   [slug, 'images', id]     -> DELETE /projects/:slug/images/:id
+// Un solo archivo plano, sin rutas dinámicas de corchetes -- esas resultaron
+// no funcionar de forma confiable en este proyecto de Vercel más allá de un
+// único segmento (ver CHANGELOG 2026-08-23 para el diagnóstico completo).
+// En su lugar, todo se direcciona con query params explícitos:
+//   GET    /projects                              -> lista
+//   GET    /projects?slug=X                        -> detalle + imágenes
+//   PUT    /projects?slug=X                        -> actualizar campos
+//   DELETE /projects?slug=X                        -> borrar proyecto
+//   POST   /projects?slug=X&publish=1               -> publicar (Octokit)
+//   POST   /projects?slug=X&images=1                -> agregar imagen (body: {url})
+//   PUT    /projects?slug=X&images=1                -> reordenar imágenes (body: {order})
+//   DELETE /projects?slug=X&images=1&imageId=Y      -> borrar una imagen
 
-const { sql } = require('../_db');
-const { requireAuth } = require('../_auth');
-const { publishProject } = require('../_publish');
+const { sql } = require('./_db');
+const { requireAuth } = require('./_auth');
+const { publishProject } = require('./_publish');
 
 function parseBody(req) {
   let body = req.body;
@@ -104,15 +104,12 @@ async function publishProjectRoute(req, res, slug) {
   const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
   if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
-    console.error('projects/[...path].js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('projects.js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
 
   try {
-    // Import dinámico: @octokit/rest@21+ es solo ESM, require() falla con
-    // ERR_REQUIRE_ESM en este archivo CommonJS. import() sí funciona desde
-    // CJS sin importar la versión instalada -- no depender de bajar la
-    // versión del paquete.
+    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const result = await publishProject(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH, slug);
@@ -121,7 +118,7 @@ async function publishProjectRoute(req, res, slug) {
     if (error.message === 'project_not_found') {
       return res.status(404).json({ success: false, error: 'not_found' });
     }
-    console.error('projects/[...path].js (publish):', error);
+    console.error('projects.js (publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
@@ -165,32 +162,25 @@ async function projectImages(req, res, slug) {
     return res.status(200).json({ success: true });
   }
 
-  res.setHeader('Allow', 'POST, PUT');
-  return res.status(405).json({ success: false, error: 'method_not_allowed' });
-}
-
-async function deleteProjectImage(req, res, slug, id) {
-  if (req.method !== 'DELETE') {
-    res.setHeader('Allow', 'DELETE');
-    return res.status(405).json({ success: false, error: 'method_not_allowed' });
+  if (req.method === 'DELETE') {
+    const imageId = req.query.imageId;
+    await sql`DELETE FROM project_images WHERE id = ${imageId} AND project_slug = ${slug}`;
+    await sql`UPDATE projects SET published_at = NULL WHERE slug = ${slug}`;
+    return res.status(200).json({ success: true });
   }
-  await sql`DELETE FROM project_images WHERE id = ${id} AND project_slug = ${slug}`;
-  await sql`UPDATE projects SET published_at = NULL WHERE slug = ${slug}`;
-  return res.status(200).json({ success: true });
+
+  res.setHeader('Allow', 'POST, PUT, DELETE');
+  return res.status(405).json({ success: false, error: 'method_not_allowed' });
 }
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const rawPath = req.query.path;
-  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
+  const slug = typeof req.query.slug === 'string' ? req.query.slug : null;
 
-  if (segments.length === 1 && segments[0] === 'list') return listProjects(req, res);
-  if (segments.length === 1) return projectDetail(req, res, segments[0]);
-  if (segments.length === 2 && segments[1] === 'publish') return publishProjectRoute(req, res, segments[0]);
-  if (segments.length === 2 && segments[1] === 'images') return projectImages(req, res, segments[0]);
-  if (segments.length === 3 && segments[1] === 'images') return deleteProjectImage(req, res, segments[0], segments[2]);
-
-  return res.status(404).json({ success: false, error: 'not_found' });
+  if (!slug) return listProjects(req, res);
+  if (req.query.publish) return publishProjectRoute(req, res, slug);
+  if (req.query.images) return projectImages(req, res, slug);
+  return projectDetail(req, res, slug);
 };

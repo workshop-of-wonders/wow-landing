@@ -1,10 +1,9 @@
-// Catch-all: agrupa index.js + [id].js (antes 2 funciones) en una, por el
-// límite de 12 funciones serverless del plan Hobby. Mismas URLs de siempre.
-//   []    -> GET  /leads (?status=... opcional)
-//   [id]  -> PATCH /leads/:id
+// Sin rutas dinámicas de corchetes (ver projects.js para el porqué).
+//   GET   /leads               -> lista (opcional ?status=)
+//   PATCH /leads?id=X          -> actualizar estado/notas
 
-const { sql } = require('../_db');
-const { requireAuth } = require('../_auth');
+const { sql } = require('./_db');
+const { requireAuth } = require('./_auth');
 
 const VALID_STATUSES = ['new', 'contacted', 'won', 'lost'];
 
@@ -49,11 +48,8 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const rawPath = req.query.path;
-  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
+  const id = typeof req.query.id === 'string' ? req.query.id : null;
 
-  if (segments.length === 1 && segments[0] === 'list') return listLeads(req, res);
-  if (segments.length === 1) return updateLead(req, res, segments[0]);
-
-  return res.status(404).json({ success: false, error: 'not_found' });
+  if (!id) return listLeads(req, res);
+  return updateLead(req, res, id);
 };

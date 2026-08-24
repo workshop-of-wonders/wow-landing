@@ -1,15 +1,11 @@
-// Catch-all: agrupa index.js + [key].js + publish.js (antes 3 funciones)
-// en una, por el límite de 12 funciones serverless del plan Hobby. Mismas
-// URLs de siempre -- ningún key de CONTENT_FIELDS es literalmente
-// "publish", así que no hay ambigüedad entre /content/publish y
-// /content/:key.
-//   []           -> GET  /content
-//   ['publish']  -> POST /content/publish
-//   [key]        -> PUT  /content/:key
+// Sin rutas dinámicas de corchetes (ver projects.js para el porqué).
+//   GET  /content                    -> lista agrupada por página
+//   PUT  /content?key=X              -> guarda borrador de un campo
+//   POST /content?publish=1          -> publica todos los cambios pendientes
 
-const { sql } = require('../_db');
-const { requireAuth } = require('../_auth');
-const { CONTENT_FIELDS, fieldByKey, publishContent } = require('../_content');
+const { sql } = require('./_db');
+const { requireAuth } = require('./_auth');
+const { CONTENT_FIELDS, fieldByKey, publishContent } = require('./_content');
 
 async function listContent(req, res) {
   if (req.method !== 'GET') {
@@ -52,18 +48,17 @@ async function publishContentRoute(req, res) {
   const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
   if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
-    console.error('content/[...path].js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    console.error('content.js (publish): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
 
   try {
-    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
     const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const result = await publishContent(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed });
   } catch (error) {
-    console.error('content/[...path].js (publish):', error);
+    console.error('content.js (publish):', error);
     return res.status(500).json({ success: false, error: 'publish_failed' });
   }
 }
@@ -95,12 +90,8 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const rawPath = req.query.path;
-  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
-
-  if (segments.length === 1 && segments[0] === 'list') return listContent(req, res);
-  if (segments.length === 1 && segments[0] === 'publish') return publishContentRoute(req, res);
-  if (segments.length === 1) return updateContentField(req, res, segments[0]);
-
-  return res.status(404).json({ success: false, error: 'not_found' });
+  if (req.query.publish) return publishContentRoute(req, res);
+  const key = typeof req.query.key === 'string' ? req.query.key : null;
+  if (key) return updateContentField(req, res, key);
+  return listContent(req, res);
 };
