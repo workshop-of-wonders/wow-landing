@@ -11,7 +11,6 @@
 //   [slug, 'images']         -> POST/PUT /projects/:slug/images
 //   [slug, 'images', id]     -> DELETE /projects/:slug/images/:id
 
-const { Octokit } = require('@octokit/rest');
 const { sql } = require('../_db');
 const { requireAuth } = require('../_auth');
 const { publishProject } = require('../_publish');
@@ -110,6 +109,11 @@ async function publishProjectRoute(req, res, slug) {
   }
 
   try {
+    // Import dinámico: @octokit/rest@21+ es solo ESM, require() falla con
+    // ERR_REQUIRE_ESM en este archivo CommonJS. import() sí funciona desde
+    // CJS sin importar la versión instalada -- no depender de bajar la
+    // versión del paquete.
+    const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const result = await publishProject(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH, slug);
     return res.status(200).json({ success: true, committed: result.committed });

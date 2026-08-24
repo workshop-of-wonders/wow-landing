@@ -8,7 +8,6 @@
 const { sql } = require('../_db');
 const { requireAuth } = require('../_auth');
 const { TOKEN_FIELDS, isValidHex, publishTokens } = require('../_tokens');
-const { Octokit } = require('@octokit/rest');
 
 async function listTokens(req, res) {
   if (req.method !== 'GET') {
@@ -48,6 +47,8 @@ async function publishTokensRoute(req, res) {
   }
 
   try {
+    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
+    const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const result = await publishTokens(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed, keys: result.keys || [] });

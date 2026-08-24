@@ -17,7 +17,6 @@ const {
   publishFavicon,
   isValidSlug, publishSlug,
 } = require('../_seo');
-const { Octokit } = require('@octokit/rest');
 
 function getOctokitConfig() {
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -106,6 +105,8 @@ async function publishSeoRoute(req, res) {
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
+    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
+    const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishSeo(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed });
@@ -149,6 +150,8 @@ async function publishFaviconRoute(req, res) {
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
+    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
+    const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishFavicon(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH);
     return res.status(200).json({ success: true, committed: result.committed });
@@ -181,6 +184,8 @@ async function updateSlugDraft(req, res, page) {
     return res.status(500).json({ success: false, error: 'not_configured' });
   }
   try {
+    // @octokit/rest@21+ es solo ESM -- import() dinámico en vez de require().
+    const { Octokit } = await import('@octokit/rest');
     const octokit = new Octokit({ auth: cfg.GITHUB_TOKEN });
     const result = await publishSlug(sql, octokit, cfg.GITHUB_OWNER, cfg.GITHUB_REPO, cfg.GITHUB_BRANCH, page, slug);
     return res.status(200).json({ success: true, committed: result.committed, slug: result.slug });
