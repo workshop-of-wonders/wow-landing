@@ -1,7 +1,7 @@
 import { upload } from 'https://esm.sh/@vercel/blob@2.8.0/client';
 
 const app = document.getElementById('app');
-const state = { view: 'projects', projects: [], leads: [], leadFilter: '', contentFields: [], tokens: [] };
+const state = { view: 'projects', projects: [], leads: [], leadFilter: '', contentFields: [], tokens: [], seo: null };
 
 function toast(msg, kind) {
   const el = document.createElement('div');
@@ -77,6 +77,7 @@ function renderShell() {
           <button data-view="leads"><span class="dot"></span>Leads / CRM</button>
           <button data-view="content"><span class="dot"></span>Textos</button>
           <button data-view="tokens"><span class="dot"></span>Colores</button>
+          <button data-view="seo"><span class="dot"></span>SEO</button>
         </nav>
         <button class="logout" id="logoutBtn">Cerrar sesión</button>
       </div>
@@ -100,6 +101,7 @@ function renderView() {
   else if (state.view === 'leads') renderLeads();
   else if (state.view === 'content') renderContent();
   else if (state.view === 'tokens') renderTokens();
+  else if (state.view === 'seo') renderSeo();
 }
 
 // ---------- Proyectos ----------
@@ -492,6 +494,186 @@ async function publishTokenChanges() {
   } catch (e) {
     msg.textContent = '';
     toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+  }
+}
+
+// ---------- SEO ----------
+
+const SEO_PAGE_LABELS = { 'index.html': 'Inicio (index.html)', 'servicios.html': 'Servicios (servicios.html)', 'portafolio.html': 'Portafolio (portafolio.html)' };
+const SLUG_PAGE_LABELS = { servicios: 'Servicios (servicios.html)', portafolio: 'Portafolio (portafolio.html)' };
+
+async function renderSeo() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<h1>SEO</h1><p>Cargando…</p>';
+  try {
+    const data = await api('/seo');
+    state.seo = data;
+    const pages = Object.keys(data.grouped);
+
+    const seoSections = pages.map((page) => `
+      <div class="card-panel" style="margin-bottom:20px;">
+        <h2 style="margin-top:0;">${SEO_PAGE_LABELS[page] || page}</h2>
+        ${data.grouped[page].map((f) => `
+          <div class="field" data-key="${f.key}">
+            <label>${f.label}${f.kind === 'meta_description' ? ' <span style="color:var(--muted);font-weight:normal;">(sin HTML, solo texto)</span>' : ''}</label>
+            <textarea rows="2" class="seo-input">${esc(f.value == null ? '' : f.value)}</textarea>
+            <div style="margin-top:6px;">
+              <button class="btn secondary seo-save" data-key="${f.key}">Guardar borrador</button>
+              <span class="seo-msg" style="color: var(--muted); font-size: 12px; margin-left: 8px;"></span>
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+    const favicon = data.favicon || {};
+    const faviconSection = `
+      <div class="card-panel" style="margin-bottom:20px;">
+        <h2 style="margin-top:0;">Favicon</h2>
+        <p class="subtitle">El ícono que aparece en la pestaña del navegador. Se aplica a todas las páginas del sitio (inicio, servicios, portafolio y la página de error 404).</p>
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:12px;">
+          ${favicon.value ? `<img src="${escAttr(favicon.value)}" alt="Favicon actual" style="width:40px; height:40px; border-radius:8px; border:1px solid var(--border); object-fit:cover;">` : '<span style="color:var(--muted); font-size:13px;">Usando el ícono por defecto (✦)</span>'}
+          <input type="file" id="faviconFile" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;">
+          <button class="btn secondary" id="faviconPick">Elegir imagen…</button>
+          <span id="faviconMsg" style="color: var(--muted); font-size: 12px;"></span>
+        </div>
+        <button class="btn" id="publishFaviconBtn">Publicar favicon</button>
+        <span id="faviconPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
+      </div>`;
+
+    const slugRows = (data.slugs || []).map((s) => {
+      const isDefault = s.current_slug === s.filename.replace(/\.html$/, '');
+      return `
+        <div class="field" data-page="${s.page}" style="margin-bottom:16px;">
+          <label>${SLUG_PAGE_LABELS[s.page] || s.page}</label>
+          <div style="color:var(--muted); font-size:12px; margin-bottom:6px;">
+            URL actual: ${isDefault ? `<code>/${s.filename}</code> (sin URL personalizada todavía)` : `<code>/${esc(s.current_slug)}</code>`}
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="text" class="slug-input" value="${escAttr(s.current_slug)}" placeholder="ej: nuestros-servicios" style="flex:1;">
+            <button class="btn secondary slug-publish" data-page="${s.page}">Publicar</button>
+          </div>
+          <p style="color:var(--warn, #b45309); font-size:12px; margin-top:6px;">
+            ⚠️ Cambiar esto actualiza todos los enlaces del sitio y crea una redirección automática desde la URL anterior.
+          </p>
+          <span class="slug-msg" style="color: var(--muted); font-size: 12px;"></span>
+        </div>`;
+    }).join('');
+
+    const slugSection = `
+      <div class="card-panel" style="margin-bottom:20px;">
+        <h2 style="margin-top:0;">URLs de las páginas</h2>
+        <p class="subtitle">Cambia la dirección web (URL) pública de Servicios o Portafolio. La página de Inicio siempre vive en la raíz del sitio y no se puede renombrar.</p>
+        ${slugRows || '<p class="empty-state">Sin páginas configuradas.</p>'}
+      </div>`;
+
+    main.innerHTML = `
+      <h1>SEO</h1>
+      <p class="subtitle">Edita el título y la descripción que aparecen en Google para cada página. Guarda cada campo como borrador y luego publica.</p>
+      <div class="editor-actions" style="margin-bottom:20px;">
+        <button class="btn" id="publishSeoBtn">Publicar cambios de título/descripción</button>
+        <span id="seoPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
+      </div>
+      ${seoSections || '<p class="empty-state">Sin campos configurados.</p>'}
+      ${faviconSection}
+      ${slugSection}
+    `;
+
+    main.querySelectorAll('.seo-save').forEach((btn) => {
+      btn.addEventListener('click', () => saveSeoField(btn.dataset.key));
+    });
+    document.getElementById('publishSeoBtn').addEventListener('click', publishSeoChanges);
+
+    let pendingFaviconFile = null;
+    document.getElementById('faviconPick').addEventListener('click', () => document.getElementById('faviconFile').click());
+    document.getElementById('faviconFile').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      pendingFaviconFile = file;
+      await uploadFavicon(file);
+    });
+    document.getElementById('publishFaviconBtn').addEventListener('click', publishFaviconChanges);
+
+    main.querySelectorAll('.slug-publish').forEach((btn) => {
+      btn.addEventListener('click', () => publishSlugChange(btn.dataset.page));
+    });
+  } catch (e) {
+    if (e.message !== 'unauthorized') main.innerHTML = '<p class="error-msg">No se pudo cargar SEO.</p>';
+  }
+}
+
+async function saveSeoField(key) {
+  const row = document.querySelector('.field[data-key="' + CSS.escape(key) + '"]');
+  const textarea = row.querySelector('.seo-input');
+  const msg = row.querySelector('.seo-msg');
+  msg.textContent = 'Guardando…';
+  try {
+    await api('/seo/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
+    msg.textContent = 'Guardado ✓';
+    setTimeout(() => { msg.textContent = ''; }, 2500);
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo guardar', 'err');
+  }
+}
+
+async function publishSeoChanges() {
+  const msg = document.getElementById('seoPublishMsg');
+  msg.textContent = 'Publicando…';
+  try {
+    const { committed } = await api('/seo/publish', { method: 'POST' });
+    msg.textContent = '';
+    toast(committed && committed.length ? 'Publicado: ' + committed.join(', ') : 'No había cambios pendientes por publicar');
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+  }
+}
+
+async function uploadFavicon(file) {
+  const msg = document.getElementById('faviconMsg');
+  msg.textContent = 'Subiendo…';
+  try {
+    const blob = await upload('favicon/' + Date.now() + '-' + file.name, file, {
+      access: 'public',
+      handleUploadUrl: '/api/admin/upload',
+    });
+    await api('/seo/favicon', { method: 'PUT', body: JSON.stringify({ value: blob.url }) });
+    msg.textContent = '';
+    renderSeo();
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo subir la imagen', 'err');
+  }
+}
+
+async function publishFaviconChanges() {
+  const msg = document.getElementById('faviconPublishMsg');
+  msg.textContent = 'Publicando…';
+  try {
+    const { committed } = await api('/seo/favicon/publish', { method: 'POST' });
+    msg.textContent = '';
+    toast(committed && committed.length ? 'Favicon publicado en: ' + committed.join(', ') : 'No hay favicon subido para publicar');
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo publicar el favicon', 'err');
+  }
+}
+
+async function publishSlugChange(page) {
+  const row = document.querySelector('.field[data-page="' + CSS.escape(page) + '"]');
+  const input = row.querySelector('.slug-input');
+  const msg = row.querySelector('.slug-msg');
+  const slug = input.value.trim().toLowerCase();
+  if (!slug) { toast('Escribe una URL válida', 'err'); return; }
+  if (!confirm('¿Publicar la nueva URL "/' + slug + '" para esta página? Esto actualiza vercel.json, los enlaces internos y crea una redirección desde la URL anterior si ya tenía una personalizada.')) return;
+  msg.textContent = 'Publicando…';
+  try {
+    const { committed, slug: newSlug } = await api('/seo/slugs/' + encodeURIComponent(page), { method: 'PUT', body: JSON.stringify({ slug }) });
+    msg.textContent = '';
+    toast('URL publicada: /' + newSlug + ' (' + (committed || []).length + ' archivo(s) actualizados)');
+    renderSeo();
+  } catch (e) {
+    msg.textContent = '';
+    toast(e.message === 'invalid_slug' ? 'URL inválida (usa solo minúsculas, números y guiones)' : 'No se pudo publicar la URL', 'err');
   }
 }
 

@@ -76,3 +76,42 @@ CREATE TABLE IF NOT EXISTS site_tokens (
   label       TEXT NOT NULL,
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- SEO: <title> y meta description editables por página — ver
+-- api/admin/_seo.js, api/admin/seo/[[...path]].js y
+-- scripts/seed-site-seo.mjs. kind distingue qué tipo de anclaje usar al
+-- publicar ('title' reemplaza el contenido interior de <title data-ck=...>,
+-- 'meta_description' reemplaza el atributo content="" de
+-- <meta data-ck=... content="...">).
+CREATE TABLE IF NOT EXISTS site_seo (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL,
+  label       TEXT NOT NULL,
+  page        TEXT NOT NULL,
+  kind        TEXT NOT NULL CHECK (kind IN ('title', 'meta_description')),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Favicon: una sola fila. value = URL de Vercel Blob del ícono subido; NULL
+-- mientras nadie ha subido uno (todas las páginas siguen usando el sparkle
+-- data-URI hardcodeado). Ver api/admin/_seo.js.
+CREATE TABLE IF NOT EXISTS site_favicon (
+  id          TEXT PRIMARY KEY DEFAULT 'main',
+  value       TEXT,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Slugs de URL editables para servicios.html/portafolio.html (index.html NO
+-- está acá, siempre vive en /). current_slug arranca igual al nombre del
+-- archivo sin extensión (ver scripts/seed-site-slugs.mjs) — mientras
+-- current_slug === filename sin ".html", significa que la página todavía NO
+-- tiene una URL bonita publicada (solo responde en /archivo.html). Al
+-- publicar un cambio se agrega/actualiza un rewrite en vercel.json y, si ya
+-- había un slug personalizado antes, un redirect 301 del slug viejo al
+-- nuevo. Ver api/admin/_seo.js -> publishSlug.
+CREATE TABLE IF NOT EXISTS site_slugs (
+  page          TEXT PRIMARY KEY CHECK (page IN ('servicios', 'portafolio')),
+  filename      TEXT NOT NULL,
+  current_slug  TEXT NOT NULL,
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);

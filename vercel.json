@@ -1,4 +1,6 @@
 {
+  "rewrites": [],
+  "redirects": [],
   "headers": [
     {
       "source": "/(.*)",
