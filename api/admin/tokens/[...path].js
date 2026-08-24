@@ -86,7 +86,8 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!requireAuth(req, res)) return;
 
-  const segments = Array.isArray(req.query.path) ? req.query.path : [];
+  const rawPath = req.query.path;
+  const segments = Array.isArray(rawPath) ? rawPath : (rawPath ? [rawPath] : []);
 
   if (segments.length === 1 && segments[0] === 'list') return listTokens(req, res);
   if (segments.length === 1 && segments[0] === 'publish') return publishTokensRoute(req, res);
