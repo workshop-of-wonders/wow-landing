@@ -544,7 +544,7 @@ main { padding-top: var(--nav-h); }
 .hero-content { position: relative; z-index: 2; flex: 0 1 clamp(520px, 40vw, 800px); min-width: 280px; align-self: center; }
 .hero h1 {
   font-size: clamp(28px, 3.6vw, 68px);
-  max-width: clamp(640px, 40vw, 800px);
+  max-width: 100%;
   margin: var(--space-2) 0 var(--space-3);
 }
 .hero-sub {
