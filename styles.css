@@ -1408,6 +1408,12 @@ main { padding-top: var(--nav-h); }
 
 @media (max-width: 900px) {
   .hub-diagram { flex-direction: column; align-items: center; min-height: 0; }
+  /* The connector lines make sense as a spread-out desktop diagram (each pill
+     visibly tied to the center W), but stacked into one dense mobile column
+     they cross behind every pill below them and read as clutter/spaghetti
+     instead of structure — the color-coded pill groups already communicate
+     "these belong together" without the lines. */
+  .hub-arrows { display: none; }
   .hub-col-right {
     flex-direction: row;
     flex-wrap: wrap;
@@ -1416,8 +1422,16 @@ main { padding-top: var(--nav-h); }
     max-width: 100%;
     row-gap: 8px;
   }
-  .hub-col-left { align-items: center; max-width: 100%; gap: 14px; }
-  .hub-row { justify-content: center; flex-wrap: wrap; gap: 10px 14px; }
+  /* Flatten the desktop row grouping (each .hub-row was its own wrap
+     container, capped at 3-4 pills) into one shared flex-wrap pool so the
+     browser can pack pills across former row boundaries instead of being
+     forced to break exactly where the desktop grouping did — that forced
+     breaking was stranding single pills alone on their own line whenever a
+     3-pill group didn't quite fit 3-across at 375px. Lab color already
+     shows which pills belong together, so losing the strict grouping here
+     costs nothing visually. */
+  .hub-col-left { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 100%; gap: 8px; }
+  .hub-row { display: contents; }
   .hub-center { margin: var(--space-5) 0; }
   .hub-pill { padding: 11px 16px; font-size: 14px; }
 }
