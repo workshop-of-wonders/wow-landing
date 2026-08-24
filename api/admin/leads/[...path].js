@@ -50,7 +50,7 @@ module.exports = async function handler(req, res) {
 
   const segments = Array.isArray(req.query.path) ? req.query.path : [];
 
-  if (segments.length === 0) return listLeads(req, res);
+  if (segments.length === 1 && segments[0] === 'list') return listLeads(req, res);
   if (segments.length === 1) return updateLead(req, res, segments[0]);
 
   return res.status(404).json({ success: false, error: 'not_found' });

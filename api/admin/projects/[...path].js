@@ -184,7 +184,7 @@ module.exports = async function handler(req, res) {
 
   const segments = Array.isArray(req.query.path) ? req.query.path : [];
 
-  if (segments.length === 0) return listProjects(req, res);
+  if (segments.length === 1 && segments[0] === 'list') return listProjects(req, res);
   if (segments.length === 1) return projectDetail(req, res, segments[0]);
   if (segments.length === 2 && segments[1] === 'publish') return publishProjectRoute(req, res, segments[0]);
   if (segments.length === 2 && segments[1] === 'images') return projectImages(req, res, segments[0]);

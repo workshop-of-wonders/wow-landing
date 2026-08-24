@@ -110,7 +110,7 @@ async function renderProjectsList() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Proyectos</h1><p>Cargando…</p>';
   try {
-    const { projects } = await api('/projects');
+    const { projects } = await api('/projects/list');
     state.projects = projects;
     const published = projects.filter((p) => p.published_at).length;
     const rows = projects.map((p) => `
@@ -279,7 +279,7 @@ async function renderLeads() {
   main.innerHTML = '<h1>Leads</h1><p>Cargando…</p>';
   try {
     const q = state.leadFilter ? '?status=' + state.leadFilter : '';
-    const { leads } = await api('/leads' + q);
+    const { leads } = await api('/leads/list' + q);
     state.leads = leads;
     const statuses = ['', 'new', 'contacted', 'won', 'lost'];
     const labels = { '': 'Todos', new: 'Nuevo', contacted: 'Contactado', won: 'Ganado', lost: 'Perdido' };
@@ -362,7 +362,7 @@ async function renderContent() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Textos</h1><p>Cargando…</p>';
   try {
-    const { grouped } = await api('/content');
+    const { grouped } = await api('/content/list');
     state.contentFields = grouped;
     const pages = Object.keys(grouped);
     const sections = pages.map((page) => `
@@ -431,7 +431,7 @@ async function renderTokens() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>Colores</h1><p>Cargando…</p>';
   try {
-    const { tokens } = await api('/tokens');
+    const { tokens } = await api('/tokens/list');
     state.tokens = tokens;
     const rows = tokens.map((t) => `
       <div class="field" data-key="${t.key}" style="display:flex; align-items:center; gap:14px;">
@@ -506,7 +506,7 @@ async function renderSeo() {
   const main = document.getElementById('main');
   main.innerHTML = '<h1>SEO</h1><p>Cargando…</p>';
   try {
-    const data = await api('/seo');
+    const data = await api('/seo/list');
     state.seo = data;
     const pages = Object.keys(data.grouped);
 
@@ -686,7 +686,7 @@ function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
 
 (async function boot() {
   try {
-    await api('/projects');
+    await api('/projects/list');
     renderShell();
   } catch (e) {
     renderLogin();

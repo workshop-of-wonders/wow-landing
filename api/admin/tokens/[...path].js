@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
 
   const segments = Array.isArray(req.query.path) ? req.query.path : [];
 
-  if (segments.length === 0) return listTokens(req, res);
+  if (segments.length === 1 && segments[0] === 'list') return listTokens(req, res);
   if (segments.length === 1 && segments[0] === 'publish') return publishTokensRoute(req, res);
   if (segments.length === 1) return updateToken(req, res, segments[0]);
 

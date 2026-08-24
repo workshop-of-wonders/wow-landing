@@ -206,7 +206,7 @@ module.exports = async function handler(req, res) {
 
   const segments = Array.isArray(req.query.path) ? req.query.path : [];
 
-  if (segments.length === 0) return listSeo(req, res);
+  if (segments.length === 1 && segments[0] === 'list') return listSeo(req, res);
   if (segments.length === 1 && segments[0] === 'publish') return publishSeoRoute(req, res);
   if (segments.length === 1 && segments[0] === 'favicon') return updateFavicon(req, res);
   if (segments.length === 2 && segments[0] === 'favicon' && segments[1] === 'publish') return publishFaviconRoute(req, res);
