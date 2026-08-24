@@ -1419,7 +1419,7 @@ main { padding-top: var(--nav-h); }
   .hub-col-left { align-items: center; max-width: 100%; }
   .hub-row { justify-content: center; flex-wrap: wrap; }
   .hub-center { margin: var(--space-4) 0; }
-  .hub-pill { padding: 8px 14px; font-size: 13px; }
+  .hub-pill { padding: 11px 16px; font-size: 14px; }
 }
 
 /* Method — pinned while the rocket flies, so you can't scroll past mid-flight */
