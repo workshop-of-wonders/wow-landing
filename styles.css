@@ -2927,6 +2927,10 @@ main { padding-top: var(--nav-h); }
      matches the reference the client pointed to (one confident CTA, not
      two pills fighting for attention). */
   .hero { padding: calc(var(--space-7) + var(--nav-h)) var(--page-x) 72px; }
+  /* Reference headline dominates the screen (~85% of line width, tight
+     leading) — our clamp's mobile floor (28px, sized for a much wider
+     two-line desktop layout) reads as timid at 375-430px by comparison. */
+  .hero h1 { font-size: clamp(36px, 11vw, 50px); line-height: 1.08; }
   .hero-sub { margin-bottom: var(--space-4); }
   .hero-cta { flex-direction: column; align-items: center; gap: var(--space-3); }
   .hero-cta .btn-primary { width: 100%; max-width: 400px; padding: 18px 24px; font-size: 16px; }
