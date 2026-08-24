@@ -56,3 +56,23 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_time ON login_attempts(ip, created_at DESC);
+
+-- Textos editables del sitio (hero, encabezados de sección, intros) — ver
+-- api/admin/content/*.js y scripts/seed-site-content.mjs. El ancla en el
+-- HTML es el atributo data-ck="<key>" en el elemento correspondiente.
+CREATE TABLE IF NOT EXISTS site_content (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL,
+  label       TEXT NOT NULL,
+  page        TEXT NOT NULL,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Tokens de color de marca editables (styles.css :root) — ver
+-- api/admin/tokens/*.js y scripts/seed-site-tokens.mjs.
+CREATE TABLE IF NOT EXISTS site_tokens (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL,
+  label       TEXT NOT NULL,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);

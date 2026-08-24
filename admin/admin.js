@@ -1,7 +1,7 @@
 import { upload } from 'https://esm.sh/@vercel/blob@2.8.0/client';
 
 const app = document.getElementById('app');
-const state = { view: 'projects', projects: [], leads: [], leadFilter: '' };
+const state = { view: 'projects', projects: [], leads: [], leadFilter: '', contentFields: [], tokens: [] };
 
 function toast(msg, kind) {
   const el = document.createElement('div');
@@ -75,6 +75,8 @@ function renderShell() {
         <nav>
           <button data-view="projects"><span class="dot"></span>Proyectos</button>
           <button data-view="leads"><span class="dot"></span>Leads / CRM</button>
+          <button data-view="content"><span class="dot"></span>Textos</button>
+          <button data-view="tokens"><span class="dot"></span>Colores</button>
         </nav>
         <button class="logout" id="logoutBtn">Cerrar sesión</button>
       </div>
@@ -95,7 +97,9 @@ function renderView() {
     b.classList.toggle('active', b.dataset.view === state.view);
   });
   if (state.view === 'projects') renderProjectsList();
-  else renderLeads();
+  else if (state.view === 'leads') renderLeads();
+  else if (state.view === 'content') renderContent();
+  else if (state.view === 'tokens') renderTokens();
 }
 
 // ---------- Proyectos ----------
@@ -346,6 +350,149 @@ function renderLeadDetail(id) {
       renderLeads();
     } catch (e) { toast('No se pudo guardar', 'err'); }
   });
+}
+
+// ---------- Textos ----------
+
+const PAGE_LABELS = { 'index.html': 'Página de inicio (index.html)', 'servicios.html': 'Página de servicios (servicios.html)' };
+
+async function renderContent() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<h1>Textos</h1><p>Cargando…</p>';
+  try {
+    const { grouped } = await api('/content');
+    state.contentFields = grouped;
+    const pages = Object.keys(grouped);
+    const sections = pages.map((page) => `
+      <div class="card-panel" style="margin-bottom:20px;">
+        <h2 style="margin-top:0;">${PAGE_LABELS[page] || page}</h2>
+        ${grouped[page].map((f) => `
+          <div class="field" data-key="${f.key}">
+            <label>${f.label}${f.rawHtml ? ' <span style="color:var(--muted);font-weight:normal;">(admite etiquetas HTML como &lt;em&gt;/&lt;br&gt;, edítalo con cuidado)</span>' : ''}</label>
+            <textarea rows="2" class="ck-input">${esc(f.value == null ? '' : f.value)}</textarea>
+            <div style="margin-top:6px;">
+              <button class="btn secondary ck-save" data-key="${f.key}">Guardar borrador</button>
+              <span class="ck-msg" style="color: var(--muted); font-size: 12px; margin-left: 8px;"></span>
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+    main.innerHTML = `
+      <h1>Textos</h1>
+      <p class="subtitle">Edita los textos clave del sitio (hero, títulos de sección, botones). Guarda cada campo como borrador y luego publica todos los cambios pendientes al sitio en vivo.</p>
+      <div class="editor-actions" style="margin-bottom:20px;">
+        <button class="btn" id="publishContentBtn">Publicar cambios</button>
+        <span id="contentPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
+      </div>
+      ${sections || '<p class="empty-state">Sin campos configurados.</p>'}`;
+
+    main.querySelectorAll('.ck-save').forEach((btn) => {
+      btn.addEventListener('click', () => saveContentField(btn.dataset.key));
+    });
+    document.getElementById('publishContentBtn').addEventListener('click', publishContentChanges);
+  } catch (e) {
+    if (e.message !== 'unauthorized') main.innerHTML = '<p class="error-msg">No se pudo cargar los textos.</p>';
+  }
+}
+
+async function saveContentField(key) {
+  const row = document.querySelector('.field[data-key="' + CSS.escape(key) + '"]');
+  const textarea = row.querySelector('.ck-input');
+  const msg = row.querySelector('.ck-msg');
+  msg.textContent = 'Guardando…';
+  try {
+    await api('/content/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: textarea.value }) });
+    msg.textContent = 'Guardado ✓';
+    setTimeout(() => { msg.textContent = ''; }, 2500);
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo guardar', 'err');
+  }
+}
+
+async function publishContentChanges() {
+  const msg = document.getElementById('contentPublishMsg');
+  msg.textContent = 'Publicando…';
+  try {
+    const { committed } = await api('/content/publish', { method: 'POST' });
+    msg.textContent = '';
+    toast(committed && committed.length ? 'Publicado: ' + committed.join(', ') : 'No había cambios pendientes por publicar');
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+  }
+}
+
+// ---------- Colores ----------
+
+async function renderTokens() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<h1>Colores</h1><p>Cargando…</p>';
+  try {
+    const { tokens } = await api('/tokens');
+    state.tokens = tokens;
+    const rows = tokens.map((t) => `
+      <div class="field" data-key="${t.key}" style="display:flex; align-items:center; gap:14px;">
+        <input type="color" class="tk-input" value="${t.value || '#000000'}" style="width:52px; height:40px; padding:2px; border-radius:8px; border:1px solid var(--border); background:transparent;">
+        <div style="flex:1;">
+          <label style="margin-bottom:2px;">${t.label}</label>
+          <div style="color:var(--muted); font-size:12px;">--${t.key} · <span class="tk-hex">${t.value || ''}</span></div>
+        </div>
+        <button class="btn secondary tk-save" data-key="${t.key}">Guardar borrador</button>
+        <span class="tk-msg" style="color: var(--muted); font-size: 12px;"></span>
+      </div>`).join('');
+
+    main.innerHTML = `
+      <h1>Colores</h1>
+      <p class="subtitle">Edita los 4 colores de marca del sitio. Guarda cada uno como borrador y luego publica para actualizar el sitio en vivo.</p>
+      <div class="editor-actions" style="margin-bottom:20px;">
+        <button class="btn" id="publishTokensBtn">Publicar cambios</button>
+        <span id="tokensPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
+      </div>
+      <div class="card-panel" style="display:flex; flex-direction:column; gap:16px;">
+        ${rows || '<p class="empty-state">Sin colores configurados.</p>'}
+      </div>`;
+
+    main.querySelectorAll('.tk-input').forEach((input) => {
+      input.addEventListener('input', () => {
+        input.closest('.field').querySelector('.tk-hex').textContent = input.value;
+      });
+    });
+    main.querySelectorAll('.tk-save').forEach((btn) => {
+      btn.addEventListener('click', () => saveToken(btn.dataset.key));
+    });
+    document.getElementById('publishTokensBtn').addEventListener('click', publishTokenChanges);
+  } catch (e) {
+    if (e.message !== 'unauthorized') main.innerHTML = '<p class="error-msg">No se pudo cargar los colores.</p>';
+  }
+}
+
+async function saveToken(key) {
+  const row = document.querySelector('.field[data-key="' + CSS.escape(key) + '"]');
+  const input = row.querySelector('.tk-input');
+  const msg = row.querySelector('.tk-msg');
+  msg.textContent = 'Guardando…';
+  try {
+    await api('/tokens/' + encodeURIComponent(key), { method: 'PUT', body: JSON.stringify({ value: input.value }) });
+    msg.textContent = 'Guardado ✓';
+    setTimeout(() => { msg.textContent = ''; }, 2500);
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo guardar', 'err');
+  }
+}
+
+async function publishTokenChanges() {
+  const msg = document.getElementById('tokensPublishMsg');
+  msg.textContent = 'Publicando…';
+  try {
+    const { committed } = await api('/tokens/publish', { method: 'POST' });
+    msg.textContent = '';
+    toast(committed && committed.length ? 'Publicado en styles.css' : 'No había cambios pendientes por publicar');
+  } catch (e) {
+    msg.textContent = '';
+    toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+  }
 }
 
 // ---------- Utils ----------
