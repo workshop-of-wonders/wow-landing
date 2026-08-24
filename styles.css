@@ -1416,9 +1416,9 @@ main { padding-top: var(--nav-h); }
     max-width: 100%;
     row-gap: 8px;
   }
-  .hub-col-left { align-items: center; max-width: 100%; }
-  .hub-row { justify-content: center; flex-wrap: wrap; }
-  .hub-center { margin: var(--space-4) 0; }
+  .hub-col-left { align-items: center; max-width: 100%; gap: 14px; }
+  .hub-row { justify-content: center; flex-wrap: wrap; gap: 10px 14px; }
+  .hub-center { margin: var(--space-5) 0; }
   .hub-pill { padding: 11px 16px; font-size: 14px; }
 }
 
