@@ -505,6 +505,7 @@ main { padding-top: var(--nav-h); }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--cloud);
+  padding: 12px 6px;
 }
 .nav-mobile-foot a:hover { color: var(--lima); }
 
@@ -2916,9 +2917,11 @@ main { padding-top: var(--nav-h); }
   .labs { padding: var(--space-6) 0 0; }
   /* give the falling-icons playground more room to actually play with on a phone screen */
   .contact { min-height: clamp(560px, 78vh, 760px); }
-  /* keep the two hero buttons side by side on narrow screens instead of wrapping */
-  .hero-cta { flex-wrap: nowrap; gap: var(--space-1); width: 100%; }
-  .hero-cta .btn { flex: 1 1 0; padding: 14px 12px; font-size: 14px; white-space: nowrap; }
+  /* let the two hero buttons wrap onto their own line if they don't fit —
+     forcing nowrap here used to blow out .hero-content's min-content width
+     past its padded column at ~375px (see CHANGELOG 2026-08-23) */
+  .hero-cta { flex-wrap: wrap; gap: var(--space-2); width: 100%; }
+  .hero-cta .btn { flex: 1 1 140px; min-width: 0; padding: 14px 12px; font-size: 14px; white-space: normal; }
 }
 
 /* ------------------------------------------------------------------
