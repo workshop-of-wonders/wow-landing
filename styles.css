@@ -2584,11 +2584,16 @@ main { padding-top: var(--nav-h); }
   background: transparent;
   border: none;
   padding: 0;
-  opacity: 0.75;
-  filter: grayscale(1);
+  opacity: 0.55;
+  /* brightness(0) collapses every logo to a solid ink silhouette regardless of
+     its source colour — light marks (Arlo, Tin-T!, La Marquessa, Ser) were
+     washing out to near-invisible on the pale lavender background under a plain
+     grayscale()+opacity treatment. This also evens out the visual weight across
+     the whole strip. */
+  filter: brightness(0);
   transition: opacity 0.2s ease, filter 0.2s ease;
 }
-.client-logo:hover, .client-logo.is-highlighted { opacity: 1; filter: grayscale(0); }
+.client-logo:hover, .client-logo.is-highlighted { opacity: 1; filter: none; }
 .client-logo img {
   height: 100%;
   width: auto;
