@@ -93,6 +93,45 @@ function replaceContentField(html, field, newValue) {
   return html.replace(re, function (_m, open, _oldInner, close) { return open + inner + close; });
 }
 
+// Inserta en site_content la fila inicial de cualquier campo de
+// CONTENT_FIELDS que todavía no tenga fila en la base (por ejemplo, campos
+// agregados en un deploy reciente que scripts/seed-site-content.mjs no ha
+// corrido todavía). Lee el HTML actualmente en vivo en GitHub, igual que
+// publishContent, así que corre sobre el mismo contenido que ve el sitio.
+// No toca filas que ya existen — es seguro correr más de una vez.
+async function seedMissingContentFields(sql, octokit, owner, repo, branch) {
+  const rows = (await sql`SELECT key FROM site_content`).rows;
+  const existing = new Set(rows.map(function (r) { return r.key; }));
+
+  const missingFields = CONTENT_FIELDS.filter(function (f) { return !existing.has(f.key); });
+  const inserted = [];
+  const notFound = [];
+  if (!missingFields.length) return { inserted, notFound };
+
+  const pages = Array.from(new Set(missingFields.map(function (f) { return f.page; })));
+  const htmlByPage = {};
+  for (const path of pages) {
+    const fileRes = await octokit.repos.getContent({ owner, repo, path, ref: branch });
+    htmlByPage[path] = Buffer.from(fileRes.data.content, 'base64').toString('utf8');
+  }
+
+  for (const field of missingFields) {
+    const html = htmlByPage[field.page];
+    const re = new RegExp('(<' + field.tag + '(?:\\s[^>]*)?\\bdata-ck="' + field.key.replace(/[.]/g, '\\.') +
+      '"[^>]*>)([\\s\\S]*?)(</' + field.tag + '>)');
+    const m = html.match(re);
+    if (!m) { notFound.push(field.key); continue; }
+    const value = m[2];
+    await sql`
+      INSERT INTO site_content (key, value, label, page, updated_at)
+      VALUES (${field.key}, ${value}, ${field.label}, ${field.page}, now())
+      ON CONFLICT (key) DO NOTHING
+    `;
+    inserted.push(field.key);
+  }
+  return { inserted, notFound };
+}
+
 // Publica todos los campos de site_content cuyo valor en DB difiera del
 // valor actualmente en vivo en index.html/servicios.html. Un commit por
 // archivo que tenga al menos un cambio real.
@@ -136,4 +175,4 @@ async function publishContent(sql, octokit, owner, repo, branch) {
   return { committed };
 }
 
-module.exports = { CONTENT_FIELDS, fieldByKey, replaceContentField, publishContent, esc };
+module.exports = { CONTENT_FIELDS, fieldByKey, replaceContentField, publishContent, seedMissingContentFields, esc };

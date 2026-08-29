@@ -2,10 +2,11 @@
 //   GET  /content                    -> lista agrupada por página
 //   PUT  /content?key=X              -> guarda borrador de un campo
 //   POST /content?publish=1          -> publica todos los cambios pendientes
+//   POST /content?seed=1             -> inserta fila inicial para campos nuevos sin fila en DB
 
 const { sql } = require('./_db');
 const { requireAuth } = require('./_auth');
-const { CONTENT_FIELDS, fieldByKey, publishContent } = require('./_content');
+const { CONTENT_FIELDS, fieldByKey, publishContent, seedMissingContentFields } = require('./_content');
 
 async function listContent(req, res) {
   if (req.method !== 'GET') {
@@ -64,6 +65,33 @@ async function publishContentRoute(req, res) {
   }
 }
 
+async function seedContentRoute(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ success: false, error: 'method_not_allowed' });
+  }
+
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+  const GITHUB_OWNER = process.env.GITHUB_OWNER;
+  const GITHUB_REPO = process.env.GITHUB_REPO;
+  const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+
+  if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
+    console.error('content.js (seed): faltan GITHUB_TOKEN/GITHUB_OWNER/GITHUB_REPO');
+    return res.status(500).json({ success: false, error: 'not_configured' });
+  }
+
+  try {
+    const { Octokit } = await import('@octokit/rest');
+    const octokit = new Octokit({ auth: GITHUB_TOKEN });
+    const result = await seedMissingContentFields(sql, octokit, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH);
+    return res.status(200).json({ success: true, inserted: result.inserted, notFound: result.notFound });
+  } catch (error) {
+    console.error('content.js (seed):', error);
+    return res.status(500).json({ success: false, error: 'seed_failed' });
+  }
+}
+
 async function updateContentField(req, res, key) {
   if (req.method !== 'PUT') {
     res.setHeader('Allow', 'PUT');
@@ -92,6 +120,7 @@ module.exports = async function handler(req, res) {
   if (!requireAuth(req, res)) return;
 
   if (req.query.publish) return publishContentRoute(req, res);
+  if (req.query.seed) return seedContentRoute(req, res);
   const key = typeof req.query.key === 'string' ? req.query.key : null;
   if (key) return updateContentField(req, res, key);
   return listContent(req, res);
