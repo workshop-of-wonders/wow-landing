@@ -76,6 +76,7 @@ function renderShell() {
           <button data-view="projects"><span class="dot"></span>Proyectos</button>
           <button data-view="leads"><span class="dot"></span>Leads / CRM</button>
           <button data-view="content"><span class="dot"></span>Textos</button>
+          <button data-view="headings"><span class="dot"></span>Encabezados</button>
           <button data-view="tokens"><span class="dot"></span>Colores</button>
           <button data-view="seo"><span class="dot"></span>SEO</button>
         </nav>
@@ -100,6 +101,7 @@ function renderView() {
   if (state.view === 'projects') renderProjectsList();
   else if (state.view === 'leads') renderLeads();
   else if (state.view === 'content') renderContent();
+  else if (state.view === 'headings') renderHeadings();
   else if (state.view === 'tokens') renderTokens();
   else if (state.view === 'seo') renderSeo();
 }
@@ -356,7 +358,7 @@ function renderLeadDetail(id) {
 
 // ---------- Textos ----------
 
-const PAGE_LABELS = { 'index.html': 'Página de inicio (index.html)', 'servicios.html': 'Página de servicios (servicios.html)' };
+const PAGE_LABELS = { 'index.html': 'Página de inicio (index.html)', 'servicios.html': 'Página de servicios (servicios.html)', 'portafolio.html': 'Página de portafolio (portafolio.html)' };
 
 async function renderContent() {
   const main = document.getElementById('main');
@@ -422,6 +424,66 @@ async function publishContentChanges() {
   } catch (e) {
     msg.textContent = '';
     toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+  }
+}
+
+// ---------- Encabezados ----------
+
+const HEADING_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5'];
+
+async function renderHeadings() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<h1>Encabezados</h1><p>Cargando…</p>';
+  try {
+    const { grouped } = await api('/content');
+    const pages = Object.keys(grouped);
+
+    const sections = pages.map((page) => {
+      const headings = grouped[page].filter((f) => HEADING_TAGS.includes(f.tag));
+      if (!headings.length) return '';
+      const rows = headings.map((f) => `
+        <div class="field" data-key="${f.key}">
+          <label><span class="heading-tag">${f.tag.toUpperCase()}</span> ${f.label}</label>
+          <textarea rows="2" class="ck-input">${esc(f.value == null ? '' : f.value)}</textarea>
+          <div style="margin-top:6px;">
+            <button class="btn secondary ck-save" data-key="${f.key}">Guardar borrador</button>
+            <span class="ck-msg" style="color: var(--muted); font-size: 12px; margin-left: 8px;"></span>
+          </div>
+        </div>`).join('');
+      return `
+        <div class="card-panel" style="margin-bottom:20px;">
+          <h2 style="margin-top:0;">${PAGE_LABELS[page] || page}</h2>
+          ${rows}
+        </div>`;
+    }).join('');
+
+    main.innerHTML = `
+      <h1>Encabezados</h1>
+      <p class="subtitle">Todos los h1–h5 del sitio, en el orden en que aparecen en cada página. Útil para revisar la jerarquía y las palabras clave de un vistazo. Edita el texto y guárdalo como borrador; luego publica desde aquí o desde "Textos" (comparten los mismos cambios pendientes).</p>
+      <div class="editor-actions" style="margin-bottom:20px;">
+        <button class="btn" id="publishHeadingsBtn">Publicar cambios</button>
+        <span id="headingsPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
+      </div>
+      ${sections || '<p class="empty-state">Sin encabezados configurados.</p>'}
+      <p class="subtitle" style="margin-top:8px;">Los títulos de proyectos individuales (portafolio) y los encabezados de ventanas emergentes se gestionan desde "Proyectos", porque se generan dinámicamente por proyecto.</p>`;
+
+    main.querySelectorAll('.ck-save').forEach((btn) => {
+      btn.addEventListener('click', () => saveContentField(btn.dataset.key));
+    });
+    document.getElementById('publishHeadingsBtn').addEventListener('click', async () => {
+      const msg = document.getElementById('headingsPublishMsg');
+      msg.textContent = 'Publicando…';
+      try {
+        const { committed } = await api('/content?publish=1', { method: 'POST' });
+        msg.textContent = '';
+        toast(committed && committed.length ? 'Publicado: ' + committed.join(', ') : 'No había cambios pendientes por publicar');
+      } catch (e) {
+        msg.textContent = '';
+        toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+      }
+    });
+  } catch (e) {
+    if (e.message !== 'unauthorized') main.innerHTML = '<p class="error-msg">No se pudo cargar los encabezados.</p>';
   }
 }
 

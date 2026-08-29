@@ -20,6 +20,7 @@ async function listContent(req, res) {
     return {
       key: f.key,
       page: f.page,
+      tag: f.tag,
       label: f.label,
       rawHtml: f.rawHtml,
       value: row ? row.value : null,
