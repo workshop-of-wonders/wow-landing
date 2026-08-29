@@ -17,14 +17,15 @@
 
 const CONTENT_FIELDS = [
   // ---- index.html: Hero ----
-  { key: 'hero.eyebrow', tag: 'p', page: 'index.html', label: 'Texto pequeño sobre el título (Hero)', rawHtml: false },
-  { key: 'hero.h1', tag: 'h1', page: 'index.html', label: 'Título principal (Hero)', rawHtml: true },
+  { key: 'hero.eyebrow', tag: 'h1', page: 'index.html', label: 'Título principal (Hero) — antes eyebrow, ahora es el h1 real con keywords', rawHtml: false },
+  { key: 'hero.h1', tag: 'p', page: 'index.html', label: 'Titular grande y creativo (Hero, decorativo — ya no es un encabezado)', rawHtml: true },
   { key: 'hero.sub', tag: 'p', page: 'index.html', label: 'Subtítulo (Hero)', rawHtml: false },
   { key: 'hero.cta_primary', tag: 'a', page: 'index.html', label: 'Botón principal (Hero)', rawHtml: false },
   { key: 'hero.cta_secondary', tag: 'a', page: 'index.html', label: 'Botón secundario (Hero)', rawHtml: false },
   // ---- index.html: secciones ----
   { key: 'servicios.h2', tag: 'h2', page: 'index.html', label: 'Título (Servicios)', rawHtml: false },
-  { key: 'labs.h2', tag: 'h2', page: 'index.html', label: 'Título (Labs)', rawHtml: false },
+  { key: 'labs.eyebrow', tag: 'h2', page: 'index.html', label: 'Título (Labs) — antes eyebrow, ahora es el h2 real con keywords', rawHtml: false },
+  { key: 'labs.h2', tag: 'p', page: 'index.html', label: 'Titular grande (Labs, decorativo — ya no es un encabezado)', rawHtml: false },
   { key: 'labs.intro', tag: 'p', page: 'index.html', label: 'Texto introductorio (Labs)', rawHtml: false },
   { key: 'labs.insight_h3', tag: 'h3', page: 'index.html', label: 'Título — Insight Lab', rawHtml: false },
   { key: 'labs.brand_h3', tag: 'h3', page: 'index.html', label: 'Título — Brand & Experience Lab', rawHtml: false },
@@ -37,9 +38,11 @@ const CONTENT_FIELDS = [
   { key: 'metodologia.step2_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 2', rawHtml: false },
   { key: 'metodologia.step3_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 3', rawHtml: false },
   { key: 'metodologia.step4_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 4', rawHtml: false },
-  { key: 'faq.h2', tag: 'h2', page: 'index.html', label: 'Título (Preguntas frecuentes)', rawHtml: false },
+  { key: 'faq.eyebrow', tag: 'h2', page: 'index.html', label: 'Título (Preguntas frecuentes) — antes eyebrow, ahora es el h2 real con keywords', rawHtml: false },
+  { key: 'faq.h2', tag: 'p', page: 'index.html', label: 'Titular grande (Preguntas frecuentes, decorativo — ya no es un encabezado)', rawHtml: false },
   // ---- servicios.html ----
-  { key: 'svc.hero_h1', tag: 'h1', page: 'servicios.html', label: 'Título principal (Hero servicios)', rawHtml: true },
+  { key: 'svc.hero_eyebrow', tag: 'h1', page: 'servicios.html', label: 'Título principal (Hero servicios) — antes eyebrow, ahora es el h1 real con keywords', rawHtml: false },
+  { key: 'svc.hero_h1', tag: 'p', page: 'servicios.html', label: 'Titular grande (Hero servicios, decorativo — ya no es un encabezado)', rawHtml: true },
   { key: 'svc.hero_sub', tag: 'p', page: 'servicios.html', label: 'Subtítulo (Hero servicios)', rawHtml: false },
   { key: 'svc.cat_digital_experience_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Experiencia digital', rawHtml: false },
   { key: 'svc.card_diseno_web_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Diseño web', rawHtml: false },
@@ -62,7 +65,8 @@ const CONTENT_FIELDS = [
   { key: 'svc.card_cursos_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Cursos digitales', rawHtml: false },
   { key: 'svc.faq_h2', tag: 'h2', page: 'servicios.html', label: 'Título (Preguntas frecuentes)', rawHtml: false },
   // ---- portafolio.html ----
-  { key: 'portafolio.hero_h1', tag: 'h1', page: 'portafolio.html', label: 'Título principal (Hero portafolio)', rawHtml: true },
+  { key: 'portafolio.hero_eyebrow', tag: 'h1', page: 'portafolio.html', label: 'Título principal (Hero portafolio) — antes eyebrow, ahora es el h1 real con keywords', rawHtml: false },
+  { key: 'portafolio.hero_h1', tag: 'p', page: 'portafolio.html', label: 'Titular grande (Hero portafolio, decorativo — ya no es un encabezado)', rawHtml: true },
   { key: 'portafolio.grid_h2', tag: 'h2', page: 'portafolio.html', label: 'Título de la grilla de proyectos (oculto visualmente, para SEO)', rawHtml: false },
 ];
 

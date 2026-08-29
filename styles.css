@@ -80,7 +80,7 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3 {
+h1, h2, h3, .hero-headline, .svc-hero-headline, .labs-headline, .faq-headline {
   font-family: var(--font-display);
   font-weight: 400;
   margin: 0;
@@ -106,7 +106,7 @@ a { text-decoration: none; color: inherit; }
 
 .eyebrow-dark { color: var(--orange-text); }
 
-h1 em, h2 em {
+h1 em, h2 em, .hero-headline em {
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-weight: 400;
@@ -550,7 +550,7 @@ main { padding-top: var(--nav-h); }
    own margin-left: auto pushes it to the far right regardless of how
    little width hero-content actually uses). */
 .hero-content { position: relative; z-index: 2; flex: 0 1 clamp(520px, 40vw, 800px); min-width: 280px; align-self: center; }
-.hero h1 {
+.hero h1:not(.eyebrow), .hero .hero-headline {
   font-size: clamp(28px, 3.6vw, 68px);
   max-width: 100%;
   margin: var(--space-2) 0 var(--space-3);
@@ -1006,7 +1006,7 @@ main { padding-top: var(--nav-h); }
 .labs .eyebrow {
   padding: 0;
 }
-.labs h2 {
+.labs h2:not(.eyebrow), .labs .labs-headline {
   color: var(--white);
   font-size: var(--h2-size);
   margin-bottom: 0;
@@ -2725,7 +2725,7 @@ main { padding-top: var(--nav-h); }
   /* Reference headline dominates the screen (~85% of line width, tight
      leading) — our clamp's mobile floor (28px, sized for a much wider
      two-line desktop layout) reads as timid at 375-430px by comparison. */
-  .hero h1 { font-size: clamp(36px, 11vw, 50px); line-height: 1.08; }
+  .hero h1:not(.eyebrow), .hero .hero-headline { font-size: clamp(36px, 11vw, 50px); line-height: 1.08; }
   .hero-sub { margin-bottom: var(--space-4); }
   .hero-cta { flex-direction: column; align-items: center; gap: var(--space-3); }
   .hero-cta .btn-primary { width: 100%; max-width: 400px; padding: 18px 24px; font-size: 16px; }
@@ -2759,7 +2759,7 @@ main { padding-top: var(--nav-h); }
   max-width: 900px;
   margin: 0 auto;
 }
-.svc-hero h1 {
+.svc-hero h1:not(.eyebrow), .svc-hero .svc-hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 5.5vw, 56px);
   color: var(--purple);
@@ -2875,7 +2875,7 @@ main { padding-top: var(--nav-h); }
   margin: 0 auto;
   text-align: center;
 }
-.svc-faq h2 {
+.svc-faq h2:not(.eyebrow), .svc-faq .faq-headline {
   font-family: var(--font-display);
   font-size: var(--h2-size);
   color: var(--purple);
