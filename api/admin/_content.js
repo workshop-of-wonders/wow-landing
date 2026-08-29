@@ -24,20 +24,46 @@ const CONTENT_FIELDS = [
   { key: 'hero.cta_secondary', tag: 'a', page: 'index.html', label: 'Botón secundario (Hero)', rawHtml: false },
   // ---- index.html: secciones ----
   { key: 'servicios.h2', tag: 'h2', page: 'index.html', label: 'Título (Servicios)', rawHtml: false },
+  { key: 'labs.h2', tag: 'h2', page: 'index.html', label: 'Título (Labs)', rawHtml: false },
   { key: 'labs.intro', tag: 'p', page: 'index.html', label: 'Texto introductorio (Labs)', rawHtml: false },
+  { key: 'labs.insight_h3', tag: 'h3', page: 'index.html', label: 'Título — Insight Lab', rawHtml: false },
+  { key: 'labs.brand_h3', tag: 'h3', page: 'index.html', label: 'Título — Brand & Experience Lab', rawHtml: false },
   { key: 'trabajo.h2', tag: 'h2', page: 'index.html', label: 'Título (Trabajo)', rawHtml: false },
   { key: 'filosofia.h2', tag: 'h2', page: 'index.html', label: 'Título (Nosotros)', rawHtml: false },
   { key: 'filosofia.intro', tag: 'p', page: 'index.html', label: 'Texto introductorio (Nosotros)', rawHtml: false },
   { key: 'metodologia.h2', tag: 'h2', page: 'index.html', label: 'Título (Proceso)', rawHtml: false },
   { key: 'metodologia.intro', tag: 'p', page: 'index.html', label: 'Texto introductorio (Proceso)', rawHtml: false },
+  { key: 'metodologia.step1_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 1', rawHtml: false },
+  { key: 'metodologia.step2_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 2', rawHtml: false },
+  { key: 'metodologia.step3_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 3', rawHtml: false },
+  { key: 'metodologia.step4_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 4', rawHtml: false },
   { key: 'faq.h2', tag: 'h2', page: 'index.html', label: 'Título (Preguntas frecuentes)', rawHtml: false },
   // ---- servicios.html ----
   { key: 'svc.hero_h1', tag: 'h1', page: 'servicios.html', label: 'Título principal (Hero servicios)', rawHtml: true },
   { key: 'svc.hero_sub', tag: 'p', page: 'servicios.html', label: 'Subtítulo (Hero servicios)', rawHtml: false },
   { key: 'svc.cat_digital_experience_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Experiencia digital', rawHtml: false },
+  { key: 'svc.card_diseno_web_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Diseño web', rawHtml: false },
+  { key: 'svc.card_uxui_h3', tag: 'h3', page: 'servicios.html', label: 'Card — UX/UI Design', rawHtml: false },
+  { key: 'svc.card_ecommerce_h3', tag: 'h3', page: 'servicios.html', label: 'Card — E-commerce', rawHtml: false },
+  { key: 'svc.card_diseno_grafico_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Diseño gráfico', rawHtml: false },
   { key: 'svc.cat_growth_marketing_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Crecimiento y marketing digital', rawHtml: false },
+  { key: 'svc.card_seo_h3', tag: 'h3', page: 'servicios.html', label: 'Card — SEO', rawHtml: false },
+  { key: 'svc.card_seo_local_h3', tag: 'h3', page: 'servicios.html', label: 'Card — SEO local & GBP', rawHtml: false },
+  { key: 'svc.card_geo_h3', tag: 'h3', page: 'servicios.html', label: 'Card — GEO (posicionamiento en IA)', rawHtml: false },
+  { key: 'svc.card_cro_h3', tag: 'h3', page: 'servicios.html', label: 'Card — CRO', rawHtml: false },
+  { key: 'svc.card_pauta_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Pauta digital', rawHtml: false },
+  { key: 'svc.card_posts_pauta_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Posts gráficos para pauta', rawHtml: false },
   { key: 'svc.cat_marketing_intelligence_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Analítica y datos', rawHtml: false },
+  { key: 'svc.card_analisis_metricas_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Análisis de métricas', rawHtml: false },
+  { key: 'svc.card_reporteria_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Reportería y dashboards', rawHtml: false },
+  { key: 'svc.card_config_analitica_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Configuración de analítica', rawHtml: false },
+  { key: 'svc.card_consultoria_datos_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Consultoría de datos', rawHtml: false },
   { key: 'svc.cat_cursos_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Cursos digitales', rawHtml: false },
+  { key: 'svc.card_cursos_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Cursos digitales', rawHtml: false },
+  { key: 'svc.faq_h2', tag: 'h2', page: 'servicios.html', label: 'Título (Preguntas frecuentes)', rawHtml: false },
+  // ---- portafolio.html ----
+  { key: 'portafolio.hero_h1', tag: 'h1', page: 'portafolio.html', label: 'Título principal (Hero portafolio)', rawHtml: true },
+  { key: 'portafolio.grid_h2', tag: 'h2', page: 'portafolio.html', label: 'Título de la grilla de proyectos (oculto visualmente, para SEO)', rawHtml: false },
 ];
 
 function esc(str) {
@@ -70,7 +96,7 @@ async function publishContent(sql, octokit, owner, repo, branch) {
   const rows = (await sql`SELECT key, value FROM site_content`).rows;
   const byKey = new Map(rows.map(function (r) { return [r.key, r.value]; }));
 
-  const pages = ['index.html', 'servicios.html'];
+  const pages = ['index.html', 'servicios.html', 'portafolio.html'];
   const committed = [];
 
   for (const path of pages) {
