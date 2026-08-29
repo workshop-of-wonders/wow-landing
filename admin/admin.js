@@ -386,6 +386,7 @@ async function renderContent() {
       <p class="subtitle">Edita los textos clave del sitio (hero, títulos de sección, botones). Guarda cada campo como borrador y luego publica todos los cambios pendientes al sitio en vivo.</p>
       <div class="editor-actions" style="margin-bottom:20px;">
         <button class="btn" id="publishContentBtn">Publicar cambios</button>
+        <button class="btn secondary" id="seedContentBtn">Sincronizar campos nuevos con el sitio en vivo</button>
         <span id="contentPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
       </div>
       ${sections || '<p class="empty-state">Sin campos configurados.</p>'}`;
@@ -394,6 +395,24 @@ async function renderContent() {
       btn.addEventListener('click', () => saveContentField(btn.dataset.key));
     });
     document.getElementById('publishContentBtn').addEventListener('click', publishContentChanges);
+    document.getElementById('seedContentBtn').addEventListener('click', async () => {
+      const msg = document.getElementById('contentPublishMsg');
+      msg.textContent = 'Sincronizando…';
+      try {
+        const { inserted, notFound } = await api('/content?seed=1', { method: 'POST' });
+        msg.textContent = '';
+        if (inserted && inserted.length) {
+          toast('Cargados ' + inserted.length + ' campo(s) nuevo(s) con su texto actual.');
+          renderContent();
+        } else {
+          toast('No había campos nuevos por cargar — ya estaban todos en la base.');
+        }
+        if (notFound && notFound.length) toast('No se encontraron en el HTML: ' + notFound.join(', '), 'err');
+      } catch (e) {
+        msg.textContent = '';
+        toast('No se pudo sincronizar', 'err');
+      }
+    });
   } catch (e) {
     if (e.message !== 'unauthorized') main.innerHTML = '<p class="error-msg">No se pudo cargar los textos.</p>';
   }
@@ -462,10 +481,11 @@ async function renderHeadings() {
       <p class="subtitle">Todos los h1–h5 del sitio, en el orden en que aparecen en cada página. Útil para revisar la jerarquía y las palabras clave de un vistazo. Edita el texto y guárdalo como borrador; luego publica desde aquí o desde "Textos" (comparten los mismos cambios pendientes).</p>
       <div class="editor-actions" style="margin-bottom:20px;">
         <button class="btn" id="publishHeadingsBtn">Publicar cambios</button>
+        <button class="btn secondary" id="seedHeadingsBtn">Sincronizar campos nuevos con el sitio en vivo</button>
         <span id="headingsPublishMsg" style="color: var(--muted); font-size: 13px; margin-left: 8px;"></span>
       </div>
       ${sections || '<p class="empty-state">Sin encabezados configurados.</p>'}
-      <p class="subtitle" style="margin-top:8px;">Los títulos de proyectos individuales (portafolio) y los encabezados de ventanas emergentes se gestionan desde "Proyectos", porque se generan dinámicamente por proyecto.</p>`;
+      <p class="subtitle" style="margin-top:8px;">Los títulos de proyectos individuales (portafolio) y los encabezados de ventanas emergentes se gestionan desde "Proyectos", porque se generan dinámicamente por proyecto. Si un campo aparece vacío la primera vez, usa "Sincronizar campos nuevos" para cargarlo con el texto que ya está publicado en el sitio.</p>`;
 
     main.querySelectorAll('.ck-save').forEach((btn) => {
       btn.addEventListener('click', () => saveContentField(btn.dataset.key));
@@ -480,6 +500,24 @@ async function renderHeadings() {
       } catch (e) {
         msg.textContent = '';
         toast('No se pudo publicar. Revisa que los borradores estén guardados.', 'err');
+      }
+    });
+    document.getElementById('seedHeadingsBtn').addEventListener('click', async () => {
+      const msg = document.getElementById('headingsPublishMsg');
+      msg.textContent = 'Sincronizando…';
+      try {
+        const { inserted, notFound } = await api('/content?seed=1', { method: 'POST' });
+        msg.textContent = '';
+        if (inserted && inserted.length) {
+          toast('Cargados ' + inserted.length + ' campo(s) nuevo(s) con su texto actual.');
+          renderHeadings();
+        } else {
+          toast('No había campos nuevos por cargar — ya estaban todos en la base.');
+        }
+        if (notFound && notFound.length) toast('No se encontraron en el HTML: ' + notFound.join(', '), 'err');
+      } catch (e) {
+        msg.textContent = '';
+        toast('No se pudo sincronizar', 'err');
       }
     });
   } catch (e) {
