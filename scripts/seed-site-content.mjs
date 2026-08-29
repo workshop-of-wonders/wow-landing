@@ -29,13 +29,14 @@ const ROOT = path.join(__dirname, '..');
 
 // Debe reflejar exactamente api/admin/_content.js -> CONTENT_FIELDS.
 const CONTENT_FIELDS = [
-  { key: 'hero.eyebrow', tag: 'p', page: 'index.html', label: 'Texto pequeño sobre el título (Hero)' },
-  { key: 'hero.h1', tag: 'h1', page: 'index.html', label: 'Título principal (Hero)' },
+  { key: 'hero.eyebrow', tag: 'h1', page: 'index.html', label: 'Título principal (Hero) — antes eyebrow, ahora es el h1 real con keywords' },
+  { key: 'hero.h1', tag: 'p', page: 'index.html', label: 'Titular grande y creativo (Hero, decorativo — ya no es un encabezado)' },
   { key: 'hero.sub', tag: 'p', page: 'index.html', label: 'Subtítulo (Hero)' },
   { key: 'hero.cta_primary', tag: 'a', page: 'index.html', label: 'Botón principal (Hero)' },
   { key: 'hero.cta_secondary', tag: 'a', page: 'index.html', label: 'Botón secundario (Hero)' },
   { key: 'servicios.h2', tag: 'h2', page: 'index.html', label: 'Título (Servicios)' },
-  { key: 'labs.h2', tag: 'h2', page: 'index.html', label: 'Título (Labs)' },
+  { key: 'labs.eyebrow', tag: 'h2', page: 'index.html', label: 'Título (Labs) — antes eyebrow, ahora es el h2 real con keywords' },
+  { key: 'labs.h2', tag: 'p', page: 'index.html', label: 'Titular grande (Labs, decorativo — ya no es un encabezado)' },
   { key: 'labs.intro', tag: 'p', page: 'index.html', label: 'Texto introductorio (Labs)' },
   { key: 'labs.insight_h3', tag: 'h3', page: 'index.html', label: 'Título — Insight Lab' },
   { key: 'labs.brand_h3', tag: 'h3', page: 'index.html', label: 'Título — Brand & Experience Lab' },
@@ -48,8 +49,10 @@ const CONTENT_FIELDS = [
   { key: 'metodologia.step2_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 2' },
   { key: 'metodologia.step3_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 3' },
   { key: 'metodologia.step4_h3', tag: 'h3', page: 'index.html', label: 'Proceso — Paso 4' },
-  { key: 'faq.h2', tag: 'h2', page: 'index.html', label: 'Título (Preguntas frecuentes)' },
-  { key: 'svc.hero_h1', tag: 'h1', page: 'servicios.html', label: 'Título principal (Hero servicios)' },
+  { key: 'faq.eyebrow', tag: 'h2', page: 'index.html', label: 'Título (Preguntas frecuentes) — antes eyebrow, ahora es el h2 real con keywords' },
+  { key: 'faq.h2', tag: 'p', page: 'index.html', label: 'Titular grande (Preguntas frecuentes, decorativo — ya no es un encabezado)' },
+  { key: 'svc.hero_eyebrow', tag: 'h1', page: 'servicios.html', label: 'Título principal (Hero servicios) — antes eyebrow, ahora es el h1 real con keywords' },
+  { key: 'svc.hero_h1', tag: 'p', page: 'servicios.html', label: 'Titular grande (Hero servicios, decorativo — ya no es un encabezado)' },
   { key: 'svc.hero_sub', tag: 'p', page: 'servicios.html', label: 'Subtítulo (Hero servicios)' },
   { key: 'svc.cat_digital_experience_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Experiencia digital' },
   { key: 'svc.card_diseno_web_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Diseño web' },
@@ -71,7 +74,8 @@ const CONTENT_FIELDS = [
   { key: 'svc.cat_cursos_h2', tag: 'h2', page: 'servicios.html', label: 'Categoría: Cursos digitales' },
   { key: 'svc.card_cursos_h3', tag: 'h3', page: 'servicios.html', label: 'Card — Cursos digitales' },
   { key: 'svc.faq_h2', tag: 'h2', page: 'servicios.html', label: 'Título (Preguntas frecuentes)' },
-  { key: 'portafolio.hero_h1', tag: 'h1', page: 'portafolio.html', label: 'Título principal (Hero portafolio)' },
+  { key: 'portafolio.hero_eyebrow', tag: 'h1', page: 'portafolio.html', label: 'Título principal (Hero portafolio) — antes eyebrow, ahora es el h1 real con keywords' },
+  { key: 'portafolio.hero_h1', tag: 'p', page: 'portafolio.html', label: 'Titular grande (Hero portafolio, decorativo — ya no es un encabezado)' },
   { key: 'portafolio.grid_h2', tag: 'h2', page: 'portafolio.html', label: 'Título de la grilla de proyectos (oculto visualmente, para SEO)' },
 ];
 
