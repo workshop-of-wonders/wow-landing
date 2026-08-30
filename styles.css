@@ -2820,8 +2820,23 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   justify-content: center;
   padding-top: var(--nav-h);
-  padding-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
 }
+/* The headline is what was actually making the box tall: at the base
+   .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
+   this page's longer title wraps to 4 lines on common laptop widths.
+   A smaller cap fits it in 2-3 lines instead, which is most of the
+   height this hero was carrying. Scoped to this modifier so the plain
+   .svc-hero used by servicios.html/portafolio.html/the other service
+   pages keeps its own size. */
+/* Same selector-list specificity trap as the color override above: the
+   base rule's "h1:not(.eyebrow)" branch outranks a plain two-class
+   override, so match that shape here too or this font-size loses. */
+.svc-hero--purple .svc-hero-headline,
+.svc-hero--purple h1:not(.eyebrow) { font-size: clamp(28px, 4vw, 40px); }
+.svc-hero--purple .eyebrow { margin-bottom: var(--space-1); }
+.svc-hero--purple .svc-hero-sub { margin-bottom: var(--space-3); }
+.svc-hero--purple .svc-highlight-row { margin-top: var(--space-2); }
 /* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
    .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
    picks the highest-specificity match across the whole list, and
