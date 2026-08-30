@@ -2802,6 +2802,14 @@ main { padding-top: var(--nav-h); }
   line-height: 1.6;
 }
 .svc-hero .hero-cta { justify-content: center; }
+/* Opt-in modifier for a purple hero (rest of the page stays white/cloud
+   alternating) — scoped so it doesn't touch the light .svc-hero used by
+   servicios.html/portafolio.html/the other service pages. Declared after
+   the base h1/.svc-hero-sub color rules above so it actually wins the
+   cascade (same selector specificity, so source order decides). */
+.svc-hero--purple { background: var(--purple); }
+.svc-hero--purple .svc-hero-headline { color: var(--white); }
+.svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
    (index.html's hero image); .svc-hero is a light background, so on this
    page it needs dark ink instead or it renders as an invisible white
