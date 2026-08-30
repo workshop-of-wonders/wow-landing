@@ -3177,6 +3177,23 @@ main { padding-top: var(--nav-h); }
    width, left-aligned, icon on the far right — not the question text
    itself centered. */
 .svc-block-center .svc-faq-list { max-width: 780px; margin: 0 auto; }
+/* The FAQ heading here was falling back to plain .svc-block-eyebrow (12px,
+   purple, regular weight) and a bare <h2> (24px, ink) instead of the
+   home page's actual FAQ heading treatment (.eyebrow-dark: 13px orange,
+   600 weight; .svc-faq h2: 38px purple, proper margins) — matched
+   exactly against the home's computed styles instead of guessed. */
+.svc-block-center .svc-block-eyebrow {
+  color: var(--orange-text);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+}
+.svc-block-center h2 {
+  font-family: var(--font-display);
+  font-size: var(--h2-size);
+  color: var(--purple);
+  margin: var(--space-2) 0 var(--space-4);
+}
 /* .svc-block-inner is 1100px wide (see comment above) so every section's
    left edge lines up, but a paragraph that wide is too long a line to
    read comfortably — cap just the body-copy paragraphs (not the eyebrow)
