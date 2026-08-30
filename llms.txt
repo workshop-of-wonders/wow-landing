@@ -21,6 +21,10 @@ Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace cre
 - Consultoría de datos: https://efectowow.co/servicios/consultoria-de-datos.html
 - Cursos digitales: https://efectowow.co/servicios/cursos-digitales.html
 
+## Labs
+- Brand & Experience Lab (CREA) — diseño web, UX/UI, e-commerce y diseño gráfico: https://efectowow.co/labs/brand-experience-lab.html
+- Insight Lab (CRECE) — SEO, GEO, pauta digital, CRO y analítica de datos: https://efectowow.co/labs/insight-lab.html
+
 ## Páginas
 - Inicio: https://efectowow.co/
 - Servicios: https://efectowow.co/servicios.html

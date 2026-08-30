@@ -1103,6 +1103,15 @@ main { padding-top: var(--nav-h); }
 .labs-toggle { display: none; }
 .labs-content h3 { font-size: 22px; margin-bottom: var(--space-1); }
 .labs-content p { margin: 0; font-size: 14px; opacity: 0.9; }
+.labs-panel-link {
+  display: inline-block;
+  margin-top: var(--space-2);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: underline;
+}
+.labs-panel-link:hover { opacity: 0.85; }
 @media (max-width: 900px) {
   /* Accordion: collapsed color bars, tap to expand one at a time (matches the reference) */
   .labs-panels { flex-direction: column; height: auto; }
