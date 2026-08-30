@@ -3176,7 +3176,14 @@ main { padding-top: var(--nav-h); }
    narrowed and centered as a column with each question row still full
    width, left-aligned, icon on the far right — not the question text
    itself centered. */
-.svc-block-center .svc-faq-list { max-width: 780px; margin: 0 auto; }
+/* The home page's FAQ isn't actually 780px wide at the list — that's the
+   *section's* max-width, which then has var(--page-x) horizontal padding
+   inside it, so the list itself renders at 780px minus that padding on
+   each side (~575px at common desktop widths). Setting the list itself
+   to a flat 780px (like the first version of this rule did) left far
+   more room between the question text and its "+" than the home's FAQ
+   has. Mirror the actual formula instead of the section's nominal width. */
+.svc-block-center .svc-faq-list { max-width: calc(780px - 2 * var(--page-x)); margin: 0 auto; }
 /* The FAQ heading here was falling back to plain .svc-block-eyebrow (12px,
    purple, regular weight) and a bare <h2> (24px, ink) instead of the
    home page's actual FAQ heading treatment (.eyebrow-dark: 13px orange,
