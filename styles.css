@@ -2789,6 +2789,11 @@ main { padding-top: var(--nav-h); }
   color: var(--purple);
 }
 .svc-hero .btn-outline:hover { background: rgba(56,7,87,0.08); }
+.svc-work-teaser .btn-outline {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+.svc-work-teaser .btn-outline:hover { background: rgba(56,7,87,0.08); }
 
 .svc-jump {
   display: flex;
@@ -2922,6 +2927,117 @@ main { padding-top: var(--nav-h); }
 .svc-service-detail h4 { margin-top: 1.2em; }
 .svc-service-detail ul { padding-left: 1.2em; }
 .svc-service-detail li { margin: 0.4em 0; }
+
+/* Highlight chips: 3 short facts under the hero, brand-colored pills
+   instead of another paragraph — quick to scan, reuses the hub-pill
+   color language (hub-lab-brand / hub-lab-insight). */
+.svc-highlight-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 700px;
+  margin: 0 auto var(--space-4);
+}
+.svc-highlight-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--cloud);
+  color: var(--purple);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+}
+.svc-highlight-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+
+/* "Qué hacemos" as colored cards (same component as servicios.html's
+   .svc-grid/.svc-card) instead of a stack of h4/p blocks — makes each
+   sub-service scannable and doubles as internal links to its own page. */
+.svc-includes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.svc-includes-grid .svc-card h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--purple);
+  margin: 0 0 6px;
+}
+.svc-includes-grid .svc-card h4 a { color: inherit; }
+.svc-includes-grid .svc-card h4 a:hover { text-decoration: underline; }
+.svc-includes-grid .svc-card p { font-size: 14px; line-height: 1.5; color: var(--ink); opacity: 0.75; margin: 0; }
+
+/* Numbered process steps with a colored circle badge instead of a plain
+   bullet list — lightweight version of the home page's method timeline. */
+.svc-steps {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.svc-steps li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 0;
+}
+.svc-steps .svc-step-num {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--lima);
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.svc-steps strong { color: var(--purple); }
+
+/* Related work teaser: a few portfolio thumbnails linked back to
+   portafolio.html, so a service page doesn't dead-end in text. */
+.svc-work-teaser {
+  padding: var(--space-6) var(--page-x);
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+.svc-work-teaser h2 { color: var(--purple); }
+.svc-work-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-3);
+}
+.svc-work-teaser-item {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.svc-work-teaser-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s ease; }
+.svc-work-teaser-item:hover img { transform: scale(1.05); }
+.svc-work-teaser-item span {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 10px 14px;
+  background: linear-gradient(0deg, rgba(26,19,32,0.75), transparent);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: left;
+}
 .svc-faq-q {
   width: 100%;
   display: flex;
