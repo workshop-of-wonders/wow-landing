@@ -2890,6 +2890,11 @@ main { padding-top: var(--nav-h); }
 .svc-faq-item {
   border-bottom: 1px solid rgba(26,19,32,0.12);
 }
+.svc-faq-q-h {
+  margin: 0;
+  font: inherit;
+  font-weight: inherit;
+}
 .svc-faq-q {
   width: 100%;
   display: flex;
