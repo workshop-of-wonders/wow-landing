@@ -2780,6 +2780,15 @@ main { padding-top: var(--nav-h); }
   line-height: 1.6;
 }
 .svc-hero .hero-cta { justify-content: center; }
+/* .btn-outline defaults to white border/text for dark hero backgrounds
+   (index.html's hero image); .svc-hero is a light background, so on this
+   page it needs dark ink instead or it renders as an invisible white
+   button on white. */
+.svc-hero .btn-outline {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+.svc-hero .btn-outline:hover { background: rgba(56,7,87,0.08); }
 
 .svc-jump {
   display: flex;
