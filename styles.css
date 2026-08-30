@@ -3113,13 +3113,25 @@ main { padding-top: var(--nav-h); }
 .svc-block-inner {
   position: relative;
   z-index: 1;
-  max-width: 900px;
+  /* One width for every section on the page (was 900px, with a --wide
+     1100px variant for the cards/work-grid sections). Two different
+     max-widths under margin:auto centering only line up at the extremes
+     (very narrow or very wide viewports) — at in-between widths, the
+     900px box gets extra centering margin the 1100px one doesn't, so
+     their left edges drift apart. One width keeps every section's text
+     starting at the same x regardless of viewport. */
+  max-width: 1100px;
   margin: 0 auto;
 }
-.svc-block-inner--wide { max-width: 1100px; }
 .svc-block-center { text-align: center; }
 .svc-block-center .svc-steps,
 .svc-block-center .svc-includes-grid { text-align: left; }
+/* .svc-block-inner is 1100px wide (see comment above) so every section's
+   left edge lines up, but a paragraph that wide is too long a line to
+   read comfortably — cap just the body-copy paragraphs (not the eyebrow)
+   without giving them their own margin:auto, so they still start flush
+   left instead of re-centering within the block. */
+.svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 640px; }
 .svc-block-white { background: var(--white); }
 .svc-block-cloud { background: var(--cloud); }
 .svc-block-purple { background: var(--purple); color: var(--white); }
