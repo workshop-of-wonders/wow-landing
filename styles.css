@@ -2808,6 +2808,16 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
+  /* Cap the hero at the same max height as the home page's hero (.hero:
+     height: min(96vh, 960px); min-height: 640px) instead of growing with
+     its content, and center that content vertically inside it. */
+  height: min(96vh, 960px);
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: var(--nav-h);
+  padding-bottom: var(--space-4);
 }
 /* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
    .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
