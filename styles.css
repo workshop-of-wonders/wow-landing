@@ -2902,6 +2902,14 @@ main { padding-top: var(--nav-h); }
   max-width: 780px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  /* Full-bleed tinted band behind a max-width section: box-shadow spread
+     paints past the element's own box, clip-path trims it back to the
+     viewport so it doesn't force horizontal scroll (body already has
+     overflow-x:hidden as a second safety net). Breaks up what would
+     otherwise be an all-white page. */
+  box-shadow: 0 0 0 100vmax var(--cloud);
+  clip-path: inset(0 -100vmax);
 }
 .svc-faq h2:not(.eyebrow), .svc-faq .faq-headline {
   font-family: var(--font-display);
@@ -2930,6 +2938,11 @@ main { padding-top: var(--nav-h); }
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 24px;
+  position: relative;
+  /* Same full-bleed tint trick as .svc-faq, alternating with the plain
+     white hero/work-teaser sections above and below it. */
+  box-shadow: 0 0 0 100vmax var(--cloud);
+  clip-path: inset(0 -100vmax);
 }
 .svc-service-detail h2 { margin-top: 2.2em; }
 .svc-service-detail h3 { margin-top: 1.6em; }
@@ -2971,6 +2984,7 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-2);
   margin: var(--space-3) 0 var(--space-4);
 }
+.svc-includes-grid .svc-card { background: var(--white); }
 .svc-includes-grid .svc-card h4 {
   font-family: var(--font-body);
   font-weight: 700;
