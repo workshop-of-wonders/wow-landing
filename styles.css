@@ -2823,8 +2823,14 @@ main { padding-top: var(--nav-h); }
      padding so the content sits close under the nav — with no leftover
      space on either side of the content block, tight-and-symmetric reads
      as vertically centered without needing actual flex centering. */
-  padding-top: calc(var(--nav-h) + var(--space-1));
-  padding-bottom: var(--space-4);
+  /* `main { padding-top: var(--nav-h) }` (global rule) already reserves
+     room for the fixed nav before this section even starts — adding
+     nav-h again here (like the base .svc-hero and the previous version
+     of this rule both did) double-counted it, so the real top gap was
+     nav-h too tall versus the bottom padding alone. Only add the extra
+     breathing room here. */
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
 }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
