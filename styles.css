@@ -2818,17 +2818,20 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
-  /* Still plain top-down flow (see the flex/min-height history below,
-     kept as a warning not to redo it), just with tighter top and bottom
-     padding so the content sits close under the nav — with no leftover
-     space on either side of the content block, tight-and-symmetric reads
-     as vertically centered without needing actual flex centering. */
+  /* Same max height as the home page's hero (.hero: height: min(96vh,
+     960px); min-height: 640px). Safe to do now that the headline is
+     capped smaller (clamp 32-46px instead of the base 32-56px) and the
+     hero no longer carries the highlight chips — content comfortably
+     fits inside this height at every width instead of needing to be
+     clipped or left un-capped like earlier attempts. */
+  height: min(96vh, 960px);
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   /* `main { padding-top: var(--nav-h) }` (global rule) already reserves
-     room for the fixed nav before this section even starts — adding
-     nav-h again here (like the base .svc-hero and the previous version
-     of this rule both did) double-counted it, so the real top gap was
-     nav-h too tall versus the bottom padding alone. Only add the extra
-     breathing room here. */
+     room for the fixed nav before this section even starts, so no nav-h
+     here — just the breathing room on top of the centering. */
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
 }
