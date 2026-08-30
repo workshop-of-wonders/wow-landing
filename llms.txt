@@ -5,9 +5,11 @@
 Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace crecer marcas con SEO, SEM, pauta digital y analítica. Trabaja 100% remoto con clientes en Colombia, Latinoamérica y otros países.
 
 ## Servicios
-- Diseño web y UX/UI: https://efectowow.co/servicios.html
+- Todos los servicios: https://efectowow.co/servicios.html
+- Diseño web y desarrollo de sitios: https://efectowow.co/servicios/diseno-web.html
+- SEO y posicionamiento (incluye GEO): https://efectowow.co/servicios/seo.html
 - E-commerce
-- SEO y SEO local / Google Business Profile
+- SEO local / Google Business Profile
 - GEO (posicionamiento en respuestas de IA)
 - SEM y pauta digital, CRO
 - Diseño gráfico
