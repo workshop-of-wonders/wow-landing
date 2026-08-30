@@ -163,10 +163,8 @@ document.querySelectorAll('.switch').forEach(function (btn) {
   });
 });
 
-/* Hub diagram: click a pill to pop up its description, Figma-comment style */
+/* Hub diagram: each pill is a link straight to its service page. */
 var hubDiagramEl = document.getElementById('hubDiagram');
-var hubPopup = document.getElementById('hubPopup');
-var hubPopupText = document.getElementById('hubPopupText');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
 
 /* Draw a connector line from every pill to the center W, redrawn whenever the layout changes */
@@ -210,86 +208,9 @@ var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
   setTimeout(drawLines, 300);
 })();
-hubPills.forEach(function (pill) {
-  pill.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var isSame = pill.classList.contains('active');
-    hubPills.forEach(function (p) { p.classList.remove('active'); });
-    if (isSame) {
-      hubPopup.classList.remove('is-open');
-      return;
-    }
-    pill.classList.add('active');
-    hubPopupText.textContent = pill.dataset.desc;
-
-    var diagramRect = hubDiagramEl.getBoundingClientRect();
-    var pillRect = pill.getBoundingClientRect();
-    var top = pillRect.bottom - diagramRect.top + 12;
-    var left = pillRect.left - diagramRect.left + pillRect.width / 2;
-    hubPopup.style.top = top + 'px';
-    hubPopup.style.left = left + 'px';
-    hubPopup.classList.add('is-open');
-  });
-});
-document.addEventListener('click', function (e) {
-  if (hubPopup.classList.contains('is-open') && !hubPopup.contains(e.target) && !e.target.classList.contains('hub-pill')) {
-    hubPopup.classList.remove('is-open');
-    hubPills.forEach(function (p) { p.classList.remove('active'); });
-  }
-});
-
-/* Services mega menu: clicking a service shows a short description in a
-   popup beside it — same pattern as the hub-diagram pills above, just
-   positioned relative to .nav-dropdown instead of #hubDiagram, and to the
-   side of the link instead of underneath it. */
-(function () {
-  var dropdown = document.getElementById('navServicesDropdown');
-  if (!dropdown) return;
-  var popup = document.getElementById('navServicePopup');
-  var popupText = document.getElementById('navServicePopupText');
-  var links = [].slice.call(dropdown.querySelectorAll('.nav-dropdown-link'));
-  var POPUP_WIDTH = 240;
-  var GAP = 14;
-
-  function closePopup() {
-    popup.classList.remove('is-open');
-    links.forEach(function (l) { l.classList.remove('active'); });
-  }
-
-  links.forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var isSame = link.classList.contains('active');
-      closePopup();
-      if (isSame) return;
-      link.classList.add('active');
-      popupText.textContent = link.dataset.desc;
-      var dropdownRect = dropdown.getBoundingClientRect();
-      var linkRect = link.getBoundingClientRect();
-      var top = linkRect.top - dropdownRect.top + linkRect.height / 2;
-      /* Prefer the right side of the link; flip to the left if there isn't
-         enough room before the dropdown's own right edge (links in the
-         last column or two). */
-      var spaceRight = dropdownRect.width - (linkRect.right - dropdownRect.left);
-      var flip = spaceRight < POPUP_WIDTH + GAP;
-      var left = flip
-        ? linkRect.left - dropdownRect.left - GAP - POPUP_WIDTH
-        : linkRect.right - dropdownRect.left + GAP;
-      popup.classList.toggle('is-flip', flip);
-      popup.style.top = top + 'px';
-      popup.style.left = left + 'px';
-      popup.classList.add('is-open');
-    });
-  });
-  document.addEventListener('click', function (e) {
-    if (popup.classList.contains('is-open') && !popup.contains(e.target) && !e.target.classList.contains('nav-dropdown-link')) {
-      closePopup();
-    }
-  });
-  /* Closing the mega menu itself (mouse leaves .nav-item) should also clear
-     any open popup, so it isn't still sitting there next time it opens. */
-  dropdown.closest('.nav-item').addEventListener('mouseleave', closePopup);
-})();
+/* hub-pill and nav-dropdown-link are now real <a href> links straight to
+   each service's own page, so no popup/description JS is needed here
+   anymore — the browser's default navigation handles the click. */
 
 /* Automatic Editorial Horizontal Collage System — generic, reusable, no
    per-project knowledge. Given any list of image URLs it measures each

@@ -2890,6 +2890,29 @@ main { padding-top: var(--nav-h); }
 .svc-faq-item {
   border-bottom: 1px solid rgba(26,19,32,0.12);
 }
+.svc-faq-q-h {
+  margin: 0;
+  font: inherit;
+  font-weight: inherit;
+}
+.svc-breadcrumb {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 24px 0;
+  font-size: 0.85rem;
+  color: rgba(26,19,32,0.6);
+}
+.svc-breadcrumb a { color: inherit; text-decoration: underline; }
+.svc-service-detail {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.svc-service-detail h2 { margin-top: 2.2em; }
+.svc-service-detail h3 { margin-top: 1.6em; }
+.svc-service-detail h4 { margin-top: 1.2em; }
+.svc-service-detail ul { padding-left: 1.2em; }
+.svc-service-detail li { margin: 0.4em 0; }
 .svc-faq-q {
   width: 100%;
   display: flex;
