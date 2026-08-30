@@ -2808,11 +2808,14 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
-  /* Cap the hero at the same max height as the home page's hero (.hero:
-     height: min(96vh, 960px); min-height: 640px) instead of growing with
-     its content, and center that content vertically inside it. */
-  height: min(96vh, 960px);
-  min-height: 640px;
+  /* No fixed height: a hard cap (like the home hero's min(96vh,960px))
+     either looks too tall when the content doesn't need it, or clips the
+     content when it does (e.g. the headline wrapping to 4 lines at some
+     widths pushed the highlight chips past a fixed 620px). min-height
+     only guarantees a floor, so the box is exactly as tall as its
+     content needs — shorter than the home hero in the common case,
+     without ever cutting anything off. */
+  min-height: 460px;
   display: flex;
   flex-direction: column;
   justify-content: center;
