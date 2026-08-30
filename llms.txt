@@ -12,10 +12,14 @@ Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace cre
 - Pauta digital y SEM: https://efectowow.co/servicios/pauta-digital.html
 - Analítica de datos, reportería y dashboards: https://efectowow.co/servicios/analitica-de-datos.html
 - GEO, posicionamiento en respuestas de IA: https://efectowow.co/servicios/geo-posicionamiento-ia.html
-- SEO local / Google Business Profile
-- CRO
-- Diseño gráfico
-- Cursos digitales
+- UX/UI Design: https://efectowow.co/servicios/uxui-design.html
+- Diseño gráfico: https://efectowow.co/servicios/diseno-grafico.html
+- SEO local / Google Business Profile: https://efectowow.co/servicios/seo-local.html
+- CRO (optimización de la tasa de conversión): https://efectowow.co/servicios/cro-optimizacion-conversion.html
+- Creación de posts gráficos para pauta: https://efectowow.co/servicios/posts-graficos-pauta.html
+- Configuración de analítica y tracking: https://efectowow.co/servicios/configuracion-analitica-tracking.html
+- Consultoría de datos: https://efectowow.co/servicios/consultoria-de-datos.html
+- Cursos digitales: https://efectowow.co/servicios/cursos-digitales.html
 
 ## Páginas
 - Inicio: https://efectowow.co/

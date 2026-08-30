@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-39Q1KYV3NV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-39Q1KYV3NV');
+  </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuración de Analítica y Tracking (GA4, Tag Manager) | Workshop of Wonders</title>
+<meta name="description" content="Configuramos GA4, Google Tag Manager y eventos de conversión: la base técnica sin la que no hay datos confiables que analizar.">
+<link rel="canonical" href="https://efectowow.co/servicios/configuracion-analitica-tracking.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#380757">
+
+<!-- Open Graph / Facebook, LinkedIn, WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://efectowow.co/servicios/configuracion-analitica-tracking.html">
+<meta property="og:site_name" content="Workshop of Wonders">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Configuración de Analítica y Tracking (GA4, Tag Manager) | Workshop of Wonders">
+<meta property="og:description" content="Configuramos GA4, Google Tag Manager y eventos de conversión: la base técnica sin la que no hay datos confiables que analizar.">
+<meta property="og:image" content="https://efectowow.co/design-system/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Workshop of Wonders">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Configuración de Analítica y Tracking (GA4, Tag Manager) | Workshop of Wonders">
+<meta name="twitter:description" content="Configuramos GA4, Google Tag Manager y eventos de conversión: la base técnica sin la que no hay datos confiables que analizar.">
+<meta name="twitter:image" content="https://efectowow.co/design-system/og-image.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Workshop of Wonders", "item": "https://efectowow.co/" },
+    { "@type": "ListItem", "position": 2, "name": "Servicios", "item": "https://efectowow.co/servicios.html" },
+    { "@type": "ListItem", "position": 3, "name": "Configuración de analítica", "item": "https://efectowow.co/servicios/configuracion-analitica-tracking.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Configuración de analítica y tracking",
+  "serviceType": "Configuración de GA4, Google Tag Manager y eventos de conversión",
+  "provider": { "@type": "ProfessionalService", "name": "Workshop of Wonders", "url": "https://efectowow.co/" },
+  "areaServed": "Global",
+  "url": "https://efectowow.co/servicios/configuracion-analitica-tracking.html",
+  "description": "Configuramos GA4, Google Tag Manager y eventos de conversión: la base técnica sin la que no hay datos confiables que analizar."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Por qué necesito configurar bien GA4 y Tag Manager desde el inicio?", "acceptedAnswer": { "@type": "Answer", "text": "Sin una configuración correcta, los datos que ves (tráfico, conversiones, comportamiento) pueden estar incompletos o ser directamente incorrectos, lo que lleva a decisiones equivocadas de SEO, pauta o producto." } },
+    { "@type": "Question", "name": "¿Qué eventos de conversión configuran?", "acceptedAnswer": { "@type": "Answer", "text": "Los específicos de tu negocio: envíos de formulario, clics en WhatsApp o llamada, compras, agregar al carrito, descargas — cualquier acción que consideres una conversión." } },
+    { "@type": "Question", "name": "¿Esto reemplaza el servicio de analítica de datos?", "acceptedAnswer": { "@type": "Answer", "text": "No, es la base técnica sobre la que se apoya. Una vez configurado el tracking, el servicio de analítica y reportería usa esos datos para generar dashboards y recomendaciones." } },
+    { "@type": "Question", "name": "¿También configuran el consentimiento de cookies?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, incluimos la configuración de consentimiento necesaria para operar el tracking de forma correcta." } }
+  ]
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><text y=%2220%22 font-size=%2220%22>✦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="nav is-scrolled">
+  <a href="../index.html" class="logo">
+    <img src="../design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
+  </a>
+  <nav class="nav-links">
+    <a href="../servicios.html">Servicios</a>
+    <a href="../index.html#labs">Labs</a>
+    <a href="../index.html#trabajo">Trabajo</a>
+    <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos de tu proyecto</a>
+  </nav>
+  <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobileMenu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <div class="nav-mobile-panel">
+    <div class="nav-mobile-top">
+      <a href="../index.html" class="logo">
+        <img src="../design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
+      </a>
+      <button type="button" class="nav-mobile-close" id="navMobileClose" aria-label="Cerrar menú">
+        <span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile-links">
+      <a href="../servicios.html"><span class="nav-mobile-link-num">01</span>Servicios</a>
+      <a href="../index.html#labs"><span class="nav-mobile-link-num">02</span>Labs</a>
+      <a href="../index.html#trabajo"><span class="nav-mobile-link-num">03</span>Trabajo</a>
+    </nav>
+    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form>Hablemos de tu proyecto <span class="nav-mobile-cta-arrow">→</span></a>
+    <div class="nav-mobile-foot">
+      <span class="nav-mobile-foot-mark">✦</span>
+      <a href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+  <nav class="svc-breadcrumb" aria-label="Ruta de navegación">
+    <a href="../index.html">Inicio</a> / <a href="../servicios.html">Servicios</a> / <span aria-current="page">Configuración de analítica</span>
+  </nav>
+
+  <section class="svc-hero">
+    <p class="eyebrow">CONFIGURACIÓN DE ANALÍTICA</p>
+    <h1 class="svc-hero-headline">La base técnica sin la que no hay datos confiables</h1>
+    <p class="svc-hero-sub">Configuramos Google Analytics 4, Google Tag Manager y los eventos de conversión específicos de tu sitio, para que cualquier decisión futura se apoye en datos reales.</p>
+    <div class="hero-cta">
+      <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
+      <a href="../portafolio.html" class="btn btn-outline">Ver nuestro trabajo</a>
+    </div>
+  </section>
+
+  <section class="svc-service-detail">
+    <h2>Sin tracking correcto, no hay datos en los que confiar</h2>
+    <p>Antes de optimizar SEO, pauta digital o el sitio mismo, hay que saber medir bien. Configuramos la infraestructura de analítica desde cero o corregimos la que ya existe si está incompleta.</p>
+
+    <h3>Qué incluye el servicio</h3>
+    <h4>Google Analytics 4</h4>
+    <p>Configuración de la propiedad, flujos de datos y métricas clave para tu negocio específico.</p>
+
+    <h4>Google Tag Manager</h4>
+    <p>Implementación de contenedores y etiquetas sin depender de tocar el código del sitio cada vez que se necesita medir algo nuevo.</p>
+
+    <h4>Eventos de conversión</h4>
+    <p>Definición y configuración de los eventos que realmente importan para tu negocio: formularios, compras, clics en contacto, descargas.</p>
+
+    <h3>Qué se apoya en esta base</h3>
+    <ul>
+      <li><a href="analitica-de-datos.html">Analítica de datos y dashboards</a>: reportería basada en datos confiables.</li>
+      <li><a href="cro-optimizacion-conversion.html">CRO</a>: identificar puntos de fuga reales en el embudo.</li>
+      <li><a href="pauta-digital.html">Pauta digital</a>: medir qué campañas realmente generan resultados.</li>
+    </ul>
+  </section>
+
+  <section class="svc-faq" id="faq">
+    <p class="eyebrow">PREGUNTAS FRECUENTES</p>
+    <h2>Preguntas frecuentes sobre configuración de analítica y tracking</h2>
+    <div class="svc-faq-list">
+      <div class="svc-faq-item">
+        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="configFaqFaqA1"><span>¿Por qué necesito configurar bien GA4 y Tag Manager desde el inicio?</span><span class="svc-faq-icon">+</span></button></h4>
+        <div class="svc-faq-a" id="configFaqFaqA1"><p>Sin una configuración correcta, los datos que ves (tráfico, conversiones, comportamiento) pueden estar incompletos o ser directamente incorrectos, lo que lleva a decisiones equivocadas de SEO, pauta o producto.</p></div>
+      </div>
+      <div class="svc-faq-item">
+        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="configFaqFaqA2"><span>¿Qué eventos de conversión configuran?</span><span class="svc-faq-icon">+</span></button></h4>
+        <div class="svc-faq-a" id="configFaqFaqA2"><p>Los específicos de tu negocio: envíos de formulario, clics en WhatsApp o llamada, compras, agregar al carrito, descargas — cualquier acción que consideres una conversión.</p></div>
+      </div>
+      <div class="svc-faq-item">
+        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="configFaqFaqA3"><span>¿Esto reemplaza el servicio de analítica de datos?</span><span class="svc-faq-icon">+</span></button></h4>
+        <div class="svc-faq-a" id="configFaqFaqA3"><p>No, es la base técnica sobre la que se apoya. Una vez configurado el tracking, el servicio de analítica y reportería usa esos datos para generar dashboards y recomendaciones.</p></div>
+      </div>
+      <div class="svc-faq-item">
+        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="configFaqFaqA4"><span>¿También configuran el consentimiento de cookies?</span><span class="svc-faq-icon">+</span></button></h4>
+        <div class="svc-faq-a" id="configFaqFaqA4"><p>Sí, incluimos la configuración de consentimiento necesaria para operar el tracking de forma correcta.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section id="contacto" class="svc-contact">
+  <p class="closer-line">Y si hacemos <em>maravillas</em> juntos</p>
+  <p class="essence-lead">Cuéntanos tu proyecto o encuéntranos en redes.</p>
+  <div class="contact-links">
+    <a class="contact-pill contact-pill-primary" href="#" data-open-form>Hablemos de tu proyecto</a>
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-logo">
+    <img src="../design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="footer-logo-img" width="773" height="295" loading="lazy">
+  </div>
+  <p class="footer-quote">&ldquo;Seguimos aquí después de lanzar — porque una marca que se siente real no termina en la entrega.&rdquo;</p>
+  <div class="footer-socials">
+    <a href="https://instagram.com/workshopofwonders" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+    <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+  </div>
+  <p>© <span id="year"></span> Workshop of Wonders. Hecho con asombro.</p>
+</footer>
+
+<script src="../js/common.js" defer></script>
+<script src="../js/servicios.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
