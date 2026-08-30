@@ -7,13 +7,14 @@ Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace cre
 ## Servicios
 - Todos los servicios: https://efectowow.co/servicios.html
 - Diseño web y desarrollo de sitios: https://efectowow.co/servicios/diseno-web.html
-- SEO y posicionamiento (incluye GEO): https://efectowow.co/servicios/seo.html
-- E-commerce
+- SEO y posicionamiento: https://efectowow.co/servicios/seo.html
+- E-commerce: https://efectowow.co/servicios/ecommerce.html
+- Pauta digital y SEM: https://efectowow.co/servicios/pauta-digital.html
+- Analítica de datos, reportería y dashboards: https://efectowow.co/servicios/analitica-de-datos.html
+- GEO, posicionamiento en respuestas de IA: https://efectowow.co/servicios/geo-posicionamiento-ia.html
 - SEO local / Google Business Profile
-- GEO (posicionamiento en respuestas de IA)
-- SEM y pauta digital, CRO
+- CRO
 - Diseño gráfico
-- Analítica de datos, reportería y dashboards
 - Cursos digitales
 
 ## Páginas
