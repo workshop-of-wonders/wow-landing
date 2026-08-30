@@ -2818,14 +2818,13 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
-  /* Plain top-down flow, no min-height/flex centering: those made the box
-     taller than its content at wide viewports (where the headline wraps
-     to fewer lines) and then centered the leftover space above AND below
-     it — a visible gap between the nav and the eyebrow. Padding alone
-     keeps this exactly as tall as its content, with the text starting
-     right under the nav every time. */
-  padding-top: calc(var(--nav-h) + var(--space-3));
-  padding-bottom: var(--space-4);
+  /* Still plain top-down flow (see the flex/min-height history below,
+     kept as a warning not to redo it), just with tighter top and bottom
+     padding so the content sits close under the nav — with no leftover
+     space on either side of the content block, tight-and-symmetric reads
+     as vertically centered without needing actual flex centering. */
+  padding-top: calc(var(--nav-h) + var(--space-1));
+  padding-bottom: var(--space-2);
 }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
