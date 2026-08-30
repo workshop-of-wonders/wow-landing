@@ -2829,8 +2829,8 @@ main { padding-top: var(--nav-h); }
      of this rule both did) double-counted it, so the real top gap was
      nav-h too tall versus the bottom padding alone. Only add the extra
      breathing room here. */
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
 }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
