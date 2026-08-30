@@ -3171,9 +3171,12 @@ main { padding-top: var(--nav-h); }
    itself is centered as a block, not just its heading — the icon still
    sits right next to the question text instead of pinned to the far
    right edge (that only made sense when the button spanned full width). */
-.svc-block-center .svc-faq-list { max-width: 700px; margin: 0 auto; }
-.svc-block-center .svc-faq-q { justify-content: center; text-align: center; }
-.svc-block-center .svc-faq-a { text-align: center; }
+/* Match the home page's FAQ exactly: heading centered (already handled
+   by .svc-block-center on the eyebrow/h2), but the question list itself
+   narrowed and centered as a column with each question row still full
+   width, left-aligned, icon on the far right — not the question text
+   itself centered. */
+.svc-block-center .svc-faq-list { max-width: 780px; margin: 0 auto; }
 /* .svc-block-inner is 1100px wide (see comment above) so every section's
    left edge lines up, but a paragraph that wide is too long a line to
    read comfortably — cap just the body-copy paragraphs (not the eyebrow)
