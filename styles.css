@@ -2824,7 +2824,7 @@ main { padding-top: var(--nav-h); }
      space on either side of the content block, tight-and-symmetric reads
      as vertically centered without needing actual flex centering. */
   padding-top: calc(var(--nav-h) + var(--space-1));
-  padding-bottom: var(--space-2);
+  padding-bottom: var(--space-4);
 }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
