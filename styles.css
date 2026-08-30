@@ -3137,6 +3137,14 @@ main { padding-top: var(--nav-h); }
   max-width: 640px;
 }
 .svc-plain-list li { margin: 0.4em 0; }
+.svc-plain-note {
+  max-width: 640px;
+  margin: var(--space-3) 0 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--lima);
+  font-size: 14px;
+  opacity: 0.75;
+}
 .svc-includes-grid .svc-card h4 {
   font-family: var(--font-body);
   font-weight: 700;
