@@ -2809,7 +2809,15 @@ main { padding-top: var(--nav-h); }
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
 }
-.svc-hero--purple .svc-hero-headline { color: var(--white); }
+/* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
+   .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
+   picks the highest-specificity match across the whole list, and
+   "h1:not(.eyebrow)" (:not()'s specificity is its argument's, so this is
+   class+element+class) outranks a plain ".svc-hero-headline" two-class
+   override regardless of source order. Match that same shape so this
+   override actually applies. */
+.svc-hero--purple .svc-hero-headline,
+.svc-hero--purple h1:not(.eyebrow) { color: var(--white); }
 .svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
    (index.html's hero image); .svc-hero is a light background, so on this
