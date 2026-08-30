@@ -2778,14 +2778,6 @@ main { padding-top: var(--nav-h); }
    between the fixed header and the headline) — kept separate from the
    base .svc-hero rule so it doesn't shift the other pages that reuse it. */
 .svc-hero--tight { padding-top: calc(var(--nav-h) + var(--space-3)); }
-/* Opt-in modifier for a purple hero (rest of the page stays white/cloud
-   alternating) — scoped so it doesn't touch the light .svc-hero used by
-   servicios.html/portafolio.html/the other service pages. Only sets
-   color, so it composes with .svc-hero--tight's padding instead of
-   fighting it for the padding-top declaration. */
-.svc-hero--purple { background: var(--purple); }
-.svc-hero--purple .svc-hero-headline { color: var(--white); }
-.svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
 .svc-hero h1:not(.eyebrow), .svc-hero .svc-hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 5.5vw, 56px);
@@ -2806,8 +2798,17 @@ main { padding-top: var(--nav-h); }
    alternating) — scoped so it doesn't touch the light .svc-hero used by
    servicios.html/portafolio.html/the other service pages. Declared after
    the base h1/.svc-hero-sub color rules above so it actually wins the
-   cascade (same selector specificity, so source order decides). */
-.svc-hero--purple { background: var(--purple); }
+   cascade (same selector specificity, so source order decides).
+   .svc-hero itself is a max-width:900px centered box (for the text), so
+   painting the background directly on it left white bars on either side
+   — same full-bleed box-shadow/clip-path trick as .svc-block to spread
+   the color the full width of the viewport behind that centered box. */
+.svc-hero--purple {
+  position: relative;
+  background: var(--purple);
+  box-shadow: 0 0 0 100vmax var(--purple);
+  clip-path: inset(0 -100vmax);
+}
 .svc-hero--purple .svc-hero-headline { color: var(--white); }
 .svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
