@@ -2818,14 +2818,11 @@ main { padding-top: var(--nav-h); }
   background: var(--purple);
   box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
-  /* Same max height as the home page's hero (.hero: height: min(96vh,
-     960px); min-height: 640px). Safe to do now that the headline is
-     capped smaller (clamp 32-46px instead of the base 32-56px) and the
-     hero no longer carries the highlight chips — content comfortably
-     fits inside this height at every width instead of needing to be
-     clipped or left un-capped like earlier attempts. */
-  height: min(96vh, 960px);
-  min-height: 640px;
+  /* A bit shorter than the home hero's 96vh — at 96vh the hero fills
+     almost the entire first screen, hiding that there's a next section
+     to scroll to. Capping at 85vh leaves a visible sliver of it. */
+  height: min(85vh, 860px);
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
