@@ -2710,6 +2710,16 @@ main { padding-top: var(--nav-h); }
   max-width: 560px;
   margin: var(--space-2) 0;
 }
+.footer-quote-author {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--cloud);
+  opacity: 0.7;
+  margin-top: 4px;
+}
 .footer-socials {
   display: flex;
   gap: var(--space-3);
@@ -3155,6 +3165,11 @@ main { padding-top: var(--nav-h); }
    without giving them their own margin:auto, so they still start flush
    left instead of re-centering within the block. */
 .svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 640px; }
+/* Highlight chips reused inside a .svc-block-cloud section (they used to
+   live only in the hero) would otherwise blend into the block's own
+   --cloud background — force white so they still read as chips. */
+.svc-block-cloud .svc-highlight-row { justify-content: flex-start; margin: var(--space-3) 0 0; max-width: none; }
+.svc-block-cloud .svc-highlight-chip { background: var(--white); }
 .svc-block-white { background: var(--white); }
 .svc-block-cloud { background: var(--cloud); }
 .svc-block-purple { background: var(--purple); color: var(--white); }
