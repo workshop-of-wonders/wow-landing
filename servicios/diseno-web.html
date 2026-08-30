@@ -260,6 +260,63 @@
       </div>
     </div>
   </section>
+  <div class="project-modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+    <div class="project-modal-inner">
+      <button type="button" class="project-modal-close" id="projectModalClose" aria-label="Cerrar">✕</button>
+      <h3 class="project-modal-title" id="projectModalTitle"><em>Cuéntanos</em> tu proyecto</h3>
+      <form class="project-form" id="projectForm" novalidate>
+        <div class="project-field">
+          <label for="pfEmail">CORREO</label>
+          <input id="pfEmail" name="email" type="email" placeholder="tucorreo@empresa.com" required>
+          <span class="project-field-error">Escribe un correo válido.</span>
+        </div>
+        <div class="project-field">
+          <label for="pfName">NOMBRE COMPLETO</label>
+          <input id="pfName" name="name" type="text" placeholder="Tu nombre completo" required>
+          <span class="project-field-error">Escribe tu nombre.</span>
+        </div>
+        <div class="project-field">
+          <label for="pfCompany">EMPRESA</label>
+          <input id="pfCompany" name="company" type="text" placeholder="Nombre de tu empresa">
+        </div>
+        <div class="project-field">
+          <label for="pfNeed">¿QUÉ NECESITAS?</label>
+          <select id="pfNeed" name="need">
+            <option value="">Selecciona una opción</option>
+            <option>Estrategia</option>
+            <option>Branding</option>
+            <option>Web/Ecommerce</option>
+            <option>Marketing/Growth</option>
+            <option>No estoy seguro</option>
+          </select>
+        </div>
+        <div class="project-field">
+          <label for="pfBudget">PRESUPUESTO ESTIMADO</label>
+          <select id="pfBudget" name="budget">
+            <option value="">Selecciona un rango</option>
+            <option>Menos de $5M COP</option>
+            <option>$5M – $20M COP</option>
+            <option>$20M – $50M COP</option>
+            <option>Más de $50M COP</option>
+          </select>
+        </div>
+        <div class="project-field project-field-full">
+          <label for="pfDetails">CUÉNTANOS SOBRE TU PROYECTO</label>
+          <textarea id="pfDetails" name="details" rows="3" placeholder="¿Qué tienes en mente?"></textarea>
+        </div>
+        <div class="project-field project-field-hp" aria-hidden="true">
+          <label for="pfWebsite" tabindex="-1">Website</label>
+          <input id="pfWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="project-form-error" id="projectFormError">No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a hola@workshopofwonders.co</p>
+        <button type="submit" class="btn btn-primary project-submit" id="projectSubmitBtn">Enviar</button>
+      </form>
+      <div class="project-form-thanks" id="projectFormThanks">
+        <p>¡Listo! Tu solicitud quedó registrada. Te responderemos en un máximo de 1 día hábil.</p>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <section id="contacto" class="svc-contact">
