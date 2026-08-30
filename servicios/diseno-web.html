@@ -86,9 +86,38 @@
     <img src="../design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
   </a>
   <nav class="nav-links">
-    <a href="../servicios.html">Servicios</a>
+    <div class="nav-item">
+      <a href="../servicios.html" class="nav-item-trigger"><span>Servicios</span> <span class="nav-item-caret">▾</span></a>
+      <div class="nav-dropdown" id="navServicesDropdown">
+        <div class="nav-dropdown-grid">
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat"><span class="nav-dropdown-dot nav-dot-blue"></span>Brand &amp; Experience Lab</p>
+            <a href="../servicios/diseno-web.html" class="nav-dropdown-link" title="Sitios web, landing pages y tiendas en línea con una estética que representa tu marca.">Diseño web</a>
+            <a href="../servicios/uxui-design.html" class="nav-dropdown-link" title="Interfaces claras y experiencias de usuario pensadas de principio a fin.">UX/UI Design</a>
+            <a href="../servicios/ecommerce.html" class="nav-dropdown-link" title="Tiendas en línea listas para vender, del catálogo al checkout.">E-commerce</a>
+            <a href="../servicios/diseno-grafico.html" class="nav-dropdown-link" title="Piezas gráficas para redes, presentaciones y material digital, con la misma estética de tu sitio.">Diseño gráfico</a>
+          </div>
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat"><span class="nav-dropdown-dot nav-dot-orange"></span>SEO, SEM &amp; Analítica</p>
+            <a href="../servicios/seo.html" class="nav-dropdown-link" title="Investigamos las palabras clave correctas y posicionamos tu sitio para que te encuentren cuando te buscan.">SEO</a>
+            <a href="../servicios/seo-local.html" class="nav-dropdown-link" title="Optimizamos tu perfil de Google Business y tu presencia local para que te encuentren cerca.">SEO local &amp; Google Business Profile</a>
+            <a href="../servicios/geo-posicionamiento-ia.html" class="nav-dropdown-link" title="Optimizamos tu marca para aparecer en las respuestas de ChatGPT, Google AI y otros buscadores con IA.">GEO (posicionamiento en IA)</a>
+            <a href="../servicios/cro-optimizacion-conversion.html" class="nav-dropdown-link" title="Maximizamos las conversiones de tu sitio con pruebas y optimización continua.">CRO (Optimización de la Tasa de Conversión)</a>
+            <a href="../servicios/pauta-digital.html" class="nav-dropdown-link" title="Pauta y campañas en Meta, Google y TikTok, con una estrategia detrás: la segmentación de audiencia correcta y mensajes coordinados para lanzar con fuerza.">Pauta digital</a>
+            <a href="../servicios/posts-graficos-pauta.html" class="nav-dropdown-link" title="Convertimos tu inversión en pauta en piezas que sí detienen el scroll — sin depender de una agencia distinta para la parte creativa.">Creación de posts gráficos para pauta</a>
+            <a href="../servicios/analitica-de-datos.html" class="nav-dropdown-link" title="Convertimos el tráfico de tu sitio en decisiones: qué está funcionando, qué no, y qué cambiar primero.">Análisis de métricas de sitios web</a>
+            <a href="../servicios/analitica-de-datos.html" class="nav-dropdown-link" title="Dashboards claros que traducen tus datos en decisiones, sin depender de hojas de cálculo.">Reportería y dashboards</a>
+            <a href="../servicios/configuracion-analitica-tracking.html" class="nav-dropdown-link" title="Configuramos GA4, Tag Manager y eventos de conversión — la base técnica sin la que no hay datos que analizar.">Configuración de analítica y tracking</a>
+            <a href="../servicios/consultoria-de-datos.html" class="nav-dropdown-link" title="Te ayudamos a decidir qué medir y por qué, no solo a entregarte un dashboard.">Consultoría de datos</a>
+            <a href="../servicios/cursos-digitales.html" class="nav-dropdown-link" title="Talleres y cursos para que tu equipo maneje SEO, pauta digital y analítica por su cuenta.">Cursos digitales</a>
+          </div>
+        </div>
+        <a href="#contacto" class="nav-dropdown-cta" data-open-form>Hablemos de tu proyecto</a>
+      </div>
+    </div>
     <a href="../index.html#labs">Labs</a>
     <a href="../index.html#trabajo">Trabajo</a>
+    <a href="../portafolio.html">Portafolio</a>
     <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos de tu proyecto</a>
   </nav>
   <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobileMenu">
@@ -120,17 +149,12 @@
 </div>
 
 <main id="top">
-  <nav class="svc-breadcrumb" aria-label="Ruta de navegación">
-    <a href="../index.html">Inicio</a> / <a href="../servicios.html">Servicios</a> / <span aria-current="page">Diseño web</span>
-  </nav>
-
-  <section class="svc-hero">
-    <p class="eyebrow"><span class="svc-jump-dot nav-dot-magenta"></span> DISEÑO WEB Y DESARROLLO</p>
+  <section class="svc-hero svc-hero--tight">
+    <p class="eyebrow"><a href="../labs/brand-experience-lab.html"><span class="svc-jump-dot nav-dot-magenta"></span> BRAND &amp; EXPERIENCE LAB</a></p>
     <h1 class="svc-hero-headline">Diseño web que representa tu marca y convierte visitantes en clientes</h1>
     <p class="svc-hero-sub">Diseñamos y desarrollamos sitios web, landing pages y tiendas en línea pensados para cargar rápido, verse increíbles y convertir — con un solo equipo de principio a fin.</p>
     <div class="hero-cta">
       <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
-      <a href="../portafolio.html" class="btn btn-outline">Ver nuestro trabajo</a>
     </div>
     <div class="svc-highlight-row">
       <span class="svc-highlight-chip"><span class="dot" style="background:var(--magenta)"></span>Sitio institucional en 3-6 semanas</span>
@@ -139,78 +163,100 @@
     </div>
   </section>
 
-  <section class="svc-service-detail">
-    <h2>Un sitio web que funciona como tu mejor vendedor</h2>
-    <p>Un sitio web no es solo una tarjeta de presentación digital: es el espacio donde tu marca convence, responde preguntas y convierte visitantes en clientes. Diseñamos cada página pensando en dos personas al mismo tiempo — la que la visita y el buscador que la indexa.</p>
-
-    <h3>Qué hacemos</h3>
-    <div class="svc-includes-grid">
-      <div class="svc-card">
-        <h4><a href="diseno-web.html">Diseño web y landing pages</a></h4>
-        <p>Sitios institucionales, landing pages de campaña y sitios multipágina con una estética que representa tu marca, construidos sobre una arquitectura de información clara.</p>
-      </div>
-      <div class="svc-card">
-        <h4><a href="uxui-design.html">UX/UI Design</a></h4>
-        <p>Interfaces claras y experiencias de usuario pensadas de principio a fin: del primer clic al formulario de contacto o al checkout.</p>
-      </div>
-      <div class="svc-card">
-        <h4><a href="ecommerce.html">E-commerce</a></h4>
-        <p>Tiendas en línea listas para vender, del catálogo al checkout, con la pasarela de pagos, el inventario y la experiencia de compra resueltos.</p>
-      </div>
-      <div class="svc-card">
-        <h4><a href="diseno-grafico.html">Diseño gráfico digital</a></h4>
-        <p>Piezas gráficas para redes, presentaciones y material digital, con la misma estética del sitio para que la marca se vea consistente en todos los canales.</p>
-      </div>
+  <section class="svc-block svc-block-white" id="que-es">
+    <span class="outline-word outline-magenta" aria-hidden="true">SERVICIO</span>
+    <div class="svc-block-inner">
+      <p class="svc-block-eyebrow">QUÉ ES</p>
+      <h2>Un sitio web que funciona como tu mejor vendedor</h2>
+      <p>Un sitio web no es solo una tarjeta de presentación digital: es el espacio donde tu marca convence, responde preguntas y convierte visitantes en clientes. Diseñamos cada página pensando en dos personas al mismo tiempo — la que la visita y el buscador que la indexa.</p>
     </div>
-
-    <h3>Cómo trabajamos un proyecto de diseño web</h3>
-    <ol class="svc-steps">
-      <li><span class="svc-step-num">1</span><p><strong>Observamos y aprendemos:</strong> entendemos tu marca, tu audiencia y tus objetivos antes de diseñar nada.</p></li>
-      <li><span class="svc-step-num">2</span><p><strong>Definimos qué construir primero:</strong> priorizamos las páginas y funcionalidades que más impacto tienen.</p></li>
-      <li><span class="svc-step-num">3</span><p><strong>Lo construimos y lo lanzamos:</strong> diseño, desarrollo y control de calidad antes de salir a producción.</p></li>
-      <li><span class="svc-step-num">4</span><p><strong>Medimos y volvemos a empezar:</strong> revisamos analítica real para decidir qué optimizar después del lanzamiento.</p></li>
-    </ol>
   </section>
 
-  <section class="svc-work-teaser">
-    <p class="eyebrow">TRABAJO REAL</p>
-    <h2>Sitios que ya diseñamos y desarrollamos</h2>
-    <div class="svc-work-teaser-grid">
-      <a class="svc-work-teaser-item" href="../portafolio.html">
-        <img src="../design-system/hero-photos/lamparas-milan-horizontal.webp" alt="Lámparas Milán — rebranding y diseño web" loading="lazy">
-        <span>Lámparas Milán</span>
-      </a>
-      <a class="svc-work-teaser-item" href="../portafolio.html">
-        <img src="../design-system/portfolio/clinica-del-cerebro/extra-1.webp" alt="Clínica del Cerebro — rebranding, sitio web y marketing digital" loading="lazy">
-        <span>Clínica del Cerebro</span>
-      </a>
-      <a class="svc-work-teaser-item" href="../portafolio.html">
-        <img src="../design-system/hero-photos/centro-sueno-ronquido-horizontal.webp" alt="Centro del Sueño y Ronquido — diseño y desarrollo de sitio web" loading="lazy">
-        <span>Centro del Sueño y Ronquido</span>
-      </a>
+  <section class="svc-block svc-block-cloud" id="que-hacemos">
+    <span class="outline-word outline-orange" aria-hidden="true">OFERTA</span>
+    <div class="svc-block-inner svc-block-inner--wide">
+      <p class="svc-block-eyebrow">QUÉ HACEMOS</p>
+      <h2>Todo lo que incluye este servicio</h2>
+      <div class="svc-includes-grid">
+        <div class="svc-card">
+          <h4><a href="diseno-web.html">Diseño web y landing pages</a></h4>
+          <p>Sitios institucionales, landing pages de campaña y sitios multipágina con una estética que representa tu marca, construidos sobre una arquitectura de información clara.</p>
+        </div>
+        <div class="svc-card">
+          <h4><a href="uxui-design.html">UX/UI Design</a></h4>
+          <p>Interfaces claras y experiencias de usuario pensadas de principio a fin: del primer clic al formulario de contacto o al checkout.</p>
+        </div>
+        <div class="svc-card">
+          <h4><a href="ecommerce.html">E-commerce</a></h4>
+          <p>Tiendas en línea listas para vender, del catálogo al checkout, con la pasarela de pagos, el inventario y la experiencia de compra resueltos.</p>
+        </div>
+        <div class="svc-card">
+          <h4><a href="diseno-grafico.html">Diseño gráfico digital</a></h4>
+          <p>Piezas gráficas para redes, presentaciones y material digital, con la misma estética del sitio para que la marca se vea consistente en todos los canales.</p>
+        </div>
+      </div>
     </div>
-    <a href="../portafolio.html" class="btn btn-outline">Ver todo el portafolio</a>
   </section>
 
-  <section class="svc-faq" id="faq">
-    <p class="eyebrow">PREGUNTAS FRECUENTES</p>
-    <h2>Preguntas frecuentes sobre diseño web</h2>
-    <div class="svc-faq-list">
-      <div class="svc-faq-item">
-        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA1"><span>¿Qué incluye un proyecto de diseño web con Workshop of Wonders?</span><span class="svc-faq-icon">+</span></button></h4>
-        <div class="svc-faq-a" id="dwFaqFaqA1"><p>Investigación y estrategia, arquitectura de la información, diseño UX/UI, desarrollo del sitio, optimización de velocidad y SEO técnico básico, y acompañamiento en el lanzamiento.</p></div>
+  <section class="svc-block svc-block-purple" id="como-trabajamos">
+    <span class="outline-word outline-blue" aria-hidden="true">PROCESO</span>
+    <div class="svc-block-inner">
+      <p class="svc-block-eyebrow">CÓMO TRABAJAMOS</p>
+      <h2>Cómo trabajamos un proyecto de diseño web</h2>
+      <ol class="svc-steps">
+        <li><span class="svc-step-num">1</span><p><strong>Observamos y aprendemos:</strong> entendemos tu marca, tu audiencia y tus objetivos antes de diseñar nada.</p></li>
+        <li><span class="svc-step-num">2</span><p><strong>Definimos qué construir primero:</strong> priorizamos las páginas y funcionalidades que más impacto tienen.</p></li>
+        <li><span class="svc-step-num">3</span><p><strong>Lo construimos y lo lanzamos:</strong> diseño, desarrollo y control de calidad antes de salir a producción.</p></li>
+        <li><span class="svc-step-num">4</span><p><strong>Medimos y volvemos a empezar:</strong> revisamos analítica real para decidir qué optimizar después del lanzamiento.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-block svc-block-white svc-block-center" id="trabajo-real">
+    <span class="outline-word outline-orange" aria-hidden="true">TRABAJO</span>
+    <div class="svc-block-inner svc-block-inner--wide">
+      <p class="svc-block-eyebrow">TRABAJO REAL</p>
+      <h2>Sitios que ya diseñamos y desarrollamos</h2>
+      <div class="svc-work-teaser-grid">
+        <a class="svc-work-teaser-item" href="../portafolio.html">
+          <img src="../design-system/hero-photos/lamparas-milan-horizontal.webp" alt="Lámparas Milán — rebranding y diseño web" loading="lazy">
+          <span>Lámparas Milán</span>
+        </a>
+        <a class="svc-work-teaser-item" href="../portafolio.html">
+          <img src="../design-system/portfolio/clinica-del-cerebro/extra-1.webp" alt="Clínica del Cerebro — rebranding, sitio web y marketing digital" loading="lazy">
+          <span>Clínica del Cerebro</span>
+        </a>
+        <a class="svc-work-teaser-item" href="../portafolio.html">
+          <img src="../design-system/hero-photos/centro-sueno-ronquido-horizontal.webp" alt="Centro del Sueño y Ronquido — diseño y desarrollo de sitio web" loading="lazy">
+          <span>Centro del Sueño y Ronquido</span>
+        </a>
       </div>
-      <div class="svc-faq-item">
-        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA2"><span>¿Cuánto tiempo toma diseñar y desarrollar un sitio web?</span><span class="svc-faq-icon">+</span></button></h4>
-        <div class="svc-faq-a" id="dwFaqFaqA2"><p>Un sitio institucional suele tomar entre 3 y 6 semanas; una tienda en línea (e-commerce), entre 6 y 10 semanas, dependiendo del alcance y el catálogo de productos.</p></div>
-      </div>
-      <div class="svc-faq-item">
-        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA3"><span>¿El sitio queda optimizado para SEO desde el diseño?</span><span class="svc-faq-icon">+</span></button></h4>
-        <div class="svc-faq-a" id="dwFaqFaqA3"><p>Sí. Estructuramos encabezados, metadatos, velocidad de carga y datos estructurados desde el desarrollo, para que el trabajo de SEO posterior parta de una base técnica sólida.</p></div>
-      </div>
-      <div class="svc-faq-item">
-        <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA4"><span>¿Pueden rediseñar un sitio que ya existe?</span><span class="svc-faq-icon">+</span></button></h4>
-        <div class="svc-faq-a" id="dwFaqFaqA4"><p>Sí, trabajamos tanto proyectos desde cero como rediseños de sitios existentes, migrando el contenido y cuidando el SEO ya ganado.</p></div>
+      <a href="../portafolio.html" class="btn btn-outline">Ver todo el portafolio</a>
+    </div>
+  </section>
+
+  <section class="svc-block svc-block-cloud svc-block-center" id="faq">
+    <span class="outline-word outline-magenta" aria-hidden="true">FAQ</span>
+    <div class="svc-block-inner">
+      <p class="svc-block-eyebrow">PREGUNTAS FRECUENTES</p>
+      <h2>Preguntas frecuentes sobre diseño web</h2>
+      <div class="svc-faq-list">
+        <div class="svc-faq-item">
+          <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA1"><span>¿Qué incluye un proyecto de diseño web con Workshop of Wonders?</span><span class="svc-faq-icon">+</span></button></h4>
+          <div class="svc-faq-a" id="dwFaqFaqA1"><p>Investigación y estrategia, arquitectura de la información, diseño UX/UI, desarrollo del sitio, optimización de velocidad y SEO técnico básico, y acompañamiento en el lanzamiento.</p></div>
+        </div>
+        <div class="svc-faq-item">
+          <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA2"><span>¿Cuánto tiempo toma diseñar y desarrollar un sitio web?</span><span class="svc-faq-icon">+</span></button></h4>
+          <div class="svc-faq-a" id="dwFaqFaqA2"><p>Un sitio institucional suele tomar entre 3 y 6 semanas; una tienda en línea (e-commerce), entre 6 y 10 semanas, dependiendo del alcance y el catálogo de productos.</p></div>
+        </div>
+        <div class="svc-faq-item">
+          <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA3"><span>¿El sitio queda optimizado para SEO desde el diseño?</span><span class="svc-faq-icon">+</span></button></h4>
+          <div class="svc-faq-a" id="dwFaqFaqA3"><p>Sí. Estructuramos encabezados, metadatos, velocidad de carga y datos estructurados desde el desarrollo, para que el trabajo de SEO posterior parta de una base técnica sólida.</p></div>
+        </div>
+        <div class="svc-faq-item">
+          <h4 class="svc-faq-q-h"><button type="button" class="svc-faq-q" aria-expanded="false" aria-controls="dwFaqFaqA4"><span>¿Pueden rediseñar un sitio que ya existe?</span><span class="svc-faq-icon">+</span></button></h4>
+          <div class="svc-faq-a" id="dwFaqFaqA4"><p>Sí, trabajamos tanto proyectos desde cero como rediseños de sitios existentes, migrando el contenido y cuidando el SEO ya ganado.</p></div>
+        </div>
       </div>
     </div>
   </section>

@@ -105,6 +105,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .eyebrow-dark { color: var(--orange-text); }
+.eyebrow a:hover { text-decoration: underline; }
 
 h1 em, h2 em, .hero-headline em {
   font-family: 'Playfair Display', serif;
@@ -2773,6 +2774,10 @@ main { padding-top: var(--nav-h); }
   max-width: 900px;
   margin: 0 auto;
 }
+/* Opt-in modifier for pages with a shorter, tighter hero (less dead air
+   between the fixed header and the headline) — kept separate from the
+   base .svc-hero rule so it doesn't shift the other pages that reuse it. */
+.svc-hero--tight { padding-top: calc(var(--nav-h) + var(--space-3)); }
 .svc-hero h1:not(.eyebrow), .svc-hero .svc-hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 5.5vw, 56px);
@@ -2959,7 +2964,7 @@ main { padding-top: var(--nav-h); }
   justify-content: center;
   gap: 10px;
   max-width: 700px;
-  margin: 0 auto var(--space-4);
+  margin: var(--space-3) auto 0;
 }
 .svc-highlight-chip {
   display: inline-flex;
@@ -3008,9 +3013,13 @@ main { padding-top: var(--nav-h); }
 .svc-steps li {
   display: flex;
   gap: 14px;
-  align-items: flex-start;
+  align-items: center;
   margin: 0;
 }
+/* The <p> inside each step keeps the browser's default paragraph margin,
+   which pushed the text down relative to the circle's own vertical
+   center — zero it out so the number and the first line of text line up. */
+.svc-steps li p { margin: 0; }
 .svc-steps .svc-step-num {
   flex: none;
   width: 32px;
@@ -3061,6 +3070,59 @@ main { padding-top: var(--nav-h); }
   font-size: 14px;
   text-align: left;
 }
+
+/* ------------------------------------------------------------------
+   Section "blocks": a full-width colored band (white/cloud/purple, same
+   3 tones the home page alternates between .services/.work/.labs) with
+   an optional oversized outline-word watermark on the right, same
+   component as the home page's SERVICIOS/LABS/TRABAJO/NOSOTROS labels.
+   Built for the redesigned service/lab detail pages — one consistent
+   padding rhythm (--space-7, matching .services/.work on the home page)
+   instead of every section improvising its own.
+   ------------------------------------------------------------------ */
+.svc-block {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-7) var(--page-x);
+}
+.svc-block-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.svc-block-inner--wide { max-width: 1100px; }
+.svc-block-center { text-align: center; }
+.svc-block-center .svc-steps,
+.svc-block-center .svc-includes-grid { text-align: left; }
+.svc-block-white { background: var(--white); }
+.svc-block-cloud { background: var(--cloud); }
+.svc-block-purple { background: var(--purple); color: var(--white); }
+.svc-block-purple .svc-block-eyebrow,
+.svc-block-purple h2 { color: var(--white); }
+.svc-block-purple p { color: #e6def0; }
+.svc-block-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin: 0 0 var(--space-2);
+}
+.svc-block .outline-word { top: var(--space-3); }
+/* Steps on the purple block reuse .svc-steps but need the number circle
+   to keep contrast against a dark background and the body copy lightened
+   to match the rest of the block's (--white-on-purple) text. */
+.svc-block-purple .svc-steps strong { color: var(--lima); }
+.svc-block-purple .svc-steps li p { color: #e6def0; }
+/* .btn-outline defaults to white border/text (for dark hero backgrounds);
+   .svc-block-white/-cloud are light, so they need the same dark-ink
+   override as .svc-hero/.svc-work-teaser or the button goes invisible. */
+.svc-block-white .btn-outline, .svc-block-cloud .btn-outline {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+.svc-block-white .btn-outline:hover, .svc-block-cloud .btn-outline:hover { background: rgba(56,7,87,0.08); }
 .svc-faq-q {
   width: 100%;
   display: flex;
