@@ -23,7 +23,7 @@
 
 * { box-sizing: border-box; }
 
-html, body { height: 100%; }
+html, body { overflow-x: hidden; overflow-x: clip; }
 
 body {
   margin: 0;
@@ -31,7 +31,7 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: var(--font-body);
   color: var(--white);
   background:
@@ -101,7 +101,7 @@ body {
   flex: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center;
-  padding: 16px var(--page-x) 120px;
+  padding: 8px var(--page-x) 16px;
   max-width: 980px; margin: 0 auto; width: 100%;
 }
 
@@ -166,7 +166,7 @@ body {
 /* ---------- Progress ---------- */
 .progress {
   width: min(420px, 100%);
-  margin-top: 36px;
+  margin-top: 28px;
   opacity: 0; animation: rise .9s .5s cubic-bezier(.2, .8, .2, 1) forwards; transform: translateY(20px);
 }
 .progress-bar {
@@ -193,7 +193,8 @@ body {
 
 /* ---------- Team toggle + gate ---------- */
 .team {
-  margin-top: 40px;
+  margin-top: 28px;
+  padding-bottom: 30px; /* espacio para el mensaje de error/éxito */
   display: flex; flex-direction: column; align-items: center; gap: 16px;
   opacity: 0; animation: rise .9s .65s cubic-bezier(.2, .8, .2, 1) forwards; transform: translateY(20px);
 }
@@ -265,7 +266,9 @@ body {
 
 /* ---------- Marquee band ---------- */
 .band {
-  position: fixed; left: -5vw; right: -5vw; bottom: 34px; z-index: 1;
+  position: relative; z-index: 1;
+  flex: none;
+  width: 110vw; margin: 0 0 28px -5vw;
   transform: rotate(-3deg);
   background: var(--lima); color: var(--purple);
   padding: 12px 0;
@@ -283,7 +286,8 @@ body {
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 .hint {
-  position: fixed; left: var(--page-x); bottom: 150px; z-index: 1; margin: 0;
+  position: relative; z-index: 1; margin: 0;
+  flex: none; align-self: flex-start; padding: 0 var(--page-x) 12px;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
   animation: fadeHint 1s 2s both;
@@ -306,19 +310,18 @@ body.is-open .stage { animation: exit .7s .5s cubic-bezier(.6, 0, .4, 1) forward
 @media (max-width: 720px) {
   .logo { height: 34px; }
   .ig { font-size: 11px; padding: 8px 12px; }
-  .stage { padding-bottom: 110px; justify-content: flex-start; padding-top: 6vh; }
+  .stage { justify-content: flex-start; padding-top: 5vh; }
   .f1 { --s: 70px; top: 14%; left: -10px; }
   .f2 { --s: 90px; top: 9%; right: -18px; }
   .f3 { --s: 60px; bottom: 20%; left: 4%; }
   .f4 { --s: 80px; bottom: 24%; right: -14px; }
-  .f5, .f6, .f7, .f8 { display: none; }
-  .band { bottom: 26px; padding: 10px 0; }
+  .f3, .f4, .f5, .f6, .f7, .f8 { display: none; }
+  .band { margin-bottom: 28px; padding: 10px 0; }
   .hint { display: none; }
   .gate-btn { padding: 12px 16px; }
 }
 
 @media (max-height: 640px) and (min-width: 721px) {
-  .stage { padding-bottom: 100px; }
   .progress { margin-top: 24px; }
   .team { margin-top: 24px; }
 }
