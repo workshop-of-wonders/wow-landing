@@ -14,7 +14,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 - **Repo**: https://github.com/workshop-of-wonders/wow-landing (branch `main`, push directly — no PR flow used so far)
 - **Live site**: https://wow-landing-beta.vercel.app/ (auto-deploys from `main` via Vercel)
-- **Vercel dashboard**: not confirmed — the Vercel MCP integration connected in this environment (team `somosefectowow-1205's projects`) does **not** list this project, so it's deployed under a different Vercel account/login than the one connected here. To check build logs or domain settings, log into vercel.com with whichever account owns `wow-landing-beta` directly (not through this session's tools).
+- **Vercel dashboard**: project `wow-landing` in team `somosefectowow-1205's projects` (reachable via this session's Vercel MCP — use `get_project` with idOrName `wow-landing` and no team param). Domains: efectowow.co, www.efectowow.co, wow-landing-beta.vercel.app.
 - **Design assets**: `design-system/` folder in the repo (icons, logo, client logos, hero photos, font). Real Behance case-study images still need to be added here (see Pending below).
 - **Behance (reference for case studies)**: https://www.behance.net/mjtamayol
 
@@ -50,7 +50,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
-**2026-09-25** — Added optional site-wide temporary password: `middleware.js` (Vercel Routing Middleware, HTTP Basic Auth). Inactive unless the Vercel env var `SITE_PASSWORD` is set (user defaults to `wow`, override with `SITE_USER`); remove the env var + redeploy to open the site again. `/api/*` is excluded so the admin panel's JWT cookie auth and the contact form keep working.
+**2026-09-25** — Added optional site-wide temporary password: `middleware.js` (Vercel Routing Middleware, HTTP Basic Auth). Inactive unless the Vercel env var `SITE_PASSWORD` is set (user defaults to `wow`, override with `SITE_USER`); remove the env var + redeploy to open the site again. Activated 2026-09-25 (env var set in Vercel for production+preview; value lives only in Vercel, not in the repo). `/api/*` is excluded so the admin panel's JWT cookie auth and the contact form keep working.
 
 **2026-08-29** — Fixed the badly misaligned `#labs` intro row. `.labs-intro-row` is a `1fr 1fr` grid (`align-items: end`) meant to be eyebrow+intro on the left / `h2` on the right, but it had **3** direct children (`.labs-header` holding only the eyebrow, then `h2`, then `.labs-intro` as a loose sibling). Auto-placement put the eyebrow at (col1,row1), the tall 3-line `h2` at (col2,row1) — stretching row 1 and, with `align-items: end`, dropping the eyebrow into the middle of a sea of dead space — and the intro alone at (col1,row2). Fix: moved `<p class="labs-intro">` inside `.labs-header` so the grid has exactly 2 children again (left = eyebrow+intro, right = h2). HTML-only change in `index.html`. Verified at 1280px: left column and h2 now share the same bottom edge, tops nearly level.
 
