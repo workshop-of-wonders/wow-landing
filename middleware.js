@@ -2,9 +2,11 @@
 // Se activa solo si existe la variable de entorno SITE_PASSWORD en Vercel;
 // para abrir el sitio basta con borrar esa variable y redeployar.
 //
-// Sin la cookie de acceso, cualquier página muestra /pronto/ ("Muy pronto"),
-// que trae un formulario de clave para el equipo. El formulario hace POST a
-// /__wow-unlock, que valida la clave y deja la cookie por 30 días.
+// Cada vez que se carga o refresca una página, se muestra /pronto/ ("Muy
+// pronto"), aunque ya se haya puesto la clave antes. El formulario de la
+// página hace POST a /__wow-unlock, que valida la clave y deja un "pase" de
+// un solo uso: la siguiente carga de página lo gasta y el pase se borra.
+// CSS, JS e imágenes no piden pase, solo las páginas (documentos).
 //
 // Fuera del middleware: /api (el panel usa sus propias cookies/JWT y el form
 // de contacto), /pronto (la página misma y sus assets) y /design-system
@@ -16,7 +18,7 @@ export const config = {
 
 const COOKIE = 'wow_gate';
 const UNLOCK_PATH = '/__wow-unlock';
-const MAX_AGE = 60 * 60 * 24 * 30;
+const MAX_AGE = 60; // el pase dura como máximo 1 minuto sin usarse
 
 async function token(password) {
   const data = new TextEncoder().encode('wow-gate:' + password);
@@ -38,6 +40,15 @@ function readCookie(request, name) {
     if (k === name) return v.join('=');
   }
   return '';
+}
+
+// Solo las páginas piden clave; los assets (CSS, JS, imágenes) pasan directo
+// para que la página ya desbloqueada cargue completa sin gastar el pase.
+function isDocument(request, url) {
+  const dest = request.headers.get('sec-fetch-dest');
+  if (dest) return dest === 'document' || dest === 'iframe';
+  const last = url.pathname.split('/').pop();
+  return !last.includes('.') || last.endsWith('.html');
 }
 
 async function unlock(request, expected) {
@@ -77,7 +88,18 @@ export default async function middleware(request) {
   const url = new URL(request.url);
 
   if (url.pathname === UNLOCK_PATH) return unlock(request, expected);
-  if (safeEqual(readCookie(request, COOKIE), expected)) return;
+  if (!isDocument(request, url)) return;
+
+  if (safeEqual(readCookie(request, COOKIE), expected)) {
+    // Pase válido: deja ver esta página y lo borra para la próxima carga.
+    return new Response(null, {
+      headers: {
+        'x-middleware-next': '1',
+        'Set-Cookie': `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+        'Cache-Control': 'no-store',
+      },
+    });
+  }
 
   // Mostrar "Muy pronto" en la misma URL (rewrite, no redirect).
   return new Response(null, {
