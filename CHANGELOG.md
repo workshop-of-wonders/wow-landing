@@ -50,6 +50,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-25** — Added optional site-wide temporary password: `middleware.js` (Vercel Routing Middleware, HTTP Basic Auth). Inactive unless the Vercel env var `SITE_PASSWORD` is set (user defaults to `wow`, override with `SITE_USER`); remove the env var + redeploy to open the site again. `/api/*` is excluded so the admin panel's JWT cookie auth and the contact form keep working.
+
 **2026-08-29** — Fixed the badly misaligned `#labs` intro row. `.labs-intro-row` is a `1fr 1fr` grid (`align-items: end`) meant to be eyebrow+intro on the left / `h2` on the right, but it had **3** direct children (`.labs-header` holding only the eyebrow, then `h2`, then `.labs-intro` as a loose sibling). Auto-placement put the eyebrow at (col1,row1), the tall 3-line `h2` at (col2,row1) — stretching row 1 and, with `align-items: end`, dropping the eyebrow into the middle of a sea of dead space — and the intro alone at (col1,row2). Fix: moved `<p class="labs-intro">` inside `.labs-header` so the grid has exactly 2 children again (left = eyebrow+intro, right = h2). HTML-only change in `index.html`. Verified at 1280px: left column and h2 now share the same bottom edge, tops nearly level.
 
 **2026-08-29** — Removed the `max-width: 760px` cap on `.toggle-list` in `#filosofia` ("Nosotros") so the ON-switch pills run the full width of the column, flush with the right edge of the `h2` and intro paragraph above them (previously they stopped ~115px short). `.icon-morph` is `display: none`, so the list now just tracks `.toggle-copy`'s width. Verified at 1280px: h2, intro and each `.toggle-item` now share the same left/right bounds (102 → 875).
