@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muy pronto — Workshop of Wonders</title>
+<meta name="description" content="Workshop of Wonders está construyendo algo maravilloso. Muy pronto abrimos las puertas del taller.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#380757">
+<meta property="og:title" content="Muy pronto — Workshop of Wonders">
+<meta property="og:description" content="Estamos construyendo algo maravilloso. Muy pronto abrimos las puertas del taller.">
+<meta property="og:image" content="https://efectowow.co/design-system/og-image.jpg">
+<link rel="icon" href="/design-system/logo/wow-mark-purple.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/pronto/pronto.css">
+<script src="/pronto/pronto.js" defer></script>
+</head>
+<body>
+
+<div class="floaters" id="floaters" aria-hidden="true">
+  <img class="floater f1" src="/design-system/icons/icon-star.svg" alt="" data-depth="0.9">
+  <img class="floater f2" src="/design-system/icons/icon-bloom.svg" alt="" data-depth="0.5">
+  <img class="floater f3" src="/design-system/icons/icon-arch.svg" alt="" data-depth="0.7">
+  <img class="floater f4" src="/design-system/icons/icon-swoosh.svg" alt="" data-depth="0.4">
+  <img class="floater f5" src="/design-system/icons/icon-bloom.svg" alt="" data-depth="1">
+  <img class="floater f6" src="/design-system/icons/icon-star.svg" alt="" data-depth="0.3">
+  <img class="floater f7" src="/design-system/icons/icon-swoosh.svg" alt="" data-depth="0.8">
+  <img class="floater f8" src="/design-system/icons/icon-arch.svg" alt="" data-depth="0.45">
+</div>
+<div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+<header class="top">
+  <img class="logo" src="/design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" width="773" height="295">
+  <a class="ig" href="https://instagram.com/efectowow.co" target="_blank" rel="noopener">@efectowow.co <span aria-hidden="true">↗</span></a>
+</header>
+
+<main class="stage">
+  <p class="eyebrow"><span class="dot" aria-hidden="true"></span> En el taller</p>
+  <h1 class="title">
+    <span class="line">Estamos construyendo</span>
+    <span class="line">algo <em class="wow-word" id="wowWord" tabindex="0">maravilloso</em></span>
+  </h1>
+  <p class="lead">Nuestro nuevo sitio está tomando forma. Muy pronto abrimos las puertas del taller para mostrarte marcas, webs y campañas que se encuentran y convierten.</p>
+
+  <div class="progress" role="status" aria-live="polite">
+    <div class="progress-bar"><span id="progressFill"></span></div>
+    <p class="progress-text"><span id="progressLabel">Puliendo píxeles</span><span class="progress-pct" id="progressPct">0%</span></p>
+  </div>
+
+  <div class="team">
+    <label class="toggle">
+      <input type="checkbox" id="teamToggle" aria-controls="gateForm" aria-expanded="false">
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      <span class="toggle-label">¿Eres del equipo?</span>
+    </label>
+
+    <form class="gate" id="gateForm" method="POST" action="/__wow-unlock" hidden>
+      <input type="hidden" name="next" id="gateNext" value="/">
+      <label class="sr-only" for="gateInput">Palabra mágica</label>
+      <input class="gate-input" id="gateInput" name="clave" type="password" placeholder="Palabra mágica" autocomplete="current-password" required>
+      <button class="gate-btn" type="submit"><span class="gate-btn-text">Entrar</span> <span aria-hidden="true">→</span></button>
+      <p class="gate-msg" id="gateMsg" aria-live="assertive"></p>
+    </form>
+  </div>
+</main>
+
+<div class="band" aria-hidden="true">
+  <div class="band-track" id="bandTrack">
+    <span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i>
+    <span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i><span>Muy pronto</span><i>✦</i>
+  </div>
+</div>
+
+<p class="hint" aria-hidden="true">Toca en cualquier parte ✦</p>
+
+</body>
+</html>
