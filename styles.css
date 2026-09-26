@@ -3620,8 +3620,9 @@ main { padding-top: var(--nav-h); }
   .svc-faq { padding-top: 32px; padding-bottom: 32px; }
   /* Hero */
   .hero { padding-bottom: 48px; }
-  .hero-headline { font-size: 34px; margin-bottom: 16px; }
-  .hero-sub { font-size: 17px; margin-bottom: 24px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.12em; }
+  .hero .hero-headline:not(.eyebrow) { font-size: 30px; line-height: 1.15; margin-bottom: 14px; }
+  .hero-sub { font-size: 16px; line-height: 1.55; margin-bottom: 22px; }
   .media-col { height: 120px; }
   /* Servicios */
   .services h2 { margin-top: 16px; }
