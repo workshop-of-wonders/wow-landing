@@ -10,6 +10,7 @@
 // Uso:
 //   POSTGRES_URL="postgres://..." node scripts/seed-site-content.mjs
 //   (o DATABASE_URL, que es como lo nombra la integración Neon de Vercel)
+//   node scripts/seed-site-content.mjs --overwrite   (resincroniza la base con el HTML)
 //
 // No se corrió en la sesión que escribió este script — no había base de
 // datos disponible. Correr una sola vez, después de aplicar scripts/schema.sql,
@@ -23,6 +24,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sql } from '@vercel/postgres';
+
+// --overwrite: reescribe también las filas que ya existen con el texto actual
+// del HTML (usar después de editar textos a mano en el HTML, para que el
+// panel no los revierta al "Publicar").
+const OVERWRITE = process.argv.includes('--overwrite');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -104,11 +110,19 @@ async function main() {
       missing++;
       continue;
     }
-    await sql`
-      INSERT INTO site_content (key, value, label, page)
-      VALUES (${field.key}, ${value}, ${field.label}, ${field.page})
-      ON CONFLICT (key) DO NOTHING
-    `;
+    if (OVERWRITE) {
+      await sql`
+        INSERT INTO site_content (key, value, label, page)
+        VALUES (${field.key}, ${value}, ${field.label}, ${field.page})
+        ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
+      `;
+    } else {
+      await sql`
+        INSERT INTO site_content (key, value, label, page)
+        VALUES (${field.key}, ${value}, ${field.label}, ${field.page})
+        ON CONFLICT (key) DO NOTHING
+      `;
+    }
     console.log(`✓ ${field.key} (${field.page}): ${JSON.stringify(value.slice(0, 60))}${value.length > 60 ? '…' : ''}`);
     ok++;
   }
