@@ -476,6 +476,11 @@ var ProjectCollage = (function () {
             return { lab: lab, tags: categoryTags.filter(function (t) { return CATEGORY_TO_LAB[t] === lab; }) };
           })
         : [{ lab: null, tags: categoryTags }];
+      // Per-brand capabilities from js/cases.js win over data-capabilities.
+      var caseCaps = CASES[el.dataset.title] && CASES[el.dataset.title].capacidades;
+      if (caseCaps) {
+        groups = Object.keys(caseCaps).map(function (lab) { return { lab: lab, tags: caseCaps[lab] }; });
+      }
       groups.forEach(function (group) {
         if (group.lab === null && !group.tags.length) return;
         var groupEl = document.createElement('div');
