@@ -3556,3 +3556,8 @@ main { padding-top: var(--nav-h); }
 }
 .svc-work-teaser-more { display: inline-block; margin-top: var(--space-2); color: var(--purple); font-weight: 700; }
 .svc-work-teaser-more:hover { color: var(--magenta); }
+/* Projects that only have a logo (La Marquessa, Ser Niños): show the logo
+   contained on a white card instead of cropping it like a photo. */
+.svc-work-teaser-item--logo { background: var(--white); box-shadow: inset 0 0 0 1px rgba(56,7,87,0.08); }
+.svc-work-teaser-item--logo img { object-fit: contain; padding: 18% 16% 26%; }
+.svc-work-teaser-item--logo span { color: var(--purple); background: none; }
