@@ -3710,3 +3710,49 @@ main { padding-top: var(--nav-h); }
   /* Preguntas frecuentes */
   .svc-faq-q { padding-top: 12px; padding-bottom: 12px; }
 }
+
+/* ------------------------------------------------------------------
+   Mobile polish round 2 (2026-09-26, owner's list).
+   ------------------------------------------------------------------ */
+/* 4) "¿Por qué WOW?" switches: every item is 2+ lines (bold lead + text),
+   so the old full pill radius (999px) always read as an oval. Card radius
+   at every width. */
+.toggle-item { border-radius: 24px; }
+@media (max-width: 720px) {
+  /* 1) Hero: button sized to its label instead of full width; the
+     secondary "Ver el portafolio" link is hidden on phones. */
+  .hero-cta .btn-primary { width: auto; max-width: none; padding: 14px 28px; font-size: 15px; }
+  .hero .hero-cta .btn-outline { display: none; }
+
+  /* 2) More air between texts. */
+  h2, .labs-headline, .faq-headline { line-height: 1.25; }
+  .eyebrow { margin-bottom: 14px; }
+  .services h2, .work h2, .toggle-section h2 { margin-bottom: 20px; }
+  .method h2 { margin-bottom: 20px; }
+  .faq-headline { margin-bottom: 28px; }
+  /* Labs: eyebrow → headline → intro (the intro used to sit glued on top
+     of the headline). */
+  .labs-intro-row { display: flex; flex-direction: column; }
+  .labs-header { display: contents; }
+  .labs-intro-row .eyebrow { order: 0; }
+  .labs .labs-headline:not(.eyebrow) { order: 1; margin: 0 0 16px; }
+  .labs-intro { order: 2; margin: 0; }
+  .labs-content h3 { margin-bottom: 14px; line-height: 1.3; }
+  .toggle-text strong { margin-bottom: 6px; }
+  .footer-col ul { gap: 6px; }
+  .footer-bottom { gap: 6px; }
+
+  /* 3) Trabajo: the visible row stays ONE row — 2 project cards + the door.
+     The door sets the row height (its own aspect ratio); the photos fill
+     their cards with object-fit instead of dictating the height. */
+  .work-visible {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+  }
+  .work-visible .work-item { position: relative; width: 100%; border-radius: 14px; }
+  .work-visible .work-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .work-visible .work-door { width: 100%; height: auto; margin: 0; }
+  .work-visible .work-item.has-case::after { left: 6px; bottom: 6px; padding: 4px 8px; font-size: 9px; }
+}
