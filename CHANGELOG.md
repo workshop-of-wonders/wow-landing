@@ -20,6 +20,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Pending / open items
 
+- **Casos de estudio en borrador (2026-09-25)**: los textos de `js/cases.js` son redacción propuesta; la dueña debe revisarlos contra lo que realmente se hizo antes de quitar la contraseña del sitio. Campo `resultado` vacío hasta tener datos reales.
 - **Scope note (2026-08-21)**: after the 2026-08-20 site refocus, `index.html`'s work-gallery only has the 10 projects with a real web/SEO/marketing component (see that day's Log entries) — items below that name a project no longer on the home (Prepapp, Seed Capital, Orbit, etc.) apply to `portafolio.html` only, which still has all 22 original case studies untouched.
 - **Real photos still needed for 3 brands (portafolio.html only)**: Prepapp, MJ Studio, and Seed Capital are still colored gradient cards (name + tagline, no photo, no lightbox — `.work-item-color`). AM Studios, Tata's Photos, and Geco. got real photos 2026-08-11 (see log) and were converted back to real `<button data-lightbox>` items; do the same for the rest once photos exist. (Moonking and Acústica Eafit were also in this state — Moonking still is; Acústica Eafit's card was removed 2026-08-14 per client request, back to logo-only in the marquee.)
 - **`tiny.png` client logo identity unconfirmed**: `design-system/clients/tiny.png` (teal cursive mark) visually resembles the Tin-T! logo but wasn't confirmed against a source — left its caption/title as generic "Tiny" rather than guessing. Confirm with the client and either rename to Tin-T! or correct it.
@@ -49,6 +50,8 @@ This file is the working log for this project. **Claude: read this file at the s
 ---
 
 ## Log
+
+**2026-09-25** — `js/cases.js` reescrito por pedido de la dueña ("inventa"): títulos distintos por marca, retos que cuentan el problema del negocio (no el servicio comprado) y "lo que construimos" con 2–3 decisiones concretas. **Es borrador**: puede incluir detalles que no pasaron así — la dueña debe revisarlo antes de abrir el sitio (nota en la cabecera del archivo). `resultado` sigue vacío en los 21; no se inventan cifras, resultados ni testimonios.
 
 **2026-09-25** — Capacidades del popup arregladas y adaptadas por marca. Antes, los proyectos de marca/identidad mostraban "CREA - Brand & Experience Lab" **sin ninguna etiqueta** (sus `data-capabilities` usaban "Identidad y diseño de marca"/"Estrategia de marca"/"DEFINE - Core Lab", que ya no mapean a ningún Lab en `CATEGORY_TO_LAB`). Ahora cada caso en `js/cases.js` tiene `capacidades: { '<Lab>': [servicios] }` con el formato de Ajá ("CREA - Brand & Experience Lab" / "CRECE - Insight Lab") y servicios concretos sacados de su trabajo realizado; `main.js`/`portafolio.js` los usan en lugar de `data-capabilities` cuando existen (el atributo del HTML queda como respaldo, sin tocar). Añadidos por contexto real de la dueña: Centro del Sueño → SEO + Blog y contenidos; Clínica del Cerebro → Contenido para redes.
 
