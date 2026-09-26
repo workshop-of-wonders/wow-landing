@@ -50,6 +50,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-25** — Etiqueta del caso en el popup: "Caso de Estudio — The WoW Experiment" (index + portafolio; se ve en mayúsculas por `.lightbox-label`).
+
 **2026-09-25** — `js/cases.js`: insight y aprendizaje redactados para los 20 casos que no los tenían, por pedido explícito de la dueña ("inventa según la descripción"). Son redacción propuesta a partir de `data-desc`/`data-work`, no hechos confirmados — revisarlos con lo que realmente pasó. `resultado` sigue vacío en los 21: no se inventan cifras/resultados (serían afirmaciones falsas ante clientes reales).
 
 **2026-09-25** — Todos los proyectos tienen caso de estudio: `js/cases.js` pasó de 1 a 21 casos (los 10 del home + los 11 solo de portafolio; verificado que cada `[data-lightbox]` de ambas páginas tiene su entrada y su etiqueta "Ver caso"). Contenido escrito **solo** con la info real de cada proyecto (`data-desc` + `data-work`): título + reto + lo que construimos. `insight` / `resultado` / `aprendizaje` quedan vacíos (no se muestran) salvo Ajá Waffles — pendiente que la dueña aporte datos reales; no inventar.
