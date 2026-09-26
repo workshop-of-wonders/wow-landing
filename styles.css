@@ -3533,3 +3533,26 @@ main { padding-top: var(--nav-h); }
   border-radius: 999px;
 }
 .lightbox-inner::-webkit-scrollbar-thumb:hover { background: var(--lima); }
+
+/* Service pages: Workshop cards open the portfolio popup
+   (js/project-popup.js). */
+.svc-work-teaser-item[data-lightbox] { cursor: pointer; }
+.svc-work-teaser-item[data-lightbox]:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
+.svc-work-teaser-item.has-case::after {
+  content: 'Ver caso';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.svc-work-teaser-more { display: inline-block; margin-top: var(--space-2); color: var(--purple); font-weight: 700; }
+.svc-work-teaser-more:hover { color: var(--magenta); }
