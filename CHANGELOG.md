@@ -38,6 +38,7 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Key decisions & conventions
 
+- **Escala tipográfica móvil (≤720px)**: 30 display · 27 cierre · 24 H2 · 19 H3 · 16 texto · 15 texto de tarjeta · 12 eyebrow. No inventar tamaños intermedios; ver el bloque "Mobile type scale" al final de `styles.css`.
 - **Naming de marca (2026-09-26)**: solo **Wonder · Optimize · Win** y los dos Labs (**Brand & Experience Lab**, **Insight Lab**). CREA / CRECE / DEFINE - Core Lab están retirados — no volver a usarlos en copy, etiquetas ni código.
 - **Breakpoints**: `1200px` = Proceso circle / pinned Nosotros on (below it both are plain stacked, driven by `mobileTimelineQuery` in main.js — keep CSS and JS in sync). `900px` is the main mobile/tablet cutoff used across the site (hero, labs accordion, nav). `720px` and `560px` are used for a few finer adjustments. When adding a new mobile override, check whether JS logic (e.g. `window.innerWidth` gates) needs to match the same breakpoint as the CSS — this caused a bug once (see 2026-08-08, labs accordion).
 - **`--page-x`**: `clamp(24px, 6vw, 96px)` — the horizontal section padding variable. Use this instead of a fixed px value for any new section's left/right padding so it scales with viewport width.
@@ -51,6 +52,8 @@ This file is the working log for this project. **Claude: read this file at the s
 ---
 
 ## Log
+
+**2026-09-26** — Escala tipográfica en celular (≤720px), por "mucha competencia en tamaños": antes había 10 tamaños y niveles casi iguales (H1 30 vs H2 26, H3 22). Ahora: hero h1 30 · cierre "¿Y si hacemos…?" 27 · H2 de sección 24 (`--h2-size`, aplica también a las páginas de servicio) · H3/títulos de tarjeta 19 (Labs, título W·O·W; pasos de Proceso 17; tarjetas de servicio h4 18) · texto 16 · texto de tarjeta 15 · eyebrows 12 mono (antes 11 en el hero y 13 en el resto) · footer tagline/cita 16 (antes 17, más grandes que el texto de la página). Desktop sin cambios.
 
 **2026-09-26** — Pulido móvil, ronda 2 (lista de la dueña). (1) Hero ≤720px: botón "Hablemos de tu proyecto" al ancho de su texto (ya no 100%), y "Ver el portafolio" oculto en celular. (2) Más aire entre textos ≤720px: `h2` line-height 1.25, eyebrows 14px abajo, títulos de sección 20px abajo; en Labs el orden pasa a eyebrow → título → texto (el intro quedaba pegado encima del título; `.labs-header` con `display: contents` + `order`), h3 de los paneles de Labs con más aire, footer con 6px entre enlaces. (3) Trabajo ≤720px: la fila visible queda en UNA fila — 2 cards + la puerta, grid de 3 columnas iguales; la puerta fija la altura y las fotos llenan su card con `object-fit: cover` (posición absoluta); etiqueta "Ver caso" más pequeña. (4) "¿Por qué WOW?": `.toggle-item` con `border-radius: 24px` en todos los tamaños (cada ítem tiene 2+ líneas, el radio de 999px siempre se veía ovalado). Celular 375×812: 8,4 pantallas, sin scroll horizontal.
 

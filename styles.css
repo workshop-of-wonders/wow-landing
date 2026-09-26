@@ -3756,3 +3756,30 @@ main { padding-top: var(--nav-h); }
   .work-visible .work-door { width: 100%; height: auto; margin: 0; }
   .work-visible .work-item.has-case::after { left: 6px; bottom: 6px; padding: 4px 8px; font-size: 9px; }
 }
+
+/* ------------------------------------------------------------------
+   Mobile type scale (≤720px) — one clear step between levels instead of
+   ten competing sizes (owner: "mucha competencia en tamaños").
+     Display (hero h1)          30px
+     Cierre (¿Y si hacemos…?)   27px
+     H2 sección                 24px   (--h2-size, also service pages)
+     H3 / títulos de tarjeta    19px
+     Texto                      16px
+     Texto de tarjeta           15px
+     Etiquetas (eyebrow)        12px mono
+   ------------------------------------------------------------------ */
+@media (max-width: 720px) {
+  :root { --h2-size: 24px; }
+  .eyebrow, .hero .eyebrow { font-size: 12px; letter-spacing: 0.14em; }
+  .contact .closer-line, .svc-contact .closer-line { font-size: 27px; }
+  .svc-includes-grid .svc-card h4 { font-size: 18px; }
+  /* H3 level */
+  .labs-content h3, .labs-panel .labs-label, .labs .labs-label { font-size: 19px; }
+  .wow-strip .wow-strip-title { font-size: 19px; }
+  .method-loop .method-step h3 { font-size: 17px; }
+  /* Card text */
+  .labs-content p { font-size: 15px; line-height: 1.6; }
+  .wow-strip .svc-steps li p { font-size: 15px; }
+  /* Footer: body size, not bigger than page text */
+  .footer .footer-tagline, .footer .footer-quote { font-size: 16px; }
+}
