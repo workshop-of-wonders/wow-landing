@@ -3027,6 +3027,11 @@ main { padding-top: var(--nav-h); }
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .svc-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(26,19,32,0.1); }
+/* Whole card clickable: the heading link stretches over the card. Cards
+   without a heading link (sub-service "includes" lists) are unaffected. */
+.svc-card:has(> :is(h3, h4) > a) { position: relative; cursor: pointer; }
+.svc-card > :is(h3, h4) > a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.svc-card:has(> :is(h3, h4) > a:hover) > :is(h3, h4) > a { text-decoration: underline; }
 .svc-card h3 {
   font-family: var(--font-body);
   font-weight: 700;
@@ -3158,37 +3163,52 @@ main { padding-top: var(--nav-h); }
 
 /* Numbered process steps with a colored circle badge instead of a plain
    bullet list — lightweight version of the home page's method timeline. */
+/* Steps as 3 cards (WONDER / OPTIMIZE / WIN). The labels are words, not
+   digits, so the badge is a pill that sizes to its text — the old 32px
+   circle let "OPTIMIZE" spill out over the paragraph. */
 .svc-steps {
   list-style: none;
   padding: 0;
-  margin: var(--space-3) 0 0;
+  margin: var(--space-4) 0 0;
   display: grid;
-  gap: var(--space-2);
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
 }
 .svc-steps li {
   display: flex;
-  gap: 14px;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
   margin: 0;
+  padding: var(--space-4) var(--space-3);
+  border-radius: 16px;
+  background: var(--cloud);
 }
-/* The <p> inside each step keeps the browser's default paragraph margin,
-   which pushed the text down relative to the circle's own vertical
-   center — zero it out so the number and the first line of text line up. */
-.svc-steps li p { margin: 0; }
+.svc-block-cloud .svc-steps li { background: var(--white); }
+.svc-steps li p { margin: 0; font-size: 15px; line-height: 1.6; }
+/* WONDER / OPTIMIZE / WIN = W·O·W: each step's initial is set huge in the
+   display font so the three cards spell "WOW" across the row, with the
+   rest of the word trailing in mono. Pure CSS (::first-letter), so the
+   markup stays the same on every service page. */
 .svc-steps .svc-step-num {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--lima);
+  display: block;
   color: var(--purple);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: lowercase;
 }
+.svc-steps .svc-step-num::first-letter {
+  font-size: 72px;
+  text-transform: uppercase;
+  color: var(--step-color, var(--purple));
+}
+.svc-steps li:nth-child(1) { --step-color: var(--magenta); }
+.svc-steps li:nth-child(2) { --step-color: var(--orange); }
+.svc-steps li:nth-child(3) { --step-color: var(--purple); }
+.svc-steps li { border-top: 4px solid var(--step-color); }
 .svc-steps strong { color: var(--purple); }
 
 /* Related work teaser: a few portfolio thumbnails linked back to
@@ -3298,7 +3318,57 @@ main { padding-top: var(--nav-h); }
    read comfortably — cap just the body-copy paragraphs (not the eyebrow)
    without giving them their own margin:auto, so they still start flush
    left instead of re-centering within the block. */
-.svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 640px; }
+.svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 680px; font-size: 17px; line-height: 1.7; margin: 0 0 var(--space-2); }
+/* Section headings and sub-questions had no rhythm of their own (h2 sat
+   right on top of the copy, h3s glued to the paragraph above them). */
+.svc-block-inner > h2 { margin: 0 0 var(--space-3); max-width: 780px; }
+.svc-block-center .svc-block-inner > h2 { margin: var(--space-2) auto var(--space-4); }
+.svc-block-inner > h3 {
+  font-size: clamp(20px, 2.2vw, 24px);
+  color: var(--purple);
+  max-width: 680px;
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+/* Short "pillars" (bold lead + one idea each) laid out as cards instead
+   of a run of bold-lead paragraphs. */
+.svc-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
+}
+/* 3-up only when three actually fit; in between, one column reads better
+   than a 2+1 split with an orphan card. */
+@media (max-width: 600px) {
+  .svc-steps li, .svc-pillar { padding: var(--space-3); }
+  .svc-steps li { gap: 12px; }
+  .svc-block-inner > p:not(.svc-block-eyebrow) { font-size: 16px; }
+}
+@media (min-width: 900px) {
+  .svc-steps, .svc-pillars { grid-template-columns: repeat(3, 1fr); }
+  .svc-pillars--2 { grid-template-columns: repeat(2, 1fr); }
+}
+.svc-pillar {
+  padding: var(--space-4) var(--space-3);
+  border-radius: 16px;
+  background: var(--cloud);
+  border-top: 4px solid var(--pillar-color, var(--magenta));
+}
+.svc-block-cloud .svc-pillar { background: var(--white); }
+.svc-pillars--2 { margin-top: var(--space-6); }
+/* Steps are cards on --cloud too, so pillars right after them sit on white. */
+.svc-steps ~ .svc-pillars .svc-pillar { background: var(--white); box-shadow: inset 0 0 0 1px rgba(56,7,87,0.1); }
+.svc-pillar a { color: var(--purple); text-decoration: underline; }
+.svc-pillar h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--purple);
+  margin: 0 0 var(--space-1);
+}
+.svc-pillar p { margin: 0; font-size: 15px; line-height: 1.6; opacity: 0.8; }
 /* Highlight chips reused inside a .svc-block-cloud section (they used to
    live only in the hero) would otherwise blend into the block's own
    --cloud background — force white so they still read as chips. */
