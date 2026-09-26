@@ -53,6 +53,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-26** — Trabajo 721–900px: la fila visible (Lámparas Milán · puerta · Ajá Waffles) ya no se parte en dos. Grid `1fr 0.6fr 1fr`: la puerta fija la altura y las fotos (object-fit cover) quedan ~3:2. Ahora es una sola fila en todos los tamaños (≤720 grid 3 iguales, 721–900 este, ≥901 el grid de 5 del desktop).
+
 **2026-09-26** — Labs (desktop ≥900px): el título "Dos Labs, un solo proyecto…" pasa a la columna izquierda (con el eyebrow "NUESTROS LABS" encima) y el texto descriptivo a la derecha, alineados abajo — pedido de la dueña. Cambio solo de HTML: `.labs-header` ahora contiene eyebrow + h2, y `.labs-intro` es el segundo hijo del grid (sigue habiendo exactamente 2 hijos). En celular el orden no cambia (eyebrow → título → texto).
 
 **2026-09-26** — Escala tipográfica en celular (≤720px), por "mucha competencia en tamaños": antes había 10 tamaños y niveles casi iguales (H1 30 vs H2 26, H3 22). Ahora: hero h1 30 · cierre "¿Y si hacemos…?" 27 · H2 de sección 24 (`--h2-size`, aplica también a las páginas de servicio) · H3/títulos de tarjeta 19 (Labs, título W·O·W; pasos de Proceso 17; tarjetas de servicio h4 18) · texto 16 · texto de tarjeta 15 · eyebrows 12 mono (antes 11 en el hero y 13 en el resto) · footer tagline/cita 16 (antes 17, más grandes que el texto de la página). Desktop sin cambios.
