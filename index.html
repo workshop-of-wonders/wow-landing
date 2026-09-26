@@ -392,29 +392,6 @@
         <div class="client-logo" aria-hidden="true"><img src="design-system/clients/serninos.webp" alt="" loading="lazy" width="440" height="162"></div>
       </div>
     </div>
-    <div class="experiment-case">
-      <p class="experiment-case-label" data-ck="experiment.case_label">CASO DE ESTUDIO — AJÁ WAFFLES</p>
-      <h3 class="experiment-case-title" data-ck="experiment.case_title">Una marca nueva, un diferencial claro, un público por encontrar.</h3>
-      <dl class="experiment-case-list">
-        <div class="experiment-case-item">
-          <dt>El reto</dt>
-          <dd data-ck="experiment.case_challenge">Ajá Waffles es un emprendimiento gastronómico nuevo con un diferencial claro: waffles a base de yuca. Sin marca ni presencia digital todavía, competía por atención frente a cafeterías ya conocidas.</dd>
-        </div>
-        <div class="experiment-case-item">
-          <dt>El insight</dt>
-          <dd data-ck="experiment.case_insight">Su público no buscaba una cafetería más: buscaba algo distinto a las cafeterías tradicionales.</dd>
-        </div>
-        <div class="experiment-case-item">
-          <dt>Lo que construimos</dt>
-          <dd data-ck="experiment.case_build">Diseñamos la estrategia de marketing digital para su lanzamiento, pensada para conectar con ese público desde el primer contacto con la marca.</dd>
-        </div>
-        <div class="experiment-case-item">
-          <dt>El aprendizaje</dt>
-          <dd data-ck="experiment.case_learning">Un producto diferente necesita un mensaje igual de distinto para encontrar a quien lo estaba buscando.</dd>
-        </div>
-      </dl>
-      <a href="portafolio.html" class="experiment-case-link" data-ck="experiment.case_cta">Ver más proyectos en el portafolio →</a>
-    </div>
   </section>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
@@ -438,6 +415,17 @@
           <p class="lightbox-work" id="lightboxWork"></p>
         </div>
         <div class="lightbox-caption-col lightbox-tags-block" id="lightboxTagsBlock"></div>
+      </div>
+      <div class="lightbox-case" id="lightboxCase" style="display:none">
+        <p class="lightbox-label">Caso de estudio</p>
+        <h4 class="lightbox-case-title" id="lightboxCaseTitle"></h4>
+        <dl class="lightbox-case-list">
+          <div><dt>El reto</dt><dd id="lightboxCase-reto"></dd></div>
+          <div><dt>El insight</dt><dd id="lightboxCase-insight"></dd></div>
+          <div><dt>Lo que construimos</dt><dd id="lightboxCase-construimos"></dd></div>
+          <div><dt>El resultado</dt><dd id="lightboxCase-resultado"></dd></div>
+          <div><dt>El aprendizaje</dt><dd id="lightboxCase-aprendizaje"></dd></div>
+        </dl>
       </div>
     </div>
   </div>
@@ -641,6 +629,7 @@
 </div>
 
 <script src="js/common.js" defer></script>
+<script src="js/cases.js" defer></script>
 <script src="js/main.js" defer></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>

@@ -434,6 +434,14 @@ var ProjectCollage = (function () {
   };
   var workEl = document.getElementById('lightboxWork');
   var workBlock = document.getElementById('lightboxWorkBlock');
+  var caseBlock = document.getElementById('lightboxCase');
+  var CASES = window.WOW_CASES || {};
+  var CASE_FIELDS = ['reto', 'insight', 'construimos', 'resultado', 'aprendizaje'];
+  /* Projects with a case study (js/cases.js, keyed by data-title) get a
+     "Ver caso" badge on their card (.has-case in styles.css). */
+  document.querySelectorAll('[data-lightbox]').forEach(function (el) {
+    if (CASES[el.dataset.title]) el.classList.add('has-case');
+  });
   var closeBtn = document.getElementById('lightboxClose');
   var lightboxFocusTrap = createFocusTrap(lightbox, function () { return lightbox.classList.contains('is-open'); });
 
@@ -488,6 +496,21 @@ var ProjectCollage = (function () {
         tagsBlock.appendChild(groupEl);
       });
       tagsBlock.style.display = tagsBlock.children.length ? '' : 'none';
+      var cs = CASES[el.dataset.title];
+      if (caseBlock) {
+        caseBlock.style.display = cs ? '' : 'none';
+        if (cs) {
+          document.getElementById('lightboxCaseTitle').textContent = cs.titulo || '';
+          CASE_FIELDS.forEach(function (f) {
+            var dd = document.getElementById('lightboxCase-' + f);
+            dd.textContent = cs[f] || '';
+            dd.parentNode.style.display = cs[f] ? '' : 'none';
+          });
+        }
+      }
+      // The case already tells what was done — don't repeat it in "Trabajo realizado".
+      if (cs) workBlock.style.display = 'none';
+      lightbox.querySelector('.lightbox-inner').scrollTop = 0;
       lightbox.classList.add('is-open');
       lightboxFocusTrap.onOpen();
     });

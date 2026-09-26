@@ -1564,81 +1564,6 @@ main { padding-top: var(--nav-h); }
   .method-step.ms-4 { top: 50%; left: 14%; transform: translate(calc(-100% - var(--card-push)), -50%); text-align: right; }
 }
 
-/* WOW Experiment */
-.experiment {
-  padding: var(--space-7) var(--page-x);
-  background: var(--purple-accent);
-}
-.experiment h2 {
-  font-size: var(--h2-size);
-  color: var(--white);
-  margin-bottom: var(--space-2);
-  max-width: 640px;
-}
-.experiment-intro {
-  color: rgba(255,255,255,0.82);
-  font-size: var(--intro-size);
-  line-height: 1.6;
-  max-width: 640px;
-  margin: 0 0 var(--space-5);
-}
-.experiment-loop {
-  display: grid;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
-}
-.experiment-step {
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  border-radius: 20px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.experiment-num {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--lima);
-  margin-bottom: var(--space-2);
-}
-.experiment-step h3 { color: var(--white); font-size: 19px; margin-bottom: var(--space-1); }
-.experiment-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
-.experiment-case {
-  padding: var(--space-4);
-  border-radius: 20px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-}
-.experiment-case-label {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 12px;
-  color: var(--lima);
-  margin: 0 0 var(--space-2);
-}
-.experiment-case-title { color: var(--white); font-size: 22px; margin: 0 0 var(--space-3); max-width: 640px; }
-.experiment-case-list {
-  display: grid;
-  gap: var(--space-3);
-  margin: 0 0 var(--space-4);
-}
-.experiment-case-item dt {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-bottom: 4px;
-}
-.experiment-case-item dd { margin: 0; color: #c9c0d1; font-size: 15px; line-height: 1.5; }
-.experiment-case-link { color: var(--lima); font-weight: 600; }
-.experiment-case-link:hover { opacity: 0.85; }
-@media (min-width: 700px) {
-  .experiment-loop { grid-template-columns: repeat(3, 1fr); }
-  .experiment-case-list { grid-template-columns: repeat(2, 1fr); }
-}
-
 /* Work — horizontal scroll gallery */
 .work {
   padding: var(--space-7) var(--page-x);
@@ -3481,13 +3406,6 @@ main { padding-top: var(--nav-h); }
   .pf-grid { grid-template-columns: 1fr; gap: var(--space-2); }
 }
 
-/* Trabajo: el caso de estudio vive debajo de la galería como card oscura
-   dentro de la sección clara. */
-.work .experiment-case {
-  margin-top: var(--space-7);
-  background: var(--purple-accent);
-  border: 0;
-}
 /* W·O·W debajo del círculo de Proceso: franja del mismo morado para que se
    lea como continuación de la sección; reutiliza las cards .svc-steps de las
    páginas de servicio (las iniciales en grande forman W·O·W). */
@@ -3503,3 +3421,57 @@ main { padding-top: var(--nav-h); }
   margin: 0;
 }
 .wow-strip .svc-steps li { color: var(--ink); }
+
+/* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
+   popup del proyecto (js/cases.js). La card con caso lleva "Ver caso". */
+.work-item.has-case { position: relative; }
+.work-item.has-case::after {
+  content: 'Ver caso';
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.lightbox-case {
+  flex: 0 0 auto;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: var(--purple);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  color: var(--white);
+}
+.lightbox-case-title {
+  font-size: clamp(19px, 2vw, 24px);
+  line-height: 1.3;
+  color: var(--white);
+  margin: 0 0 var(--space-4);
+  max-width: 680px;
+}
+.lightbox-case-list {
+  display: grid;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+}
+.lightbox-case-list dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 4px;
+}
+.lightbox-case-list dd { margin: 0; color: #cfc7d6; font-size: 15px; line-height: 1.6; }
+@media (min-width: 700px) {
+  .lightbox-case-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .lightbox-case { padding: var(--space-3); }
+}
