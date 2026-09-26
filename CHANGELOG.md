@@ -51,6 +51,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-25** — Títulos de los 21 casos (`js/cases.js`) cambiados al tono WOW (juguetón, con giro), aprobados uno por uno por la dueña antes de cargarlos (ej. "De cero a órbita.", "Amor a primer paseo.", "Primero la vitrina, después la fila.").
+
 **2026-09-25** — `js/cases.js` reescrito por pedido de la dueña ("inventa"): títulos distintos por marca, retos que cuentan el problema del negocio (no el servicio comprado) y "lo que construimos" con 2–3 decisiones concretas. **Es borrador**: puede incluir detalles que no pasaron así — la dueña debe revisarlo antes de abrir el sitio (nota en la cabecera del archivo). `resultado` sigue vacío en los 21; no se inventan cifras, resultados ni testimonios.
 
 **2026-09-25** — Capacidades del popup arregladas y adaptadas por marca. Antes, los proyectos de marca/identidad mostraban "CREA - Brand & Experience Lab" **sin ninguna etiqueta** (sus `data-capabilities` usaban "Identidad y diseño de marca"/"Estrategia de marca"/"DEFINE - Core Lab", que ya no mapean a ningún Lab en `CATEGORY_TO_LAB`). Ahora cada caso en `js/cases.js` tiene `capacidades: { '<Lab>': [servicios] }` con el formato de Ajá ("CREA - Brand & Experience Lab" / "CRECE - Insight Lab") y servicios concretos sacados de su trabajo realizado; `main.js`/`portafolio.js` los usan en lugar de `data-capabilities` cuando existen (el atributo del HTML queda como respaldo, sin tocar). Añadidos por contexto real de la dueña: Centro del Sueño → SEO + Blog y contenidos; Clínica del Cerebro → Contenido para redes.

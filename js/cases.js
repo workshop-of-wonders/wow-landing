@@ -18,7 +18,7 @@
 window.WOW_CASES = {
 
   'Lámparas Milán': {
-    titulo: 'Una marca con historia, lista para vender en digital.',
+    titulo: 'Le cambiamos la luz, no la esencia.',
     reto: 'Lámparas Milán ya tenía clientes y una marca reconocida, pero su imagen necesitaba ponerse al día y su presencia digital tenía que empezar a trabajar para vender. El reto: modernizarla sin perder lo que la hacía reconocible.',
     insight: 'Sus clientes no compran solo una lámpara: compran cómo se va a ver su casa. La marca tenía que mostrar espacios, no solo productos.',
     construimos: 'Un refresh de marca que conserva su esencia con una imagen más actual; un sitio web donde los productos se ven en ambientes reales; y una estrategia de SEO y pauta digital para llegar a quienes están decorando o remodelando su hogar.',
@@ -31,7 +31,7 @@ window.WOW_CASES = {
   },
 
   'Ajá Waffles': {
-    titulo: 'Waffles de yuca: lanzar algo que nadie estaba buscando… todavía.',
+    titulo: '¿Waffles de yuca? ¡Ajá, eso!',
     reto: 'Ajá Waffles es un emprendimiento gastronómico nuevo con un diferencial claro: waffles a base de yuca. Sin marca ni presencia digital todavía, competía por atención frente a cafeterías ya conocidas.',
     insight: 'Su público no buscaba una cafetería más: buscaba algo distinto a las cafeterías tradicionales.',
     construimos: 'Una estrategia de lanzamiento centrada en su diferencial —waffles de yuca con el sabor de la costa—: un mensaje que lo pone en primer plano desde el primer contacto y contenidos pensados para despertar curiosidad en quienes buscan algo distinto a la cafetería de siempre.',
@@ -43,7 +43,7 @@ window.WOW_CASES = {
   },
 
   'Pretty Pets': {
-    titulo: 'Tráfico que sí llega a comprar.',
+    titulo: 'Visitas que mueven la cola.',
     reto: 'Pretty Pets tenía productos y canales de venta, pero necesitaba que llegaran a ellos personas realmente interesadas en comprar para sus mascotas.',
     insight: 'Quien compra para su mascota compra con el corazón, y lo hace en los canales donde ya confía.',
     construimos: 'Una estrategia digital que parte de las mascotas y sus dueños, no del catálogo, y campañas de pauta segmentadas por intereses que llevan directo a sus canales de venta.',
@@ -55,7 +55,7 @@ window.WOW_CASES = {
   },
 
   'Geco.': {
-    titulo: 'Vender lo ecológico sin sonar a discurso.',
+    titulo: 'Verde de verdad, no de discurso.',
     reto: 'Geco. vende productos ecológicos en un mercado donde muchas marcas dicen ser "verdes". Necesitaba atraer a un público consciente y lograr que ese interés terminara en una compra.',
     insight: 'El público consciente desconfía de lo que es "verde" solo de palabra: necesita razones claras para elegir.',
     construimos: 'Una estrategia digital que explica con claridad por qué cada producto es una mejor elección, con un tono cercano y sin sermones, y un recorrido pensado para pasar del interés a la compra.',
@@ -67,7 +67,7 @@ window.WOW_CASES = {
   },
 
   'Epika Store': {
-    titulo: 'La magia de los parques, sin viajar a Orlando.',
+    titulo: 'Orlando, a un clic de distancia.',
     reto: 'Epika Store trae productos de Disney Parks y Universal Studios desde Orlando. Tenía un producto que enamora, pero necesitaba llegar a los fans y convertir ese entusiasmo en ventas.',
     insight: 'Sus clientes no buscan un producto: buscan un pedacito de la experiencia de los parques sin viajar a Orlando.',
     construimos: 'Una estrategia de marketing digital que vende la experiencia antes que el objeto: contenidos que evocan los parques y campañas dirigidas a fans de Disney y Universal.',
@@ -79,7 +79,7 @@ window.WOW_CASES = {
   },
 
   'Centro del Sueño y Ronquido': {
-    titulo: 'Estar ahí cuando alguien busca por qué ronca.',
+    titulo: 'Despiertos cuando alguien busca por qué ronca.',
     reto: 'El Centro del Sueño y Ronquido es un centro especializado en Medellín. Necesitaba que las personas con problemas de sueño lo encontraran justo cuando empiezan a buscar respuestas.',
     insight: 'Quien ronca o duerme mal suele buscar respuestas en internet antes de pedir una cita.',
     construimos: 'Un sitio web claro, pensado para resolver dudas y agendar; un blog con artículos sobre ronquido, apnea y trastornos del sueño optimizados para SEO; y pauta digital para llegar a pacientes en Medellín.',
@@ -92,7 +92,7 @@ window.WOW_CASES = {
   },
 
   'Clínica del Cerebro': {
-    titulo: 'Información clara para decisiones difíciles.',
+    titulo: 'Claridad para decisiones que pesan.',
     reto: 'La Clínica del Cerebro atiende pacientes neurológicos en Medellín. Sus pacientes y sus familias llegan con dudas y preocupación, y la clínica necesitaba un canal digital que les diera confianza antes de la primera cita.',
     insight: 'Los pacientes y sus familias llegan con dudas y preocupación: necesitan información clara antes de agendar.',
     construimos: 'Un sitio web que explica sus servicios en lenguaje sencillo, contenido educativo para redes sociales sobre temas neurológicos y pauta digital para llegar a pacientes en Medellín.',
@@ -105,7 +105,7 @@ window.WOW_CASES = {
   },
 
   'Caminos de la Vida': {
-    titulo: 'Hablarle a quien toma la decisión.',
+    titulo: 'Tranquilidad para quien decide por amor.',
     reto: 'Caminos de la Vida es un hogar geriátrico. Elegir un hogar para un padre o una madre es una decisión difícil, y necesitaba que las familias lo encontraran y confiaran en él.',
     insight: 'Quien decide casi nunca es el adulto mayor, sino su familia, y lo que busca es tranquilidad.',
     construimos: 'Un sitio web que muestra el día a día del hogar y responde las preguntas de las familias, y una estrategia de marketing y pauta digital dirigida a hijos y familiares que están buscando opciones.',
@@ -118,7 +118,7 @@ window.WOW_CASES = {
   },
 
   'La Marquessa': {
-    titulo: 'Antes de traer más visitas, preparar la tienda.',
+    titulo: 'Primero la vitrina, después la fila.',
     reto: 'La Marquessa ya vendía accesorios en su tienda en línea y quería vender más. Invertir en pauta sin revisar el sitio era arriesgarse a pagar por visitas que no compran.',
     insight: 'Llevar más visitas a un sitio que no está listo para vender es pagar dos veces: primero había que ajustar el sitio.',
     construimos: 'Optimizamos el sitio para que comprar fuera más fácil —navegación, fichas de producto y proceso de compra— y después diseñamos una estrategia de pauta digital para llevar tráfico a una tienda lista para vender.',
@@ -131,7 +131,7 @@ window.WOW_CASES = {
   },
 
   'Ser Niños': {
-    titulo: 'Todo al servicio de una sola meta: vender más.',
+    titulo: 'Un solo juego: vender más.',
     reto: 'Ser Niños es una tienda de juguetes y educación consciente con sitio propio. Su objetivo era claro: vender más en línea.',
     insight: 'Las familias que buscan juguetes conscientes investigan antes de comprar: el sitio tenía que resolver sus dudas rápido.',
     construimos: 'Ajustes puntuales al sitio para que las familias encuentren rápido lo que buscan y entiendan el valor de cada juguete, y una estrategia de pauta digital medida contra un solo objetivo: las ventas.',
@@ -144,7 +144,7 @@ window.WOW_CASES = {
   },
 
   'Orbit': {
-    titulo: 'Una marca deportiva, desde el nombre.',
+    titulo: 'De cero a órbita.',
     reto: 'Orbit quería entrar al mercado de ropa deportiva en Centroamérica sin nada construido —ni nombre, ni logo, ni colores— y competir con marcas ya conocidas.',
     insight: 'En ropa deportiva la gente compra identidad: quiere sentirse parte de algo cuando entrena.',
     construimos: 'Un nombre que habla de movimiento y constancia, un logo pensado para vivir en las prendas y un sistema de color con energía deportiva.',
@@ -156,7 +156,7 @@ window.WOW_CASES = {
   },
 
   'Arlo': {
-    titulo: 'Lo legal, en el idioma de los creativos.',
+    titulo: 'Abogados que hablan creativo.',
     reto: 'Arlo es una firma de abogados para creativos. Ya tenía logo y mascota, pero le faltaba una propuesta de valor clara y un sistema de marca que la hiciera coherente.',
     insight: 'Los creativos suelen ver lo legal como algo frío y lejano; la marca tenía que sentirse cercana a su mundo.',
     construimos: 'Definimos su propuesta de valor, organizamos su sistema de marca, seleccionamos la paleta de color y construimos un Brand Book para que la marca se use igual en todas partes.',
@@ -168,7 +168,7 @@ window.WOW_CASES = {
   },
 
   'Tin-T!': {
-    titulo: 'Recuerdos que cuentan historias.',
+    titulo: 'Cafecito, Aguacatico y una marca con personalidad.',
     reto: 'Tin-T! es un emprendimiento colombiano de merchandising. En un mercado lleno de recuerdos parecidos, necesitaba una marca que se quedara en la memoria.',
     insight: 'Un recuerdo se compra por la historia que cuenta, no por el objeto.',
     construimos: 'Propuesta de valor, identidad visual y dos personajes —Cafecito y Aguacatico— inspirados en íconos colombianos, diseñados para vivir en productos y aplicaciones de la marca.',
@@ -180,7 +180,7 @@ window.WOW_CASES = {
   },
 
   'Moosy': {
-    titulo: 'Una tienda de moda que no se parece a las demás.',
+    titulo: 'Moda que no se viste igual.',
     reto: 'Moosy es una tienda de moda con personalidad propia, pero su imagen no lo estaba reflejando.',
     insight: 'En moda, la identidad visual es lo primero que el cliente "se prueba".',
     construimos: 'Una identidad visual con carácter, pensada para destacar en redes y en la tienda.',
@@ -192,7 +192,7 @@ window.WOW_CASES = {
   },
 
   'Indeleble': {
-    titulo: 'Del nombre a la marca.',
+    titulo: 'Un nombre que deja huella, una marca que no se borra.',
     reto: 'Indeleble, una firma contable, ya tenía un nombre con fuerza, pero no una identidad visual que lo respaldara en un sector que suele verse igual.',
     insight: 'El nombre ya contaba una historia: una huella que no se borra.',
     construimos: 'Un sistema visual construido a partir del nombre: la idea de una huella que no se borra, traducida en logo, colores y aplicaciones.',
@@ -204,7 +204,7 @@ window.WOW_CASES = {
   },
 
   'Prepapp': {
-    titulo: 'Más que una app: un universo propio.',
+    titulo: 'Estudiar para el examen, pero con amigos.',
     reto: 'Prepapp es una app enfocada en preparar estudiantes para exámenes de Estado. El reto no era solo la marca, sino construir un universo propio que la hiciera cercana a su público joven.',
     insight: 'Para un estudiante, prepararse para un examen es una obligación; la marca tenía que hacerlo sentir más cercano y menos pesado.',
     construimos: 'Naming, propuesta de valor, identidad visual, logo y colores, y un sistema de personajes que acompaña al estudiante y le da a la app personalidad más allá de la funcionalidad.',
@@ -216,7 +216,7 @@ window.WOW_CASES = {
   },
 
   'Seed Capital': {
-    titulo: 'Una marca propia en un mar de podcasts.',
+    titulo: 'Una semilla que se escucha.',
     reto: 'Seed Capital es un podcast de emprendimiento que necesitaba una marca con presencia propia frente a otros medios del sector.',
     insight: 'Entre muchos podcasts de emprendimiento, lo que el público recuerda es la marca, no solo el tema.',
     construimos: 'Naming, propuesta de valor y sistema de identidad visual (logo, colores y aplicaciones) pensados para funcionar tanto en el podcast como en sus redes y piezas de difusión.',
@@ -228,7 +228,7 @@ window.WOW_CASES = {
   },
 
   'AM Studios': {
-    titulo: 'Una agencia que diseña con datos, y se nota.',
+    titulo: 'Diseñar con datos, y que se note.',
     reto: 'AM Studios es una agencia de marketing digital con buenos resultados, pero su marca no lo transmitía: necesitaba verse tan sólida como su trabajo.',
     insight: 'Una agencia que vende resultados no puede tener una marca improvisada.',
     construimos: 'Desde el naming, construimos el logo, la paleta de color y una identidad visual con un lenguaje que une diseño y datos.',
@@ -240,7 +240,7 @@ window.WOW_CASES = {
   },
 
   "Tata's Photos": {
-    titulo: 'La belleza de las cosas pequeñas.',
+    titulo: 'Una marca tan detallista como su lente.',
     reto: 'Una fotógrafa que quería dejar de ser "una fotógrafa más" y tener una marca personal que la representara.',
     insight: 'En fotografía, la gente contrata a la persona, no solo el servicio.',
     construimos: 'Definimos su propuesta de valor y construimos el naming, los colores y una identidad inspirada en su forma de mirar: encontrar la belleza en las cosas pequeñas.',
@@ -252,7 +252,7 @@ window.WOW_CASES = {
   },
 
   'Carlos Ravelo': {
-    titulo: 'Una marca personal tan sólida como su asesoría.',
+    titulo: 'Solidez que se ve antes de la primera reunión.',
     reto: 'Carlos Ravelo es consultor de estrategia de negocios. En consultoría la primera impresión pesa: su marca tenía que transmitir la misma solidez que su asesoría.',
     insight: 'Un consultor vende confianza antes de vender su asesoría.',
     construimos: 'Una identidad visual sobria y profesional, pensada para sus presentaciones, propuestas y redes.',
@@ -264,7 +264,7 @@ window.WOW_CASES = {
   },
 
   'Walkmate': {
-    titulo: 'Confianza desde el primer paseo.',
+    titulo: 'Amor a primer paseo.',
     reto: 'Walkmate es una empresa de paseo de perros en Australia. Quien la contrata le confía a su perro: la marca tenía que transmitir cariño y confianza desde el primer vistazo.',
     insight: 'Quien contrata un paseador deja a su perro en manos de otro: la marca tenía que transmitir confianza y cariño.',
     construimos: 'Una identidad de marca cercana y amigable, pensada para funcionar en todos sus puntos de contacto.',
