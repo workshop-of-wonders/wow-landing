@@ -3610,3 +3610,33 @@ main { padding-top: var(--nav-h); }
 @media (min-width: 700px) and (max-width: 1199px) {
   .method-loop { grid-template-columns: repeat(4, 1fr); }
 }
+/* Phones: tighter spacing and sizes so the home reads in fewer swipes.
+   Body copy stays at 16px+; only gaps, headline scale and decorative media
+   shrink. */
+@media (max-width: 720px) {
+  .services, .work, .contact { padding-top: 36px; padding-bottom: 36px; }
+  .labs { padding-top: 36px; }
+  .method { padding-top: 36px; padding-bottom: 40px; }
+  .svc-faq { padding-top: 32px; padding-bottom: 32px; }
+  /* Hero */
+  .hero { padding-bottom: 48px; }
+  .hero-headline { font-size: 34px; margin-bottom: 16px; }
+  .hero-sub { font-size: 17px; margin-bottom: 24px; }
+  .media-col { height: 120px; }
+  /* Servicios */
+  .services h2 { margin-top: 16px; }
+  .hub-diagram { margin-bottom: 24px; }
+  .hub-center { margin: var(--space-3) 0; }
+  /* Labs / Trabajo */
+  .labs-intro-row { margin-bottom: 24px; }
+  .labs-panels { margin-top: 16px; }
+  .work-brands-marquee { margin-top: 28px; }
+  /* ¿Por qué WOW? */
+  .toggle-section { padding-top: 32px; padding-bottom: 32px; }
+  .toggle-section h2 { margin-bottom: 16px; }
+  .toggle-intro { margin-bottom: 20px; }
+  .toggle-list { gap: var(--space-2); }
+  .toggle-item { padding: 16px; }
+  /* Preguntas frecuentes */
+  .svc-faq-q { padding-top: 12px; padding-bottom: 12px; }
+}
