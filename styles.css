@@ -63,7 +63,13 @@
      differences. #metodologia's numbers read as correctly balanced on
      mobile, so they're the values these tokens standardize on. */
   --h2-size: clamp(26px, 3.4vw, 38px);
-  --intro-size: 15px;
+  --intro-size: 17px;
+  /* Outline watermark words (.outline-word) — shared so sections can reserve
+     exactly their height above the content. */
+  --wm-size: clamp(40px, 7vw, 110px);
+}
+@media (max-width: 600px) {
+  :root { --intro-size: 16px; }
 }
 
 * { box-sizing: border-box; }
@@ -571,7 +577,7 @@ main { padding-top: var(--nav-h); }
   right: var(--space-5);
   left: var(--space-5);
   font-family: var(--font-display);
-  font-size: clamp(40px, 7vw, 110px);
+  font-size: var(--wm-size);
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.04em;
@@ -631,20 +637,26 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-6);
   width: 100%;
 }
+/* Nosotros is vertically centered in a sticky box, so its content can ride
+   up into the "NOSOTROS" watermark band. Reserve that band (watermark top +
+   its clamp() font-size + a gap) so the heading always starts below it. */
+@media (min-width: 721px) {
+  .toggle-section { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-2)); }
+}
 .toggle-copy { flex: 1 1 480px; min-width: 0; }
 .toggle-section h2 {
   font-size: var(--h2-size);
   color: var(--purple);
   margin-bottom: var(--space-4);
 }
-.toggle-intro { font-size: var(--intro-size); line-height: 1.6; }
+.toggle-intro { font-size: var(--intro-size); line-height: 1.7; margin-bottom: var(--space-4); }
 .toggle-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 /* Icon morph animation */
@@ -690,7 +702,13 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-3);
   background: var(--white);
   border-radius: 999px;
-  padding: 10px var(--space-3) 10px 10px;
+  padding: 16px var(--space-4) 16px 16px;
+}
+/* On narrow screens the text wraps to 4-6 lines and a full pill radius
+   turns the row into an oval — use a card radius and top-align the switch. */
+@media (max-width: 600px) {
+  .toggle-item { border-radius: 20px; padding: var(--space-3) 20px; gap: 14px; align-items: flex-start; }
+  .toggle-item .switch { margin-top: 2px; }
 }
 .switch {
   flex: 0 0 auto;
@@ -725,9 +743,32 @@ main { padding-top: var(--nav-h); }
 .toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
 .toggle-on-orange .switch.is-on { background: var(--orange); }
 .toggle-on-magenta .switch.is-on { background: var(--magenta); }
-.toggle-text { font-size: 16px; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
-.toggle-text strong { display: block; margin-bottom: 2px; }
+.toggle-text { font-size: 16px; line-height: 1.55; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
+.toggle-text strong { display: block; margin-bottom: 4px; }
 .toggle-item.text-hidden .toggle-text { opacity: 0; }
+/* Short laptop screens: the pinned box must fit the viewport or the last
+   switch is cut off while sticky. Tighten spacing only — the watermark and
+   the type keep their size (owner's rule: move text, never resize). */
+@media (min-width: 721px) and (max-height: 880px) {
+  .toggle-section { padding-bottom: var(--space-3); }
+  .toggle-section h2 { margin-bottom: var(--space-2); }
+  .toggle-intro { margin-bottom: var(--space-3); }
+  .toggle-list { gap: 12px; }
+  .toggle-item { padding-top: 10px; padding-bottom: 10px; }
+  .toggle-text { line-height: 1.35; }
+  .toggle-text strong { margin-bottom: 2px; }
+  .toggle-section .eyebrow { margin-bottom: var(--space-1); }
+}
+@media (min-width: 721px) and (max-height: 760px) {
+  /* Watermark moved up (same size), content reserve follows it. */
+  .toggle-section .outline-word { top: var(--space-2); }
+  .toggle-section { padding-top: calc(var(--space-2) + var(--wm-size) + var(--space-2)); padding-bottom: var(--space-2); }
+  .toggle-section h2 { margin-bottom: 12px; }
+  .toggle-section .eyebrow { margin-bottom: 4px; }
+  .toggle-intro { line-height: 1.5; margin-bottom: var(--space-2); }
+  .toggle-list { gap: 6px; }
+  .toggle-item { padding-top: 6px; padding-bottom: 6px; }
+}
 
 /* Method loop — see .method-loop and friends further down for the circular
    scroll-driven rocket/track (this used to be a straight left-to-right timeline). */
@@ -994,7 +1035,7 @@ main { padding-top: var(--nav-h); }
 }
 .labs-intro-row {
   padding: 0 var(--page-x);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 @media (min-width: 900px) {
   .labs-intro-row {
@@ -1381,11 +1422,11 @@ main { padding-top: var(--nav-h); }
   .toggle-section { position: relative; top: auto; height: auto; min-height: 0; display: block; }
   .toggle-inner { flex-direction: column; }
 }
-/* Method's mobile-fallback cutoff is wider than most (1300px, not 720px) because
+/* Method's mobile-fallback cutoff is wider than most (1200px, not 720px) because
    the circular loop needs real room to breathe — see .method-loop below. Below
    this it drops the scroll-pin/circle entirely for the plain stacked-cards view,
    rather than trying to squeeze a circle into a cramped tablet width. */
-@media (max-width: 1299px) {
+@media (max-width: 1199px) {
   .method-pin { height: auto; }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
@@ -1398,8 +1439,8 @@ main { padding-top: var(--nav-h); }
 .method-intro {
   color: #c9c0d1;
   font-size: var(--intro-size);
-  line-height: 1.6;
-  max-width: 460px;
+  line-height: 1.7;
+  max-width: 540px;
   margin: 0;
 }
 .method-body {
@@ -1407,7 +1448,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   gap: var(--space-5);
 }
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   /* Text stays left; the loop sits to the right, not centered on the page — and
      everything here is sized to fit within one sticky viewport (.method's own
      height) with no vertical overflow, since .method clips overflow rather than
@@ -1438,6 +1479,12 @@ main { padding-top: var(--nav-h); }
        clamp() font-size is also larger. */
     margin-top: clamp(24px, 4vw, 80px);
   }
+}
+/* 1200-1299px: the loop now shows here too (was 1300px+), so give the text
+   column a little less so the left card never touches the heading. */
+@media (min-width: 1200px) and (max-width: 1299px) {
+  .method-header { flex-basis: min(340px, calc(100vw - 910px)); }
+  .method-body { gap: var(--space-4); }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
    on small screens). At 721px+ it becomes a real circle: the 4 cards move to
@@ -1473,7 +1520,7 @@ main { padding-top: var(--nav-h); }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
 
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   .method-loop {
     display: block;
     /* --loop-w/--card-w/--card-push drive the ring, the cards, AND the
@@ -3449,6 +3496,28 @@ main { padding-top: var(--nav-h); }
   .pf-grid { grid-template-columns: 1fr; gap: var(--space-2); }
 }
 
+/* Giant outline watermark words (SERVICIOS, LABS, WORKSHOP, TRABAJO, and the
+   service pages' blocks) sit top-right, absolutely positioned; long eyebrows
+   and headings ran underneath them. Reserve the watermark's own height above
+   the content so text always starts below it. Owner's rule: move the text
+   down, never resize the watermark or the type. (Nosotros: .toggle-section;
+   Proceso's loop has its own margin-top clearance.) */
+@media (min-width: 721px) {
+  .services, .experiment, .work { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-3)); }
+  .labs { padding-top: max(calc(var(--nav-h) + var(--space-4)), calc(var(--space-4) + var(--wm-size) + var(--space-3))); }
+  .svc-block:has(> .outline-word) { padding-top: calc(var(--space-3) + var(--wm-size) + var(--space-3)); }
+}
+/* Proceso in its stacked (non-pinned) layout: the heading spans the width,
+   so it needs the same clearance. (1200px+ keeps the pinned loop layout.) */
+@media (min-width: 721px) and (max-width: 1199px) {
+  .method { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-3)); }
+}
+/* Pinned Proceso loop on short screens: the top card (pushed above the ring)
+   reached the "PROCESO" watermark — nudge the whole loop down instead. */
+@media (min-width: 1200px) and (max-height: 760px) {
+  .method-loop { top: 32px; }
+}
+
 /* W·O·W debajo del círculo de Proceso: franja del mismo morado para que se
    lea como continuación de la sección; reutiliza las cards .svc-steps de las
    páginas de servicio (las iniciales en grande forman W·O·W). */
@@ -3569,7 +3638,7 @@ main { padding-top: var(--nav-h); }
    and the JS "mobile timeline" breakpoint, where main.js already drives the
    switches from the section's own entry instead of the pin — so the pin was
    pure dead scroll on tablets and small laptops. Unpin it there too. */
-@media (max-width: 1299px) {
+@media (max-width: 1199px) {
   .toggle-pin { height: auto; }
   .toggle-section { position: relative; top: auto; min-height: 0; }
 }
