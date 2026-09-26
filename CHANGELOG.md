@@ -53,6 +53,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-26** — Logo de Lámparas Milán (`design-system/clients/milan.webp`) rehecho desde el archivo que envió la dueña (340×249, fondo blanco): fondo quitado (alfa a partir de la luminancia, tinta vino #4F020C uniforme), escalado 4× con bordes suavizados, recortado → 1263×630 webp transparente (antes 305×147, se veía pixelado). `width/height` actualizados en las 2 apariciones de la franja de logos de `index.html`.
+
 **2026-09-26** — Espaciado Trabajo → "¿Por qué WOW?" → Proceso equilibrado cuando Nosotros no está pineado (<1200px). A 905px había ~167px arriba del eyebrow y solo 24px bajo el último switch (la regla de laptops bajas `max-height: 880px` pensada para la versión pineada también recortaba el fondo). Ahora 721–1199px: `.work` padding-bottom 24px y `.toggle-section` padding-bottom 56px → 56px de la franja de logos a la palabra NOSOTROS y 56px del último switch a Proceso. Celular: 56px arriba / 52px abajo. La reserva de la marca de agua no se tocó.
 
 **2026-09-26** — Trabajo 721–900px: la fila visible (Lámparas Milán · puerta · Ajá Waffles) ya no se parte en dos. Grid `1fr 0.6fr 1fr`: la puerta fija la altura y las fotos (object-fit cover) quedan ~3:2. Ahora es una sola fila en todos los tamaños (≤720 grid 3 iguales, 721–900 este, ≥901 el grid de 5 del desktop).
