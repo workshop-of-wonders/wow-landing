@@ -25,8 +25,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Renovar no es empezar de cero: lo que la gente ya reconoce de una marca es un activo que hay que cuidar.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Rebranding', 'Diseño web', 'Desarrollo web'],
-      'CRECE - Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO']
+      'Brand & Experience Lab': ['Rebranding', 'Diseño web', 'Desarrollo web'],
+      'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO']
     }
   },
 
@@ -38,7 +38,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Un producto diferente necesita un mensaje igual de distinto para encontrar a quien lo estaba buscando.',
     capacidades: {
-      'CRECE - Insight Lab': ['Estrategia de marketing digital', 'Estrategia de lanzamiento']
+      'Insight Lab': ['Estrategia de marketing digital', 'Estrategia de lanzamiento']
     }
   },
 
@@ -50,7 +50,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'La pauta rinde más cuando lleva a la gente a donde ya compra, no a un canal nuevo.',
     capacidades: {
-      'CRECE - Insight Lab': ['Estrategia digital', 'Pauta digital']
+      'Insight Lab': ['Estrategia digital', 'Pauta digital']
     }
   },
 
@@ -62,7 +62,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'En lo sostenible, la coherencia vende más que el discurso.',
     capacidades: {
-      'CRECE - Insight Lab': ['Estrategia de marketing digital']
+      'Insight Lab': ['Estrategia de marketing digital']
     }
   },
 
@@ -74,7 +74,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Cuando el producto es emoción, la comunicación tiene que vender la experiencia, no el objeto.',
     capacidades: {
-      'CRECE - Insight Lab': ['Estrategia de marketing digital']
+      'Insight Lab': ['Estrategia de marketing digital']
     }
   },
 
@@ -86,8 +86,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'En salud, un sitio claro y confiable es el primer paso de la consulta.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Sitio web'],
-      'CRECE - Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO', 'Blog y contenidos']
+      'Brand & Experience Lab': ['Sitio web'],
+      'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO', 'Blog y contenidos']
     }
   },
 
@@ -99,8 +99,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'En salud, la confianza se construye con información útil, no con promesas.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Diseño web'],
-      'CRECE - Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'Contenido para redes']
+      'Brand & Experience Lab': ['Diseño web'],
+      'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'Contenido para redes']
     }
   },
 
@@ -112,8 +112,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Cuando la decisión es emocional, la comunicación tiene que hablarle a quien decide.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Desarrollo web'],
-      'CRECE - Insight Lab': ['Estrategia de marketing digital', 'Pauta digital']
+      'Brand & Experience Lab': ['Desarrollo web'],
+      'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital']
     }
   },
 
@@ -125,8 +125,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Primero se optimiza la tienda, después se invierte en pauta.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Optimización del sitio web'],
-      'CRECE - Insight Lab': ['Pauta digital']
+      'Brand & Experience Lab': ['Optimización del sitio web'],
+      'Insight Lab': ['Pauta digital']
     }
   },
 
@@ -138,8 +138,8 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Un solo objetivo hace que cada ajuste y cada peso de pauta se midan contra lo mismo.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Ajustes al sitio web'],
-      'CRECE - Insight Lab': ['Pauta digital']
+      'Brand & Experience Lab': ['Ajustes al sitio web'],
+      'Insight Lab': ['Pauta digital']
     }
   },
 
@@ -151,7 +151,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Cuando se parte de cero, el nombre y el color son la primera promesa de la marca.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Naming', 'Logo', 'Sistema de color']
+      'Brand & Experience Lab': ['Naming', 'Logo', 'Sistema de color']
     }
   },
 
@@ -163,7 +163,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Ordenar un sistema de marca también es diseño: a veces el trabajo es darle estructura a lo que ya existe.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Sistema de marca', 'Brand Book']
+      'Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Sistema de marca', 'Brand Book']
     }
   },
 
@@ -175,7 +175,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Los personajes convierten un producto en un recuerdo.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Personajes', 'Merchandising']
+      'Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Personajes', 'Merchandising']
     }
   },
 
@@ -187,7 +187,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Una tienda con personalidad propia necesita una identidad que no se parezca a las demás.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Identidad visual']
+      'Brand & Experience Lab': ['Identidad visual']
     }
   },
 
@@ -199,7 +199,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Cuando el nombre es fuerte, la identidad tiene que amplificarlo, no competir con él.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Identidad visual', 'Sistema visual']
+      'Brand & Experience Lab': ['Identidad visual', 'Sistema visual']
     }
   },
 
@@ -211,7 +211,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Los personajes le dan a una app algo que la funcionalidad sola no da: cercanía.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Logo', 'Personajes']
+      'Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Logo', 'Personajes']
     }
   },
 
@@ -223,7 +223,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Una identidad pensada desde el inicio para redes y piezas de difusión trabaja en todos los canales.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Piezas para redes']
+      'Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Piezas para redes']
     }
   },
 
@@ -235,7 +235,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'La marca de una agencia es su primera muestra de trabajo.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Logo', 'Paleta de color', 'Identidad visual']
+      'Brand & Experience Lab': ['Logo', 'Paleta de color', 'Identidad visual']
     }
   },
 
@@ -247,7 +247,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'Una marca personal funciona cuando se parece a quien la lleva.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Marca personal', 'Propuesta de valor', 'Naming', 'Identidad visual']
+      'Brand & Experience Lab': ['Marca personal', 'Propuesta de valor', 'Naming', 'Identidad visual']
     }
   },
 
@@ -259,7 +259,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'La marca personal tiene que transmitir lo mismo que la persona en una reunión.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Marca personal', 'Identidad visual']
+      'Brand & Experience Lab': ['Marca personal', 'Identidad visual']
     }
   },
 
@@ -271,7 +271,7 @@ window.WOW_CASES = {
     resultado: '',
     aprendizaje: 'En servicios de cuidado, la identidad tiene que inspirar confianza desde el primer vistazo.',
     capacidades: {
-      'CREA - Brand & Experience Lab': ['Identidad de marca']
+      'Brand & Experience Lab': ['Identidad de marca']
     }
   }
 };

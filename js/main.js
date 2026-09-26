@@ -662,8 +662,8 @@ var ProjectCollage = (function () {
   var tagsBlock = document.getElementById('lightboxTagsBlock');
   /* Category-name → Lab mapping, mirrors servicios.html's sections */
   var CATEGORY_TO_LAB = {
-    'Experiencia digital': 'CREA - Brand & Experience Lab',
-    'Crecimiento y marketing digital': 'CRECE - Insight Lab'
+    'Experiencia digital': 'Brand & Experience Lab',
+    'Crecimiento y marketing digital': 'Insight Lab'
   };
   var workEl = document.getElementById('lightboxWork');
   var workBlock = document.getElementById('lightboxWorkBlock');
@@ -705,7 +705,7 @@ var ProjectCollage = (function () {
       tagsBlock.innerHTML = '';
       var rawParts = (el.dataset.capabilities ? el.dataset.capabilities.split('·') : (el.dataset.desc || '').split(/,| y /i))
         .map(function (t) { return t.trim(); }).filter(Boolean);
-      var labOrder = ['CREA - Brand & Experience Lab', 'CRECE - Insight Lab'];
+      var labOrder = ['Brand & Experience Lab', 'Insight Lab'];
       var labMarkers = rawParts.filter(function (t) { return labOrder.indexOf(t) !== -1; });
       var categoryTags = rawParts.filter(function (t) { return labOrder.indexOf(t) === -1; });
       var groups = labMarkers.length
