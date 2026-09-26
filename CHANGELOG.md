@@ -51,6 +51,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-26** — Footer rediseñado en columnas (pedido de la dueña; conservar la cita de Walt Disney) en las 19 páginas que lo tienen (index, servicios, portafolio, 14 `servicios/*`, 2 `labs/*`). Columnas: marca (logo, "Convertimos marcas en experiencias imposibles de ignorar.", cita de Disney, Instagram/LinkedIn) · Servicios (5 enlaces + "Ver todos") · Explora (Labs, Portafolio, Método WOW, Preguntas frecuentes) · Contacto (hola@efectowow.co, "Colombia · 100% remoto", botón lima "Hablemos de tu proyecto"). Barra final: © año + "Hecho con asombro ✦". Grid 1 col <600px, 2 col 600–999 (marca a lo ancho), 4 col ≥1000 (`1.5fr 1fr 1fr 1.4fr`). Rutas con `../` en subpáginas; en páginas sin `#projectModal` el botón enlaza a `index.html#contacto` en vez de abrir el modal. LinkedIn sigue apuntando a linkedin.com genérico (falta URL real).
+
 **2026-09-25** — Popup del proyecto: la barra de scroll nativa (blanca) de `.lightbox-inner` se veía rota sobre el modal oscuro. Ahora es delgada, con track transparente, thumb lila suave (lima en hover) y margen arriba/abajo para no cortar las esquinas redondeadas (`scrollbar-width/color` + `::-webkit-scrollbar`).
 
 **2026-09-25** — Títulos de los 21 casos (`js/cases.js`) cambiados al tono WOW (juguetón, con giro), aprobados uno por uno por la dueña antes de cargarlos (ej. "De cero a órbita.", "Amor a primer paseo.", "Primero la vitrina, después la fila.").
