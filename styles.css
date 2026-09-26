@@ -3799,3 +3799,17 @@ main { padding-top: var(--nav-h); }
   .work-visible .work-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .work-visible .work-door { width: 100%; height: auto; margin: 0; }
 }
+
+/* Trabajo → Nosotros → Proceso spacing when Nosotros is NOT pinned
+   (<1200px): there was ~167px above "¿Por qué WOW?" and only 24px below
+   the last switch (a short-laptop rule meant for the pinned version was
+   also squeezing the bottom). Even it out; the NOSOTROS watermark keeps its
+   reserved band. */
+@media (min-width: 721px) and (max-width: 1199px) {
+  .work { padding-bottom: var(--space-3); }
+  .toggle-section { padding-bottom: var(--space-7); }
+}
+@media (max-width: 720px) {
+  .work { padding-bottom: 28px; }
+  .toggle-section { padding-top: 28px; padding-bottom: 52px; }
+}

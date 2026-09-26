@@ -53,6 +53,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-26** — Espaciado Trabajo → "¿Por qué WOW?" → Proceso equilibrado cuando Nosotros no está pineado (<1200px). A 905px había ~167px arriba del eyebrow y solo 24px bajo el último switch (la regla de laptops bajas `max-height: 880px` pensada para la versión pineada también recortaba el fondo). Ahora 721–1199px: `.work` padding-bottom 24px y `.toggle-section` padding-bottom 56px → 56px de la franja de logos a la palabra NOSOTROS y 56px del último switch a Proceso. Celular: 56px arriba / 52px abajo. La reserva de la marca de agua no se tocó.
+
 **2026-09-26** — Trabajo 721–900px: la fila visible (Lámparas Milán · puerta · Ajá Waffles) ya no se parte en dos. Grid `1fr 0.6fr 1fr`: la puerta fija la altura y las fotos (object-fit cover) quedan ~3:2. Ahora es una sola fila en todos los tamaños (≤720 grid 3 iguales, 721–900 este, ≥901 el grid de 5 del desktop).
 
 **2026-09-26** — Labs (desktop ≥900px): el título "Dos Labs, un solo proyecto…" pasa a la columna izquierda (con el eyebrow "NUESTROS LABS" encima) y el texto descriptivo a la derecha, alineados abajo — pedido de la dueña. Cambio solo de HTML: `.labs-header` ahora contiene eyebrow + h2, y `.labs-intro` es el segundo hijo del grid (sigue habiendo exactamente 2 hijos). En celular el orden no cambia (eyebrow → título → texto).
