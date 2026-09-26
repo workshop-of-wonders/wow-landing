@@ -57,7 +57,7 @@ body {
   opacity: 0.9;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25));
   transform: translate3d(var(--px, 0), var(--py, 0), 0) rotate(var(--r, 0deg));
-  transition: transform 0.6s cubic-bezier(.2, .8, .2, 1);
+  transition: transform 0.6s cubic-bezier(.2, .8, .2, 1), opacity .4s;
   animation: bob var(--d, 7s) ease-in-out infinite alternate;
 }
 .f1 { --s: 110px; top: 12%; left: 7%;  --r: -12deg; --d: 6s; }
@@ -310,15 +310,35 @@ body.is-open .stage { animation: exit .7s .5s cubic-bezier(.6, 0, .4, 1) forward
 @media (max-width: 720px) {
   .logo { height: 34px; }
   .ig { font-size: 11px; padding: 8px 12px; }
-  .stage { justify-content: flex-start; padding-top: 5vh; }
-  .f1 { --s: 70px; top: 14%; left: -10px; }
-  .f2 { --s: 90px; top: 9%; right: -18px; }
-  .f3 { --s: 60px; bottom: 20%; left: 4%; }
-  .f4 { --s: 80px; bottom: 24%; right: -14px; }
-  .f3, .f4, .f5, .f6, .f7, .f8 { display: none; }
-  .band { margin-bottom: 28px; padding: 10px 0; }
+  .stage { justify-content: center; padding-top: 0; padding-bottom: 8px; }
+  .title { font-size: clamp(2rem, 10vw, 3.2rem); }
+  .title .line:nth-child(2) { white-space: nowrap; }
+  .gate-msg { font-size: 11px; }
+  .eyebrow { margin-bottom: 16px; }
+  .lead { max-width: min(72vw, 340px); font-size: 14px; line-height: 1.55; margin-top: 20px; }
+  .progress { width: min(58vw, 320px); }
+  .progress { margin-top: 26px; }
+  .team { margin-top: 26px; }
+  .band { margin-bottom: 6vh; padding: 10px 0; }
   .hint { display: none; }
+  .gate { width: min(88vw, 400px); }
   .gate-btn { padding: 12px 16px; }
+
+  /* Íconos repartidos en los huecos alrededor del contenido (según el
+     mockup de celular): todos por `top` en % de la pantalla. */
+  .floater { bottom: auto; }
+  .f1 { --s: 13vw; top: 14%; left: 7%;  right: auto; }
+  .f2 { --s: 17vw; top: 13%; right: 6%; left: auto; }
+  .f7 { --s: 7vw;  top: 26%; left: 9%; right: auto; opacity: .7; }
+  .f6 { --s: 7vw;  top: 31%; right: 4%; left: auto; opacity: .75; }
+  .f5 { --s: 9vw;  top: 59%; left: 5%;  right: auto; opacity: .9; }
+  .f4 { --s: 13vw; top: 71%; right: 4%; left: auto; }
+  .f3 { --s: 13vw; top: 76%; left: 6%;  right: auto; }
+  .f8 { --s: 9vw;  top: 77%; right: 17%; left: auto; opacity: .8; }
+
+  /* Con el formulario abierto, los íconos de abajo se apagan para no
+     competir con el mensaje de la clave. */
+  body:has(#teamToggle:checked) :is(.f3, .f4, .f8) { opacity: .18; }
 }
 
 @media (max-height: 640px) and (min-width: 721px) {
