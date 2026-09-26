@@ -3475,3 +3475,18 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) {
   .lightbox-case { padding: var(--space-3); }
 }
+
+/* Popup: the native (white) scrollbar looked broken against the dark modal.
+   Thin, transparent track + soft lilac thumb that turns lima on hover, and
+   the gutter is inset so it doesn't cut through the rounded corners. */
+.lightbox-inner {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.28) transparent;
+}
+.lightbox-inner::-webkit-scrollbar { width: 8px; }
+.lightbox-inner::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
+.lightbox-inner::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.28);
+  border-radius: 999px;
+}
+.lightbox-inner::-webkit-scrollbar-thumb:hover { background: var(--lima); }

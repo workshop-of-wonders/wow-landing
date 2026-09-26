@@ -51,6 +51,8 @@ This file is the working log for this project. **Claude: read this file at the s
 
 ## Log
 
+**2026-09-25** — Popup del proyecto: la barra de scroll nativa (blanca) de `.lightbox-inner` se veía rota sobre el modal oscuro. Ahora es delgada, con track transparente, thumb lila suave (lima en hover) y margen arriba/abajo para no cortar las esquinas redondeadas (`scrollbar-width/color` + `::-webkit-scrollbar`).
+
 **2026-09-25** — Títulos de los 21 casos (`js/cases.js`) cambiados al tono WOW (juguetón, con giro), aprobados uno por uno por la dueña antes de cargarlos (ej. "De cero a órbita.", "Amor a primer paseo.", "Primero la vitrina, después la fila.").
 
 **2026-09-25** — `js/cases.js` reescrito por pedido de la dueña ("inventa"): títulos distintos por marca, retos que cuentan el problema del negocio (no el servicio comprado) y "lo que construimos" con 2–3 decisiones concretas. **Es borrador**: puede incluir detalles que no pasaron así — la dueña debe revisarlo antes de abrir el sitio (nota en la cabecera del archivo). `resultado` sigue vacío en los 21; no se inventan cifras, resultados ni testimonios.
