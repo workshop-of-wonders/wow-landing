@@ -2886,7 +2886,7 @@ main { padding-top: var(--nav-h); }
    with any existing selector (this stylesheet is shared with index.html).
    ------------------------------------------------------------------ */
 .svc-hero {
-  padding: calc(var(--nav-h) + var(--space-6)) var(--page-x) var(--space-5);
+  padding: calc(var(--nav-h) + var(--space-7)) var(--page-x) var(--space-6);
   text-align: center;
   max-width: 900px;
   margin: 0 auto;
@@ -2944,8 +2944,8 @@ main { padding-top: var(--nav-h); }
   /* `main { padding-top: var(--nav-h) }` (global rule) already reserves
      room for the fixed nav before this section even starts, so no nav-h
      here — just the breathing room on top of the centering. */
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
 }
 .svc-hero--blue::before, .svc-hero--pink::before {
   content: "";
@@ -3590,7 +3590,7 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) {
   .svc-jump { display: none; }
   .svc-category { padding: var(--space-5) var(--page-x); }
-  .svc-hero { padding: calc(var(--space-5) + var(--nav-h)) var(--page-x) var(--space-4); }
+  .svc-hero { padding: calc(var(--space-6) + var(--nav-h)) var(--page-x) var(--space-5); }
   .svc-faq { padding: var(--space-5) var(--page-x); }
   .svc-contact { min-height: clamp(420px, 56vh, 560px); padding: var(--space-6) var(--page-x); }
 }
