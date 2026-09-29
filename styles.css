@@ -3242,6 +3242,16 @@ main { padding-top: var(--nav-h); }
    site-wide purple. */
 .labs-page--pink { --labs-accent: var(--magenta); --labs-accent-soft: rgba(236,72,153,0.12); }
 .labs-page--blue { --labs-accent: #3B82F6; --labs-accent-soft: rgba(59,130,246,0.12); }
+/* .svc-service-detail/.svc-faq only tint their full-bleed MARGINS via the
+   box-shadow trick — the max-width content column itself stays transparent,
+   which shows body's white behind it, reading as a plain white "info box"
+   floating between two lab-colored sections. Painting the same cloud tint
+   directly on the column removes that seam so the band reads as one flat
+   colored strip instead. */
+.labs-page .svc-service-detail,
+.labs-page .svc-faq {
+  background: var(--cloud);
+}
 .labs-page .svc-includes-grid .svc-card {
   border-top: 3px solid var(--labs-accent);
 }
