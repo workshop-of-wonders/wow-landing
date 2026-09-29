@@ -2939,12 +2939,7 @@ main { padding-top: var(--nav-h); }
   width: 100vw;
   transform: translateX(-50%);
   z-index: -2;
-  /* Radial dark vignette layered on top of the lab gradient, centered
-     where the (centered, white) headline/copy sit — the plain gradient
-     alone got too light in spots for white text to stay readable. */
-  background:
-    radial-gradient(ellipse 780px 480px at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.12) 80%, rgba(0,0,0,0) 100%),
-    var(--svc-hero-gradient);
+  background: var(--svc-hero-gradient);
 }
 .svc-hero--blue::before { --svc-hero-gradient: linear-gradient(160deg, #5aa9f7, #3B82F6); }
 .svc-hero--lilac::before { --svc-hero-gradient: linear-gradient(160deg, #c084fc, #A855F7); }
