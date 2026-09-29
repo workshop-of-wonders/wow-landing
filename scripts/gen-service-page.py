@@ -123,10 +123,6 @@ HEAD = """<!DOCTYPE html>
 </div>
 
 <main id="top">
-  <nav class="svc-breadcrumb" aria-label="Ruta de navegación">
-    <a href="../index.html">Inicio</a> / <a href="../servicios.html">Servicios</a> / <span aria-current="page">{breadcrumb_name}</span>
-  </nav>
-
   <section class="svc-hero">
     <p class="eyebrow">{eyebrow}</p>
     <h1 class="svc-hero-headline">{h1}</h1>

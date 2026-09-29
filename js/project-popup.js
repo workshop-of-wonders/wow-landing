@@ -1,124 +1,19 @@
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/* createFocusTrap is defined in js/common.js, loaded before this file. */
-
-/* Mobile nav burger is defined in js/common.js, loaded before this file. */
-
-/* Project form modal: opens from any [data-open-form] trigger (same behavior as index.html) */
-(function () {
-  var modal = document.getElementById('projectModal');
-  var closeBtn = document.getElementById('projectModalClose');
-  var form = document.getElementById('projectForm');
-  var thanks = document.getElementById('projectFormThanks');
-  var submitBtn = document.getElementById('projectSubmitBtn');
-  var formError = document.getElementById('projectFormError');
-  if (!modal) return;
-  var projectFormFocusTrap = createFocusTrap(modal, function () { return modal.classList.contains('is-open'); });
-
-  // Time-trap: timestamp set when the modal opens. A submit that lands faster
-  // than a human could plausibly fill the form (~2s) is treated as a bot.
-  var openedAt = 0;
-  var MIN_FILL_MS = 2000;
-
-  function open() {
-    form.style.display = '';
-    thanks.classList.remove('is-visible');
-    formError.classList.remove('is-visible');
-    form.reset();
-    clearFieldErrors();
-    modal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-    projectFormFocusTrap.onOpen();
-    openedAt = Date.now();
-  }
-  function close() {
-    modal.classList.remove('is-open');
-    document.body.style.overflow = '';
-    projectFormFocusTrap.onClose();
-  }
-  document.querySelectorAll('[data-open-form]').forEach(function (el) {
-    el.addEventListener('click', function (e) { e.preventDefault(); open(); });
-  });
-  closeBtn.addEventListener('click', close);
-  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-
-  function clearFieldErrors() {
-    form.querySelectorAll('.project-field.has-error').forEach(function (f) { f.classList.remove('has-error'); });
-  }
-  function setFieldError(input) {
-    var field = input.closest('.project-field');
-    if (field) field.classList.add('has-error');
-  }
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // Real client-side validation beyond native :invalid (inconsistent across
-  // browsers) — trims whitespace and shows inline messages per field.
-  function validate() {
-    clearFieldErrors();
-    var ok = true;
-    var emailVal = form.email.value.trim();
-    form.email.value = emailVal;
-    if (!emailVal || !EMAIL_RE.test(emailVal)) { setFieldError(form.email); ok = false; }
-    var nameVal = form.name.value.trim();
-    form.name.value = nameVal;
-    if (!nameVal) { setFieldError(form.name); ok = false; }
-    return ok;
-  }
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    formError.classList.remove('is-visible');
-
-    // Honeypot: hidden field a real visitor never fills. If it has a value,
-    // silently pretend success without processing anything.
-    var isBot = !!(form.website && form.website.value.trim());
-    // Time-trap: same treatment for submits faster than a human could
-    // reasonably fill the form — a first-line filter only, not a
-    // replacement for server-side validation once a real backend exists.
-    if (openedAt && (Date.now() - openedAt) < MIN_FILL_MS) isBot = true;
-
-    if (isBot) {
-      form.style.display = 'none';
-      thanks.classList.add('is-visible');
-      return;
-    }
-
-    if (!validate()) return;
-
-    // Structured payload, ready for a real submit integration once one is defined.
-    var projectRequest = {
-      email: form.email.value,
-      name: form.name.value,
-      company: form.company.value,
-      need: form.need.value,
-      budget: form.budget.value,
-      details: form.details.value,
-      page: location.pathname
-    };
-
-    // Submits to api/contact.js, which validates and saves the lead to the
-    // `leads` table (reviewed from /admin — no email notification).
-    var idleLabel = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
-    fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(projectRequest) })
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data && data.success) { form.style.display = 'none'; thanks.classList.add('is-visible'); }
-        else { formError.classList.add('is-visible'); }
-      })
-      .catch(function () { formError.classList.add('is-visible'); })
-      .finally(function () { submitBtn.disabled = false; submitBtn.textContent = idleLabel; });
-  });
-})();
-
 /* ------------------------------------------------------------------
-   ProjectCollage + case-study lightbox — copied verbatim from
-   index.html (same IIFEs, same DOM ids) so project cards here open the
-   exact same editorial collage lightbox as the home page. Keep the two
-   copies in sync if either changes; see CHANGELOG.md.
+   Project popup for the service pages' "Workshop" section.
+   Clicking a .svc-work-teaser-item[data-project="<data-title>"] opens the
+   exact same popup as portafolio.html (collage + capacidades + caso).
+
+   Single source of truth: the project data is read at runtime from the
+   matching .work-item[data-title] in portafolio.html, and the case study
+   from js/cases.js — nothing is duplicated in the service pages.
+   ProjectCollage + initLightbox are copied from js/portafolio.js (only
+   change: image paths are resolved from the site root). Keep in sync.
    ------------------------------------------------------------------ */
+(function () {
+var items = document.querySelectorAll('.svc-work-teaser-item[data-project]');
+if (!items.length) return;
+var ROOT = new URL('../', document.currentScript.src).href;
+
 var ProjectCollage = (function () {
   var TYPE_FONT_BY_SLUG = {
     'seed-capital': { primary: "'Open Sans', sans-serif", primaryWeight: 800, secondary: "'Montserrat', sans-serif", secondaryWeight: 600 },
@@ -230,8 +125,8 @@ var ProjectCollage = (function () {
       if (gm) { slugGuess = gm[1]; break; }
     }
     var loadedPromise = Promise.all(items.map(function (it) { return loadImage(it.src); }));
-    var taglinePromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/tagline.webp') : Promise.resolve(null);
-    var patternPromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/pattern.webp') : Promise.resolve(null);
+    var taglinePromise = slugGuess ? loadImage(ROOT + 'design-system/portfolio/' + slugGuess + '/tagline.webp') : Promise.resolve(null);
+    var patternPromise = slugGuess ? loadImage(ROOT + 'design-system/portfolio/' + slugGuess + '/pattern.webp') : Promise.resolve(null);
     var loaded = await loadedPromise;
     if (myToken !== renderToken) return;
     var pieces = items.map(function (it, i) {
@@ -418,7 +313,45 @@ var ProjectCollage = (function () {
   return { render: render };
 })();
 
-(function () {
+var LIGHTBOX_HTML = [
+    '  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">',
+    '    <div class="lightbox-inner">',
+    '      <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>',
+    '      <div class="project-collage-wrap">',
+    '        <div class="project-collage" id="lightboxCollage"></div>',
+    '        <button type="button" class="pc-nav pc-nav-prev" id="pcNavPrev" aria-label="Anterior">←</button>',
+    '        <button type="button" class="pc-nav pc-nav-next" id="pcNavNext" aria-label="Siguiente">→</button>',
+    '      </div>',
+    '      <div class="lightbox-caption">',
+    '        <div class="lightbox-caption-col lightbox-caption-col-main">',
+    '          <div class="lightbox-caption-main">',
+    '            <h3 id="lightboxTitle"></h3>',
+    '            <p class="lightbox-category" id="lightboxCategory"></p>',
+    '          </div>',
+    '          <p class="lightbox-desc" id="lightboxDesc"></p>',
+    '        </div>',
+    '        <div class="lightbox-caption-col lightbox-work-block" id="lightboxWorkBlock">',
+    '          <p class="lightbox-label">Trabajo realizado</p>',
+    '          <p class="lightbox-work" id="lightboxWork"></p>',
+    '        </div>',
+    '        <div class="lightbox-caption-col lightbox-tags-block" id="lightboxTagsBlock"></div>',
+    '      </div>',
+    '      <div class="lightbox-case" id="lightboxCase" style="display:none">',
+    '        <p class="lightbox-label">Caso de Estudio — The WoW Experiment</p>',
+    '        <h4 class="lightbox-case-title" id="lightboxCaseTitle"></h4>',
+    '        <dl class="lightbox-case-list">',
+    '          <div><dt>El reto</dt><dd id="lightboxCase-reto"></dd></div>',
+    '          <div><dt>El insight</dt><dd id="lightboxCase-insight"></dd></div>',
+    '          <div><dt>Lo que construimos</dt><dd id="lightboxCase-construimos"></dd></div>',
+    '          <div><dt>El resultado</dt><dd id="lightboxCase-resultado"></dd></div>',
+    '          <div><dt>El aprendizaje</dt><dd id="lightboxCase-aprendizaje"></dd></div>',
+    '        </dl>',
+    '      </div>',
+    '    </div>',
+    '  </div>'
+].join('\n');
+
+function initLightbox() {
   var lightbox = document.getElementById('lightbox');
   if (!lightbox) return;
   var collageEl = document.getElementById('lightboxCollage');
@@ -575,4 +508,40 @@ var ProjectCollage = (function () {
     if (edgeDir !== 0 && prevDir === 0 && rafId === null) rafId = requestAnimationFrame(edgeScrollTick);
   });
   collageWrap.addEventListener('mouseleave', function () { edgeDir = 0; });
+}
+
+function abs(src) { return /^(https?:|data:|\/)/.test(src) ? src : ROOT + src; }
+
+fetch(ROOT + 'portafolio.html')
+  .then(function (r) { return r.text(); })
+  .then(function (html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    items.forEach(function (item) {
+      var src = [].slice.call(doc.querySelectorAll('.work-item[data-title]')).filter(function (w) {
+        return w.dataset.title === item.dataset.project;
+      })[0];
+      if (!src) return;
+      ['title', 'slug', 'category', 'capabilities', 'desc', 'work', 'tagline'].forEach(function (k) {
+        if (src.dataset[k]) item.dataset[k] = src.dataset[k];
+      });
+      if (src.dataset.img) item.dataset.img = abs(src.dataset.img);
+      if (src.dataset.images) {
+        try {
+          item.dataset.images = JSON.stringify(JSON.parse(src.dataset.images).map(function (i) {
+            return typeof i === 'string' ? abs(i) : Object.assign({}, i, { src: abs(i.src) });
+          }));
+        } catch (e) { /* bad JSON: popup falls back to data-img */ }
+      }
+      item.setAttribute('data-lightbox', '');
+      item.setAttribute('role', 'button');
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-label', 'Ver proyecto ' + item.dataset.title);
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+      });
+    });
+    if (!document.getElementById('lightbox')) document.body.insertAdjacentHTML('beforeend', LIGHTBOX_HTML);
+    initLightbox();
+  })
+  .catch(function () { /* offline / blocked: cards just stay static */ });
 })();

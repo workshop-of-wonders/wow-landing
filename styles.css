@@ -63,7 +63,13 @@
      differences. #metodologia's numbers read as correctly balanced on
      mobile, so they're the values these tokens standardize on. */
   --h2-size: clamp(26px, 3.4vw, 38px);
-  --intro-size: 15px;
+  --intro-size: 17px;
+  /* Outline watermark words (.outline-word) — shared so sections can reserve
+     exactly their height above the content. */
+  --wm-size: clamp(40px, 7vw, 110px);
+}
+@media (max-width: 600px) {
+  :root { --intro-size: 16px; }
 }
 
 * { box-sizing: border-box; }
@@ -591,7 +597,7 @@ main { padding-top: var(--nav-h); }
   right: var(--space-5);
   left: var(--space-5);
   font-family: var(--font-display);
-  font-size: clamp(40px, 7vw, 110px);
+  font-size: var(--wm-size);
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.04em;
@@ -651,20 +657,26 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-6);
   width: 100%;
 }
+/* Nosotros is vertically centered in a sticky box, so its content can ride
+   up into the "NOSOTROS" watermark band. Reserve that band (watermark top +
+   its clamp() font-size + a gap) so the heading always starts below it. */
+@media (min-width: 721px) {
+  .toggle-section { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-2)); }
+}
 .toggle-copy { flex: 1 1 480px; min-width: 0; }
 .toggle-section h2 {
   font-size: var(--h2-size);
   color: var(--purple);
   margin-bottom: var(--space-4);
 }
-.toggle-intro { font-size: var(--intro-size); line-height: 1.6; }
+.toggle-intro { font-size: var(--intro-size); line-height: 1.7; margin-bottom: var(--space-4); }
 .toggle-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 /* Icon morph animation */
@@ -710,7 +722,13 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-3);
   background: var(--white);
   border-radius: 999px;
-  padding: 10px var(--space-3) 10px 10px;
+  padding: 16px var(--space-4) 16px 16px;
+}
+/* On narrow screens the text wraps to 4-6 lines and a full pill radius
+   turns the row into an oval — use a card radius and top-align the switch. */
+@media (max-width: 600px) {
+  .toggle-item { border-radius: 20px; padding: var(--space-3) 20px; gap: 14px; align-items: flex-start; }
+  .toggle-item .switch { margin-top: 2px; }
 }
 .switch {
   flex: 0 0 auto;
@@ -745,9 +763,32 @@ main { padding-top: var(--nav-h); }
 .toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
 .toggle-on-orange .switch.is-on { background: var(--orange); }
 .toggle-on-magenta .switch.is-on { background: var(--magenta); }
-.toggle-text { font-size: 16px; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
-.toggle-text strong { display: block; margin-bottom: 2px; }
+.toggle-text { font-size: 16px; line-height: 1.55; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
+.toggle-text strong { display: block; margin-bottom: 4px; }
 .toggle-item.text-hidden .toggle-text { opacity: 0; }
+/* Short laptop screens: the pinned box must fit the viewport or the last
+   switch is cut off while sticky. Tighten spacing only — the watermark and
+   the type keep their size (owner's rule: move text, never resize). */
+@media (min-width: 721px) and (max-height: 880px) {
+  .toggle-section { padding-bottom: var(--space-3); }
+  .toggle-section h2 { margin-bottom: var(--space-2); }
+  .toggle-intro { margin-bottom: var(--space-3); }
+  .toggle-list { gap: 12px; }
+  .toggle-item { padding-top: 10px; padding-bottom: 10px; }
+  .toggle-text { line-height: 1.35; }
+  .toggle-text strong { margin-bottom: 2px; }
+  .toggle-section .eyebrow { margin-bottom: var(--space-1); }
+}
+@media (min-width: 721px) and (max-height: 760px) {
+  /* Watermark moved up (same size), content reserve follows it. */
+  .toggle-section .outline-word { top: var(--space-2); }
+  .toggle-section { padding-top: calc(var(--space-2) + var(--wm-size) + var(--space-2)); padding-bottom: var(--space-2); }
+  .toggle-section h2 { margin-bottom: 12px; }
+  .toggle-section .eyebrow { margin-bottom: 4px; }
+  .toggle-intro { line-height: 1.5; margin-bottom: var(--space-2); }
+  .toggle-list { gap: 6px; }
+  .toggle-item { padding-top: 6px; padding-bottom: 6px; }
+}
 
 /* Method loop — see .method-loop and friends further down for the circular
    scroll-driven rocket/track (this used to be a straight left-to-right timeline). */
@@ -1014,7 +1055,7 @@ main { padding-top: var(--nav-h); }
 }
 .labs-intro-row {
   padding: 0 var(--page-x);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 @media (min-width: 900px) {
   .labs-intro-row {
@@ -1401,11 +1442,11 @@ main { padding-top: var(--nav-h); }
   .toggle-section { position: relative; top: auto; height: auto; min-height: 0; display: block; }
   .toggle-inner { flex-direction: column; }
 }
-/* Method's mobile-fallback cutoff is wider than most (1300px, not 720px) because
+/* Method's mobile-fallback cutoff is wider than most (1200px, not 720px) because
    the circular loop needs real room to breathe — see .method-loop below. Below
    this it drops the scroll-pin/circle entirely for the plain stacked-cards view,
    rather than trying to squeeze a circle into a cramped tablet width. */
-@media (max-width: 1299px) {
+@media (max-width: 1199px) {
   .method-pin { height: auto; }
   .method { position: relative; top: auto; height: auto; display: block; }
 }
@@ -1418,8 +1459,8 @@ main { padding-top: var(--nav-h); }
 .method-intro {
   color: #c9c0d1;
   font-size: var(--intro-size);
-  line-height: 1.6;
-  max-width: 460px;
+  line-height: 1.7;
+  max-width: 540px;
   margin: 0;
 }
 .method-body {
@@ -1427,7 +1468,7 @@ main { padding-top: var(--nav-h); }
   flex-direction: column;
   gap: var(--space-5);
 }
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   /* Text stays left; the loop sits to the right, not centered on the page — and
      everything here is sized to fit within one sticky viewport (.method's own
      height) with no vertical overflow, since .method clips overflow rather than
@@ -1458,6 +1499,12 @@ main { padding-top: var(--nav-h); }
        clamp() font-size is also larger. */
     margin-top: clamp(24px, 4vw, 80px);
   }
+}
+/* 1200-1299px: the loop now shows here too (was 1300px+), so give the text
+   column a little less so the left card never touches the heading. */
+@media (min-width: 1200px) and (max-width: 1299px) {
+  .method-header { flex-basis: min(340px, calc(100vw - 910px)); }
+  .method-body { gap: var(--space-4); }
 }
 /* Method loop — mobile-first: plain stacked cards, no circle (simplest, safest
    on small screens). At 721px+ it becomes a real circle: the 4 cards move to
@@ -1493,7 +1540,7 @@ main { padding-top: var(--nav-h); }
 .method-step h3 { font-size: 19px; margin-bottom: var(--space-1); }
 .method-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
 
-@media (min-width: 1300px) {
+@media (min-width: 1200px) {
   .method-loop {
     display: block;
     /* --loop-w/--card-w/--card-push drive the ring, the cards, AND the
@@ -1582,81 +1629,6 @@ main { padding-top: var(--nav-h); }
   .method-step.ms-2 { top: 50%; left: 86%; transform: translate(var(--card-push), -50%); }
   .method-step.ms-3 { top: 86%; left: 50%; transform: translate(-50%, var(--card-push)); text-align: center; }
   .method-step.ms-4 { top: 50%; left: 14%; transform: translate(calc(-100% - var(--card-push)), -50%); text-align: right; }
-}
-
-/* WOW Experiment */
-.experiment {
-  padding: var(--space-7) var(--page-x);
-  background: var(--purple-accent);
-}
-.experiment h2 {
-  font-size: var(--h2-size);
-  color: var(--white);
-  margin-bottom: var(--space-2);
-  max-width: 640px;
-}
-.experiment-intro {
-  color: rgba(255,255,255,0.82);
-  font-size: var(--intro-size);
-  line-height: 1.6;
-  max-width: 640px;
-  margin: 0 0 var(--space-5);
-}
-.experiment-loop {
-  display: grid;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
-}
-.experiment-step {
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  border-radius: 20px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.experiment-num {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--lima);
-  margin-bottom: var(--space-2);
-}
-.experiment-step h3 { color: var(--white); font-size: 19px; margin-bottom: var(--space-1); }
-.experiment-step p { margin: 0; color: #c9c0d1; font-size: 15px; }
-.experiment-case {
-  padding: var(--space-4);
-  border-radius: 20px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-}
-.experiment-case-label {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 12px;
-  color: var(--lima);
-  margin: 0 0 var(--space-2);
-}
-.experiment-case-title { color: var(--white); font-size: 22px; margin: 0 0 var(--space-3); max-width: 640px; }
-.experiment-case-list {
-  display: grid;
-  gap: var(--space-3);
-  margin: 0 0 var(--space-4);
-}
-.experiment-case-item dt {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-bottom: 4px;
-}
-.experiment-case-item dd { margin: 0; color: #c9c0d1; font-size: 15px; line-height: 1.5; }
-.experiment-case-link { color: var(--lima); font-weight: 600; }
-.experiment-case-link:hover { opacity: 0.85; }
-@media (min-width: 700px) {
-  .experiment-loop { grid-template-columns: repeat(3, 1fr); }
-  .experiment-case-list { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Work — horizontal scroll gallery */
@@ -2781,52 +2753,59 @@ main { padding-top: var(--nav-h); }
 .footer {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-6) var(--page-x) var(--space-3);
+  padding: var(--space-7) var(--page-x) var(--space-3);
   background: var(--purple);
   color: var(--cloud);
-  font-size: 13px;
-  gap: var(--space-2);
-  text-align: center;
+  font-size: 14px;
 }
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-display);
-  font-weight: 700;
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding-bottom: var(--space-5);
+}
+@media (min-width: 600px) {
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (min-width: 1000px) {
+  .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1.4fr; gap: var(--space-6); }
+  .footer-brand { grid-column: auto; }
+}
+.footer-brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+.footer-logo { display: inline-flex; }
+.footer-logo .footer-logo-img { height: 48px; width: auto; }
+.footer-tagline {
+  margin: var(--space-1) 0 0;
   color: var(--white);
+  font-size: 17px;
+  line-height: 1.45;
+  max-width: 340px;
 }
 .footer-quote {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: clamp(16px, 2.4vw, 22px);
+  font-size: 17px;
+  line-height: 1.4;
   color: var(--lima);
-  max-width: 560px;
-  margin: var(--space-2) 0;
+  max-width: 340px;
+  margin: 0;
 }
 .footer-quote-author {
   display: block;
   font-family: var(--font-mono);
   font-style: normal;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--cloud);
   opacity: 0.7;
   margin-top: 4px;
 }
-.footer-socials {
-  display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  justify-content: center;
-}
+.footer-socials { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .footer-socials a {
   display: inline-flex;
   align-items: center;
-  padding: 12px 4px;
+  padding: 10px 0;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.05em;
@@ -2835,6 +2814,42 @@ main { padding-top: var(--nav-h); }
   transition: color 0.15s ease;
 }
 .footer-socials a:hover { color: var(--lima); }
+.footer-heading {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lima);
+}
+.footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.footer-col a { display: inline-block; padding: 4px 0; color: var(--cloud); transition: color 0.15s ease; }
+.footer-col a:hover { color: var(--lima); }
+.footer-more { font-weight: 600; }
+.footer-contact { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-contact .footer-mail { color: var(--white); font-weight: 600; font-size: 16px; }
+.footer-place { margin: 4px 0 var(--space-3); opacity: 0.75; }
+.footer-contact .footer-cta {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.footer-contact .footer-cta:hover { color: var(--purple); opacity: 0.9; }
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;
+  opacity: 0.8;
+}
+.footer-bottom p { margin: 0; }
 
 @media (max-width: 720px) {
   /* More generous, editorial-feeling hero on mobile: bigger top gap under
@@ -2901,25 +2916,33 @@ main { padding-top: var(--nav-h); }
   line-height: 1.6;
 }
 .svc-hero .hero-cta { justify-content: center; }
-/* Opt-in modifier for a purple hero (rest of the page stays white/cloud
-   alternating) — scoped so it doesn't touch the light .svc-hero used by
-   servicios.html/portafolio.html/the other service pages. Declared after
-   the base h1/.svc-hero-sub color rules above so it actually wins the
-   cascade (same selector specificity, so source order decides).
+/* Opt-in modifiers for a colored, per-lab hero (rest of the page stays
+   white/cloud alternating) — scoped so they don't touch the light
+   .svc-hero used by servicios.html/portafolio.html/the other service
+   pages. --blue is Insight Lab (SEO, pauta, analítica, CRO, cursos...),
+   --pink is Brand & Experience Lab (diseño web, UX/UI, e-commerce,
+   diseño gráfico) — matches the nav-dot-magenta/--magenta (#EC4899)
+   already used for that lab's eyebrow dot/link, not the purple
+   .labs-panel-brand happens to use on the home page. Declared after the
+   base h1/.svc-hero-sub color rules above so they actually win the
+   cascade (same selector specificity, so source order decides). Same
+   gradient + giant corner icon treatment as the home page's #labs
+   panels (.labs-panel-insight/-brand, .labs-bg-icon) otherwise, so a
+   service page's hero still reads as visibly "the same lab" as home.
    .svc-hero itself is a max-width:900px centered box (for the text), so
-   painting the background directly on it left white bars on either side
-   — same full-bleed box-shadow/clip-path trick as .svc-block to spread
-   the color the full width of the viewport behind that centered box. */
-.svc-hero--purple {
+   painting the background directly on it left white bars on either side.
+   A plain background/box-shadow can't hold a gradient, so instead of the
+   box-shadow/clip-path trick .svc-block uses, these get two full-bleed
+   pseudo-elements (::before for the gradient, ::after for the icon) each
+   spread to 100vw via left:50%/translateX(-50%) — independent of how
+   narrow the .svc-hero box itself is. */
+.svc-hero--blue,
+.svc-hero--pink {
   position: relative;
-  background: var(--purple);
-  box-shadow: 0 0 0 100vmax var(--purple);
-  clip-path: inset(0 -100vmax);
-  /* A bit shorter than the home hero's 96vh — at 96vh the hero fills
-     almost the entire first screen, hiding that there's a next section
-     to scroll to. Capping at 85vh leaves a visible sliver of it. */
-  height: min(85vh, 860px);
-  min-height: 600px;
+  /* Shorter than the plain .svc-hero/home hero — this section was
+     eating almost the whole first scroll on common laptop heights. */
+  height: min(64vh, 640px);
+  min-height: 480px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2929,40 +2952,94 @@ main { padding-top: var(--nav-h); }
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
 }
+.svc-hero--blue::before, .svc-hero--pink::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -2;
+  background: var(--svc-hero-gradient);
+}
+.svc-hero--blue::before { --svc-hero-gradient: linear-gradient(160deg, #5aa9f7, #3B82F6); }
+.svc-hero--pink::before { --svc-hero-gradient: linear-gradient(160deg, #f472b6, #EC4899); }
+/* The icon layer: same corner placement/opacity/white-silhouette filter
+   as .labs-bg-icon, just always visible (there's no hover state on a
+   hero) and sized for a full section instead of a narrow flex panel.
+   Layered with the WOW mark in the opposite corner (bottom-left) on the
+   same pseudo-element — one element can hold several background layers,
+   so this needed no extra markup. */
+.svc-hero--blue::after, .svc-hero--pink::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  background-repeat: no-repeat, no-repeat;
+  background-position: right -10% bottom -18%, left -6% bottom calc(-1 * min(33vh, 330px));
+  background-size: 780px auto, 560px auto;
+  opacity: 0.16;
+  /* wow-mark.svg is already solid white; brightness(0) invert(1) just
+     turns the (colored) lab icon into the same white silhouette, so both
+     layers come out matching even though only one needed the filter. */
+  filter: brightness(0) invert(1);
+  pointer-events: none;
+}
+.svc-hero--blue::after { background-image: url(design-system/icons/icon-star.svg), url(design-system/logo/wow-mark.svg); }
+.svc-hero--pink::after { background-image: url(design-system/icons/icon-bloom.svg), url(design-system/logo/wow-mark.svg); }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
    this page's longer title wraps to 4 lines on common laptop widths.
    A smaller cap fits it in 2-3 lines instead, which is most of the
-   height this hero was carrying. Scoped to this modifier so the plain
+   height this hero was carrying. Scoped to these modifiers so the plain
    .svc-hero used by servicios.html/portafolio.html/the other service
    pages keeps its own size. */
 /* Same selector-list specificity trap as the color override above: the
    base rule's "h1:not(.eyebrow)" branch outranks a plain two-class
    override, so match that shape here too or this font-size loses. */
-.svc-hero--purple .svc-hero-headline,
-.svc-hero--purple h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
-.svc-hero--purple .eyebrow { margin-bottom: var(--space-1); }
-.svc-hero--purple .svc-hero-sub { margin-bottom: var(--space-3); }
-.svc-hero--purple .svc-highlight-row { margin-top: var(--space-2); }
+.svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
+.svc-hero--pink .svc-hero-headline, .svc-hero--pink h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
+.svc-hero--blue .eyebrow, .svc-hero--pink .eyebrow { margin-bottom: var(--space-1); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--pink .svc-hero-sub { margin-bottom: var(--space-3); }
+.svc-hero--blue .svc-highlight-row, .svc-hero--pink .svc-highlight-row { margin-top: var(--space-2); }
 /* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
    .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
    picks the highest-specificity match across the whole list, and
    "h1:not(.eyebrow)" (:not()'s specificity is its argument's, so this is
    class+element+class) outranks a plain ".svc-hero-headline" two-class
-   override regardless of source order. Match that same shape so this
-   override actually applies. */
-.svc-hero--purple .svc-hero-headline,
-.svc-hero--purple h1:not(.eyebrow) { color: var(--white); }
-.svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
+   override regardless of source order. Match that same shape here too or
+   this override loses. */
+.svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
+.svc-hero--pink .svc-hero-headline, .svc-hero--pink h1:not(.eyebrow) { color: var(--white); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--pink .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
-   (index.html's hero image); .svc-hero is a light background, so on this
-   page it needs dark ink instead or it renders as an invisible white
-   button on white. */
+   (index.html's hero image); the plain, light .svc-hero needs dark ink
+   instead (below) or it renders as an invisible white button on white —
+   these two modifiers are dark backgrounds themselves, so they keep the
+   white/white default explicitly rather than inheriting that dark-ink
+   override via the shared .svc-hero class. */
 .svc-hero .btn-outline {
   border-color: var(--purple);
   color: var(--purple);
 }
 .svc-hero .btn-outline:hover { background: rgba(56,7,87,0.08); }
+/* Same specificity (0,2,0) as .svc-hero .btn-outline above, so source
+   order is what makes this win: it must stay declared after it. */
+.svc-hero--blue .btn-outline, .svc-hero--pink .btn-outline {
+  border-color: var(--white);
+  color: var(--white);
+}
+.svc-hero--blue .btn-outline:hover, .svc-hero--pink .btn-outline:hover { background: rgba(255,255,255,0.1); }
+.svc-work-teaser .btn-outline {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+.svc-work-teaser .btn-outline:hover { background: rgba(56,7,87,0.08); }
 
 .svc-jump {
   display: flex;
@@ -3042,6 +3119,11 @@ main { padding-top: var(--nav-h); }
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .svc-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(26,19,32,0.1); }
+/* Whole card clickable: the heading link stretches over the card. Cards
+   without a heading link (sub-service "includes" lists) are unaffected. */
+.svc-card:has(> :is(h3, h4) > a) { position: relative; cursor: pointer; }
+.svc-card > :is(h3, h4) > a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.svc-card:has(> :is(h3, h4) > a:hover) > :is(h3, h4) > a { text-decoration: underline; }
 .svc-card h3 {
   font-family: var(--font-body);
   font-weight: 700;
@@ -3185,39 +3267,85 @@ main { padding-top: var(--nav-h); }
 .svc-includes-grid .svc-card h4 a:hover { text-decoration: underline; }
 .svc-includes-grid .svc-card p { font-size: 14px; line-height: 1.5; color: var(--ink); opacity: 0.75; margin: 0; }
 
+/* Lab landing pages (labs/brand-experience-lab.html, labs/insight-lab.html):
+   the rest of the page reused the same white/cloud alternating body as a
+   single-service page, which made the lab's own home read flatter than the
+   colored hero above it. These two page-level modifiers (on <main>) tie the
+   "Servicios de X" cards, work-teaser frames and FAQ accents to each lab's
+   color instead, matching the hero's --magenta/#3B82F6 rather than the
+   site-wide purple. */
+.labs-page--pink { --labs-accent: var(--magenta); --labs-accent-soft: rgba(236,72,153,0.12); }
+.labs-page--blue { --labs-accent: #3B82F6; --labs-accent-soft: rgba(59,130,246,0.12); }
+/* .svc-service-detail/.svc-faq only tint their full-bleed MARGINS via the
+   box-shadow trick — the max-width content column itself stays transparent,
+   which shows body's white behind it, reading as a plain white "info box"
+   floating between two lab-colored sections. Painting the same cloud tint
+   directly on the column removes that seam so the band reads as one flat
+   colored strip instead. */
+.labs-page .svc-service-detail,
+.labs-page .svc-faq {
+  background: var(--cloud);
+}
+.labs-page .svc-includes-grid .svc-card {
+  border-top: 3px solid var(--labs-accent);
+}
+.labs-page .svc-includes-grid .svc-card:hover {
+  box-shadow: 0 12px 28px var(--labs-accent-soft);
+}
+.labs-page .svc-work-teaser-item { box-shadow: 0 0 0 2px var(--labs-accent-soft); }
+.labs-page .svc-work-teaser-more { color: var(--labs-accent); }
+.labs-page .svc-work-teaser-more:hover { color: var(--purple); }
+.labs-page .svc-faq-item.is-open .svc-faq-icon { color: var(--labs-accent); }
+.labs-page .svc-faq-q:hover { color: var(--labs-accent); }
+
 /* Numbered process steps with a colored circle badge instead of a plain
    bullet list — lightweight version of the home page's method timeline. */
+/* Steps as 3 cards (WONDER / OPTIMIZE / WIN). The labels are words, not
+   digits, so the badge is a pill that sizes to its text — the old 32px
+   circle let "OPTIMIZE" spill out over the paragraph. */
 .svc-steps {
   list-style: none;
   padding: 0;
-  margin: var(--space-3) 0 0;
+  margin: var(--space-4) 0 0;
   display: grid;
-  gap: var(--space-2);
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
 }
 .svc-steps li {
   display: flex;
-  gap: 14px;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
   margin: 0;
+  padding: var(--space-4) var(--space-3);
+  border-radius: 16px;
+  background: var(--cloud);
 }
-/* The <p> inside each step keeps the browser's default paragraph margin,
-   which pushed the text down relative to the circle's own vertical
-   center — zero it out so the number and the first line of text line up. */
-.svc-steps li p { margin: 0; }
+.svc-block-cloud .svc-steps li { background: var(--white); }
+.svc-steps li p { margin: 0; font-size: 15px; line-height: 1.6; }
+/* WONDER / OPTIMIZE / WIN = W·O·W: each step's initial is set huge in the
+   display font so the three cards spell "WOW" across the row, with the
+   rest of the word trailing in mono. Pure CSS (::first-letter), so the
+   markup stays the same on every service page. */
 .svc-steps .svc-step-num {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--lima);
+  display: block;
   color: var(--purple);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: lowercase;
 }
+.svc-steps .svc-step-num::first-letter {
+  font-size: 72px;
+  text-transform: uppercase;
+  color: var(--step-color, var(--purple));
+}
+.svc-steps li:nth-child(1) { --step-color: var(--magenta); }
+.svc-steps li:nth-child(2) { --step-color: var(--orange); }
+.svc-steps li:nth-child(3) { --step-color: var(--purple); }
+.svc-steps li { border-top: 4px solid var(--step-color); }
 .svc-steps strong { color: var(--purple); }
 
 /* Related work teaser: a few portfolio thumbnails shown on each service
@@ -3327,7 +3455,57 @@ main { padding-top: var(--nav-h); }
    read comfortably — cap just the body-copy paragraphs (not the eyebrow)
    without giving them their own margin:auto, so they still start flush
    left instead of re-centering within the block. */
-.svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 640px; }
+.svc-block-inner > p:not(.svc-block-eyebrow) { max-width: 680px; font-size: 17px; line-height: 1.7; margin: 0 0 var(--space-2); }
+/* Section headings and sub-questions had no rhythm of their own (h2 sat
+   right on top of the copy, h3s glued to the paragraph above them). */
+.svc-block-inner > h2 { margin: 0 0 var(--space-3); max-width: 780px; }
+.svc-block-center .svc-block-inner > h2 { margin: var(--space-2) auto var(--space-4); }
+.svc-block-inner > h3 {
+  font-size: clamp(20px, 2.2vw, 24px);
+  color: var(--purple);
+  max-width: 680px;
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+/* Short "pillars" (bold lead + one idea each) laid out as cards instead
+   of a run of bold-lead paragraphs. */
+.svc-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
+}
+/* 3-up only when three actually fit; in between, one column reads better
+   than a 2+1 split with an orphan card. */
+@media (max-width: 600px) {
+  .svc-steps li, .svc-pillar { padding: var(--space-3); }
+  .svc-steps li { gap: 12px; }
+  .svc-block-inner > p:not(.svc-block-eyebrow) { font-size: 16px; }
+}
+@media (min-width: 900px) {
+  .svc-steps, .svc-pillars { grid-template-columns: repeat(3, 1fr); }
+  .svc-pillars--2 { grid-template-columns: repeat(2, 1fr); }
+}
+.svc-pillar {
+  padding: var(--space-4) var(--space-3);
+  border-radius: 16px;
+  background: var(--cloud);
+  border-top: 4px solid var(--pillar-color, var(--magenta));
+}
+.svc-block-cloud .svc-pillar { background: var(--white); }
+.svc-pillars--2 { margin-top: var(--space-6); }
+/* Steps are cards on --cloud too, so pillars right after them sit on white. */
+.svc-steps ~ .svc-pillars .svc-pillar { background: var(--white); box-shadow: inset 0 0 0 1px rgba(56,7,87,0.1); }
+.svc-pillar a { color: var(--purple); text-decoration: underline; }
+.svc-pillar h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--purple);
+  margin: 0 0 var(--space-1);
+}
+.svc-pillar p { margin: 0; font-size: 15px; line-height: 1.6; opacity: 0.8; }
 /* Highlight chips reused inside a .svc-block-cloud section (they used to
    live only in the hero) would otherwise blend into the block's own
    --cloud background — force white so they still read as chips. */
@@ -3452,4 +3630,322 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) {
   .pf-grid-section { padding: 0 var(--page-x) var(--space-6); }
   .pf-grid { grid-template-columns: 1fr; gap: var(--space-2); }
+}
+
+/* Giant outline watermark words (SERVICIOS, LABS, WORKSHOP, TRABAJO, and the
+   service pages' blocks) sit top-right, absolutely positioned; long eyebrows
+   and headings ran underneath them. Reserve the watermark's own height above
+   the content so text always starts below it. Owner's rule: move the text
+   down, never resize the watermark or the type. (Nosotros: .toggle-section;
+   Proceso's loop has its own margin-top clearance.) */
+@media (min-width: 721px) {
+  .services, .experiment, .work { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-3)); }
+  .labs { padding-top: max(calc(var(--nav-h) + var(--space-4)), calc(var(--space-4) + var(--wm-size) + var(--space-3))); }
+  .svc-block:has(> .outline-word) { padding-top: calc(var(--space-3) + var(--wm-size) + var(--space-3)); }
+}
+/* Proceso in its stacked (non-pinned) layout: the heading spans the width,
+   so it needs the same clearance. (1200px+ keeps the pinned loop layout.) */
+@media (min-width: 721px) and (max-width: 1199px) {
+  .method { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-3)); }
+}
+/* Pinned Proceso loop on short screens: the top card (pushed above the ring)
+   reached the "PROCESO" watermark — nudge the whole loop down instead. */
+@media (min-width: 1200px) and (max-height: 760px) {
+  .method-loop { top: 32px; }
+}
+
+/* W·O·W debajo del círculo de Proceso: franja del mismo morado para que se
+   lea como continuación de la sección; reutiliza las cards .svc-steps de las
+   páginas de servicio (las iniciales en grande forman W·O·W). */
+.wow-strip {
+  padding: 0 var(--page-x) var(--space-7);
+  background: var(--purple);
+  color: var(--white);
+}
+.wow-strip-title {
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.3;
+  color: var(--white);
+  margin: 0;
+}
+.wow-strip .svc-steps li { color: var(--ink); }
+
+/* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
+   popup del proyecto (js/cases.js). La card con caso lleva "Ver caso". */
+.work-item.has-case { position: relative; }
+.work-item.has-case::after {
+  content: 'Ver caso';
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.lightbox-case {
+  flex: 0 0 auto;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: var(--purple);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  color: var(--white);
+}
+.lightbox-case-title {
+  font-size: clamp(19px, 2vw, 24px);
+  line-height: 1.3;
+  color: var(--white);
+  margin: 0 0 var(--space-4);
+  max-width: 680px;
+}
+.lightbox-case-list {
+  display: grid;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+}
+.lightbox-case-list dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 4px;
+}
+.lightbox-case-list dd { margin: 0; color: #cfc7d6; font-size: 15px; line-height: 1.6; }
+@media (min-width: 700px) {
+  .lightbox-case-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .lightbox-case { padding: var(--space-3); }
+}
+
+/* Popup: the native (white) scrollbar looked broken against the dark modal.
+   Thin, transparent track + soft lilac thumb that turns lima on hover, and
+   the gutter is inset so it doesn't cut through the rounded corners. */
+.lightbox-inner {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.28) transparent;
+}
+.lightbox-inner::-webkit-scrollbar { width: 8px; }
+.lightbox-inner::-webkit-scrollbar-track { background: transparent; margin: 16px 0; }
+.lightbox-inner::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.28);
+  border-radius: 999px;
+}
+.lightbox-inner::-webkit-scrollbar-thumb:hover { background: var(--lima); }
+
+/* Service pages: Workshop cards open the portfolio popup
+   (js/project-popup.js). */
+.svc-work-teaser-item[data-lightbox] { cursor: pointer; }
+.svc-work-teaser-item[data-lightbox]:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
+.svc-work-teaser-item.has-case::after {
+  content: 'Ver caso';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.svc-work-teaser-more { display: inline-block; margin-top: var(--space-2); color: var(--purple); font-weight: 700; }
+.svc-work-teaser-more:hover { color: var(--magenta); }
+/* Projects that only have a logo (La Marquessa, Ser Niños): show the logo
+   contained on a white card instead of cropping it like a photo. */
+.svc-work-teaser-item--logo { background: var(--white); box-shadow: inset 0 0 0 1px rgba(56,7,87,0.08); }
+.svc-work-teaser-item--logo img { object-fit: contain; padding: 18% 16% 26%; }
+.svc-work-teaser-item--logo span { color: var(--purple); background: none; }
+
+/* ------------------------------------------------------------------
+   Home on tablet/phone: less scroll (2026-09-26).
+   ------------------------------------------------------------------ */
+/* "¿Por qué WOW?" was still sticky-pinned (≈1700px of scroll) between 721px
+   and the JS "mobile timeline" breakpoint, where main.js already drives the
+   switches from the section's own entry instead of the pin — so the pin was
+   pure dead scroll on tablets and small laptops. Unpin it there too. */
+@media (max-width: 1199px) {
+  .toggle-pin { height: auto; }
+  .toggle-section { position: relative; top: auto; min-height: 0; }
+}
+/* W·O·W cards: 3 across from tablet up, compact on phones. */
+@media (min-width: 600px) and (max-width: 899px) {
+  .wow-strip .svc-steps { grid-template-columns: repeat(3, 1fr); }
+  .wow-strip .svc-steps li { padding: var(--space-3) 14px; }
+  .wow-strip .svc-steps .svc-step-num { font-size: 22px; }
+  .wow-strip .svc-steps .svc-step-num::first-letter { font-size: 48px; }
+}
+@media (max-width: 599px) {
+  .wow-strip { padding-bottom: var(--space-5); }
+  .wow-strip .svc-steps { gap: var(--space-2); }
+  .wow-strip .svc-steps li { padding: var(--space-2) var(--space-3) var(--space-3); gap: 6px; }
+  .wow-strip .svc-steps .svc-step-num { font-size: 22px; }
+  .wow-strip .svc-steps .svc-step-num::first-letter { font-size: 48px; }
+}
+/* Contact: the falling-icons playground keeps room to play, just less. */
+@media (max-width: 720px) {
+  .contact { min-height: clamp(460px, 60vh, 560px); }
+}
+/* Footer on phones: Servicios + Explora side by side instead of stacked. */
+@media (max-width: 599px) {
+  .footer { padding-top: var(--space-6); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-3); }
+  .footer-brand, .footer-contact { grid-column: 1 / -1; }
+  .footer-col ul { gap: 0; }
+  .footer-bottom { flex-direction: column; }
+}
+/* Proceso below the circle breakpoint: 2×2 cards on phones, 4 across on
+   tablets, instead of four tall stacked cards. */
+@media (max-width: 1199px) {
+  .method-loop { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+  .method-step { padding: var(--space-3) 14px; border-radius: 16px; }
+  .method-step .method-num { font-size: 12px; margin-bottom: 6px; }
+  .method-step h3 { font-size: 16px; line-height: 1.3; margin: 0; }
+}
+@media (min-width: 700px) and (max-width: 1199px) {
+  .method-loop { grid-template-columns: repeat(4, 1fr); }
+}
+/* Phones: tighter spacing and sizes so the home reads in fewer swipes.
+   Body copy stays at 16px+; only gaps, headline scale and decorative media
+   shrink. */
+@media (max-width: 720px) {
+  .services, .work, .contact { padding-top: 36px; padding-bottom: 36px; }
+  .labs { padding-top: 36px; }
+  .method { padding-top: 36px; padding-bottom: 40px; }
+  .svc-faq { padding-top: 32px; padding-bottom: 32px; }
+  /* Hero */
+  .hero { padding-bottom: 48px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.12em; }
+  .hero .hero-headline:not(.eyebrow) { font-size: 30px; line-height: 1.15; margin-bottom: 14px; }
+  .hero-sub { font-size: 16px; line-height: 1.55; margin-bottom: 22px; }
+  .media-col { height: 120px; }
+  /* Servicios */
+  .services h2 { margin-top: 16px; }
+  .hub-diagram { margin-bottom: 24px; }
+  .hub-center { margin: var(--space-3) 0; }
+  /* Labs / Trabajo */
+  .labs-intro-row { margin-bottom: 24px; }
+  .labs-panels { margin-top: 16px; }
+  .work-brands-marquee { margin-top: 28px; }
+  /* ¿Por qué WOW? */
+  .toggle-section { padding-top: 32px; padding-bottom: 32px; }
+  .toggle-section h2 { margin-bottom: 16px; }
+  .toggle-intro { margin-bottom: 20px; }
+  .toggle-list { gap: var(--space-2); }
+  .toggle-item { padding: 16px; }
+  /* Preguntas frecuentes */
+  .svc-faq-q { padding-top: 12px; padding-bottom: 12px; }
+}
+
+/* ------------------------------------------------------------------
+   Mobile polish round 2 (2026-09-26, owner's list).
+   ------------------------------------------------------------------ */
+/* 4) "¿Por qué WOW?" switches: every item is 2+ lines (bold lead + text),
+   so the old full pill radius (999px) always read as an oval. Card radius
+   at every width. */
+.toggle-item { border-radius: 24px; }
+@media (max-width: 720px) {
+  /* 1) Hero: button sized to its label instead of full width; the
+     secondary "Ver el portafolio" link is hidden on phones. */
+  .hero-cta .btn-primary { width: auto; max-width: none; padding: 14px 28px; font-size: 15px; }
+  .hero .hero-cta .btn-outline { display: none; }
+
+  /* 2) More air between texts. */
+  h2, .labs-headline, .faq-headline { line-height: 1.25; }
+  .eyebrow { margin-bottom: 14px; }
+  .services h2, .work h2, .toggle-section h2 { margin-bottom: 20px; }
+  .method h2 { margin-bottom: 20px; }
+  .faq-headline { margin-bottom: 28px; }
+  /* Labs: eyebrow → headline → intro (the intro used to sit glued on top
+     of the headline). */
+  .labs-intro-row { display: flex; flex-direction: column; }
+  .labs-header { display: contents; }
+  .labs-intro-row .eyebrow { order: 0; }
+  .labs .labs-headline:not(.eyebrow) { order: 1; margin: 0 0 16px; }
+  .labs-intro { order: 2; margin: 0; }
+  .labs-content h3 { margin-bottom: 14px; line-height: 1.3; }
+  .toggle-text strong { margin-bottom: 6px; }
+  .footer-col ul { gap: 6px; }
+  .footer-bottom { gap: 6px; }
+
+  /* 3) Trabajo: the visible row stays ONE row — 2 project cards + the door.
+     The door sets the row height (its own aspect ratio); the photos fill
+     their cards with object-fit instead of dictating the height. */
+  .work-visible {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+  }
+  .work-visible .work-item { position: relative; width: 100%; border-radius: 14px; }
+  .work-visible .work-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .work-visible .work-door { width: 100%; height: auto; margin: 0; }
+  .work-visible .work-item.has-case::after { left: 6px; bottom: 6px; padding: 4px 8px; font-size: 9px; }
+}
+
+/* ------------------------------------------------------------------
+   Mobile type scale (≤720px) — one clear step between levels instead of
+   ten competing sizes (owner: "mucha competencia en tamaños").
+     Display (hero h1)          30px
+     Cierre (¿Y si hacemos…?)   27px
+     H2 sección                 24px   (--h2-size, also service pages)
+     H3 / títulos de tarjeta    19px
+     Texto                      16px
+     Texto de tarjeta           15px
+     Etiquetas (eyebrow)        12px mono
+   ------------------------------------------------------------------ */
+@media (max-width: 720px) {
+  :root { --h2-size: 24px; }
+  .eyebrow, .hero .eyebrow { font-size: 12px; letter-spacing: 0.14em; }
+  .contact .closer-line, .svc-contact .closer-line { font-size: 27px; }
+  .svc-includes-grid .svc-card h4 { font-size: 18px; }
+  /* H3 level */
+  .labs-content h3, .labs-panel .labs-label, .labs .labs-label { font-size: 19px; }
+  .wow-strip .wow-strip-title { font-size: 19px; }
+  .method-loop .method-step h3 { font-size: 17px; }
+  /* Card text */
+  .labs-content p { font-size: 15px; line-height: 1.6; }
+  .wow-strip .svc-steps li p { font-size: 15px; }
+  /* Footer: body size, not bigger than page text */
+  .footer .footer-tagline, .footer .footer-quote { font-size: 16px; }
+}
+
+/* Trabajo 721–900px (tablets / narrow windows): same single row as phones
+   and desktop — 2 cards + the door. Columns 1 : 0.6 : 1 so the door (which
+   sets the row height from its own aspect ratio) makes the photo cards land
+   at ~3:2, their natural horizontal shape. */
+@media (min-width: 721px) and (max-width: 900px) {
+  .work-visible {
+    display: grid;
+    grid-template-columns: 1fr 0.6fr 1fr;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+  .work-visible .work-item { position: relative; width: 100%; }
+  .work-visible .work-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .work-visible .work-door { width: 100%; height: auto; margin: 0; }
+}
+
+/* Trabajo → Nosotros → Proceso spacing when Nosotros is NOT pinned
+   (<1200px): there was ~167px above "¿Por qué WOW?" and only 24px below
+   the last switch (a short-laptop rule meant for the pinned version was
+   also squeezing the bottom). Even it out; the NOSOTROS watermark keeps its
+   reserved band. */
+@media (min-width: 721px) and (max-width: 1199px) {
+  .work { padding-bottom: var(--space-3); }
+  .toggle-section { padding-bottom: var(--space-7); }
+}
+@media (max-width: 720px) {
+  .work { padding-bottom: 28px; }
+  .toggle-section { padding-top: 28px; padding-bottom: 52px; }
 }

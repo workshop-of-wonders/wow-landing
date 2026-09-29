@@ -662,11 +662,19 @@ var ProjectCollage = (function () {
   var tagsBlock = document.getElementById('lightboxTagsBlock');
   /* Category-name → Lab mapping, mirrors servicios.html's sections */
   var CATEGORY_TO_LAB = {
-    'Experiencia digital': 'CREA - Brand & Experience Lab',
-    'Crecimiento y marketing digital': 'CRECE - Insight Lab'
+    'Experiencia digital': 'Brand & Experience Lab',
+    'Crecimiento y marketing digital': 'Insight Lab'
   };
   var workEl = document.getElementById('lightboxWork');
   var workBlock = document.getElementById('lightboxWorkBlock');
+  var caseBlock = document.getElementById('lightboxCase');
+  var CASES = window.WOW_CASES || {};
+  var CASE_FIELDS = ['reto', 'insight', 'construimos', 'resultado', 'aprendizaje'];
+  /* Projects with a case study (js/cases.js, keyed by data-title) get a
+     "Ver caso" badge on their card (.has-case in styles.css). */
+  document.querySelectorAll('[data-lightbox]').forEach(function (el) {
+    if (CASES[el.dataset.title]) el.classList.add('has-case');
+  });
   var closeBtn = document.getElementById('lightboxClose');
   var lightboxFocusTrap = createFocusTrap(lightbox, function () { return lightbox.classList.contains('is-open'); });
 
@@ -697,7 +705,7 @@ var ProjectCollage = (function () {
       tagsBlock.innerHTML = '';
       var rawParts = (el.dataset.capabilities ? el.dataset.capabilities.split('·') : (el.dataset.desc || '').split(/,| y /i))
         .map(function (t) { return t.trim(); }).filter(Boolean);
-      var labOrder = ['CREA - Brand & Experience Lab', 'CRECE - Insight Lab'];
+      var labOrder = ['Brand & Experience Lab', 'Insight Lab'];
       var labMarkers = rawParts.filter(function (t) { return labOrder.indexOf(t) !== -1; });
       var categoryTags = rawParts.filter(function (t) { return labOrder.indexOf(t) === -1; });
       var groups = labMarkers.length
@@ -705,6 +713,11 @@ var ProjectCollage = (function () {
             return { lab: lab, tags: categoryTags.filter(function (t) { return CATEGORY_TO_LAB[t] === lab; }) };
           })
         : [{ lab: null, tags: categoryTags }];
+      // Per-brand capabilities from js/cases.js win over data-capabilities.
+      var caseCaps = CASES[el.dataset.title] && CASES[el.dataset.title].capacidades;
+      if (caseCaps) {
+        groups = Object.keys(caseCaps).map(function (lab) { return { lab: lab, tags: caseCaps[lab] }; });
+      }
       groups.forEach(function (group) {
         if (group.lab === null && !group.tags.length) return;
         var groupEl = document.createElement('div');
@@ -725,6 +738,21 @@ var ProjectCollage = (function () {
         tagsBlock.appendChild(groupEl);
       });
       tagsBlock.style.display = tagsBlock.children.length ? '' : 'none';
+      var cs = CASES[el.dataset.title];
+      if (caseBlock) {
+        caseBlock.style.display = cs ? '' : 'none';
+        if (cs) {
+          document.getElementById('lightboxCaseTitle').textContent = cs.titulo || '';
+          CASE_FIELDS.forEach(function (f) {
+            var dd = document.getElementById('lightboxCase-' + f);
+            dd.textContent = cs[f] || '';
+            dd.parentNode.style.display = cs[f] ? '' : 'none';
+          });
+        }
+      }
+      // The case already tells what was done — don't repeat it in "Trabajo realizado".
+      if (cs) workBlock.style.display = 'none';
+      lightbox.querySelector('.lightbox-inner').scrollTop = 0;
       lightbox.classList.add('is-open');
       lightboxFocusTrap.onOpen();
     });
@@ -969,7 +997,7 @@ var loopProgressCircumference = 201.06; // 2 * PI * r(32), matches the SVG circl
 var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.loop-dot')) : [];
 var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
 
-var mobileTimelineQuery = window.matchMedia('(max-width: 1299px)');
+var mobileTimelineQuery = window.matchMedia('(max-width: 1199px)');
 
 function updateScrollScrubs() {
   /* re-read on every call (not cached at load) so rotating a phone or resizing across the breakpoint doesn't leave the scroll math out of sync with the CSS */
