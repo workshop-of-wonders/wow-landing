@@ -46,17 +46,6 @@ HEAD = """<!DOCTYPE html>
 <script type="application/ld+json">
 {{
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {{ "@type": "ListItem", "position": 1, "name": "Workshop of Wonders", "item": "https://efectowow.co/" }},
-    {{ "@type": "ListItem", "position": 2, "name": "Servicios", "item": "https://efectowow.co/servicios.html" }},
-    {{ "@type": "ListItem", "position": 3, "name": "{breadcrumb_name}", "item": "{canonical}" }}
-  ]
-}}
-</script>
-<script type="application/ld+json">
-{{
-  "@context": "https://schema.org",
   "@type": "Service",
   "name": "{service_name}",
   "serviceType": "{service_type}",
