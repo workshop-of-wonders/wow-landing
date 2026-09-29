@@ -2900,13 +2900,15 @@ main { padding-top: var(--nav-h); }
    white/cloud alternating) — scoped so they don't touch the light
    .svc-hero used by servicios.html/portafolio.html/the other service
    pages. --blue is Insight Lab (SEO, pauta, analítica, CRO, cursos...),
-   --lilac is Brand & Experience Lab (diseño web, UX/UI, e-commerce,
-   diseño gráfico) — see each page's eyebrow dot/link for which lab it
-   belongs to. Declared after the base h1/.svc-hero-sub color rules above
-   so they actually win the cascade (same selector specificity, so source
-   order decides). Same gradient + giant corner icon treatment as the
-   home page's #labs panels (.labs-panel-insight/-brand, .labs-bg-icon),
-   so a service page's hero reads as visibly "the same lab" as home.
+   --pink is Brand & Experience Lab (diseño web, UX/UI, e-commerce,
+   diseño gráfico) — matches the nav-dot-magenta/--magenta (#EC4899)
+   already used for that lab's eyebrow dot/link, not the purple
+   .labs-panel-brand happens to use on the home page. Declared after the
+   base h1/.svc-hero-sub color rules above so they actually win the
+   cascade (same selector specificity, so source order decides). Same
+   gradient + giant corner icon treatment as the home page's #labs
+   panels (.labs-panel-insight/-brand, .labs-bg-icon) otherwise, so a
+   service page's hero still reads as visibly "the same lab" as home.
    .svc-hero itself is a max-width:900px centered box (for the text), so
    painting the background directly on it left white bars on either side.
    A plain background/box-shadow can't hold a gradient, so instead of the
@@ -2915,13 +2917,12 @@ main { padding-top: var(--nav-h); }
    spread to 100vw via left:50%/translateX(-50%) — independent of how
    narrow the .svc-hero box itself is. */
 .svc-hero--blue,
-.svc-hero--lilac {
+.svc-hero--pink {
   position: relative;
-  /* A bit shorter than the home hero's 96vh — at 96vh the hero fills
-     almost the entire first screen, hiding that there's a next section
-     to scroll to. Capping at 85vh leaves a visible sliver of it. */
-  height: min(85vh, 860px);
-  min-height: 600px;
+  /* Much shorter than the plain .svc-hero/home hero — this section was
+     eating almost the whole first scroll on common laptop heights. */
+  height: min(52vh, 540px);
+  min-height: 420px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2931,7 +2932,7 @@ main { padding-top: var(--nav-h); }
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
 }
-.svc-hero--blue::before, .svc-hero--lilac::before {
+.svc-hero--blue::before, .svc-hero--pink::before {
   content: "";
   position: absolute;
   top: 0;
@@ -2940,13 +2941,17 @@ main { padding-top: var(--nav-h); }
   width: 100vw;
   transform: translateX(-50%);
   z-index: -2;
+  background: var(--svc-hero-gradient);
 }
-.svc-hero--blue::before { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
-.svc-hero--lilac::before { background: linear-gradient(160deg, #c084fc, #A855F7); }
+.svc-hero--blue::before { --svc-hero-gradient: linear-gradient(160deg, #5aa9f7, #3B82F6); }
+.svc-hero--pink::before { --svc-hero-gradient: linear-gradient(160deg, #f472b6, #EC4899); }
 /* The icon layer: same corner placement/opacity/white-silhouette filter
    as .labs-bg-icon, just always visible (there's no hover state on a
-   hero) and sized for a full section instead of a narrow flex panel. */
-.svc-hero--blue::after, .svc-hero--lilac::after {
+   hero) and sized for a full section instead of a narrow flex panel.
+   Layered with the WOW mark in the opposite corner (bottom-left) on the
+   same pseudo-element — one element can hold several background layers,
+   so this needed no extra markup. */
+.svc-hero--blue::after, .svc-hero--pink::after {
   content: "";
   position: absolute;
   top: 0;
@@ -2955,15 +2960,18 @@ main { padding-top: var(--nav-h); }
   width: 100vw;
   transform: translateX(-50%);
   z-index: -1;
-  background-repeat: no-repeat;
-  background-position: right -10% bottom -18%;
-  background-size: min(58vw, 780px) auto;
+  background-repeat: no-repeat, no-repeat;
+  background-position: right -10% bottom -18%, left -6% bottom -22%;
+  background-size: min(58vw, 780px) auto, min(34vw, 460px) auto;
   opacity: 0.16;
+  /* wow-mark.svg is already solid white; brightness(0) invert(1) just
+     turns the (colored) lab icon into the same white silhouette, so both
+     layers come out matching even though only one needed the filter. */
   filter: brightness(0) invert(1);
   pointer-events: none;
 }
-.svc-hero--blue::after { background-image: url(design-system/icons/icon-star.svg); }
-.svc-hero--lilac::after { background-image: url(design-system/icons/icon-bloom.svg); }
+.svc-hero--blue::after { background-image: url(design-system/icons/icon-star.svg), url(design-system/logo/wow-mark.svg); }
+.svc-hero--pink::after { background-image: url(design-system/icons/icon-bloom.svg), url(design-system/logo/wow-mark.svg); }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
    this page's longer title wraps to 4 lines on common laptop widths.
@@ -2975,10 +2983,10 @@ main { padding-top: var(--nav-h); }
    base rule's "h1:not(.eyebrow)" branch outranks a plain two-class
    override, so match that shape here too or this font-size loses. */
 .svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
-.svc-hero--lilac .svc-hero-headline, .svc-hero--lilac h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
-.svc-hero--blue .eyebrow, .svc-hero--lilac .eyebrow { margin-bottom: var(--space-1); }
-.svc-hero--blue .svc-hero-sub, .svc-hero--lilac .svc-hero-sub { margin-bottom: var(--space-3); }
-.svc-hero--blue .svc-highlight-row, .svc-hero--lilac .svc-highlight-row { margin-top: var(--space-2); }
+.svc-hero--pink .svc-hero-headline, .svc-hero--pink h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
+.svc-hero--blue .eyebrow, .svc-hero--pink .eyebrow { margin-bottom: var(--space-1); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--pink .svc-hero-sub { margin-bottom: var(--space-3); }
+.svc-hero--blue .svc-highlight-row, .svc-hero--pink .svc-highlight-row { margin-top: var(--space-2); }
 /* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
    .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
    picks the highest-specificity match across the whole list, and
@@ -2987,8 +2995,8 @@ main { padding-top: var(--nav-h); }
    override regardless of source order. Match that same shape here too or
    this override loses. */
 .svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
-.svc-hero--lilac .svc-hero-headline, .svc-hero--lilac h1:not(.eyebrow) { color: var(--white); }
-.svc-hero--blue .svc-hero-sub, .svc-hero--lilac .svc-hero-sub { color: #e6def0; opacity: 1; }
+.svc-hero--pink .svc-hero-headline, .svc-hero--pink h1:not(.eyebrow) { color: var(--white); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--pink .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
    (index.html's hero image); the plain, light .svc-hero needs dark ink
    instead (below) or it renders as an invisible white button on white —
@@ -3002,11 +3010,11 @@ main { padding-top: var(--nav-h); }
 .svc-hero .btn-outline:hover { background: rgba(56,7,87,0.08); }
 /* Same specificity (0,2,0) as .svc-hero .btn-outline above, so source
    order is what makes this win: it must stay declared after it. */
-.svc-hero--blue .btn-outline, .svc-hero--lilac .btn-outline {
+.svc-hero--blue .btn-outline, .svc-hero--pink .btn-outline {
   border-color: var(--white);
   color: var(--white);
 }
-.svc-hero--blue .btn-outline:hover, .svc-hero--lilac .btn-outline:hover { background: rgba(255,255,255,0.1); }
+.svc-hero--blue .btn-outline:hover, .svc-hero--pink .btn-outline:hover { background: rgba(255,255,255,0.1); }
 .svc-work-teaser .btn-outline {
   border-color: var(--purple);
   color: var(--purple);
