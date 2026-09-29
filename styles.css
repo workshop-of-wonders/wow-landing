@@ -3233,6 +3233,37 @@ main { padding-top: var(--nav-h); }
 .svc-includes-grid .svc-card h4 a:hover { text-decoration: underline; }
 .svc-includes-grid .svc-card p { font-size: 14px; line-height: 1.5; color: var(--ink); opacity: 0.75; margin: 0; }
 
+/* Lab landing pages (labs/brand-experience-lab.html, labs/insight-lab.html):
+   the rest of the page reused the same white/cloud alternating body as a
+   single-service page, which made the lab's own home read flatter than the
+   colored hero above it. These two page-level modifiers (on <main>) tie the
+   "Servicios de X" cards, work-teaser frames and FAQ accents to each lab's
+   color instead, matching the hero's --magenta/#3B82F6 rather than the
+   site-wide purple. */
+.labs-page--pink { --labs-accent: var(--magenta); --labs-accent-soft: rgba(236,72,153,0.12); }
+.labs-page--blue { --labs-accent: #3B82F6; --labs-accent-soft: rgba(59,130,246,0.12); }
+/* .svc-service-detail/.svc-faq only tint their full-bleed MARGINS via the
+   box-shadow trick — the max-width content column itself stays transparent,
+   which shows body's white behind it, reading as a plain white "info box"
+   floating between two lab-colored sections. Painting the same cloud tint
+   directly on the column removes that seam so the band reads as one flat
+   colored strip instead. */
+.labs-page .svc-service-detail,
+.labs-page .svc-faq {
+  background: var(--cloud);
+}
+.labs-page .svc-includes-grid .svc-card {
+  border-top: 3px solid var(--labs-accent);
+}
+.labs-page .svc-includes-grid .svc-card:hover {
+  box-shadow: 0 12px 28px var(--labs-accent-soft);
+}
+.labs-page .svc-work-teaser-item { box-shadow: 0 0 0 2px var(--labs-accent-soft); }
+.labs-page .svc-work-teaser-more { color: var(--labs-accent); }
+.labs-page .svc-work-teaser-more:hover { color: var(--purple); }
+.labs-page .svc-faq-item.is-open .svc-faq-icon { color: var(--labs-accent); }
+.labs-page .svc-faq-q:hover { color: var(--labs-accent); }
+
 /* Numbered process steps with a colored circle badge instead of a plain
    bullet list — lightweight version of the home page's method timeline. */
 /* Steps as 3 cards (WONDER / OPTIMIZE / WIN). The labels are words, not
