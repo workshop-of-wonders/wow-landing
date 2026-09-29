@@ -26,7 +26,7 @@
   --orange: #f97316;
   --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
-  --insight-blue: #3B82F6; /* same solid Insight Lab color as .hub-lab-insight / .labs-panel-insight on the home page */
+  --insight-blue: #1E6BD1;
   --brand-purple-light: #A855F7; /* same solid Brand & Experience Lab color as .hub-lab-brand / .labs-panel-brand on the home page */
   --cloud: #F1ECF5;
   --ink: #1A1320;
