@@ -2946,8 +2946,8 @@ main { padding-top: var(--nav-h); }
     radial-gradient(ellipse 780px 480px at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.12) 80%, rgba(0,0,0,0) 100%),
     var(--svc-hero-gradient);
 }
-.svc-hero--blue::before { --svc-hero-gradient: linear-gradient(160deg, #3B82F6, #1e40af); }
-.svc-hero--lilac::before { --svc-hero-gradient: linear-gradient(160deg, #A855F7, #7e22ce); }
+.svc-hero--blue::before { --svc-hero-gradient: linear-gradient(160deg, #5aa9f7, #3B82F6); }
+.svc-hero--lilac::before { --svc-hero-gradient: linear-gradient(160deg, #c084fc, #A855F7); }
 /* The icon layer: same corner placement/opacity/white-silhouette filter
    as .labs-bg-icon, just always visible (there's no hover state on a
    hero) and sized for a full section instead of a narrow flex panel.
