@@ -26,6 +26,8 @@
   --orange: #f97316;
   --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
+  --insight-blue: #1d4ed8; /* Insight Lab hero bg — deep enough for white text (6.7:1) while reading clearly as blue, distinct from the pastel --blue accent dot */
+  --brand-purple-light: #7e22ce; /* Brand & Experience Lab hero bg — a lighter, more vivid purple than --purple, still 7:1 with white text */
   --cloud: #F1ECF5;
   --ink: #1A1320;
   --white: #ffffff;
@@ -2896,19 +2898,22 @@ main { padding-top: var(--nav-h); }
   line-height: 1.6;
 }
 .svc-hero .hero-cta { justify-content: center; }
-/* Opt-in modifier for a purple hero (rest of the page stays white/cloud
-   alternating) — scoped so it doesn't touch the light .svc-hero used by
-   servicios.html/portafolio.html/the other service pages. Declared after
-   the base h1/.svc-hero-sub color rules above so it actually wins the
-   cascade (same selector specificity, so source order decides).
+/* Opt-in modifiers for a colored, per-lab hero (rest of the page stays
+   white/cloud alternating) — scoped so they don't touch the light
+   .svc-hero used by servicios.html/portafolio.html/the other service
+   pages. --blue is Insight Lab (SEO, pauta, analítica, CRO, cursos...),
+   --lilac is Brand & Experience Lab (diseño web, UX/UI, e-commerce,
+   diseño gráfico) — see each page's eyebrow dot/link for which lab it
+   belongs to. Declared after the base h1/.svc-hero-sub color rules above
+   so they actually win the cascade (same selector specificity, so source
+   order decides).
    .svc-hero itself is a max-width:900px centered box (for the text), so
    painting the background directly on it left white bars on either side
    — same full-bleed box-shadow/clip-path trick as .svc-block to spread
    the color the full width of the viewport behind that centered box. */
-.svc-hero--purple {
+.svc-hero--blue,
+.svc-hero--lilac {
   position: relative;
-  background: var(--purple);
-  box-shadow: 0 0 0 100vmax var(--purple);
   clip-path: inset(0 -100vmax);
   /* A bit shorter than the home hero's 96vh — at 96vh the hero fills
      almost the entire first screen, hiding that there's a next section
@@ -2924,40 +2929,51 @@ main { padding-top: var(--nav-h); }
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
 }
+.svc-hero--blue { background: var(--insight-blue); box-shadow: 0 0 0 100vmax var(--insight-blue); }
+.svc-hero--lilac { background: var(--brand-purple-light); box-shadow: 0 0 0 100vmax var(--brand-purple-light); }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
    this page's longer title wraps to 4 lines on common laptop widths.
    A smaller cap fits it in 2-3 lines instead, which is most of the
-   height this hero was carrying. Scoped to this modifier so the plain
+   height this hero was carrying. Scoped to these modifiers so the plain
    .svc-hero used by servicios.html/portafolio.html/the other service
    pages keeps its own size. */
 /* Same selector-list specificity trap as the color override above: the
    base rule's "h1:not(.eyebrow)" branch outranks a plain two-class
    override, so match that shape here too or this font-size loses. */
-.svc-hero--purple .svc-hero-headline,
-.svc-hero--purple h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
-.svc-hero--purple .eyebrow { margin-bottom: var(--space-1); }
-.svc-hero--purple .svc-hero-sub { margin-bottom: var(--space-3); }
-.svc-hero--purple .svc-highlight-row { margin-top: var(--space-2); }
+.svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
+.svc-hero--lilac .svc-hero-headline, .svc-hero--lilac h1:not(.eyebrow) { font-size: clamp(32px, 4.5vw, 46px); }
+.svc-hero--blue .eyebrow, .svc-hero--lilac .eyebrow { margin-bottom: var(--space-1); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--lilac .svc-hero-sub { margin-bottom: var(--space-3); }
+.svc-hero--blue .svc-highlight-row, .svc-hero--lilac .svc-highlight-row { margin-top: var(--space-2); }
 /* The base rule is actually a selector *list* — ".svc-hero h1:not(.eyebrow),
    .svc-hero .svc-hero-headline" — and this h1 matches BOTH parts. CSS
    picks the highest-specificity match across the whole list, and
    "h1:not(.eyebrow)" (:not()'s specificity is its argument's, so this is
    class+element+class) outranks a plain ".svc-hero-headline" two-class
-   override regardless of source order. Match that same shape so this
-   override actually applies. */
-.svc-hero--purple .svc-hero-headline,
-.svc-hero--purple h1:not(.eyebrow) { color: var(--white); }
-.svc-hero--purple .svc-hero-sub { color: #e6def0; opacity: 1; }
+   override regardless of source order. Match that same shape here too or
+   this override loses. */
+.svc-hero--blue .svc-hero-headline, .svc-hero--blue h1:not(.eyebrow),
+.svc-hero--lilac .svc-hero-headline, .svc-hero--lilac h1:not(.eyebrow) { color: var(--white); }
+.svc-hero--blue .svc-hero-sub, .svc-hero--lilac .svc-hero-sub { color: #e6def0; opacity: 1; }
 /* .btn-outline defaults to white border/text for dark hero backgrounds
-   (index.html's hero image); .svc-hero is a light background, so on this
-   page it needs dark ink instead or it renders as an invisible white
-   button on white. */
+   (index.html's hero image); the plain, light .svc-hero needs dark ink
+   instead (below) or it renders as an invisible white button on white —
+   these two modifiers are dark backgrounds themselves, so they keep the
+   white/white default explicitly rather than inheriting that dark-ink
+   override via the shared .svc-hero class. */
 .svc-hero .btn-outline {
   border-color: var(--purple);
   color: var(--purple);
 }
 .svc-hero .btn-outline:hover { background: rgba(56,7,87,0.08); }
+/* Same specificity (0,2,0) as .svc-hero .btn-outline above, so source
+   order is what makes this win: it must stay declared after it. */
+.svc-hero--blue .btn-outline, .svc-hero--lilac .btn-outline {
+  border-color: var(--white);
+  color: var(--white);
+}
+.svc-hero--blue .btn-outline:hover, .svc-hero--lilac .btn-outline:hover { background: rgba(255,255,255,0.1); }
 .svc-work-teaser .btn-outline {
   border-color: var(--purple);
   color: var(--purple);
