@@ -2956,8 +2956,8 @@ main { padding-top: var(--nav-h); }
   transform: translateX(-50%);
   z-index: -1;
   background-repeat: no-repeat;
-  background-position: right -8% bottom -12%;
-  background-size: min(38vw, 460px) auto;
+  background-position: right -10% bottom -18%;
+  background-size: min(58vw, 780px) auto;
   opacity: 0.16;
   filter: brightness(0) invert(1);
   pointer-events: none;
