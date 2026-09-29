@@ -135,45 +135,6 @@ tr.clickable:hover { background: var(--panel-raised); }
 .badge.contacted { background: rgba(249,115,22,0.16); color: var(--orange); }
 .badge.won { background: rgba(220,225,87,0.18); color: var(--lima); }
 .badge.lost { background: rgba(236,72,153,0.14); color: #ff8fc0; }
-.badge.published { background: rgba(220,225,87,0.18); color: var(--lima); }
-.badge.draft { background: rgba(249,115,22,0.16); color: var(--orange); }
-
-.heading-tag { display: inline-block; min-width: 26px; padding: 2px 6px; margin-right: 6px; border-radius: 6px; font-size: 11px; font-weight: 700; text-align: center; background: rgba(165,216,255,0.16); color: var(--blue); }
-
-/* ---------- Project editor ---------- */
-
-.back-link {
-  display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--muted);
-  cursor: pointer; font-size: 13px; font-family: var(--font-body); padding: 0; margin-bottom: 16px;
-}
-.back-link:hover { color: var(--text); }
-
-.editor-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: start; }
-.editor-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
-.editor-card + .editor-card { margin-top: 20px; }
-.editor-actions { display: flex; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
-.toggle-row { display: flex; gap: 20px; margin-bottom: 4px; }
-.toggle-row label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; }
-
-.image-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-.image-tile {
-  position: relative; border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
-  cursor: grab; background: #000; aspect-ratio: 1; transition: transform 0.12s, border-color 0.12s;
-}
-.image-tile:hover { border-color: var(--magenta); }
-.image-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.image-tile .del {
-  position: absolute; top: 6px; right: 6px; background: rgba(20,10,25,0.75); color: #fff; border: none;
-  border-radius: 8px; width: 24px; height: 24px; cursor: pointer; font-size: 15px; line-height: 1;
-}
-.image-tile .del:hover { background: var(--magenta); }
-.image-tile.dragging { opacity: 0.35; }
-.upload-drop {
-  margin-top: 14px; border: 1.5px dashed var(--border); border-radius: 12px; padding: 18px;
-  text-align: center; color: var(--muted); font-size: 13px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
-}
-.upload-drop:hover { border-color: var(--lima); color: var(--text); }
-.upload-drop input { display: none; }
 
 /* ---------- Leads ---------- */
 
@@ -208,6 +169,5 @@ tr.clickable:hover { background: var(--panel-raised); }
   .sidebar .brand { margin-bottom: 0; margin-right: auto; }
   .sidebar nav { display: flex; gap: 6px; }
   .sidebar .logout { display: none; }
-  .editor-grid { grid-template-columns: 1fr; }
   .main { padding: 20px; }
 }
