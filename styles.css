@@ -26,8 +26,6 @@
   --orange: #f97316;
   --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
-  --insight-blue: #3B82F6; /* same solid Insight Lab color as .hub-lab-insight / .labs-panel-insight on the home page */
-  --brand-purple-light: #A855F7; /* same solid Brand & Experience Lab color as .hub-lab-brand / .labs-panel-brand on the home page */
   --cloud: #F1ECF5;
   --ink: #1A1320;
   --white: #ffffff;
@@ -2906,15 +2904,19 @@ main { padding-top: var(--nav-h); }
    diseño gráfico) — see each page's eyebrow dot/link for which lab it
    belongs to. Declared after the base h1/.svc-hero-sub color rules above
    so they actually win the cascade (same selector specificity, so source
-   order decides).
+   order decides). Same gradient + giant corner icon treatment as the
+   home page's #labs panels (.labs-panel-insight/-brand, .labs-bg-icon),
+   so a service page's hero reads as visibly "the same lab" as home.
    .svc-hero itself is a max-width:900px centered box (for the text), so
-   painting the background directly on it left white bars on either side
-   — same full-bleed box-shadow/clip-path trick as .svc-block to spread
-   the color the full width of the viewport behind that centered box. */
+   painting the background directly on it left white bars on either side.
+   A plain background/box-shadow can't hold a gradient, so instead of the
+   box-shadow/clip-path trick .svc-block uses, these get two full-bleed
+   pseudo-elements (::before for the gradient, ::after for the icon) each
+   spread to 100vw via left:50%/translateX(-50%) — independent of how
+   narrow the .svc-hero box itself is. */
 .svc-hero--blue,
 .svc-hero--lilac {
   position: relative;
-  clip-path: inset(0 -100vmax);
   /* A bit shorter than the home hero's 96vh — at 96vh the hero fills
      almost the entire first screen, hiding that there's a next section
      to scroll to. Capping at 85vh leaves a visible sliver of it. */
@@ -2929,8 +2931,39 @@ main { padding-top: var(--nav-h); }
   padding-top: var(--space-6);
   padding-bottom: var(--space-6);
 }
-.svc-hero--blue { background: var(--insight-blue); box-shadow: 0 0 0 100vmax var(--insight-blue); }
-.svc-hero--lilac { background: var(--brand-purple-light); box-shadow: 0 0 0 100vmax var(--brand-purple-light); }
+.svc-hero--blue::before, .svc-hero--lilac::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -2;
+}
+.svc-hero--blue::before { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
+.svc-hero--lilac::before { background: linear-gradient(160deg, #c084fc, #A855F7); }
+/* The icon layer: same corner placement/opacity/white-silhouette filter
+   as .labs-bg-icon, just always visible (there's no hover state on a
+   hero) and sized for a full section instead of a narrow flex panel. */
+.svc-hero--blue::after, .svc-hero--lilac::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  background-repeat: no-repeat;
+  background-position: right -8% bottom -12%;
+  background-size: min(38vw, 460px) auto;
+  opacity: 0.16;
+  filter: brightness(0) invert(1);
+  pointer-events: none;
+}
+.svc-hero--blue::after { background-image: url(design-system/icons/icon-star.svg); }
+.svc-hero--lilac::after { background-image: url(design-system/icons/icon-bloom.svg); }
 /* The headline is what was actually making the box tall: at the base
    .svc-hero-headline size (clamp up to 56px) inside the 900px-wide hero,
    this page's longer title wraps to 4 lines on common laptop widths.
