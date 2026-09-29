@@ -2919,10 +2919,10 @@ main { padding-top: var(--nav-h); }
 .svc-hero--blue,
 .svc-hero--pink {
   position: relative;
-  /* Much shorter than the plain .svc-hero/home hero — this section was
+  /* Shorter than the plain .svc-hero/home hero — this section was
      eating almost the whole first scroll on common laptop heights. */
-  height: min(52vh, 540px);
-  min-height: 420px;
+  height: min(64vh, 640px);
+  min-height: 480px;
   display: flex;
   flex-direction: column;
   justify-content: center;
