@@ -1100,7 +1100,7 @@ main { padding-top: var(--nav-h); }
 .labs-panels:hover .labs-panel { flex: 1; }
 .labs-panels .labs-panel:hover { flex: 3.2; }
 .labs-panel-insight { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
-.labs-panel-brand { background: linear-gradient(160deg, #c084fc, #A855F7); }
+.labs-panel-brand { background: linear-gradient(160deg, #f472b6, #EC4899); }
 .labs-bg-icon {
   position: absolute;
   right: -10%;
@@ -1294,7 +1294,7 @@ main { padding-top: var(--nav-h); }
 .hub-pill.active { border-color: var(--purple); box-shadow: 0 8px 18px rgba(56,7,87,0.25); }
 /* Match the two remaining Labs' actual panel colors (.labs-panel-brand / .labs-panel-insight)
    so a service's pill color tells you which Lab it belongs to at a glance. */
-.hub-lab-brand { background: #A855F7; color: var(--white); }
+.hub-lab-brand { background: #EC4899; color: var(--white); }
 .hub-lab-insight { background: #3B82F6; color: var(--white); }
 .hub-center {
   position: relative;
@@ -2917,8 +2917,8 @@ main { padding-top: var(--nav-h); }
    pages. --blue is Insight Lab (SEO, pauta, analítica, CRO, cursos...),
    --pink is Brand & Experience Lab (diseño web, UX/UI, e-commerce,
    diseño gráfico) — matches the nav-dot-magenta/--magenta (#EC4899)
-   already used for that lab's eyebrow dot/link, not the purple
-   .labs-panel-brand happens to use on the home page. Declared after the
+   already used for that lab's eyebrow dot/link, and now also
+   .labs-panel-brand/.hub-lab-brand on the home page. Declared after the
    base h1/.svc-hero-sub color rules above so they actually win the
    cascade (same selector specificity, so source order decides). Same
    gradient + giant corner icon treatment as the home page's #labs
