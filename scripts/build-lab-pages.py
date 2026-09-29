@@ -44,16 +44,6 @@ TEMPLATE = """<!DOCTYPE html>
 <script type="application/ld+json">
 {{
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {{ "@type": "ListItem", "position": 1, "name": "Workshop of Wonders", "item": "https://efectowow.co/" }},
-    {{ "@type": "ListItem", "position": 2, "name": "{lab_name}", "item": "{canonical}" }}
-  ]
-}}
-</script>
-<script type="application/ld+json">
-{{
-  "@context": "https://schema.org",
   "@type": "Service",
   "name": "{lab_name}",
   "serviceType": "{service_type}",
