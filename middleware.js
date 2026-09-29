@@ -2,11 +2,11 @@
 // Se activa solo si existe la variable de entorno SITE_PASSWORD en Vercel;
 // para abrir el sitio basta con borrar esa variable y redeployar.
 //
-// Cada vez que se carga o refresca una página, se muestra /pronto/ ("Muy
-// pronto"), aunque ya se haya puesto la clave antes. El formulario de la
-// página hace POST a /__wow-unlock, que valida la clave y deja un "pase" de
-// un solo uso: la siguiente carga de página lo gasta y el pase se borra.
-// CSS, JS e imágenes no piden pase, solo las páginas (documentos).
+// El formulario de /pronto/ hace POST a /__wow-unlock, que valida la clave
+// y deja una cookie de sesión (sin Max-Age): el navegador la borra al
+// cerrarse, pero mientras siga abierto todas las páginas cargan directo,
+// sin volver a pedir la clave. CSS, JS e imágenes no piden pase, solo las
+// páginas (documentos).
 //
 // Fuera del middleware: /api (el panel usa sus propias cookies/JWT y el form
 // de contacto), /pronto (la página misma y sus assets) y /design-system
@@ -18,7 +18,6 @@ export const config = {
 
 const COOKIE = 'wow_gate';
 const UNLOCK_PATH = '/__wow-unlock';
-const MAX_AGE = 60; // el pase dura como máximo 1 minuto sin usarse
 
 async function token(password) {
   const data = new TextEncoder().encode('wow-gate:' + password);
@@ -68,8 +67,9 @@ async function unlock(request, expected) {
   const ok = given !== '' && safeEqual(await token(given), expected);
   const headers = new Headers({ 'Cache-Control': 'no-store' });
   if (ok) {
+    // Sin Max-Age: cookie de sesión, se borra al cerrar el navegador.
     headers.append('Set-Cookie',
-      `${COOKIE}=${expected}; Path=/; Max-Age=${MAX_AGE}; HttpOnly; Secure; SameSite=Lax`);
+      `${COOKIE}=${expected}; Path=/; HttpOnly; Secure; SameSite=Lax`);
   }
 
   if (wantsJson) {
@@ -91,13 +91,9 @@ export default async function middleware(request) {
   if (!isDocument(request, url)) return;
 
   if (safeEqual(readCookie(request, COOKIE), expected)) {
-    // Pase válido: deja ver esta página y lo borra para la próxima carga.
+    // Cookie válida: deja ver esta y todas las páginas siguientes.
     return new Response(null, {
-      headers: {
-        'x-middleware-next': '1',
-        'Set-Cookie': `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
-        'Cache-Control': 'no-store',
-      },
+      headers: { 'x-middleware-next': '1' },
     });
   }
 
