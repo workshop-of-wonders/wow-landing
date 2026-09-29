@@ -26,8 +26,8 @@
   --orange: #f97316;
   --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
-  --insight-blue: #1d4ed8; /* Insight Lab hero bg — deep enough for white text (6.7:1) while reading clearly as blue, distinct from the pastel --blue accent dot */
-  --brand-purple-light: #7e22ce; /* Brand & Experience Lab hero bg — a lighter, more vivid purple than --purple, still 7:1 with white text */
+  --insight-blue: #3B82F6; /* same solid Insight Lab color as .hub-lab-insight / .labs-panel-insight on the home page */
+  --brand-purple-light: #A855F7; /* same solid Brand & Experience Lab color as .hub-lab-brand / .labs-panel-brand on the home page */
   --cloud: #F1ECF5;
   --ink: #1A1320;
   --white: #ffffff;
