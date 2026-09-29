@@ -106,12 +106,24 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-size: 13px;
-  color: var(--lima);
+  /* --orange-text is the palette's default eyebrow color: it passes WCAG AA
+     on the white/cloud backgrounds most sections use. Dark-background
+     sections (purple hero, labs, experiment, svc-hero--purple) override
+     this back to --lima below, since --lima only reads clearly on --purple. */
+  color: var(--orange-text);
   margin: 0 0 var(--space-2);
 }
 
+/* Kept as an explicit alias for any markup that still opts in by name. */
 .eyebrow-dark { color: var(--orange-text); }
 .eyebrow a:hover { text-decoration: underline; }
+.hero .eyebrow,
+.labs .eyebrow,
+.experiment .eyebrow,
+.svc-hero--purple .eyebrow,
+.svc-block-purple .eyebrow {
+  color: var(--lima);
+}
 
 h1 em, h2 em, .hero-headline em {
   font-family: 'Playfair Display', serif;
@@ -233,6 +245,14 @@ main { padding-top: var(--nav-h); }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4) var(--space-5);
+}
+/* Labs only has two entries, so its dropdown reuses the same mega-menu
+   shell (.nav-dropdown) as Servicios but with a compact 2-column grid
+   instead of the full 3-column one. */
+.nav-dropdown-grid-labs {
+  grid-template-columns: repeat(2, minmax(0, 220px));
+  max-width: 480px;
+  margin: 0 auto;
 }
 .nav-dropdown-col { display: flex; flex-direction: column; gap: 10px; }
 .nav-dropdown-cat {
@@ -2687,7 +2707,7 @@ main { padding-top: var(--nav-h); }
   font-weight: 400;
   color: var(--magenta);
 }
-.contact .essence-lead { position: relative; z-index: 2; margin: 0 auto var(--space-4); color: #4a3f52; }
+.contact .essence-lead, .svc-contact .essence-lead { position: relative; z-index: 2; margin: 0 auto var(--space-4); color: #4a3f52; }
 .contact-links {
   position: relative;
   z-index: 2;
@@ -3207,6 +3227,20 @@ main { padding-top: var(--nav-h); }
   margin: var(--space-3) 0 var(--space-4);
 }
 .svc-includes-grid .svc-card { background: var(--white); }
+
+/* Labs pages (Brand & Experience Lab, Insight Lab): these reused the plain
+   servicios.html sections as-is, which left them almost entirely white —
+   pull in more of the WOW palette here (still just the established
+   brand colors, rotated per card) so they read as distinctly "WOW" and
+   not as a bare template. */
+.labs-page .svc-work-teaser { background: var(--cloud); }
+.labs-page .svc-includes-grid .svc-card {
+  background: var(--white);
+  border-top: 3px solid var(--magenta);
+}
+.labs-page .svc-includes-grid .svc-card:nth-child(4n+2) { border-top-color: var(--orange); }
+.labs-page .svc-includes-grid .svc-card:nth-child(4n+3) { border-top-color: var(--purple-accent); }
+.labs-page .svc-includes-grid .svc-card:nth-child(4n+4) { border-top-color: var(--lima); }
 .svc-plain-list {
   list-style: disc;
   padding-left: 1.2em;
@@ -3314,8 +3348,8 @@ main { padding-top: var(--nav-h); }
 .svc-steps li { border-top: 4px solid var(--step-color); }
 .svc-steps strong { color: var(--purple); }
 
-/* Related work teaser: a few portfolio thumbnails linked back to
-   portafolio.html, so a service page doesn't dead-end in text. */
+/* Related work teaser: a few portfolio thumbnails shown on each service
+   page as a preview of real work. */
 .svc-work-teaser {
   padding: var(--space-6) var(--page-x);
   max-width: 1100px;
@@ -3547,9 +3581,23 @@ main { padding-top: var(--nav-h); }
 .svc-faq-a { overflow: hidden; }
 
 .svc-contact {
-  padding: var(--space-6) var(--page-x) var(--space-7);
+  position: relative;
+  overflow: hidden;
+  /* Taller than before (was just padding, no min-height) so the falling
+     icons below have real room to fall and be dragged, matching the
+     home page's #contacto zone. */
+  min-height: clamp(480px, 58vh, 640px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-7) var(--page-x);
   background: var(--cloud);
   text-align: center;
+}
+.svc-contact .closer-line, .svc-contact .essence-lead, .svc-contact .contact-links {
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 720px) {
@@ -3557,7 +3605,7 @@ main { padding-top: var(--nav-h); }
   .svc-category { padding: var(--space-5) var(--page-x); }
   .svc-hero { padding: calc(var(--space-5) + var(--nav-h)) var(--page-x) var(--space-4); }
   .svc-faq { padding: var(--space-5) var(--page-x); }
-  .svc-contact { padding: var(--space-5) var(--page-x) var(--space-6); }
+  .svc-contact { min-height: clamp(420px, 56vh, 560px); padding: var(--space-6) var(--page-x); }
 }
 
 /* ------------------------------------------------------------------
