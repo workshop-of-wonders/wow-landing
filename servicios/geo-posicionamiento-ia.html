@@ -115,7 +115,21 @@
         <a href="#contacto" class="nav-dropdown-cta" data-open-form>Hablemos de tu proyecto</a>
       </div>
     </div>
-    <a href="../index.html#labs">Labs</a>
+    <div class="nav-item">
+      <a href="../index.html#labs" class="nav-item-trigger"><span>Labs</span> <span class="nav-item-caret">▾</span></a>
+      <div class="nav-dropdown nav-dropdown-labs" id="navLabsDropdown">
+        <div class="nav-dropdown-grid nav-dropdown-grid-labs">
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat"><span class="nav-dropdown-dot nav-dot-magenta"></span>Diseño &amp; marca</p>
+            <a href="../labs/brand-experience-lab.html" class="nav-dropdown-link" title="Branding, UX/UI y experiencias digitales con estética WOW.">Brand &amp; Experience Lab</a>
+          </div>
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat"><span class="nav-dropdown-dot nav-dot-orange"></span>Datos &amp; crecimiento</p>
+            <a href="../labs/insight-lab.html" class="nav-dropdown-link" title="SEO, pauta digital, analítica y CRO basados en datos.">Insight Lab</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <a href="../index.html#trabajo">Trabajo</a>
     <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos de tu proyecto</a>
   </nav>
@@ -239,6 +253,18 @@
           <img src="../design-system/hero-photos/geco-horizontal.webp" alt="Geco. — estrategia digital" loading="lazy">
           <span>Geco.</span>
         </div>
+        <div class="svc-work-teaser-item">
+          <img src="../design-system/hero-photos/centro-sueno-ronquido-horizontal.webp" alt="Centro del Sueño y Ronquido — diseño y desarrollo de sitio web" loading="lazy">
+          <span>Centro del Sueño</span>
+        </div>
+        <div class="svc-work-teaser-item">
+          <img src="../design-system/portfolio/clinica-del-cerebro/extra-1.webp" alt="Clínica del Cerebro — rebranding, sitio web y marketing digital" loading="lazy">
+          <span>Clínica del Cerebro</span>
+        </div>
+        <div class="svc-work-teaser-item">
+          <img src="../design-system/hero-photos/lamparas-milan-horizontal.webp" alt="Lámparas Milán — rebranding y diseño web" loading="lazy">
+          <span>Lámparas Milán</span>
+        </div>
       </div>
       <p class="svc-plain-note"><em>WOW Experiment — este mismo sitio corre pruebas propias de AI Search (contenido estructurado, llms.txt, FAQPage). Documentaremos aquí hipótesis, cambios y aprendizajes reales a medida que tengamos resultados verificables.</em></p>
     </div>
@@ -276,6 +302,9 @@
 </main>
 
 <section id="contacto" class="svc-contact">
+  <div class="icon-playground">
+    <canvas id="fallingCanvas" class="falling-canvas"></canvas>
+  </div>
   <p class="closer-line">Descubramos cómo está siendo <em>entendida</em> tu marca</p>
   <p class="essence-lead">Cuéntanos tu proyecto o encuéntranos en redes.</p>
   <div class="contact-links">
@@ -296,6 +325,7 @@
 
 <script src="../js/common.js" defer></script>
 <script src="../js/servicios.js" defer></script>
+<script src="../js/falling-icons.js" defer></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
