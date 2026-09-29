@@ -24,7 +24,6 @@
   --lima: #dce157;
   --magenta: #ec4899;
   --orange: #f97316;
-  --orange-text: #c2410c; /* darker than --orange: passes WCAG AA (5.18:1) as text on white, --orange itself only hits 2.8:1 */
   --blue: #a5d8ff;
   --cloud: #F1ECF5;
   --ink: #1A1320;
@@ -106,16 +105,12 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-size: 13px;
-  /* --orange-text is the palette's default eyebrow color: it passes WCAG AA
-     on the white/cloud backgrounds most sections use. Dark-background
-     sections (purple hero, labs, experiment, svc-hero--purple) override
-     this back to --lima below, since --lima only reads clearly on --purple. */
-  color: var(--orange-text);
+  color: var(--orange);
   margin: 0 0 var(--space-2);
 }
 
 /* Kept as an explicit alias for any markup that still opts in by name. */
-.eyebrow-dark { color: var(--orange-text); }
+.eyebrow-dark { color: var(--orange); }
 .eyebrow a:hover { text-decoration: underline; }
 .hero .eyebrow,
 .labs .eyebrow,
@@ -3439,7 +3434,7 @@ main { padding-top: var(--nav-h); }
    600 weight; .svc-faq h2: 38px purple, proper margins) — matched
    exactly against the home's computed styles instead of guessed. */
 .svc-block-center .svc-block-eyebrow {
-  color: var(--orange-text);
+  color: var(--orange);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.18em;
