@@ -2935,17 +2935,19 @@ main { padding-top: var(--nav-h); }
 .svc-hero--pink {
   position: relative;
   /* Shorter than the plain .svc-hero/home hero — this section was
-     eating almost the whole first scroll on common laptop heights. */
-  height: min(64vh, 640px);
-  min-height: 480px;
+     eating almost the whole first scroll on common laptop heights.
+     min-height (not a fixed height) so the extra top/bottom padding
+     below actually adds visible breathing room instead of just being
+     absorbed by the centering. */
+  min-height: min(64vh, 640px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   /* `main { padding-top: var(--nav-h) }` (global rule) already reserves
      room for the fixed nav before this section even starts, so no nav-h
      here — just the breathing room on top of the centering. */
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-7);
+  padding-top: 72px;
+  padding-bottom: 72px;
 }
 .svc-hero--blue::before, .svc-hero--pink::before {
   content: "";
