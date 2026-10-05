@@ -4163,8 +4163,8 @@ main { padding-top: var(--nav-h); }
 .world { position: relative; width: 100%; aspect-ratio: 1088 / 424; margin: auto 0; }
 .world-dots { position: absolute; inset: 0; background: var(--purple); opacity: .22; -webkit-mask: url('design-system/map/world-dots.svg') center / contain no-repeat; mask: url('design-system/map/world-dots.svg') center / contain no-repeat; }
 .world-pin { position: absolute; transform: translate(-50%, -50%); display: block; width: 0; height: 0; }
-.world-pin i { position: absolute; left: -12px; top: -12px; width: 24px; height: 24px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 10px rgba(249, 115, 22, .22); }
-.world-pin i::after { content: ''; position: absolute; inset: -14px; border-radius: 50%; border: 2px solid var(--orange); opacity: 0; animation: worldPulse 2.4s ease-out infinite; }
+.world-pin i { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 6px rgba(249, 115, 22, .22); }
+.world-pin i::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 2px solid var(--orange); opacity: 0; animation: worldPulse 2.4s ease-out infinite; }
 @keyframes worldPulse { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .world-pin i::after { animation: none; } }
 .nos-side { justify-content: space-between; gap: var(--space-3); }
@@ -4176,7 +4176,8 @@ main { padding-top: var(--nav-h); }
 .sector-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .sector-chips li { padding: 6px 12px; border-radius: 999px; background: var(--cloud); color: var(--purple); font-weight: 600; font-size: 13px; }
 @media (max-width: 1000px) {
-  .nos-row, }
+  .nos-row { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 1000px) {
   .nos-stats ul { grid-template-columns: repeat(6, minmax(0, 1fr)); row-gap: var(--space-3); }
   .nos-stats li { grid-column: span 2; border-left: 0; }
@@ -4268,3 +4269,40 @@ main { padding-top: var(--nav-h); }
 .faq-chat .outline-word { padding-bottom: 0.25em; }
 /* El bloque de texto de la izquierda queda quieto al abrir o cerrar respuestas */
 .faq-chat .fc-head { position: static; }
+
+/* Pista bajo el título de Trabajo: mismo estilo que la de Método, sobre fondo claro */
+.work h2 { margin-bottom: var(--sec-title-text); }
+.work-hint { margin: 0 0 var(--sec-title-content); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--purple); opacity: .8; }
+.work-hint span { display: inline-block; margin-right: 4px; color: var(--orange); font-weight: 700; }
+@media (max-width: 720px) { .work h2 { margin-bottom: var(--space-2); } .work-hint { margin-bottom: var(--space-4); } }
+/* FAQ: con la pila de preguntas cerradas centrada respecto al texto de la izquierda (offset lo calcula js/common.js) */
+@media (min-width: 861px) { .faq-chat .fc-thread { margin-top: var(--fc-offset, 0px); } }
+/* La flecha ↗ nunca debe convertirse en emoji en el teléfono: forzamos la versión de texto */
+.work-hint span, .wm-hint span, .hub-hint span, .fg-frame-label b, .work-door-arrow, .door-cursor-arrow, .ig span { font-variant-emoji: text; }
+
+/* Nosotros en móvil: el mapa y los partners van apilados, sin tarjetas angostas y largas */
+@media (max-width: 720px) {
+  .nos-map .nos-card-title { max-width: none; }
+  .partner-logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-3); }
+  .partner-logos li { height: 56px; }
+}
+/* Cohete en el método apilado (móvil/tablet): baja por la línea que une los pasos */
+.wm-rocket-m { display: none; }
+@media (max-width: 1279px) {
+  .wm-diagram { position: relative; }
+  .wm-rocket-m {
+    display: block; position: absolute; left: 28px; top: 28px; z-index: 3;
+    font-size: 24px; line-height: 1; pointer-events: none;
+    transform: translate(-50%, -50%) rotate(135deg);
+    animation: wm-fall 6s ease-in-out infinite;
+  }
+}
+@keyframes wm-fall {
+  0%   { top: 28px; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: calc(100% - 28px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .wm-rocket-m { animation: none; top: 28px; opacity: 1; } }
+/* Móvil/tablet: los conectores cruzaban los pills; sin flujo de prototipo queda limpio */
+@media (max-width: 900px) { #hubArrows { display: none; } }

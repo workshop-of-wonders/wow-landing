@@ -86,6 +86,24 @@ function createFocusTrap(modalEl, isOpen) {
   });
 })();
 
+/* FAQ en chat: centra la pila de preguntas cerradas con el texto de la izquierda sin mover nada al abrir respuestas. */
+(function () {
+  var head = document.querySelector('.fc-head');
+  var thread = document.querySelector('.fc-thread');
+  if (!head || !thread) return;
+  function align() {
+    var qs = thread.querySelectorAll('.fc-q-h');
+    var gap = parseFloat(getComputedStyle(thread).rowGap) || 0;
+    var closed = gap * (qs.length - 1);
+    qs.forEach(function (q) { closed += q.offsetHeight; });
+    thread.style.setProperty('--fc-offset', Math.max(0, Math.round((head.offsetHeight - closed) / 2)) + 'px');
+  }
+  align();
+  window.addEventListener('resize', align);
+  window.addEventListener('load', align);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+})();
+
 /* Mobile nav burger: toggles the floating glass menu. Shared by all pages —
    a no-op if #navBurger/#navMobileMenu aren't present. */
 (function () {

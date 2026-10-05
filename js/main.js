@@ -43,7 +43,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
         '<span class="door-cursor-leaf">' +
           '<span class="door-cursor-handle"></span>' +
           '<span class="door-cursor-mark-ring"><img src="design-system/logo/wow-mark-purple.svg" alt=""></span>' +
-          '<span class="door-cursor-label"><span>ABRIR<br>TALLER</span><span class="door-cursor-arrow">↗</span></span>' +
+          '<span class="door-cursor-label"><span>ABRIR<br>TALLER</span><span class="door-cursor-arrow">↗︎</span></span>' +
         '</span>' +
       '</span>' +
     '</div>';
