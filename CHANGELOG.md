@@ -57,6 +57,13 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Revisión móvil (cohete, Nosotros, Servicios), FAQ y pistas ajustados, flecha ↗ sin emoji.**
+  - Móvil: cohete en el Método apilado (`.wm-rocket-m`, baja por la línea punteada, respeta `prefers-reduced-motion`). Nosotros: la regla rota `.nos-row, }` ahora apila mapa y partners en una columna; logos de partners en 2 columnas. Servicios: se ocultan los conectores (`#hubArrows`) en ≤900px porque cruzaban los pills.
+  - FAQ: título "¿Dudas antes de empezar?" y texto "Elige una pregunta. Si no ves la tuya, escríbenos y la respondemos."; las preguntas cerradas se centran con el texto de la izquierda (offset calculado en `js/common.js`) y el bloque izquierdo ya no es sticky.
+  - Mapa: pines de 16px y Costa Rica/Colombia más separados. Trabajo: pista "Haz clic en la puerta para ver más proyectos." bajo el título.
+  - La flecha ↗ lleva el selector de variación de texto (U+FE0E) y `font-variant-emoji: text` para que el teléfono no la convierta en emoji. Se quitan los "01/02/03" del menú móvil en todas las páginas.
+  - Portafolio/home: categorías de las tarjetas con logo traducidas al español.
+
 - **2026-10-05 — Pines del mapa de Nosotros más grandes y texto del FAQ quieto.**
   - `styles.css`: `.world-pin i` de 12px a 24px con halo de 10px y pulso más amplio (`::after` con `inset: -14px`), para que cada pin se vea como un territorio.
   - `styles.css`: `.faq-chat .fc-head` deja de ser sticky, así el bloque de texto de la izquierda no se mueve al abrir respuestas.
