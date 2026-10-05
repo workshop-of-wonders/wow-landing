@@ -276,20 +276,17 @@
           <label for="pfBudget">PRESUPUESTO ESTIMADO</label>
           <select id="pfBudget" name="budget">
             <option value="">Selecciona un rango</option>
-            <optgroup label="Colombia (COP)">
-              <option>Menos de $500 mil COP</option>
-              <option>$500 mil – $1 millón COP</option>
-              <option>$1 millón – $5 millones COP</option>
-              <option>$5 – $10 millones COP</option>
-              <option>Más de $10 millones COP</option>
-            </optgroup>
-            <optgroup label="Otros países (USD)">
-              <option>Menos de US$150</option>
-              <option>US$150 – US$300</option>
-              <option>US$300 – US$1.500</option>
-              <option>US$1.500 – US$3.000</option>
-              <option>Más de US$3.000</option>
-            </optgroup>
+            <option data-cur="COP">Menos de $500 mil COP</option>
+            <option data-cur="COP">$500 mil – $1 millón COP</option>
+            <option data-cur="COP">$1 millón – $5 millones COP</option>
+            <option data-cur="COP">$5 – $10 millones COP</option>
+            <option data-cur="COP">Más de $10 millones COP</option>
+            <option data-cur="USD">Menos de US$150</option>
+            <option data-cur="USD">US$150 – US$300</option>
+            <option data-cur="USD">US$300 – US$1.500</option>
+            <option data-cur="USD">US$1.500 – US$3.000</option>
+            <option data-cur="USD">Más de US$3.000</option>
+            <option data-cur="ANY">Prefiero conversarlo</option>
           </select>
         </div>
         <div class="project-field project-field-full">
