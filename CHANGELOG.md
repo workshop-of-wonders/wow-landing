@@ -56,6 +56,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+**2026-10-05** — Método WOW, cohete: ahora orbita el ciclo de forma continua (9 s por vuelta, un solo `<text>` con `offset-path` sobre el círculo R=196 de las flechas), pasa por debajo de los nodos y solo es visible mientras recorre cada flecha verde (keyframes de opacidad por tramos de arco). Reemplaza a los tres cohetes que salían solo con el hover; las viñetas de las tarjetas siguen apareciendo solo con hover (en táctil, siempre visibles).
+
 **2026-10-05** — Método WOW, pulido: nodos a 120° exactos sobre un círculo (R=196, centro 887,493 en el viewBox 1650x840) y flechas/cohete como arcos de ese mismo círculo, con 27° de separación respecto a cada nodo; círculos de fondo más pequeños (r 246 y 150) y concéntricos; las tres tarjetas del mismo ancho (22%) y alto (27%) con la etiqueta de Lab al fondo; copy de Wonder sin "creamos": "Investigamos tu marca, tu público y tu competencia para descubrir oportunidades.".
 
 **2026-10-05** — Método WOW, interacción: en escritorio con mouse (≥1200px, `hover: hover`) las viñetas de cada paso están ocultas y se despliegan al pasar por la tarjeta (o con foco de teclado), y el 🚀 recorre la flecha de ese paso (`offset-path` en el SVG, mismos paths que las flechas). En móvil/tablet las viñetas quedan siempre visibles; `prefers-reduced-motion` desactiva la animación.

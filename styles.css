@@ -3726,21 +3726,33 @@ main { padding-top: var(--nav-h); }
   .wm-list { margin-top: var(--space-2); font-size: 15px; gap: 10px; }
 }
 
-/* Interacción (solo escritorio con mouse): las viñetas de cada paso se
-   despliegan al pasar por la tarjeta y el cohete recorre la flecha de ese paso.
-   Los paths de offset-path repiten los de las flechas del SVG (viewBox 1650x840). */
+/* Interacción: el cohete orbita el ciclo todo el tiempo (círculo R=196 centrado
+   en 887,493 del viewBox 1650x840, el mismo de las flechas); en escritorio con
+   mouse, las viñetas de cada paso se despliegan al pasar por la tarjeta. */
 .wm-rocket {
-  font-size: 34px; opacity: 0; pointer-events: none;
-  offset-rotate: auto 45deg; offset-distance: 0%;
+  font-size: 34px; pointer-events: none;
+  offset-path: path('M887 297 A196 196 0 1 1 887 689 A196 196 0 1 1 887 297');
+  offset-rotate: auto 45deg;
+  animation: wm-orbit 9s linear infinite;
 }
-.wm-rocket-1 { offset-path: path('M976.0 318.4 A196 196 0 0 1 1082.7 503.3'); }
-.wm-rocket-2 { offset-path: path('M993.7 657.4 A196 196 0 0 1 780.3 657.4'); }
-.wm-rocket-3 { offset-path: path('M691.3 503.3 A196 196 0 0 1 798.0 318.4'); }
-@keyframes wm-fly {
-  0%   { offset-distance: 0%;   opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
+@keyframes wm-orbit {
+  /* una vuelta completa; solo es visible mientras recorre cada flecha verde
+     (arcos a 27°-93°, 147°-213° y 267°-333° de la vuelta) y pasa por debajo de los nodos */
+  0%    { offset-distance: 0%; opacity: 0; }
+  7%    { opacity: 0; }
+  8.5%  { opacity: 1; }
+  25%   { opacity: 1; }
+  26.5% { opacity: 0; }
+  40%   { opacity: 0; }
+  41.5% { opacity: 1; }
+  58%   { opacity: 1; }
+  59.5% { opacity: 0; }
+  74%   { opacity: 0; }
+  75.5% { opacity: 1; }
+  91.5% { opacity: 1; }
+  93%   { opacity: 0; }
+  100%  { offset-distance: 100%; opacity: 0; }
+}
 }
 @media (min-width: 1200px) and (hover: hover) {
   .wm-list { pointer-events: none; }
@@ -3752,14 +3764,9 @@ main { padding-top: var(--nav-h); }
   .wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
   .wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
   .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
-  .wm-stage:has(.wm-1:hover) .wm-rocket-1, .wm-stage:has(.wm-1:focus-within) .wm-rocket-1,
-  .wm-stage:has(.wm-2:hover) .wm-rocket-2, .wm-stage:has(.wm-2:focus-within) .wm-rocket-2,
-  .wm-stage:has(.wm-3:hover) .wm-rocket-3, .wm-stage:has(.wm-3:focus-within) .wm-rocket-3 {
-    animation: wm-fly 1.6s ease-in-out infinite;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .wm-rocket { animation: none !important; }
+  .wm-rocket { animation: none !important; opacity: 0; }
   .wm-list li { transition: none !important; }
 }
 
