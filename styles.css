@@ -2465,6 +2465,9 @@ main { padding-top: var(--nav-h); }
   text-transform: uppercase;
   color: var(--lima);
 }
+/* Nombre de un Lab dentro del popup: el color exacto de su submarca (el mismo de .hub-lab-brand / .hub-lab-insight y de los paneles de Labs). */
+.lightbox-label.lightbox-label-brand { color: #EC4899; font-weight: 600; }
+.lightbox-label.lightbox-label-insight { color: #3B82F6; font-weight: 600; }
 .lightbox-work {
   margin: 0;
   color: #cfc7d6;
@@ -3705,7 +3708,11 @@ main { padding-top: var(--nav-h); }
 .wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
 
 @media (min-width: 1280px) {
-  .wm-stage { display: grid; grid-template-columns: minmax(260px, 320px) 1fr; column-gap: var(--space-5); align-items: center; }
+  .wm-stage { display: grid; grid-template-columns: minmax(260px, 320px) 1fr; column-gap: var(--space-5); align-items: start; }
+  /* El título (una sola línea por renglón) fija el ancho del bloque: el párrafo mide exactamente lo mismo que él, y con
+     text-wrap: pretty sus renglones lo llenan sin dejar la última palabra suelta. */
+  .wm-head { display: grid; grid-template-columns: max-content; justify-content: start; }
+  .wm-head .wm-intro { width: 0; min-width: 100%; text-wrap: pretty; }
   .wm-diagram { position: relative; width: 838px; height: 524px; justify-self: end; margin-right: calc(-1 * clamp(0px, 838px - 100%, var(--page-x) - 24px)); }
   .wm-art { position: absolute; left: 50%; top: 0; width: 838px; height: 524px; margin-left: -419px; }
   .wm-logo { position: absolute; left: 50%; top: 374px; width: 64px; height: auto; transform: translate(-50%, -50%); }
@@ -3720,9 +3727,13 @@ main { padding-top: var(--nav-h); }
   .wm-3 .wm-card { left: calc(50% - 418.9px); top: 348.0px; }
   .wm-list { position: absolute; white-space: nowrap; pointer-events: none; }
   .wm-1 .wm-list { left: calc(50% + 140.0px); top: 64px; }
-  .wm-2 .wm-list { left: calc(50% + 194.9px); top: 538.0px; }
-  .wm-3 .wm-list { left: calc(50% - 402.9px); top: 538.0px; }
-  .wow-method { padding-top: 72px; padding-bottom: 140px; }
+  .wm-2 .wm-list { left: calc(50% + 194.9px); bottom: 190px; }
+  /* Win: la lista va a la izquierda de su tarjeta (ese espacio queda libre porque el texto está alineado arriba),
+     alineada a la derecha para quedar pegada a ella y centrada con su alto */
+  .wm-3 .wm-list { right: calc(50% + 434.9px); top: 377px; text-align: right; }
+  .wm-3 .wm-list li { padding-left: 0; padding-right: 22px; transform: translateX(12px); }
+  .wm-3 .wm-list li::before { left: auto; right: 0; }
+  .wow-method { padding-top: 72px; padding-bottom: 72px; }  /* las viñetas ya no cuelgan debajo de las tarjetas */
   .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
 
   /* El cohete orbita el ciclo todo el tiempo (círculo R=128 centrado en 419,372 del

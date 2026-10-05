@@ -291,12 +291,58 @@ function hubPillColor(pill) {
     comment.style.top = (b.y - 22) + 'px';
   }
 
-  /* colaboradores */
+  /* colaboradores: casi siempre deambulan libremente por el diagrama; solo a veces (PILL_CHANCE) van a un pill y lo
+     seleccionan, para que no parezca que van a hacer clic en todos. */
+  var PILL_CHANCE = 0.15;
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function rand(a, b) { return a + Math.random() * (b - a); }
   function tipFor(pill) {
     var b = rectIn(pill);
     return { x: b.x + b.w * rand(0.6, 0.85), y: b.y + b.h * rand(0.7, 0.95) };
+  }
+  function insidePill(x, y) {
+    return hubPills.some(function (p) {
+      var b = rectIn(p);
+      return x > b.x - 6 && x < b.x + b.w + 6 && y > b.y - 6 && y < b.y + b.h + 6;
+    });
+  }
+  /* Zona de movimiento: toda la sección #servicios (no solo el frame), menos el texto (eyebrow y título). */
+  function textRect(sel, pad) {
+    var e = document.querySelector(sel); if (!e) return null;
+    var rg = document.createRange(); rg.selectNodeContents(e);
+    var o = origin(), r = rg.getBoundingClientRect();
+    /* el cursor lleva su etiqueta a la derecha (~120px) y debajo (~40px) de la punta: se amplía la zona hacia la izquierda y
+       arriba para que ni la punta ni la etiqueta pisen el texto */
+    return { x: r.left - o.x - pad - 120, y: r.top - o.y - pad - 40, w: r.width + 2 * pad + 120, h: r.height + 2 * pad + 40 };
+  }
+  function roamArea() {
+    var o = origin(), sec = document.getElementById('servicios').getBoundingClientRect();
+    return { x0: sec.left - o.x + 10, y0: sec.top - o.y + 10, x1: sec.right - o.x - 115, y1: sec.bottom - o.y - 42,
+             blocked: [textRect('.services .eyebrow', 10), textRect('.services h2', 14)].filter(Boolean) };
+  }
+  function inRect(x, y, r) { return x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h; }
+  /* punto libre, lejos de la posición actual y fuera de los pills y del texto (no debe parecer un clic). Casi siempre
+     dentro del frame, pero a veces (OUT_CHANCE) en cualquier lugar libre de la sección, fuera del marco. */
+  var OUT_CHANCE = 0.45;
+  function freePoint(g, area) {
+    var W = hubDiagramEl.clientWidth, H = hubDiagramEl.clientHeight, p;
+    for (var i = 0; i < 24; i++) {
+      p = Math.random() < OUT_CHANCE
+        ? { x: rand(area.x0, area.x1), y: rand(area.y0, area.y1) }
+        : { x: rand(24, W - 90), y: rand(14, H - 36) };
+      var onText = area.blocked.some(function (r) { return inRect(p.x, p.y, r); });
+      if (Math.hypot(p.x - g.x, p.y - g.y) > 90 && !onText && !insidePill(p.x, p.y)) return p;
+    }
+    return p;
+  }
+  /* la trayectoria tampoco debe cruzar el texto */
+  function pathClear(from, ctrl, to, area) {
+    for (var i = 1; i < 16; i++) {
+      var t = i / 16, u = 1 - t;
+      var x = u * u * from.x + 2 * u * t * ctrl.x + t * t * to.x, y = u * u * from.y + 2 * u * t * ctrl.y + t * t * to.y;
+      if (area.blocked.some(function (r) { return inRect(x, y, r); })) return false;
+    }
+    return true;
   }
   function setGhost(g, x, y) { g.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; g.x = x; g.y = y; }
   function selectFor(g, pill) {
@@ -312,13 +358,21 @@ function hubPillColor(pill) {
     return pool[Math.floor(Math.random() * pool.length)];
   }
   function startMove(g, now) {
-    g.pill = pickPill(g);
-    var t = tipFor(g.pill);
-    g.from = { x: g.x, y: g.y }; g.to = t;
-    var dx = t.x - g.x, dy = t.y - g.y, dist = Math.hypot(dx, dy) || 1;
-    var bend = rand(-0.18, 0.18) * dist;
-    g.ctrl = { x: (g.x + t.x) / 2 - dy / dist * bend, y: (g.y + t.y) / 2 + dx / dist * bend };
-    g.t0 = now; g.dur = 900 + dist * 2.2 + rand(0, 500);
+    var area = roamArea(), t, ctrl, dx, dy, dist, bend, pill = null;
+    for (var tries = 0; tries < 8; tries++) {
+      pill = Math.random() < PILL_CHANCE ? pickPill(g) : null;
+      t = pill ? tipFor(pill) : freePoint(g, area);
+      dx = t.x - g.x; dy = t.y - g.y; dist = Math.hypot(dx, dy) || 1;
+      bend = rand(-0.2, 0.2) * dist;
+      ctrl = {   /* el punto de control queda dentro de la zona de movimiento */
+        x: Math.min(Math.max((g.x + t.x) / 2 - dy / dist * bend, area.x0), area.x1),
+        y: Math.min(Math.max((g.y + t.y) / 2 + dx / dist * bend, area.y0), area.y1)
+      };
+      if (pathClear({ x: g.x, y: g.y }, ctrl, t, area)) break;
+    }
+    g.pill = pill;
+    g.from = { x: g.x, y: g.y }; g.to = t; g.ctrl = ctrl;
+    g.t0 = now; g.dur = 1100 + dist * 2.2 + rand(0, 700);
     g.state = 'move'; selectFor(g, null);
   }
   function tick(now) {
@@ -326,7 +380,11 @@ function hubPillColor(pill) {
       if (g.state === 'move') {
         var t = Math.min(1, (now - g.t0) / g.dur), e = ease(t), u = 1 - e;
         setGhost(g, u * u * g.from.x + 2 * u * e * g.ctrl.x + e * e * g.to.x, u * u * g.from.y + 2 * u * e * g.ctrl.y + e * e * g.to.y);
-        if (t >= 1) { g.state = 'dwell'; g.until = now + rand(1800, 3200); selectFor(g, g.pill); }
+        if (t >= 1) {
+          g.state = 'dwell';
+          if (g.pill) { g.until = now + rand(1200, 2200); selectFor(g, g.pill); }   /* se detiene a seleccionar el pill */
+          else { g.until = now + rand(150, 900); }                                  /* en el aire: pausa corta y sigue */
+        }
       } else if (g.state === 'dwell' && now >= g.until) {
         startMove(g, now);
       }
@@ -345,20 +403,19 @@ function hubPillColor(pill) {
     placeComment();
     if (!desktop.matches) return;
     if (reduce.matches) {
-      /* sin movimiento: cada colaborador queda quieto sobre un pill, con su selección */
-      var spots = [hubPills[0], hubPills[hubPills.length - 1]];
-      ghosts.forEach(function (g, i) {
-        g.pill = spots[i]; var t = tipFor(g.pill); setGhost(g, t.x, t.y); selectFor(g, g.pill);
-      });
+      /* sin movimiento: cada colaborador queda quieto en un punto libre del frame, sin seleccionar nada */
+      var W = hubDiagramEl.clientWidth, H = hubDiagramEl.clientHeight;
+      var spots = [{ x: W * 0.42, y: H * 0.18 }, { x: W * 0.7, y: H * 0.72 }];
+      ghosts.forEach(function (g, i) { g.pill = null; setGhost(g, spots[i].x, spots[i].y); selectFor(g, null); });
     } else {
-      ghosts.forEach(function (g) { if (g.state === 'dwell') selectFor(g, g.pill); });
+      ghosts.forEach(function (g) { if (g.state === 'dwell' && g.pill) selectFor(g, g.pill); });
     }
   }
 
   ghosts.forEach(function (g, i) {
-    var o = hubPills[i === 0 ? 1 : hubPills.length - 2] || hubPills[0];
-    g.pill = o; g.state = 'dwell'; g.until = performance.now() + 400 + i * 700;
-    var t = tipFor(o); setGhost(g, t.x, t.y);
+    g.pill = null; g.state = 'dwell'; g.until = performance.now() + 300 + i * 900;
+    var W = hubDiagramEl.clientWidth || 800, H = hubDiagramEl.clientHeight || 200;
+    setGhost(g, W * (i ? 0.7 : 0.35), H * (i ? 0.7 : 0.25));
   });
 
   if ('IntersectionObserver' in window) {
@@ -826,6 +883,8 @@ var ProjectCollage = (function () {
   var desc = document.getElementById('lightboxDesc');
   var tagsBlock = document.getElementById('lightboxTagsBlock');
   /* Category-name → Lab mapping, mirrors servicios.html's sections */
+  /* El nombre de un Lab nunca va en el lima genérico de las etiquetas: cada Lab es una submarca y su color es su identidad. */
+  var LAB_LABEL_CLASS = { 'Brand & Experience Lab': 'lightbox-label-brand', 'Insight Lab': 'lightbox-label-insight' };
   var CATEGORY_TO_LAB = {
     'Experiencia digital': 'Brand & Experience Lab',
     'Crecimiento y marketing digital': 'Insight Lab'
@@ -889,6 +948,7 @@ var ProjectCollage = (function () {
         groupEl.className = 'lightbox-lab-group';
         var label = document.createElement('p');
         label.className = 'lightbox-label';
+        if (LAB_LABEL_CLASS[group.lab]) label.classList.add(LAB_LABEL_CLASS[group.lab]);
         label.textContent = group.lab || 'Capacidades';
         groupEl.appendChild(label);
         var tagsEl = document.createElement('div');

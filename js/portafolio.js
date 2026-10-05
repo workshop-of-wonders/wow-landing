@@ -426,6 +426,8 @@ var ProjectCollage = (function () {
   var category = document.getElementById('lightboxCategory');
   var desc = document.getElementById('lightboxDesc');
   var tagsBlock = document.getElementById('lightboxTagsBlock');
+  /* El nombre de un Lab nunca va en el lima genérico de las etiquetas: cada Lab es una submarca y su color es su identidad. */
+  var LAB_LABEL_CLASS = { 'Brand & Experience Lab': 'lightbox-label-brand', 'Insight Lab': 'lightbox-label-insight' };
   var CATEGORY_TO_LAB = {
     'Estrategia de marca': 'Brand & Experience Lab',
     'Identidad y diseño de marca': 'Brand & Experience Lab',
@@ -487,6 +489,7 @@ var ProjectCollage = (function () {
         groupEl.className = 'lightbox-lab-group';
         var label = document.createElement('p');
         label.className = 'lightbox-label';
+        if (LAB_LABEL_CLASS[group.lab]) label.classList.add(LAB_LABEL_CLASS[group.lab]);
         label.textContent = group.lab || 'Capacidades';
         groupEl.appendChild(label);
         var tagsEl = document.createElement('div');
