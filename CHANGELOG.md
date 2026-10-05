@@ -57,6 +57,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Labs sin desplegable, logos de Acústica EAFIT y Christmas House, menos adornos y título de clientes a la izquierda.**
+  - Menú principal (18 páginas): "Labs" pasa de tener desplegable a ser un enlace simple (`#labs` en el home, `../index.html#labs` en el resto), igual que "Trabajo". Se elimina el CSS `.nav-dropdown-grid-labs`; el menú móvil ya era un enlace.
+  - Adornos: se quitan los puntos de color de las etiquetas `.svc-highlight-chip` de servicios y Labs, el punto de "En el taller" en `/pronto` y las rayitas separadoras del menú móvil (`.nav-mobile-links a::after`). Las viñetas de las listas de Método (`.wm-list li::before`) se mantienen: son parte del diseño y quedan como estaban.
+  - Cards de Acústica EAFIT y Christmas House con su logo (`design-system/clients/acustica-eafit.webp`, fondo gris limpiado a blanco; `christmas-house.webp`) en el portafolio y la galería del home; el logo es la imagen del popup. Siguen sin caso completo.
+  - Trabajo: "Confían en nosotros" alineado a la izquierda (`.work-brands-title`).
+
 - **2026-10-05 — Sin puntitos ni guiones, herramientas por caso, cards nuevas, popups sin repetidas y "Confían en nosotros".**
   - Estilo: se quitan los puntos de color (`nav-dropdown-dot`, `svc-jump-dot`, `nav-dot-*` y el `::before` de `.wm-list`) y los guiones largos/de rango de todos los textos visibles (HTML, JSON-LD y `js/cases.js`): se usan dos puntos, coma, punto, paréntesis o "|" en títulos; rangos de presupuesto con "a"; "01 Wonder" sin guion. Pedido de la dueña ("se ve hecho con IA"). Los puntos medios "·" se mantienen (categorías y atributos de datos). Pendiente por si también se quieren quitar.
   - Herramientas por caso (`js/cases.js`, campo `herramientas`; también `data-tools` en cards sin caso): grupo "Herramientas" en cada popup según lo que informó la dueña (Wix, Shopify, Canva, Linka, Vercel, GitHub, Google My Business, Google Ads, Meta Ads, TikTok Ads, WordPress, Adobe Illustrator…). Epika Store: alcance completo (marca, logo, sitio, posts y pauta). Los chips de Método suman Canva, Shopify, Linka, Vercel, GitHub y TikTok Ads.
