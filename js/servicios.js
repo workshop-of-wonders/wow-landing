@@ -162,3 +162,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
   window.addEventListener('resize', onScroll);
   update();
 })();
+
+/* "Qué hacemos" de SEO: la pregunta del título se "escribe" en la barra de búsqueda la primera vez que se ve. */
+(function () {
+  var vis = document.querySelector('.sp-climb-vis');
+  if (!vis) return;
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) { vis.classList.add('is-typing'); io.disconnect(); }
+  }, { threshold: 0.5 });
+  io.observe(vis);
+})();
