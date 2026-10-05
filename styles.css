@@ -4411,3 +4411,16 @@ main { padding-top: var(--nav-h); }
 }
 @media (prefers-reduced-motion: reduce) { .sp-float { animation: none; } }
 .wm-tools--one { grid-template-columns: 1fr; }
+
+/* Hero por Lab (variante de .sp-hero): mismo diseño en dos columnas con la maqueta a la derecha, pero con el degradado del Lab y su ícono
+   gigante como en los paneles de #labs. --blue = Insight Lab (SEO, pauta, analítica, CRO...); el morado con textura queda solo para el home. */
+.sp-hero--blue { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
+.sp-hero--blue::before, .sp-hero--blue::after { content: ""; position: absolute; pointer-events: none; filter: brightness(0) invert(1); opacity: .16; background-repeat: no-repeat; background-size: contain; }
+.sp-hero--blue::before { right: -6%; top: -16%; width: 680px; height: 680px; background-image: url(design-system/icons/icon-star.svg); }
+.sp-hero--blue::after { left: -5%; bottom: -14%; width: 420px; height: 420px; background-image: url(design-system/logo/wow-mark.svg); }
+.sp-hero--blue .sp-hero-copy, .sp-hero--blue .sp-visual { position: relative; z-index: 2; }
+.sp-hero--blue .eyebrow, .sp-hero--blue .eyebrow a { color: var(--white); }
+.sp-hero--blue h1 em { color: var(--purple); }
+.sp-hero--blue .sp-hero-sub { color: #f4f8ff; }
+.sp-hero--blue .sp-serp { box-shadow: 0 30px 70px rgba(26,19,32,.3); }
+@media (max-width: 900px) { .sp-hero--blue::before { width: 420px; height: 420px; } }
