@@ -4371,7 +4371,7 @@ main { padding-top: var(--nav-h); }
 .sp-intro-copy { align-self: center; }
 .sp-intro-copy h2 { max-width: 14em; }
 .sp-intro-copy > p:not(.eyebrow) { font-size: 19px; line-height: 1.65; margin: 0; max-width: 34em; }
-.sp-callout { display: flex; align-items: center; background: var(--purple); color: var(--white); border-radius: 24px; padding: var(--space-5); position: relative; overflow: hidden; }
+.sp-callout { display: flex; flex-direction: column; justify-content: center; gap: var(--space-4); background: var(--purple); color: var(--white); border-radius: 24px; padding: var(--space-5); position: relative; overflow: hidden; }
 .sp-callout p { margin: 0; font-family: var(--font-display); font-size: clamp(22px, 2.3vw, 30px); line-height: 1.25; }
 .sp-callout em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--lima); }
 .sp-callout::after { content: ""; position: absolute; right: -40px; bottom: -50px; width: 190px; height: 190px; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; opacity: .12; }
@@ -4441,4 +4441,23 @@ main { padding-top: var(--nav-h); }
 .sp-hero--blue .sp-hero-cta { align-items: center; gap: var(--space-4); }
 @media (max-width: 900px) {
   .sp-hero--blue { grid-template-columns: 1fr; min-height: 0; gap: var(--space-5); padding-top: calc(var(--space-5) + var(--nav-h)); }
+}
+
+/* "Qué es": la búsqueda se abre en tres intenciones (aparecen en secuencia al entrar en pantalla; ver js/servicios.js) */
+.sp-intent { position: relative; z-index: 1; }
+.sp-intent-bar { display: flex; align-items: center; gap: 10px; width: fit-content; max-width: 100%; margin: 0 auto; padding: 10px 18px; border-radius: 999px; background: var(--white); color: #6d6177; font-size: 14px; }
+.sp-intent-bar::before { content: ""; width: 12px; height: 12px; border: 2px solid var(--purple); border-radius: 50%; box-shadow: 5px 5px 0 -3px var(--purple); flex: none; }
+.sp-intent-list { list-style: none; margin: 0; padding: var(--space-3) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-1); position: relative; }
+.sp-intent-list::before { content: ""; position: absolute; top: 0; left: 16.6%; right: 16.6%; height: var(--space-3); border: 2px dashed rgba(255,255,255,.35); border-bottom: 0; border-radius: 14px 14px 0 0; }
+.sp-intent-list::after { content: ""; position: absolute; top: calc(-1 * var(--space-3) + 0px); left: 50%; height: var(--space-3); border-left: 2px dashed rgba(255,255,255,.35); }
+.sp-intent-list li { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.1); border: 1px solid var(--ic); opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+.sp-intent-list b { font-size: 14px; color: var(--ic); line-height: 1.2; }
+.sp-intent-list small { font-size: 12px; color: var(--cloud); opacity: .85; }
+.sp-i-1 { --ic: #8ec5ff; } .sp-i-2 { --ic: #f9a8d4; transition-delay: .2s !important; } .sp-i-3 { --ic: var(--lima); transition-delay: .4s !important; }
+.sp-callout.is-in .sp-intent-list li { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .sp-intent-list li { opacity: 1; transform: none; transition: none; } }
+@media (max-width: 560px) {
+  .sp-intent-list { grid-template-columns: 1fr; }
+  .sp-intent-list::before, .sp-intent-list::after { display: none; }
+  .sp-intent-bar { margin: 0; }
 }

@@ -57,6 +57,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — SEO, "Qué es" más wow.** La tarjeta morada ahora ilustra la frase: una barra de búsqueda que se abre en tres intenciones (Quiere saber / comparar / comprar) con líneas punteadas, en los colores del Método; aparecen en secuencia al entrar en pantalla (`IntersectionObserver` en `js/servicios.js`, respeta `prefers-reduced-motion`). Es decorativo (`aria-hidden`).
 - **2026-10-05 — SEO, sección "Qué es" reordenada.** Título y párrafo juntos a la izquierda, tarjeta morada a la derecha a la misma altura y centrada (antes el título quedaba solo arriba, el párrafo y la tarjeta empezaban a alturas distintas y sobraba espacio vacío). Nuevo `.sp-intro-copy`.
 - **2026-10-05 — Hero de SEO: dibujo otra vez a la derecha.** El dibujo a la izquierda rompía la lectura izquierda → derecha; vuelve a la derecha. Se mantiene lo que lo distingue del home: color de Lab, hero más bajo, miga de pan, etiqueta de Lab y un solo botón + enlace.
 - **2026-10-05 — Hero de SEO con composición propia (2.ª vuelta).** Aun con color azul se leía igual al del home (texto izquierda, dibujo derecha, titular grande, dos botones). Ahora: dibujo a la izquierda y texto a la derecha, hero más bajo, miga de pan "Servicios › SEO", etiqueta "Insight Lab" y un solo botón + enlace "Cómo trabajamos ↓". En móvil vuelve a una columna.
