@@ -140,7 +140,7 @@ function renderLeadDetail(id) {
   box.innerHTML = `
     <div class="lead-detail">
       <p class="lead-name">${lead.name} <span class="badge ${lead.status}">${lead.status}</span></p>
-      <p class="lead-meta">${lead.email} ${lead.company ? '· ' + lead.company : ''} · Necesidad: ${lead.need || '—'} · Presupuesto: ${lead.budget || '—'} · Página: ${lead.page || '—'}</p>
+      <p class="lead-meta">${lead.email} ${lead.company ? '· ' + lead.company : ''} · Necesidad: ${lead.need || '—'} · País: ${lead.country || '—'} · Presupuesto: ${lead.budget || '—'} · Página: ${lead.page || '—'}</p>
       <p style="white-space: pre-wrap;">${lead.details || ''}</p>
       <div class="field">
         <label>Estado</label>
