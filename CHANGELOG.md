@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Botón "Ver sitio" en los casos y "Lynka" corregido.**
+  - `js/cases.js`: nuevo campo opcional `sitio` (y `data-site` en las cards sin caso). Los popups (`js/main.js`, `js/portafolio.js`, `js/project-popup.js`) lo muestran como botón "Ver sitio" (`.lightbox-site`, lima, en pestaña nueva con `rel="noopener noreferrer"`) bajo la descripción. Casos con sitio: Centro del Sueño y Ronquido (clinicadelsuenoyronquido.com), Caminos de la Vida (hogarcaminosdelavida.com), Lámparas Milán (cristaleriamilan.com) y Epika Store (lynka.io/s/epika-store). Pendiente: el de `tiendasinenredos.myshopify.com`, a la espera de saber a qué proyecto corresponde.
+  - La herramienta "Linka" pasa a "Lynka" (casos y tarjeta de herramientas de Método), según el link de Epika.
+
 - **2026-10-05 — Labs sin desplegable, logos de Acústica EAFIT y Christmas House, menos adornos y título de clientes a la izquierda.**
   - Menú principal (18 páginas): "Labs" pasa de tener desplegable a ser un enlace simple (`#labs` en el home, `../index.html#labs` en el resto), igual que "Trabajo". Se elimina el CSS `.nav-dropdown-grid-labs`; el menú móvil ya era un enlace.
   - Adornos: se quitan los puntos de color de las etiquetas `.svc-highlight-chip` de servicios y Labs, el punto de "En el taller" en `/pronto` y las rayitas separadoras del menú móvil (`.nav-mobile-links a::after`). Las viñetas de las listas de Método (`.wm-list li::before`) se mantienen: son parte del diseño y quedan como estaban.
