@@ -3641,21 +3641,89 @@ main { padding-top: var(--nav-h); }
   .method-loop { top: 32px; }
 }
 
-/* W·O·W debajo del círculo de Proceso: franja del mismo morado para que se
-   lea como continuación de la sección; reutiliza las cards .svc-steps de las
-   páginas de servicio (las iniciales en grande forman W·O·W). */
-.wow-strip {
-  padding: 0 var(--page-x) var(--space-7);
+
+/* Método WOW: ciclo Wonder → Optimize → Win. El escenario escala con su propio
+   ancho (container query units); bajo 1200px se apila en una sola columna. */
+.wow-method {
   background: var(--purple);
   color: var(--white);
+  padding: var(--space-7) var(--page-x) calc(var(--space-7) * 1.5);
 }
-.wow-strip-title {
-  font-size: clamp(22px, 2.4vw, 28px);
-  line-height: 1.3;
-  color: var(--white);
-  margin: 0;
+.wm-stage {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 1650 / 840;
+  font-size: clamp(13px, 1.02cqw, 17px);
 }
-.wow-strip .svc-steps li { color: var(--ink); }
+.wm-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wm-logo { position: absolute; left: 53.9%; top: 59%; width: 5.45%; height: auto; transform: translate(-50%, -50%); }
+.wm-head { position: absolute; left: 0; top: 4%; width: 26%; }
+.wm-head .eyebrow { color: var(--orange); }
+.wm-head h2 { font-size: clamp(26px, 2.6cqw, 46px); line-height: 1.12; color: var(--white); margin: 0 0 1.2em; }
+.wm-intro { font-size: clamp(13px, 1.12cqw, 18px); line-height: 1.6; margin: 0; opacity: .92; }
+
+.wm-step { display: contents; --c: var(--magenta); }
+.wm-2 { --c: var(--orange); }
+.wm-3 { --c: #c4a8f5; }
+.wm-node {
+  position: absolute; width: 6.06%; aspect-ratio: 1; border-radius: 50%;
+  background: var(--c); display: grid; place-items: center; transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 .6cqw rgba(255,255,255,.04);
+}
+.wm-node svg { width: 46%; height: 46%; }
+.wm-1 .wm-node { left: 54.1%; top: 35.4%; }
+.wm-2 .wm-node { left: 64.4%; top: 69%; }
+.wm-3 .wm-node { left: 43.1%; top: 69%; }
+
+.wm-card {
+  position: absolute; box-sizing: border-box;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 1.5cqw; padding: 1.3cqw 1.5cqw;
+}
+.wm-card h3 { font-size: 1.85em; line-height: 1; margin: 0 0 .45em; color: var(--c); }
+.wm-num { font-family: var(--font-mono); font-size: .5em; color: var(--lima); letter-spacing: .04em; margin-right: .3em; vertical-align: .25em; }
+.wm-card p { margin: 0 0 .8em; line-height: 1.4; font-size: .96em; }
+.wm-tag {
+  display: inline-block; padding: .4em .95em; border-radius: 99px;
+  background: rgba(255,255,255,.12); font-size: .78em; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase; white-space: nowrap;
+}
+.wm-1 .wm-card { left: 42.5%; width: 22.1%; bottom: 75.6%; }
+.wm-2 .wm-card { left: 68.9%; width: 19%; top: 60%; }
+.wm-3 .wm-card { left: 12.4%; width: 22.2%; top: 60%; }
+
+.wm-list { position: absolute; white-space: nowrap; margin: 0; padding: 0; list-style: none; display: grid; gap: .7em; font-size: .98em; }
+.wm-list li { position: relative; padding-left: 1.6em; line-height: 1.3; }
+.wm-list li::before { content: ''; position: absolute; left: 0; top: .25em; width: .8em; height: .8em; border-radius: 50%; background: var(--c); }
+.wm-1 .wm-list { left: 66.5%; top: 5.4%; }
+.wm-2 .wm-list { left: 89.3%; top: 63%; }
+.wm-3 .wm-list { left: 13.6%; top: 88%; }
+
+@media (max-width: 1199px) {
+  .wow-method { padding-bottom: var(--space-7); }
+  .wm-stage { aspect-ratio: auto; container-type: normal; font-size: 16px; display: grid; gap: var(--space-4); }
+  .wm-art, .wm-logo { display: none; }
+  .wm-stage .wm-head, .wm-stage .wm-step .wm-card, .wm-stage .wm-step .wm-list, .wm-stage .wm-step .wm-node { position: static; transform: none; left: auto; top: auto; bottom: auto; width: auto; }
+  .wm-list { white-space: normal; }
+  .wm-tag { white-space: normal; }
+  .wm-head { width: auto; }
+  .wm-head h2 { font-size: 24px; margin-bottom: var(--space-2); }
+  .wm-intro { font-size: 16px; }
+  .wm-step {
+    display: grid; grid-template-columns: 56px 1fr; column-gap: var(--space-2);
+    position: relative; align-items: start;
+  }
+  .wm-step:not(:last-of-type)::after {
+    content: ''; position: absolute; left: 27px; top: 60px; bottom: calc(-1 * var(--space-4) + 4px);
+    border-left: 3px dashed var(--c); opacity: .6;
+  }
+  .wm-stage .wm-step .wm-node { width: 56px; height: 56px; grid-row: 1 / span 2; }
+  .wm-card { border-radius: 20px; padding: var(--space-3) 20px; }
+  .wm-card h3 { font-size: 30px; }
+  .wm-card p { font-size: 15px; }
+  .wm-tag { font-size: 12px; }
+  .wm-list { margin-top: var(--space-2); font-size: 15px; gap: 10px; }
+}
 
 /* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
    popup del proyecto (js/cases.js). La card con caso lleva "Ver caso". */
@@ -3767,17 +3835,8 @@ main { padding-top: var(--nav-h); }
 }
 /* W·O·W cards: 3 across from tablet up, compact on phones. */
 @media (min-width: 600px) and (max-width: 899px) {
-  .wow-strip .svc-steps { grid-template-columns: repeat(3, 1fr); }
-  .wow-strip .svc-steps li { padding: var(--space-3) 14px; }
-  .wow-strip .svc-steps .svc-step-num { font-size: 22px; }
-  .wow-strip .svc-steps .svc-step-num::first-letter { font-size: 48px; }
 }
 @media (max-width: 599px) {
-  .wow-strip { padding-bottom: var(--space-5); }
-  .wow-strip .svc-steps { gap: var(--space-2); }
-  .wow-strip .svc-steps li { padding: var(--space-2) var(--space-3) var(--space-3); gap: 6px; }
-  .wow-strip .svc-steps .svc-step-num { font-size: 22px; }
-  .wow-strip .svc-steps .svc-step-num::first-letter { font-size: 48px; }
 }
 /* Contact: the falling-icons playground keeps room to play, just less. */
 @media (max-width: 720px) {
@@ -3898,11 +3957,9 @@ main { padding-top: var(--nav-h); }
   .svc-includes-grid .svc-card h4 { font-size: 18px; }
   /* H3 level */
   .labs-content h3, .labs-panel .labs-label, .labs .labs-label { font-size: 19px; }
-  .wow-strip .wow-strip-title { font-size: 19px; }
   .method-loop .method-step h3 { font-size: 17px; }
   /* Card text */
   .labs-content p { font-size: 15px; line-height: 1.6; }
-  .wow-strip .svc-steps li p { font-size: 15px; }
   /* Footer: body size, not bigger than page text */
   .footer .footer-tagline, .footer .footer-quote { font-size: 16px; }
 }

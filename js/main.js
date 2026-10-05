@@ -988,15 +988,6 @@ toggleItems.forEach(function (item) {
   setSwitch(item.querySelector('.switch'), false);
 });
 
-/* Reveal method steps + fly the rocket along the timeline, synced to scroll */
-var methodPin = document.querySelector('.method-pin');
-var methodSection = document.querySelector('.method');
-var rocketEl = document.getElementById('methodRocket');
-var loopProgressEl = document.getElementById('methodLoopProgress');
-var loopProgressCircumference = 201.06; // 2 * PI * r(32), matches the SVG circle's radius
-var dotEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.loop-dot')) : [];
-var stepEls = methodSection ? [].slice.call(methodSection.querySelectorAll('.method-step')) : [];
-
 var mobileTimelineQuery = window.matchMedia('(max-width: 1199px)');
 
 function updateScrollScrubs() {
@@ -1022,50 +1013,6 @@ function updateScrollScrubs() {
       if (!btn.dataset.userSet && shouldBeOn !== btn.classList.contains('is-on')) {
         setSwitch(btn, shouldBeOn);
       }
-    });
-  }
-
-  if (methodSection && stepEls.length) {
-    /* .method isn't sticky-pinned on mobile either, so — same fix as the philosophy switches — tie progress to the section's own entry: 0 when it's just touching the bottom of the viewport, 1 once it's fully on screen. The card-by-card reveal then rides the scroll that brings the section into view, instead of requiring extra swipes once there. */
-    var mProg;
-    if (isMobileTimeline) {
-      var methodRect = methodSection.getBoundingClientRect();
-      var methodVh = window.innerHeight;
-      mProg = Math.max(0, Math.min(1, (methodVh - methodRect.top) / methodRect.height));
-    } else {
-      mProg = methodPin ? pinProgress(methodPin) : scrollProgress(methodSection);
-    }
-    methodSection.classList.toggle('in-view', mProg > 0.05);
-    if (!isMobileTimeline && rocketEl) {
-      /* Fly the rocket clockwise around the circle, starting at the top (12 o'clock,
-         above card 1) — standard math angle convention (0deg = 3 o'clock, increasing
-         clockwise in screen/SVG space since y grows downward) means "start at top" is
-         -90deg, and a full lap is +360deg of progress. Only position moves — rotation
-         is fixed in CSS (.method-rocket), the glyph keeps the same sideways heading
-         all the way around instead of turning to face its direction of travel. */
-      var angleDeg = -90 + mProg * 360;
-      var angleRad = angleDeg * Math.PI / 180;
-      var rocketX = 50 + 32 * Math.cos(angleRad);
-      var rocketY = 50 + 32 * Math.sin(angleRad);
-      rocketEl.style.left = rocketX + '%';
-      rocketEl.style.top = rocketY + '%';
-    }
-    if (!isMobileTimeline && loopProgressEl) {
-      loopProgressEl.style.strokeDashoffset = (loopProgressCircumference * (1 - mProg)).toFixed(2);
-    }
-    /* Desktop: card i sits at dot i, and the rocket's angle formula above
-       (angleDeg = -90 + mProg*360) puts it exactly on dot i when
-       mProg === i/N — so the card and its dot use that same fraction as
-       their reveal threshold, instead of an offset guess, to make the card
-       pop in right as the rocket arrives at its dot. */
-    var stepThreshold = function (i) {
-      return i / stepEls.length;
-    };
-    stepEls.forEach(function (step, i) {
-      step.classList.toggle('in-view', mProg > stepThreshold(i));
-    });
-    dotEls.forEach(function (dot, i) {
-      dot.classList.toggle('lit', mProg > i / dotEls.length);
     });
   }
 }
