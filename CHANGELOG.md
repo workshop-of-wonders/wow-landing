@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — FAQ chat: la Q de "PREGUNTAS" ya no se corta y la respuesta sale más rápido.**
+  - `styles.css`: `.faq-chat .outline-word` con `padding-bottom: 0.25em` para que el overflow del watermark no recorte la cola de la Q. Animación de la burbuja de 0.35s a 0.2s.
+  - `js/common.js`: el "escribiendo" del FAQ dura 180ms (antes 450ms).
+
 - **2026-10-05 — FAQ del home en formato chat, mapa de Nosotros con puntos más grandes y nuevo texto del hero.**
   - FAQ (`index.html`, `styles.css`, `js/common.js`): `#faq` pasa a layout de dos columnas con palabra grande "PREGUNTAS". Izquierda: eyebrow, título, texto corto y botón "Escríbenos" (`data-open-form`), sticky en desktop. Derecha: cada pregunta es una burbuja morada a la derecha y la respuesta una burbuja blanca con avatar del logo WOW, con animación de "escribiendo" de 450ms (sin animación con `prefers-reduced-motion`). Una respuesta abierta a la vez, la primera abierta por defecto. Estilos acotados a `.svc-faq.faq-chat`; las páginas de servicio siguen con el acordeón anterior. Preguntas y JSON-LD sin cambios.
   - Mapa (`design-system/map/world-dots.svg`, `scripts/build-world-map.mjs`): grosor de punto 4.6 a 7.4 para que se vea más territorio.
