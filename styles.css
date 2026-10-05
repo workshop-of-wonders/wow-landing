@@ -3662,7 +3662,10 @@ main { padding-top: var(--nav-h); }
 .wm-head .eyebrow { color: var(--orange); }
 .wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); white-space: nowrap; }
 .wm-intro { font-size: var(--intro-size); line-height: 1.6; margin: 0; opacity: .92; }
-.wm-intro { text-wrap: balance; }  /* líneas parejas, sin renglones sueltos */
+.wm-intro { text-wrap: balance; }
+/* Pista: avisa de que las tarjetas del diagrama muestran su detalle al pasar el mouse (o al tocarlas) */
+.wm-hint { margin: var(--space-3) 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--white); opacity: .75; }
+.wm-hint span { display: inline-block; margin-right: 4px; color: var(--orange); font-weight: 700; }  /* líneas parejas, sin renglones sueltos */
 
 /* Colores exactos de cada Lab (los de .labs-panel-insight / .labs-panel-brand): --c sólido para
    texto, líneas y brillos; --cbg es el degradado del panel, para nodos y etiquetas. */
