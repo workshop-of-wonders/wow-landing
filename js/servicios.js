@@ -93,6 +93,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       company: form.company.value,
       need: form.need.value,
       budget: form.budget.value,
+      country: form.country ? form.country.value : '',
       details: form.details.value,
       page: location.pathname
     };

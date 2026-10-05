@@ -581,6 +581,8 @@ var ProjectCollage = (function () {
     var myToken = ++renderToken;
     var rowHVar = getComputedStyle(container).getPropertyValue('--pc-row-h') || '190px';
     var rowH = parseFloat(rowHVar) || 190;
+    /* nº de filas de la tira (2 por defecto; renderFit sube a 3-4 cuando son tantas imágenes que no caben en 2) */
+    var ROWS = parseInt(getComputedStyle(container).getPropertyValue('--pc-rows'), 10) || 2;
     var items = normalize(images);
     // Clear immediately (instead of only right before the final DOM build,
     // after every image has finished loading) and show a lightweight
@@ -668,6 +670,7 @@ var ProjectCollage = (function () {
     // than squeezed into one short row).
     var gap = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 3;
     var isSingle = pieces.length === 1;
+    var colH = rowH * ROWS + gap * (ROWS - 1);   /* alto de una columna completa */
     // Logo/icon assets are flat marks on their own transparent canvas, not
     // photos — filling the tile edge-to-edge like a photo crops right up to
     // the mark with no breathing room. These get a padded card treatment
@@ -688,7 +691,7 @@ var ProjectCollage = (function () {
       var isIcon = isIconAsset.test(piece.src);
       var isType = isTypeAsset.test(piece.src);
       var isTall = !isLogo && !isType && !piece.isPalette && !piece.isTaglineImg && !piece.isPattern && (isSingle || piece.ratio < 0.85);
-      var height = isTall ? (rowH * 2 + gap) : rowH;
+      var height = isTall ? colH : rowH;
       // Wordmarks are often much wider than tall (e.g. a ~9:1 logo) — forcing
       // every logo tile to a 1:1 square shrinks those down to near-illegible.
       // Follow the real ratio like photos do, just clamped to a sane 1:1–1:2.2
@@ -844,26 +847,43 @@ var ProjectCollage = (function () {
     // every column is always a complete, full-height card.
     function promoteIfLone(item) {
       if (!item.promotable) return;
-      var newHeight = rowH * 2 + gap;
+      var newHeight = colH;
       var newWidth = item.isIcon ? newHeight
         : (item.isLogo ? Math.round(newHeight * Math.max(1, Math.min(2.2, item.ratio))) : Math.round(newHeight * item.ratio));
       item.el.style.height = newHeight + 'px';
       item.el.style.width = newWidth + 'px';
     }
-    var pendingShort = null;
+    /* Columnas: una imagen alta ocupa la columna entera; las demás se apilan de hasta ROWS en ROWS filas. */
+    var pending = [];
     var columns = [];
+    function flushPending() {
+      if (!pending.length) return;
+      if (pending.length === 1) promoteIfLone(pending[0]);
+      columns.push(pending);
+      pending = [];
+    }
     builtItems.forEach(function (item) {
-      if (item.isTall) {
-        if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); pendingShort = null; }
-        columns.push([item]);
-      } else if (pendingShort) {
-        columns.push([pendingShort, item]);
-        pendingShort = null;
-      } else {
-        pendingShort = item;
-      }
+      if (item.isTall) { flushPending(); columns.push([item]); }
+      else { pending.push(item); if (pending.length === ROWS) flushPending(); }
     });
-    if (pendingShort) { promoteIfLone(pendingShort); columns.push([pendingShort]); }
+    flushPending();
+    /* Mismo ancho para las imágenes apiladas de una columna (y alturas que suman exactamente el alto de la columna): así
+       no queda un hueco a la derecha de la más angosta y todos los espacios entre imágenes miden lo mismo (--pc-gap).
+       Ancho común W tal que sum(W/ri) + huecos = alto de la columna; cada una conserva su proporción, sin recortes.
+       Las tarjetas generadas (paleta, patrón, frase) siguen cuadradas y no se tocan. */
+    columns.forEach(function (col) {
+      if (col.length < 2 || !col.every(function (it) { return it.promotable; })) return;
+      var ratios = col.map(function (it) { return parseFloat(it.el.style.width) / parseFloat(it.el.style.height); });
+      if (!ratios.every(function (r) { return r > 0; })) return;
+      var invSum = ratios.reduce(function (a, r) { return a + 1 / r; }, 0);
+      var W = Math.round((colH - gap * (col.length - 1)) / invSum);
+      var used = 0;
+      col.forEach(function (it, k) {
+        var h = k === col.length - 1 ? (colH - gap * (col.length - 1) - used) : Math.round(W / ratios[k]);
+        used += h;
+        it.el.style.width = W + 'px'; it.el.style.height = h + 'px';
+      });
+    });
     columns.forEach(function (col) {
       var colEl = document.createElement('div');
       colEl.className = 'pc-col';
@@ -872,7 +892,66 @@ var ProjectCollage = (function () {
     });
   }
 
-  return { render: render };
+  /* Que todas las imágenes quepan sin cortarse: render() arma la tira con el alto de fila de --pc-row-h; si la tira
+     resulta más ancha que el popup, se achica ese alto (proporcional al sobrante) y se vuelve a armar, hasta 3 veces.
+     El alto del contenedor sale del mismo --pc-row-h, así que el popup también se hace menos alto. Solo si ni así cabe
+     (muchísimas imágenes) queda el desplazamiento horizontal de siempre. */
+  var MIN_ROW_H = 110;
+  /* Último recurso (muchísimas imágenes: ni en 2 filas caben con un tamaño decente): se reparten en filas "justificadas",
+     todas del ancho del marco, con el mismo espacio (--pc-gap) entre imágenes y sin recortes. */
+  function justify(container, availW) {
+    var gapPx = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 16;
+    var avail = availW - 2 * gapPx;
+    var items = [].slice.call(container.querySelectorAll('.pc-item'));
+    if (!items.length || avail <= 0) return;
+    var ratios = items.map(function (it) { return (parseFloat(it.style.width) / parseFloat(it.style.height)) || 1; });
+    var total = ratios.reduce(function (a, r) { return a + r; }, 0);
+    var k = Math.max(2, Math.round(total * 200 / avail));      /* ~200px de alto por fila */
+    var rows = [], row = [], acc = 0;
+    items.forEach(function (it, i) {
+      row.push(i); acc += ratios[i];
+      if (rows.length < k - 1 && acc >= total * (rows.length + 1) / k) { rows.push(row); row = []; }
+    });
+    if (row.length) rows.push(row);
+    var avgH = avail * k / total;
+    container.innerHTML = '';
+    container.classList.add('pc-justified');
+    rows.forEach(function (idxs) {
+      var sum = idxs.reduce(function (a, i) { return a + ratios[i]; }, 0);
+      /* tope: la última fila (con menos imágenes) no puede quedar mucho más alta que las demás */
+      var h = Math.min(avgH * 1.1, (avail - gapPx * (idxs.length - 1)) / sum);
+      var rowEl = document.createElement('div');
+      rowEl.className = 'pc-row';
+      idxs.forEach(function (i) {
+        items[i].style.width = Math.floor(ratios[i] * h) + 'px';
+        items[i].style.height = Math.round(h) + 'px';
+        /* el relleno en % de las tarjetas de logo se mide contra el ancho de la fila (no de la tarjeta): se fija en px */
+        if (items[i].classList.contains('pc-item-logo')) items[i].style.padding = Math.round(Math.min(ratios[i] * h, h) * 0.14) + 'px';
+        rowEl.appendChild(items[i]);
+      });
+      container.appendChild(rowEl);
+    });
+  }
+  async function renderFit(container, images, opts) {
+    container.style.removeProperty('--pc-row-h');
+    container.classList.remove('pc-justified');
+    var wrap = container.parentElement;
+    await render(container, images, opts);
+    var gapPx = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 16;
+    for (var attempt = 0; attempt < 3; attempt++) {
+      /* el contenedor crece con su contenido, así que el ancho disponible es el del marco que lo envuelve */
+      var avail = (wrap ? wrap.clientWidth : container.clientWidth) - 2 * gapPx;
+      var content = container.scrollWidth - 2 * gapPx;
+      if (!avail || content <= avail + 1) return;
+      var cur = parseFloat(getComputedStyle(container).getPropertyValue('--pc-row-h')) || 150;
+      var next = Math.floor(cur * avail / content) - 1;
+      if (next < MIN_ROW_H) break;      /* demasiado chico: se reparte en más filas */
+      container.style.setProperty('--pc-row-h', next + 'px');
+      await render(container, images, opts);
+    }
+    justify(container, wrap ? wrap.clientWidth : container.clientWidth);
+  }
+  return { render: renderFit };
 })();
 
 /* Case-study modal: click a work item or client logo for an editorial
@@ -1170,6 +1249,7 @@ var ProjectCollage = (function () {
       company: form.company.value,
       need: form.need.value,
       budget: form.budget.value,
+      country: form.country ? form.country.value : '',
       details: form.details.value,
       lang: document.documentElement.lang,
       page: location.pathname

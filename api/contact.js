@@ -28,6 +28,7 @@ module.exports = async function handler(req, res) {
   var company = typeof body.company === 'string' ? body.company.trim() : '';
   var need = typeof body.need === 'string' ? body.need.trim() : '';
   var budget = typeof body.budget === 'string' ? body.budget.trim() : '';
+  var country = typeof body.country === 'string' ? body.country.trim().slice(0, 80) : '';
   var details = typeof body.details === 'string' ? body.details.trim() : '';
   var lang = typeof body.lang === 'string' ? body.lang.trim() : '';
   var page = typeof body.page === 'string' ? body.page.trim() : '';
@@ -50,11 +51,28 @@ module.exports = async function handler(req, res) {
 
   try {
     var db = require('./admin/_db');
-    await db.sql`
-      INSERT INTO leads (name, email, company, need, budget, details, page, lang)
-      VALUES (${name}, ${email}, ${company || null}, ${need || null}, ${budget || null},
-              ${details || null}, ${page || null}, ${lang || null})
-    `;
+    // La columna `country` se agregó después de crear la tabla: se asegura aquí (idempotente) y, si por algún motivo
+    // no se pudo crear, el lead se guarda igual sin país en vez de perderse.
+    var hasCountry = true;
+    try {
+      await db.sql`ALTER TABLE leads ADD COLUMN IF NOT EXISTS country TEXT`;
+    } catch (alterErr) {
+      hasCountry = false;
+      console.error('contact.js: no se pudo asegurar la columna country', alterErr);
+    }
+    if (hasCountry) {
+      await db.sql`
+        INSERT INTO leads (name, email, company, need, budget, details, page, lang, country)
+        VALUES (${name}, ${email}, ${company || null}, ${need || null}, ${budget || null},
+                ${details || null}, ${page || null}, ${lang || null}, ${country || null})
+      `;
+    } else {
+      await db.sql`
+        INSERT INTO leads (name, email, company, need, budget, details, page, lang)
+        VALUES (${name}, ${email}, ${company || null}, ${need || null}, ${budget || null},
+                ${details || null}, ${page || null}, ${lang || null})
+      `;
+    }
   } catch (dbErr) {
     console.error('contact.js: no se pudo guardar el lead en la base de datos', dbErr);
     return res.status(500).json({ success: false, error: 'db_error' });

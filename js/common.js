@@ -83,3 +83,30 @@ function createFocusTrap(modalEl, isOpen) {
     if (e.key === 'Escape') setOpen(false);
   });
 })();
+
+
+/* Formulario de proyecto: el presupuesto depende de desde dónde nos contactan. "Colombia" muestra los rangos en
+   COP y cualquier otro país (o "Otro país") los rangos en USD; mientras no se elija, el presupuesto queda desactivado. Sin JavaScript el
+   desplegable muestra ambos grupos (cada rango lleva su moneda). Compartido por todas las páginas con el formulario. */
+(function () {
+  var country = document.getElementById('pfCountry');
+  var budget = document.getElementById('pfBudget');
+  if (!country || !budget) return;
+  var placeholder = budget.options[0];
+  var groups = { co: null, intl: null };
+  [].slice.call(budget.querySelectorAll('optgroup')).forEach(function (g) {
+    if (/COP/.test(g.label)) groups.co = g; else if (/USD/.test(g.label)) groups.intl = g;
+    budget.removeChild(g);
+  });
+  function sync() {
+    ['co', 'intl'].forEach(function (k) { if (groups[k] && groups[k].parentNode === budget) budget.removeChild(groups[k]); });
+    var v = country.value ? (country.value === 'Colombia' ? 'co' : 'intl') : '';   /* Colombia: COP; cualquier otro país: USD */
+    if (v && groups[v]) budget.appendChild(groups[v]);
+    budget.disabled = !v;
+    placeholder.textContent = v ? 'Selecciona un rango' : 'Primero elige desde dónde nos contactas';
+    budget.value = '';
+  }
+  country.addEventListener('change', sync);
+  if (country.form) country.form.addEventListener('reset', function () { setTimeout(sync, 0); });
+  sync();
+})();

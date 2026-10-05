@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS leads (
   company     TEXT,
   need        TEXT,
   budget      TEXT,
+  country     TEXT,
   details     TEXT,
   page        TEXT,
   lang        TEXT,
@@ -44,6 +45,9 @@ CREATE TABLE IF NOT EXISTS leads (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Para bases creadas antes de que existiera la columna (api/contact.js también la asegura al recibir un lead):
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS country TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
 CREATE INDEX IF NOT EXISTS idx_leads_created_at ON leads(created_at DESC);

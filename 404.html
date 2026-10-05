@@ -150,13 +150,50 @@
         </select>
       </div>
       <div class="project-field">
+        <label for="pfCountry">¿DESDE DÓNDE NOS CONTACTAS?</label>
+        <select id="pfCountry" name="country">
+          <option value="">Selecciona una opción</option>
+          <option>Colombia</option>
+          <option>Argentina</option>
+          <option>Australia</option>
+          <option>Bolivia</option>
+          <option>Brasil</option>
+          <option>Chile</option>
+          <option>Costa Rica</option>
+          <option>Ecuador</option>
+          <option>El Salvador</option>
+          <option>España</option>
+          <option>Estados Unidos</option>
+          <option>Guatemala</option>
+          <option>Honduras</option>
+          <option>México</option>
+          <option>Panamá</option>
+          <option>Paraguay</option>
+          <option>Perú</option>
+          <option>República Dominicana</option>
+          <option>Uruguay</option>
+          <option>Venezuela</option>
+          <option>Otro país</option>
+        </select>
+      </div>
+      <div class="project-field">
         <label for="pfBudget">PRESUPUESTO ESTIMADO</label>
         <select id="pfBudget" name="budget">
           <option value="">Selecciona un rango</option>
-          <option>Menos de $5M COP</option>
-          <option>$5M – $20M COP</option>
-          <option>$20M – $50M COP</option>
-          <option>Más de $50M COP</option>
+          <optgroup label="Colombia (COP)">
+            <option>Menos de $500 mil COP</option>
+            <option>$500 mil – $1 millón COP</option>
+            <option>$1 millón – $5 millones COP</option>
+            <option>$5 – $10 millones COP</option>
+            <option>Más de $10 millones COP</option>
+          </optgroup>
+          <optgroup label="Otros países (USD)">
+            <option>Menos de US$150</option>
+            <option>US$150 – US$300</option>
+            <option>US$300 – US$1.500</option>
+            <option>US$1.500 – US$3.000</option>
+            <option>Más de US$3.000</option>
+          </optgroup>
         </select>
       </div>
       <div class="project-field project-field-full">

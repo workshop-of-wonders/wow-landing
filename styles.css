@@ -664,7 +664,7 @@ main { padding-top: var(--nav-h); }
   color: var(--purple);
   margin-bottom: var(--sec-title-text);
 }
-.toggle-intro { font-size: var(--intro-size); line-height: 1.6; margin-bottom: var(--sec-title-content); }
+.toggle-intro { font-size: var(--intro-size); line-height: 1.6; margin-top: 0; margin-bottom: var(--sec-title-content); }
 .toggle-list {
   list-style: none;
   margin: 0;
@@ -706,6 +706,13 @@ main { padding-top: var(--nav-h); }
 }
 @media (min-width: 901px) {
   .icon-morph { display: block; }
+  /* El icono que rota va centrado con las tarjetas ON/OFF (no con todo el bloque de título + lista): la copia pasa a
+     "display: contents" y el icono comparte fila de la rejilla con la lista. Mismas medidas que antes: columna del
+     icono = 200px + 40px de margen, separación de 48px. */
+  .toggle-inner { display: grid; grid-template-columns: minmax(0, 1fr) calc(200px + var(--space-5)); gap: 0 var(--space-6); align-items: start; }
+  .toggle-copy { display: contents; }
+  .toggle-copy > * { grid-column: 1; }
+  .icon-morph { grid-column: 2; grid-row: 4; align-self: center; margin-right: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .morph-icon { animation: none; opacity: 0; }
@@ -2071,7 +2078,7 @@ main { padding-top: var(--nav-h); }
      padding (box-sizing: border-box means padding eats into `height`,
      not added on top of it — without the extra +2×gap here the content
      area came up 32px short and the second row got clipped again). */
-  height: calc(var(--pc-row-h) * 2 + var(--pc-gap) * 3);
+  height: calc(var(--pc-row-h) * var(--pc-rows, 2) + var(--pc-gap) * (var(--pc-rows, 2) + 1));
   flex: 0 0 auto;
   min-width: 0;
   /* Was CSS Grid (grid-auto-flow: column dense) with grid-auto-columns:
@@ -2097,6 +2104,10 @@ main { padding-top: var(--nav-h); }
   scrollbar-width: none;
 }
 .project-collage::-webkit-scrollbar { display: none; }
+/* Reparto en filas justificadas cuando la tira de 2 filas no cabe (ver justify() en ProjectCollage): el alto lo da el contenido. */
+.project-collage.pc-justified { height: auto; flex-direction: column; overflow: hidden; }
+.pc-row { display: flex; justify-content: center; gap: var(--pc-gap); }
+.project-collage.pc-justified .pc-item { box-sizing: border-box; }
 /* Shown for the brief moment between clicking a project and its images
    finishing their fetch — without this the previous project's collage just
    sits there frozen while the next one loads, which reads as the UI being
@@ -2464,6 +2475,22 @@ main { padding-top: var(--nav-h); }
 }
 /* Spacing between stacked lab-groups already comes from the parent
    .lightbox-caption-col's own `gap` — no extra margin needed here. */
+/* Con caso de estudio el bloque "Trabajo realizado" se oculta y las capacidades pasan a ocupar las dos columnas de
+   la derecha: los Labs van uno junto al otro (no apilados) y sus pills caben en una o dos líneas, así esa franja del
+   popup no se alarga. */
+.lightbox-work-block[style*="display: none"] ~ .lightbox-tags-block {
+  grid-column: 2 / -1;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: var(--space-3) var(--space-5);
+}
+.lightbox-work-block[style*="display: none"] ~ .lightbox-tags-block .lightbox-lab-group { flex: 0 1 auto; min-width: 0; }
+.lightbox-work-block[style*="display: none"] ~ .lightbox-tags-block .lightbox-label { white-space: nowrap; }
+.lightbox-work-block[style*="display: none"] ~ .lightbox-tags-block .lightbox-lab-group:first-child { flex-shrink: 0; }
+@media (max-width: 900px) {
+  .lightbox-work-block[style*="display: none"] ~ .lightbox-tags-block { flex-wrap: wrap; }
+}
 .lightbox-tag {
   padding: 6px 14px;
   border-radius: 999px;
@@ -4118,8 +4145,45 @@ main { padding-top: var(--nav-h); }
 /* Más alto que antes (56px) a pedido de la dueña: las secciones se veían achatadas. */
 :root { --sec-bottom: 96px; }
 @media (max-width: 720px) { :root { --sec-bottom: var(--space-7); } }   /* 56px */
-.work, .services, #filosofia .toggle-section, .wow-method, .svc-faq#faq { padding-bottom: var(--sec-bottom); }
+.work, .services, .nos-proof, .wow-method, .svc-faq#faq { padding-bottom: var(--sec-bottom); }
+#filosofia .toggle-section { padding-bottom: 0; }
 .hub-hint { margin-bottom: 0; }
 @media (min-width: 901px) { .hub-diagram { margin-bottom: 0; } }
 /* Título → párrafo de Nosotros igual que el de Método (24px en escritorio ancho, 16px por debajo de 1280px) */
 @media (max-width: 1279px) { #filosofia .toggle-section h2 { margin-bottom: var(--space-2); } }
+
+/* Nosotros: autoridad. Resultado destacado, mapa de países y sectores. */
+.nos-proof { position: relative; z-index: 1; background: var(--cloud); padding: var(--sec-title-content) var(--page-x) 0; }
+.nos-proof-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-4); }
+.proof-card { background: var(--white); border-radius: 24px; padding: var(--space-5); min-width: 0; }
+.proof-card .eyebrow, .proof-sectors .eyebrow { margin-bottom: var(--space-2); }
+.proof-result { display: flex; flex-direction: column; justify-content: center; }
+.proof-stat { margin: 0; font-family: var(--font-display); font-size: 28px; line-height: 1.1; color: var(--purple); }
+.proof-num { display: block; font-size: clamp(72px, 9vw, 128px); line-height: 1; color: var(--orange); margin-bottom: 4px; }
+.proof-meta { margin: var(--space-2) 0 var(--space-3); font-size: var(--intro-size); line-height: 1.6; color: var(--ink); }
+.proof-tags, .sector-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.proof-tags li { padding: 6px 14px; border-radius: 999px; background: var(--purple); color: var(--white); font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
+.proof-title { margin: 0 0 var(--space-3); font-size: 26px; line-height: 1.2; color: var(--purple); max-width: 560px; }
+.world { position: relative; width: 100%; aspect-ratio: 1088 / 424; }
+.world-dots { position: absolute; inset: 0; background: var(--purple); opacity: .22; -webkit-mask: url('design-system/map/world-dots.svg') center / contain no-repeat; mask: url('design-system/map/world-dots.svg') center / contain no-repeat; }
+.world-pin { position: absolute; transform: translate(-50%, -50%); display: block; width: 0; height: 0; }
+.world-pin i { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 3px rgba(249, 115, 22, .25); }
+.world-pin i::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--orange); opacity: 0; animation: worldPulse 2.4s ease-out infinite; }
+.world-pin b { position: absolute; top: 50%; transform: translateY(-50%); white-space: nowrap; padding: 4px 10px; border-radius: 999px; background: var(--purple); color: var(--white); font: 600 11px/1 var(--font-mono); letter-spacing: .04em; }
+.world-pin-cr b { right: 14px; }
+.world-pin-co b { left: 14px; }
+.world-pin-au b { right: 14px; }
+@keyframes worldPulse { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.8); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .world-pin i::after { animation: none; } }
+.proof-sectors { margin-top: var(--sec-title-content); }
+.sector-chips li { padding: 10px 18px; border-radius: 999px; background: var(--white); color: var(--purple); font-weight: 600; font-size: 15px; }
+@media (max-width: 900px) {
+  .nos-proof-grid { grid-template-columns: 1fr; }
+  .proof-card { padding: var(--space-4); }
+}
+@media (max-width: 720px) {
+  .nos-proof { padding-top: var(--space-6); }
+  .proof-title { font-size: 22px; }
+  .proof-sectors { margin-top: var(--space-6); }
+  .world-pin b { font-size: 10px; padding: 3px 8px; }
+}

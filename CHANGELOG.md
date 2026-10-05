@@ -57,6 +57,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Nosotros con autoridad (resultado, mapa, sectores), país en el formulario, categorías en español y popups sin cortes.**
+  - Nosotros (`index.html`/`styles.css`): nuevo bloque `.nos-proof` bajo la lista — resultado "+58 puestos en Google en 3 semanas" (Centro del Sueño y Ronquido; SEO, GEO, AEO y optimización de Google My Business, dato dado por la dueña), mapa de puntos con pines en Colombia, Costa Rica y Australia (`design-system/map/world-dots.svg`, generado con `scripts/build-world-map.mjs`) y chips de sectores. El icono que rota se centra con la lista (rejilla en `.toggle-inner`).
+  - Formulario (7 páginas): nuevo campo "¿Desde dónde nos contactas?" (lista de países) que decide la moneda del presupuesto (Colombia → rangos en COP; el resto → USD), lógica en `js/common.js`. El país viaja en el payload (`country`), `api/contact.js` lo guarda en la columna nueva `leads.country` (la asegura con `ALTER TABLE ... IF NOT EXISTS`; si falla guarda el lead sin país), `scripts/schema.sql` y el panel admin lo muestran. Rangos COP: <500 mil, 500 mil–1 M, 1–5 M, 5–10 M, >10 M; USD: <150, 150–300, 300–1.500, 1.500–3.000, >3.000.
+  - Portafolio: todos los `data-category` en español (p. ej. "Salud · Sueño", "Moda · Ropa deportiva").
+  - Popups de casos: con caso de estudio, las capacidades ocupan las dos columnas de la derecha y los Labs van uno junto al otro (1–2 líneas de pills). Collage de imágenes (`ProjectCollage` en `js/main.js`, `js/portafolio.js`, `js/project-popup.js`): `renderFit` achica el alto de fila hasta que todo quepa sin recortes (mínimo 110px); si aun así no cabe, `justify()` reparte en filas justificadas. Las dos imágenes apiladas de una columna comparten ancho, así todos los espacios miden `--pc-gap`.
+
 - **2026-10-05 — Home: pills de Nosotros más bajas, título→texto como Método y FAQ de costos fuera.**
   - `styles.css`: `.toggle-item` con 14px de relleno vertical (antes 24px; ~78px de alto a 1440), `.toggle-list` con 24px de separación y `.toggle-text` con interlineado 1.45. `--sec-title-text` vuelve a 24px y `#filosofia .toggle-section h2` usa 16px por debajo de 1280px (igual que `.wm-head h2` de Método); `.toggle-intro` con interlineado 1.6.
   - `index.html`: se quita la FAQ "¿Cuánto cuesta un proyecto de desarrollo web o SEO?" del home (HTML y JSON-LD `FAQPage`); quedan 3 preguntas.
