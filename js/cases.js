@@ -83,7 +83,7 @@ window.WOW_CASES = {
     reto: 'El Centro del Sueño y Ronquido es un centro especializado en Medellín. Necesitaba que las personas con problemas de sueño lo encontraran justo cuando empiezan a buscar respuestas.',
     insight: 'Quien ronca o duerme mal suele buscar respuestas en internet antes de pedir una cita.',
     construimos: 'Un sitio web claro, pensado para resolver dudas y agendar; un blog con artículos sobre ronquido, apnea y trastornos del sueño optimizados para SEO; y pauta digital para llegar a pacientes en Medellín.',
-    resultado: '',
+    resultado: 'Subimos 58 puestos en el ranking de Google en menos de 3 semanas, con SEO, GEO, AEO y optimización de Google My Business.',
     aprendizaje: 'En salud, un sitio claro y confiable es el primer paso de la consulta.',
     capacidades: {
       'Brand & Experience Lab': ['Sitio web'],
