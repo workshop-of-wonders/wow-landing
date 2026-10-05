@@ -1242,8 +1242,10 @@ main { padding-top: var(--nav-h); }
   justify-content: space-between;
   gap: var(--space-4);
   margin-bottom: var(--space-7);
-  min-height: 420px;
+  /* Sin altura mínima: el alto lo da la columna de pills. Con 420px fijos, ahora que son menos pills,
+     el diagrama quedaba centrado en una caja más alta que su contenido y flotaba lejos del título. */
 }
+@media (min-width: 901px) { .hub-diagram { margin-top: var(--space-4); } }
 .hub-arrows {
   position: absolute;
   inset: 0;
@@ -1290,7 +1292,7 @@ main { padding-top: var(--nav-h); }
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.hub-pill:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 8px 18px rgba(56,7,87,0.18); }
+.hub-pill:hover { box-shadow: 0 8px 18px rgba(56,7,87,0.18); }  /* sin escala: el recuadro de selección (.fg-sel) debe coincidir con el pill */
 .hub-pill.active { border-color: var(--purple); box-shadow: 0 8px 18px rgba(56,7,87,0.25); }
 /* Match the two remaining Labs' actual panel colors (.labs-panel-brand / .labs-panel-insight)
    so a service's pill color tells you which Lab it belongs to at a glance. */
@@ -3630,6 +3632,11 @@ main { padding-top: var(--nav-h); }
   .labs { padding-top: max(calc(var(--nav-h) + var(--space-4)), calc(var(--space-4) + var(--wm-size) + var(--space-3))); }
   .svc-block:has(> .outline-word) { padding-top: calc(var(--space-3) + var(--wm-size) + var(--space-3)); }
 }
+/* Servicios, desde 1100px: el eyebrow y el título (a la izquierda, 480px máx.) no llegan a la palabra
+   SERVICIOS (a la derecha), así que suben a su lado en vez de esperar debajo de ella. */
+@media (min-width: 1100px) {
+  .services { padding-top: var(--space-7); }
+}
 /* Proceso in its stacked (non-pinned) layout: the heading spans the width,
    so it needs the same clearance. (1200px+ keeps the pinned loop layout.) */
 @media (min-width: 721px) and (max-width: 1199px) {
@@ -3655,7 +3662,7 @@ main { padding-top: var(--nav-h); }
 .wm-head .eyebrow { color: var(--orange); }
 .wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); white-space: nowrap; }
 .wm-intro { font-size: var(--intro-size); line-height: 1.6; margin: 0; opacity: .92; }
-.wm-nw { white-space: nowrap; }  /* la última frase del intro siempre en una sola línea */
+.wm-intro { text-wrap: balance; }  /* líneas parejas, sin renglones sueltos */
 
 /* Colores exactos de cada Lab (los de .labs-panel-insight / .labs-panel-brand): --c sólido para
    texto, líneas y brillos; --cbg es el degradado del panel, para nodos y etiquetas. */
@@ -4053,4 +4060,59 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) {
   .work { padding-bottom: 28px; }
   .toggle-section { padding-top: 28px; padding-bottom: 52px; }
+}
+
+/* ------------------------------------------------------------------
+   Servicios estilo Figma (decorativo; solo escritorio): lienzo con puntos, el diagrama como un
+   "frame" con nombre, selección con manijas y medida al pasar por un pill, conectores de prototipo,
+   cursores de colaboradores con su selección y un comentario. El cursor "Tú" (.figma-cursor) no cambia.
+   ------------------------------------------------------------------ */
+.fg-frame-label, .fg-sel, .fg-gsel, .fg-ghost, .fg-comment { display: none; }
+@media (min-width: 901px) {
+  .services {
+    background-image: radial-gradient(rgba(56, 7, 87, 0.13) 1px, transparent 1.3px);
+    background-size: 22px 22px;
+  }
+  .hub-diagram {
+    padding: var(--space-3);
+    margin-left: calc(-1 * var(--space-3));
+    margin-right: calc(-1 * var(--space-3));
+    background: var(--white);
+    border: 1px solid rgba(56, 7, 87, 0.16);
+    border-radius: 6px;
+  }
+  .fg-frame-label {
+    display: block; position: absolute; left: -1px; top: -24px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    color: rgba(56, 7, 87, 0.6); pointer-events: none;
+  }
+  /* selección propia: manijas blancas con borde morado y la medida debajo */
+  .fg-sel { display: block; position: absolute; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .12s ease;
+    border: 1px solid var(--purple-accent); box-sizing: border-box; }
+  .fg-sel.is-on { opacity: 1; }
+  .fg-h { position: absolute; width: 7px; height: 7px; box-sizing: border-box; background: var(--white); border: 1px solid var(--purple-accent); }
+  .fg-h-tl { left: -4px; top: -4px; } .fg-h-tr { right: -4px; top: -4px; }
+  .fg-h-bl { left: -4px; bottom: -4px; } .fg-h-br { right: -4px; bottom: -4px; }
+  .fg-size { position: absolute; left: 50%; top: 100%; transform: translate(-50%, 7px); white-space: nowrap;
+    background: var(--purple-accent); color: var(--white); font: 600 10px/1 var(--font-body); padding: 3px 6px; border-radius: 3px; }
+  /* colaboradores: cursor con nombre y recuadro de su selección */
+  .fg-gsel { display: block; position: absolute; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .2s ease;
+    box-sizing: border-box; border: 1.5px solid var(--gc); border-radius: 2px; }
+  .fg-gsel.is-on { opacity: 1; }
+  .fg-ghost { display: flex; align-items: flex-start; gap: 2px; position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none;
+    color: var(--gc); will-change: transform; transform: translate(-100px, -100px); }
+  .fg-name { margin-top: 14px; padding: 2px 8px; border-radius: 6px; background: var(--gc); color: var(--white);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; white-space: nowrap; }
+  /* comentario: burbuja con la esquina inferior izquierda recta, como en Figma */
+  .fg-comment { display: block; position: absolute; z-index: 4; }
+  .fg-pin { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50% 50% 50% 0;
+    background: var(--purple-accent); color: var(--white); border: 2px solid var(--white); box-sizing: border-box;
+    font: 700 11px/1 var(--font-body); box-shadow: 0 3px 8px rgba(56, 7, 87, 0.28); cursor: default; }
+  .fg-pop { position: absolute; left: 34px; top: -6px; width: 178px; padding: 8px 10px; border-radius: 0 10px 10px 10px;
+    background: var(--white); color: var(--ink); box-shadow: 0 8px 22px rgba(56, 7, 87, 0.2), 0 0 0 1px rgba(56, 7, 87, 0.08);
+    font-size: 13px; line-height: 1.35; opacity: 0; transform: translateY(4px); transition: opacity .15s ease, transform .15s ease; pointer-events: none; }
+  .fg-pop b { font-weight: 700; margin-right: 6px; }
+  .fg-pop small { color: rgba(26, 19, 32, .55); font-size: 11px; }
+  .fg-pop span { display: block; margin-top: 3px; }
+  .fg-comment:hover .fg-pop { opacity: 1; transform: none; }
 }

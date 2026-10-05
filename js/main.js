@@ -167,38 +167,68 @@ document.querySelectorAll('.switch').forEach(function (btn) {
 var hubDiagramEl = document.getElementById('hubDiagram');
 var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
 
-/* Draw a connector line from every pill to the center W, redrawn whenever the layout changes */
+/* Conectores estilo "flujo de prototipo" de Figma: una curva desde el borde de cada pill hasta el costado del W central,
+   con un punto en el pill y una flecha en el W, del color de su Lab. Se redibujan cada vez que cambia el layout. */
+var HUB_LAB_COLORS = { 'hub-lab-brand': '#EC4899', 'hub-lab-insight': '#3B82F6' };
+function hubPillColor(pill) {
+  for (var cls in HUB_LAB_COLORS) if (pill.classList.contains(cls)) return HUB_LAB_COLORS[cls];
+  return '#380757';
+}
 (function () {
   var svg = document.getElementById('hubArrows');
   var center = document.getElementById('hubCenter');
   if (!svg || !center) return;
   var svgNS = 'http://www.w3.org/2000/svg';
 
+  function el(name, attrs) {
+    var n = document.createElementNS(svgNS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
   function drawLines() {
-    var diagramRect = hubDiagramEl.getBoundingClientRect();
-    var w = diagramRect.width;
-    var h = diagramRect.height;
+    /* coordenadas relativas al padding box (el diagrama ahora tiene borde y relleno de "frame") */
+    var dr = hubDiagramEl.getBoundingClientRect();
+    var ox = dr.left + hubDiagramEl.clientLeft;
+    var oy = dr.top + hubDiagramEl.clientTop;
+    var w = hubDiagramEl.clientWidth;
+    var h = hubDiagramEl.clientHeight;
     if (!w || !h) return;
     svg.setAttribute('width', w);
     svg.setAttribute('height', h);
     svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     svg.innerHTML = '';
-    var centerRect = center.getBoundingClientRect();
-    var cx = centerRect.left - diagramRect.left + centerRect.width / 2;
-    var cy = centerRect.top - diagramRect.top + centerRect.height / 2;
+    var cr = center.getBoundingClientRect();
+    var cMid = cr.left + cr.width / 2;
+    var cy = cr.top - oy + cr.height / 2;
+    var sides = { left: [], right: [] };
     hubPills.forEach(function (pill) {
       var r = pill.getBoundingClientRect();
-      var px = r.left - diagramRect.left + r.width / 2;
-      var py = r.top - diagramRect.top + r.height / 2;
-      var line = document.createElementNS(svgNS, 'line');
-      line.setAttribute('x1', cx);
-      line.setAttribute('y1', cy);
-      line.setAttribute('x2', px);
-      line.setAttribute('y2', py);
-      line.setAttribute('stroke', '#dce157');
-      line.setAttribute('stroke-opacity', '0.4');
-      line.setAttribute('stroke-width', '1.5');
-      svg.appendChild(line);
+      sides[(r.left + r.width / 2) < cMid ? 'left' : 'right'].push(pill);
+    });
+    ['left', 'right'].forEach(function (side) {
+      var list = sides[side];
+      list.forEach(function (pill, i) {
+        var r = pill.getBoundingClientRect();
+        var isLeft = side === 'left';
+        var sx = (isLeft ? r.right : r.left) - ox;
+        var sy = r.top - oy + r.height / 2;
+        var ex = (isLeft ? cr.left : cr.right) - ox;
+        /* las llegadas se abren en abanico sobre el costado del W para que no se amontonen en un punto */
+        var ey = cy + (i - (list.length - 1) / 2) * Math.min(10, 64 / Math.max(1, list.length - 1));
+        var dir = isLeft ? 1 : -1;
+        var dx = Math.max(40, Math.abs(ex - sx) * 0.5) * dir;
+        var color = hubPillColor(pill);
+        svg.appendChild(el('path', {
+          d: 'M' + sx + ' ' + sy + ' C ' + (sx + dx) + ' ' + sy + ', ' + (ex - dx) + ' ' + ey + ', ' + ex + ' ' + ey,
+          fill: 'none', stroke: color, 'stroke-opacity': '0.5', 'stroke-width': '1.25', 'stroke-linecap': 'round'
+        }));
+        svg.appendChild(el('circle', { cx: sx, cy: sy, r: 3.5, fill: '#fff', stroke: color, 'stroke-opacity': '0.8', 'stroke-width': '1.25' }));
+        svg.appendChild(el('path', {
+          d: 'M' + (ex - 5 * dir) + ' ' + (ey - 3) + ' L' + ex + ' ' + ey + ' L' + (ex - 5 * dir) + ' ' + (ey + 3),
+          fill: 'none', stroke: color, 'stroke-opacity': '0.7', 'stroke-width': '1.25', 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+        }));
+      });
     });
   }
 
@@ -207,6 +237,141 @@ var hubPills = [].slice.call(document.querySelectorAll('.hub-pill'));
   window.addEventListener('load', drawLines);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
   setTimeout(drawLines, 300);
+})();
+
+/* Detalles estilo Figma (decorativos, solo escritorio): selección con manijas y medida al pasar por un pill,
+   dos cursores de colaboradores que recorren los pills con su propia selección, y un comentario.
+   El cursor "Tú" (#figmaCursor) es independiente y no se toca. */
+(function () {
+  var sel = document.getElementById('fgSel');
+  var comment = document.getElementById('fgComment');
+  var ghosts = [
+    { el: document.getElementById('fgGhostBrand'), sel: document.getElementById('fgGselBrand') },
+    { el: document.getElementById('fgGhostInsight'), sel: document.getElementById('fgGselInsight') }
+  ];
+  if (!hubDiagramEl || !sel || !ghosts[0].el) return;
+  var desktop = window.matchMedia('(min-width: 901px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function origin() {
+    var dr = hubDiagramEl.getBoundingClientRect();
+    return { x: dr.left + hubDiagramEl.clientLeft, y: dr.top + hubDiagramEl.clientTop };
+  }
+  function rectIn(pill) {
+    var o = origin(), r = pill.getBoundingClientRect();
+    return { x: r.left - o.x, y: r.top - o.y, w: r.width, h: r.height };
+  }
+
+  /* selección propia */
+  function showSel(pill) {
+    if (!desktop.matches) return;
+    var b = rectIn(pill);
+    sel.style.left = (b.x - 1) + 'px';
+    sel.style.top = (b.y - 1) + 'px';
+    sel.style.width = (b.w + 2) + 'px';
+    sel.style.height = (b.h + 2) + 'px';
+    sel.querySelector('.fg-size').textContent = Math.round(b.w) + ' × ' + Math.round(b.h);
+    sel.classList.add('is-on');
+  }
+  function hideSel() { sel.classList.remove('is-on'); }
+  hubPills.forEach(function (pill) {
+    pill.addEventListener('pointerenter', function () { showSel(pill); });
+    pill.addEventListener('pointerleave', hideSel);
+    pill.addEventListener('focus', function () { showSel(pill); });
+    pill.addEventListener('blur', hideSel);
+  });
+
+  /* comentario pegado a un pill */
+  function placeComment() {
+    if (!comment) return;
+    var pill = hubPills.filter(function (p) { return /Anal[ií]tica/.test(p.textContent); })[0];
+    if (!pill) { comment.style.display = 'none'; return; }
+    var b = rectIn(pill);
+    comment.style.left = (b.x + b.w - 8) + 'px';
+    comment.style.top = (b.y - 22) + 'px';
+  }
+
+  /* colaboradores */
+  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function tipFor(pill) {
+    var b = rectIn(pill);
+    return { x: b.x + b.w * rand(0.6, 0.85), y: b.y + b.h * rand(0.7, 0.95) };
+  }
+  function setGhost(g, x, y) { g.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; g.x = x; g.y = y; }
+  function selectFor(g, pill) {
+    if (!pill) { g.sel.classList.remove('is-on'); return; }
+    var b = rectIn(pill);
+    g.sel.style.left = (b.x - 2) + 'px'; g.sel.style.top = (b.y - 2) + 'px';
+    g.sel.style.width = (b.w + 4) + 'px'; g.sel.style.height = (b.h + 4) + 'px';
+    g.sel.classList.add('is-on');
+  }
+  function pickPill(g) {
+    var other = ghosts[0] === g ? ghosts[1] : ghosts[0];
+    var pool = hubPills.filter(function (p) { return p !== g.pill && p !== other.pill; });
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function startMove(g, now) {
+    g.pill = pickPill(g);
+    var t = tipFor(g.pill);
+    g.from = { x: g.x, y: g.y }; g.to = t;
+    var dx = t.x - g.x, dy = t.y - g.y, dist = Math.hypot(dx, dy) || 1;
+    var bend = rand(-0.18, 0.18) * dist;
+    g.ctrl = { x: (g.x + t.x) / 2 - dy / dist * bend, y: (g.y + t.y) / 2 + dx / dist * bend };
+    g.t0 = now; g.dur = 900 + dist * 2.2 + rand(0, 500);
+    g.state = 'move'; selectFor(g, null);
+  }
+  function tick(now) {
+    ghosts.forEach(function (g) {
+      if (g.state === 'move') {
+        var t = Math.min(1, (now - g.t0) / g.dur), e = ease(t), u = 1 - e;
+        setGhost(g, u * u * g.from.x + 2 * u * e * g.ctrl.x + e * e * g.to.x, u * u * g.from.y + 2 * u * e * g.ctrl.y + e * e * g.to.y);
+        if (t >= 1) { g.state = 'dwell'; g.until = now + rand(1800, 3200); selectFor(g, g.pill); }
+      } else if (g.state === 'dwell' && now >= g.until) {
+        startMove(g, now);
+      }
+    });
+  }
+
+  var raf = 0, visible = false;
+  function loop(now) { tick(now); raf = requestAnimationFrame(loop); }
+  function syncRunning() {
+    var should = visible && !document.hidden && desktop.matches && !reduce.matches;
+    if (should && !raf) raf = requestAnimationFrame(loop);
+    if (!should && raf) { cancelAnimationFrame(raf); raf = 0; }
+  }
+
+  function layout() {
+    placeComment();
+    if (!desktop.matches) return;
+    if (reduce.matches) {
+      /* sin movimiento: cada colaborador queda quieto sobre un pill, con su selección */
+      var spots = [hubPills[0], hubPills[hubPills.length - 1]];
+      ghosts.forEach(function (g, i) {
+        g.pill = spots[i]; var t = tipFor(g.pill); setGhost(g, t.x, t.y); selectFor(g, g.pill);
+      });
+    } else {
+      ghosts.forEach(function (g) { if (g.state === 'dwell') selectFor(g, g.pill); });
+    }
+  }
+
+  ghosts.forEach(function (g, i) {
+    var o = hubPills[i === 0 ? 1 : hubPills.length - 2] || hubPills[0];
+    g.pill = o; g.state = 'dwell'; g.until = performance.now() + 400 + i * 700;
+    var t = tipFor(o); setGhost(g, t.x, t.y);
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; syncRunning(); }).observe(hubDiagramEl);
+  } else { visible = true; }
+  document.addEventListener('visibilitychange', syncRunning);
+  desktop.addEventListener && desktop.addEventListener('change', function () { layout(); syncRunning(); });
+  reduce.addEventListener && reduce.addEventListener('change', function () { layout(); syncRunning(); });
+  window.addEventListener('resize', layout);
+  window.addEventListener('load', layout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  setTimeout(layout, 300);
+  layout(); syncRunning();
 })();
 /* hub-pill and nav-dropdown-link are now real <a href> links straight to
    each service's own page, so no popup/description JS is needed here
