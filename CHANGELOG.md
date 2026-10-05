@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Herramientas e IA pasan a Método; franja de cifras de Nosotros rediseñada.**
+  - Método (`index.html`/`styles.css`): la tarjeta de herramientas e IA sale de Nosotros y va debajo del diagrama como `.wm-tools` (panel translúcido sobre el fondo morado, chips `.wm-chips`, IA en lima). El diagrama, las tarjetas y el texto de la izquierda no cambian (pedido de la dueña: "esto debe ir en la sección de método").
+  - Nosotros: `.nos-stats` pasa a 4 columnas iguales con las cifras centradas (+17 marcas posicionadas, +20 proyectos entregados —el portafolio muestra 21—, +58 puestos subidos en Google en menos de 3 semanas, +7 sectores económicos impactados), números de hasta 60px y separadores de lado a lado; en ≤720px es una cuadrícula de 2×2. Los contadores animados siguen funcionando con las cuatro.
+
 - **2026-10-05 — Nosotros: bloque más compacto, logos de partners y herramientas/IA.**
   - `styles.css`/`index.html`: la franja `.nos-stats` y las tarjetas `.nos-card` pasan a un tamaño menor (cifras hasta 68px, menos relleno, título 20px, chips de 13px); se quita la empresa del +58 ("Centro del Sueño y Ronquido · …"); `.nos-proof` recupera el `padding-bottom: var(--sec-bottom)` (otra regla lo dejaba en 0).
   - Partners con logos reales en `design-system/partners/` (`wix-official-expert.webp`, `meta-experts.webp`, `google-partner.webp`); Canva queda como insignia de texto hasta tener su sello oficial.
