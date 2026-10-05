@@ -70,8 +70,8 @@
      sean distintas, el espacio entre la palabra grande, el eyebrow, el título y el contenido sea siempre el mismo:
        palabra grande ─ --sec-wm-gap ─ eyebrow ─ 16px ─ título ─ --sec-title-text ─ párrafo ─ --sec-title-content ─ contenido */
   --sec-wm-gap: 0px;                     /* de la franja de la palabra grande al primer texto (antes 24px: se veía mucho aire) */
-  --sec-title-text: var(--space-3);      /* 24px: del título a su párrafo de intro */
-  --sec-title-content: var(--space-6);   /* 48px: del título (o párrafo) al bloque de contenido */
+  --sec-title-text: var(--space-4);      /* 32px: del título a su párrafo de intro */
+  --sec-title-content: 64px;             /* del título (o párrafo) al bloque de contenido */
   --sec-top: calc(var(--space-4) + var(--wm-size) + var(--sec-wm-gap));  /* padding-top de toda sección con palabra grande */
 }
 @media (max-width: 600px) {
@@ -671,7 +671,7 @@ main { padding-top: var(--nav-h); }
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 /* Icon morph animation */
@@ -717,7 +717,7 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-3);
   background: var(--white);
   border-radius: 999px;
-  padding: 16px var(--space-4) 16px 16px;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
 }
 /* On narrow screens the text wraps to 4-6 lines and a full pill radius
    turns the row into an oval — use a card radius and top-align the switch. */
@@ -4136,8 +4136,9 @@ main { padding-top: var(--nav-h); }
 /* Aire inferior uniforme de las secciones del home (Trabajo, Servicios, Nosotros, Método, FAQ): todas terminan con
    el mismo espacio libre debajo de su último elemento. Va al final del archivo para ganar a las reglas sueltas de
    cada sección y de cada breakpoint. Labs queda fuera: sus paneles de color llegan hasta el borde de la sección. */
-:root { --sec-bottom: var(--space-7); }                 /* 56px */
-@media (max-width: 720px) { :root { --sec-bottom: var(--space-5); } }   /* 40px */
+/* Más alto que antes (56px) a pedido de la dueña: las secciones se veían achatadas. */
+:root { --sec-bottom: 96px; }
+@media (max-width: 720px) { :root { --sec-bottom: var(--space-7); } }   /* 56px */
 .work, .services, #filosofia .toggle-section, .wow-method, .svc-faq#faq { padding-bottom: var(--sec-bottom); }
 .hub-hint { margin-bottom: 0; }
 @media (min-width: 901px) { .hub-diagram { margin-bottom: 0; } }
