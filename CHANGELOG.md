@@ -56,6 +56,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+**2026-10-05** — Home: fusionadas "Proceso" (círculo con cohete, 4 pasos) y "El método WOW" en una sola sección `#metodologia` ("Cómo trabajamos · Wonder, Optimize, Win"): Wonder = Insight Lab, Optimize = Brand & Experience Lab, Win = medir y volver a empezar. Se eliminó el HTML del círculo y su JS de scroll en `main.js`; el CSS `.method*` quedó sin uso (limpieza pendiente).
+
 **2026-09-26** — Logos de clientes sin partes blancas: 8 archivos de `design-system/clients/` tenían zonas blancas opacas que sobre el fondo lila (y con el `grayscale` de la franja) se veían como parches — amlogo, arlo, bary, bilac, carlos-ravelo, clinica-cerebro (relleno del cerebro, 42% de sus píxeles opacos), orbit, sueno-ronquido. Se aplicó "color a transparencia" contra blanco (estilo GIMP: solo el blanco/casi blanco se vuelve transparente, los colores del logo no cambian; el texto blanco de Bary y MajoFinds queda como recorte). Mismas dimensiones. caminosdelavida, epikastore, lamarquessa, milan, serninos y tiny ya estaban limpios.
 
 **2026-09-26** — Logo de Lámparas Milán (`design-system/clients/milan.webp`) rehecho desde el archivo que envió la dueña (340×249, fondo blanco): fondo quitado (alfa a partir de la luminancia, tinta vino #4F020C uniforme), escalado 4× con bordes suavizados, recortado → 1263×630 webp transparente (antes 305×147, se veía pixelado). `width/height` actualizados en las 2 apariciones de la franja de logos de `index.html`.
