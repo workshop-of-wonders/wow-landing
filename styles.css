@@ -2428,16 +2428,16 @@ main { padding-top: var(--nav-h); }
   text-transform: uppercase;
   color: #a89fb3;
 }
+/* "Ver sitio": al final del popup, debajo del caso de estudio, sobre el mismo morado */
+.lightbox-site-row { flex: 0 0 auto; padding: 0 var(--space-5) var(--space-5); background: var(--purple); }
 .lightbox-site {
-  align-self: flex-start;
   display: inline-block;
-  margin-top: var(--space-1);
-  padding: 10px 22px;
+  padding: 12px 28px;
   border-radius: 999px;
   background: var(--lima);
   color: var(--purple);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   text-decoration: none;
   transition: transform 0.2s ease;
 }
