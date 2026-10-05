@@ -70,7 +70,7 @@
      sean distintas, el espacio entre la palabra grande, el eyebrow, el título y el contenido sea siempre el mismo:
        palabra grande ─ --sec-wm-gap ─ eyebrow ─ 16px ─ título ─ --sec-title-text ─ párrafo ─ --sec-title-content ─ contenido */
   --sec-wm-gap: 0px;                     /* de la franja de la palabra grande al primer texto (antes 24px: se veía mucho aire) */
-  --sec-title-text: var(--space-4);      /* 32px: del título a su párrafo de intro */
+  --sec-title-text: var(--space-3);      /* 24px: del título a su párrafo de intro (igual que Método) */
   --sec-title-content: 64px;             /* del título (o párrafo) al bloque de contenido */
   --sec-top: calc(var(--space-4) + var(--wm-size) + var(--sec-wm-gap));  /* padding-top de toda sección con palabra grande */
 }
@@ -664,14 +664,14 @@ main { padding-top: var(--nav-h); }
   color: var(--purple);
   margin-bottom: var(--sec-title-text);
 }
-.toggle-intro { font-size: var(--intro-size); line-height: 1.7; margin-bottom: var(--sec-title-content); }
+.toggle-intro { font-size: var(--intro-size); line-height: 1.6; margin-bottom: var(--sec-title-content); }
 .toggle-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 /* Icon morph animation */
@@ -717,7 +717,7 @@ main { padding-top: var(--nav-h); }
   gap: var(--space-3);
   background: var(--white);
   border-radius: 999px;
-  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  padding: 14px var(--space-4) 14px var(--space-3);
 }
 /* On narrow screens the text wraps to 4-6 lines and a full pill radius
    turns the row into an oval — use a card radius and top-align the switch. */
@@ -758,7 +758,7 @@ main { padding-top: var(--nav-h); }
 .toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
 .toggle-on-orange .switch.is-on { background: var(--orange); }
 .toggle-on-magenta .switch.is-on { background: var(--magenta); }
-.toggle-text { font-size: 16px; line-height: 1.55; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
+.toggle-text { font-size: 16px; line-height: 1.45; color: var(--ink); transition: opacity 0.3s ease, max-width 0.3s ease; opacity: 1; }
 .toggle-text strong { display: block; margin-bottom: 4px; }
 .toggle-item.text-hidden .toggle-text { opacity: 0; }
 /* (Se quitaron los ajustes para pantallas bajas: existían para que la sección fijada cupiera en la pantalla; ahora
@@ -4121,3 +4121,5 @@ main { padding-top: var(--nav-h); }
 .work, .services, #filosofia .toggle-section, .wow-method, .svc-faq#faq { padding-bottom: var(--sec-bottom); }
 .hub-hint { margin-bottom: 0; }
 @media (min-width: 901px) { .hub-diagram { margin-bottom: 0; } }
+/* Título → párrafo de Nosotros igual que el de Método (24px en escritorio ancho, 16px por debajo de 1280px) */
+@media (max-width: 1279px) { #filosofia .toggle-section h2 { margin-bottom: var(--space-2); } }
