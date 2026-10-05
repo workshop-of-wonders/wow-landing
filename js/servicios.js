@@ -115,3 +115,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
 })();
 
 /* FAQ accordion is defined in js/common.js, loaded before this file. */
+
+/* "Qué es" de las páginas de servicio: la búsqueda se abre en intenciones cuando la tarjeta entra en pantalla. */
+(function () {
+  var card = document.querySelector('.sp-callout');
+  if (!card) return;
+  if (!('IntersectionObserver' in window)) { card.classList.add('is-in'); return; }
+  var io = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) { card.classList.add('is-in'); io.disconnect(); }
+  }, { threshold: 0.4 });
+  io.observe(card);
+})();
