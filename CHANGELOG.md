@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Home: pista de hover en Método y nuevo texto del hero.**
+  - `index.html`/`styles.css`: nueva línea `.wm-hint` en la columna izquierda de Método ("↗ Pasa el mouse (o toca) cada paso para ver qué incluye."). Pedido explícito de la dueña; el diagrama y las tarjetas no cambian.
+  - Hero (`hero.sub`): "Diseñamos y desarrollamos sitios web, e-commerce y experiencias digitales que conectan tu marca con las personas y generan resultados." (antes: "Diseñamos tu sitio web o tienda en línea, lo posicionamos en Google…"). Si se publica ese campo desde `/admin` puede reescribirse.
+
 - **2026-10-05 — Home: pista de clic en Servicios y Nosotros sin sección fija.**
   - Servicios (≥901px): la etiqueta chica sobre el marco ahora dice "↗ Haz clic en un servicio para conocerlo a fondo" (`.fg-frame-label`, 12px); la línea `.hub-hint` de abajo queda solo para tablet/móvil.
   - Nosotros: se quita el pin (`.toggle-section` ya no es `sticky`, `.toggle-pin` sin altura propia) porque en pantallas altas dejaba un hueco bajo la lista. Los switches se encienden por progreso de entrada (`updateScrollScrubs` en `js/main.js`: 0 con el borde superior al 90 % de la pantalla, 1 al 30 %), el primero siempre encendido.
