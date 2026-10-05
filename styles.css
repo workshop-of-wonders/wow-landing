@@ -663,7 +663,9 @@ main { padding-top: var(--nav-h); }
    up into the "NOSOTROS" watermark band. Reserve that band (watermark top +
    its clamp() font-size + a gap) so the heading always starts below it. */
 @media (min-width: 721px) {
-  .toggle-section { padding-top: var(--sec-top); }
+  /* Arriba, no centrado: así el eyebrow queda a la misma distancia de la palabra grande que en las demás
+     secciones sea cual sea el alto de la pantalla (centrado, en pantallas altas se separaba mucho). */
+  .toggle-section { padding-top: var(--sec-top); align-items: flex-start; }
 }
 .toggle-copy { flex: 1 1 480px; min-width: 0; }
 .toggle-section h2 {
@@ -1252,7 +1254,7 @@ main { padding-top: var(--nav-h); }
   /* Sin altura mínima: el alto lo da la columna de pills. Con 420px fijos, ahora que son menos pills,
      el diagrama quedaba centrado en una caja más alta que su contenido y flotaba lejos del título. */
 }
-@media (min-width: 901px) { .hub-diagram { margin-top: var(--sec-title-content); } }
+@media (min-width: 721px) { .hub-diagram { margin-top: var(--sec-title-content); } }
 .hub-arrows {
   position: absolute;
   inset: 0;

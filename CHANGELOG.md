@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Home: Nosotros arriba (misma distancia a la palabra grande) y Servicios en tablet.**
+  - `styles.css`: `.toggle-section` (≥721px) alinea el contenido arriba (`align-items: flex-start`) en vez de centrarlo, así el eyebrow queda siempre a 24px de "NOSOTROS" aunque la pantalla sea alta (antes llegaba a 37px+ en 1920).
+  - `.hub-diagram` usa `margin-top: var(--sec-title-content)` desde 721px (antes 901px): en tablet el diagrama quedaba a 13px del título.
+
 - **2026-10-05 — Home: secciones con el mismo ritmo vertical, eyebrow en Trabajo y logos a color.**
   - `styles.css`: nuevas variables `--sec-wm-gap` (24px), `--sec-title-text` (24px), `--sec-title-content` (48px) y `--sec-top` al inicio. Trabajo, Servicios, Nosotros y Método empiezan debajo de la palabra grande con la misma franja (≥721px); Servicios ya no sube junto a la palabra. Título → contenido mide 44px en Trabajo, Labs, Servicios y FAQ (en Trabajo eran 12px); eyebrow → título 14px en todas.
   - `index.html`: Trabajo ahora tiene eyebrow ("NUESTROS CASOS", clave `trabajo.eyebrow`), así que todas las secciones llevan eyebrow + título.
