@@ -4451,14 +4451,14 @@ main { padding-top: var(--nav-h); }
 .sp-climb-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-7); align-items: start; margin-top: var(--space-2); }
 .sp-climb-vis { --rh: 68px; position: sticky; top: calc(var(--nav-h) + var(--space-4)); }
 .sp-serp2 { padding: var(--space-3); border-radius: 24px; background: var(--white); box-shadow: 0 24px 60px rgba(56, 7, 87, .16); }
-.sp-sec h2.sp-serp2-bar { display: flex; align-items: center; gap: 12px; margin: 0 0 var(--space-2); padding: 12px 20px; border-radius: 999px; background: var(--cloud); color: var(--purple); font-size: clamp(17px, 1.7vw, 22px); line-height: 1.2; max-width: none; }
+.sp-sec h2.sp-serp2-bar { display: flex; align-items: center; gap: 14px; margin: 0 0 var(--space-2); padding: 18px 26px; border-radius: 999px; background: var(--cloud); color: var(--purple); font-size: clamp(20px, 2.35vw, 32px); line-height: 1.15; max-width: none; text-wrap: balance; }
 .sp-q { position: relative; display: inline-block; padding-right: 4px; }
 .sp-q::after { content: ""; position: absolute; right: -4px; top: 8%; bottom: 8%; width: 2px; background: var(--purple); animation: spCaret 1s steps(1) infinite; }
 @keyframes spCaret { 50% { opacity: 0; } }
 /* "escribe" la pregunta de izquierda a derecha al entrar en pantalla */
 .sp-climb-vis.is-typing .sp-q { animation: spType 1.4s steps(24, end) both; }
 @keyframes spType { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 -6px 0 0); } }
-.sp-serp2-bar::before { content: ""; width: 15px; height: 15px; border: 2px solid var(--purple); border-radius: 50%; box-shadow: 5px 5px 0 -3px var(--purple); flex: none; }
+.sp-serp2-bar::before { content: ""; flex: none; width: 20px; height: 20px; border: 2px solid var(--purple); border-radius: 50%; box-shadow: 5px 5px 0 -3px var(--purple); flex: none; }
 .sp-rows { position: relative; list-style: none; margin: 0; padding: 0; height: calc(7 * var(--rh)); }
 .sp-r { --slot: 0; position: absolute; left: 0; right: 0; top: 0; height: calc(var(--rh) - 8px); display: flex; align-items: center; gap: 14px; padding: 0 16px; border-radius: 14px; background: #f6f2fa; transform: translateY(calc(var(--slot) * var(--rh))); transition: transform .8s cubic-bezier(.3, 1.25, .5, 1), background .4s ease, box-shadow .4s ease; }
 .sp-r .n { flex: none; width: 20px; font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: #8c7f98; }
