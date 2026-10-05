@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Caso de Centro del Sueño y Ronquido: resultado.**
+  - `js/cases.js`: el campo `resultado` de "Centro del Sueño y Ronquido" pasa de vacío a "Subimos 58 puestos en el ranking de Google en menos de 3 semanas, con SEO, GEO, AEO y optimización de Google My Business." (dato aportado por la dueña; ya aparece en "El resultado" del popup).
+
 - **2026-10-05 — Nosotros: resultados con contadores, partners y mapa sin nombres; desplegables del formulario hacia abajo; tooltips de Servicios fuera.**
   - Nosotros (`index.html`/`styles.css`/`js/main.js`): la tarjeta de resultados ahora tiene tres cifras que suben desde 0 al entrar en pantalla (+17 marcas posicionadas, +58 puestos subidos en Google en menos de 3 semanas, +7 sectores económicos impactados; sin IntersectionObserver o con movimiento reducido se ve el valor final). Título del mapa "Hemos trabajado con marcas de diferentes partes del mundo" y pines sin nombres de países. Nueva fila de partners (Wix, Meta, Google y Canva; insignias de texto, a falta de los sellos oficiales).
   - Formulario (`js/common.js`, `styles.css`, 7 páginas): los `<select>` de `.project-field` se reemplazan por una lista propia (`.cs`) que siempre abre hacia abajo, con teclado y scroll interno; el `<select>` original sigue como fuente del valor. El presupuesto pasa a opciones planas con `data-cur="COP|USD|ANY"` (sin encabezados de grupo) y suma "Prefiero conversarlo" para cualquier país.
