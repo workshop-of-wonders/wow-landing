@@ -311,3 +311,31 @@ function createFocusTrap(modalEl, isOpen) {
     if (openInst && !openInst.wrap.contains(e.target)) openInst.close();
   });
 })();
+
+/* Cifras de resultados (home: Nosotros; páginas de servicio: Resultados): suben desde 0 hasta su valor cuando la tarjeta entra en pantalla (una sola vez).
+   Sin IntersectionObserver o con movimiento reducido se queda el valor final que ya trae el HTML. */
+(function () {
+  var nums = [].slice.call(document.querySelectorAll('.proof-num[data-count]'));
+  if (!nums.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+  nums.forEach(function (el) { el.textContent = '+0'; });
+  function run(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var dur = 1500, t0 = null;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = '+' + Math.round(target * e);
+      if (k < 1) requestAnimationFrame(step); else el.textContent = '+' + target;
+    }
+    requestAnimationFrame(step);
+  }
+  var started = false;
+  new IntersectionObserver(function (entries, obs) {
+    if (started || !entries.some(function (e) { return e.isIntersecting; })) return;
+    started = true;
+    nums.forEach(function (el, i) { setTimeout(function () { run(el); }, i * 180); });
+    obs.disconnect();
+  }, { threshold: 0.4 }).observe(nums[0].closest('.nos-stats'));
+})();
