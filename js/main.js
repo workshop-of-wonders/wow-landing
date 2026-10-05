@@ -997,6 +997,19 @@ var ProjectCollage = (function () {
       title.textContent = el.dataset.title || '';
       category.textContent = (el.dataset.category || '').toUpperCase();
       desc.textContent = el.dataset.desc || '';
+      /* botón "Ver sitio" (campo sitio del caso o data-site de la card) */
+      var oldSite = desc.parentNode.querySelector('.lightbox-site');
+      if (oldSite) oldSite.remove();
+      var siteUrl = (CASES[el.dataset.title] && CASES[el.dataset.title].sitio) || el.dataset.site;
+      if (siteUrl) {
+        var siteLink = document.createElement('a');
+        siteLink.className = 'lightbox-site';
+        siteLink.href = siteUrl;
+        siteLink.target = '_blank';
+        siteLink.rel = 'noopener noreferrer';
+        siteLink.textContent = 'Ver sitio';
+        desc.parentNode.appendChild(siteLink);
+      }
       if (el.dataset.work) {
         workEl.textContent = el.dataset.work;
         workBlock.style.display = '';

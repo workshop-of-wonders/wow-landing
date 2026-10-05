@@ -2428,6 +2428,20 @@ main { padding-top: var(--nav-h); }
   text-transform: uppercase;
   color: #a89fb3;
 }
+.lightbox-site {
+  align-self: flex-start;
+  display: inline-block;
+  margin-top: var(--space-1);
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--lima);
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.lightbox-site:hover { transform: translateY(-2px); }
 .lightbox-desc {
   margin: 0;
   color: #cfc7d6;

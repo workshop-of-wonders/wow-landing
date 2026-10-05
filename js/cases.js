@@ -6,6 +6,8 @@
    Un campo vacío ('') no se muestra. Las cards con caso muestran la
    etiqueta "Ver caso".
 
+   sitio: (opcional) enlace al sitio real; sale como botón "Ver sitio" en el popup.
+
    herramientas: (opcional) herramientas usadas en el caso; salen como un grupo "Herramientas" junto a las
    capacidades. Solo van las que se deducen de lo que se hizo (a revisar con la dueña).
 
@@ -27,6 +29,7 @@ window.WOW_CASES = {
     construimos: 'Un refresh de marca que conserva su esencia con una imagen más actual; un sitio web donde los productos se ven en ambientes reales; y una estrategia de SEO y pauta digital para llegar a quienes están decorando o remodelando su hogar.',
     resultado: '',
     aprendizaje: 'Renovar no es empezar de cero: lo que la gente ya reconoce de una marca es un activo que hay que cuidar.',
+    sitio: 'https://www.cristaleriamilan.com/',
     herramientas: ['Wix', 'Adobe Illustrator', 'Semrush', 'Search Console', 'Google Analytics 4', 'Google My Business', 'Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Rebranding', 'Diseño web', 'Desarrollo web'],
@@ -80,7 +83,8 @@ window.WOW_CASES = {
     construimos: 'Todo el recorrido, desde el desarrollo de marca y el logo hasta el sitio, los posts para redes y la pauta digital: una estrategia que vende la experiencia antes que el objeto, con contenidos que evocan los parques y campañas dirigidas a fans de Disney y Universal.',
     resultado: '',
     aprendizaje: 'Cuando el producto es emoción, la comunicación tiene que vender la experiencia, no el objeto.',
-    herramientas: ['Linka', 'Meta Ads'],
+    sitio: 'https://www.lynka.io/s/epika-store',
+    herramientas: ['Lynka', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Desarrollo de marca', 'Logo', 'Sitio web'],
       'Insight Lab': ['Estrategia de marketing digital', 'Contenido para redes', 'Pauta digital']
@@ -94,6 +98,7 @@ window.WOW_CASES = {
     construimos: 'Un sitio web claro, pensado para resolver dudas y agendar; un blog con artículos sobre ronquido, apnea y trastornos del sueño optimizados para SEO; y pauta digital para llegar a pacientes en Medellín.',
     resultado: 'Subimos 58 puestos en el ranking de Google en menos de 3 semanas, con SEO, GEO, AEO y optimización de Google My Business.',
     aprendizaje: 'En salud, un sitio claro y confiable es el primer paso de la consulta.',
+    sitio: 'https://www.clinicadelsuenoyronquido.com',
     herramientas: ['Wix', 'Semrush', 'Search Console', 'Google Analytics 4', 'Google My Business', 'Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Sitio web'],
@@ -122,6 +127,7 @@ window.WOW_CASES = {
     construimos: 'Un sitio web que muestra el día a día del hogar y responde las preguntas de las familias, y una estrategia de marketing y pauta digital dirigida a hijos y familiares que están buscando opciones.',
     resultado: '',
     aprendizaje: 'Cuando la decisión es emocional, la comunicación tiene que hablarle a quien decide.',
+    sitio: 'https://www.hogarcaminosdelavida.com/',
     herramientas: ['Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Desarrollo web'],
