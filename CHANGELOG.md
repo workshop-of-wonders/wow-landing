@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Home: pills de Nosotros más bajas, título→texto como Método y FAQ de costos fuera.**
+  - `styles.css`: `.toggle-item` con 14px de relleno vertical (antes 24px; ~78px de alto a 1440), `.toggle-list` con 24px de separación y `.toggle-text` con interlineado 1.45. `--sec-title-text` vuelve a 24px y `#filosofia .toggle-section h2` usa 16px por debajo de 1280px (igual que `.wm-head h2` de Método); `.toggle-intro` con interlineado 1.6.
+  - `index.html`: se quita la FAQ "¿Cuánto cuesta un proyecto de desarrollo web o SEO?" del home (HTML y JSON-LD `FAQPage`); quedan 3 preguntas.
+
 - **2026-10-05 — Nosotros: sin compresión en ventanas bajas.**
   - `styles.css`: se eliminan los bloques `@media (min-width: 721px) and (max-height: 880px / 760px)` de `.toggle-section` (bajaban márgenes, relleno y separación para que la sección fijada cupiera en la pantalla). Desde que Nosotros ya no se fija no hacían falta y lo dejaban apretado frente a las demás secciones. Ahora tiene el mismo aire a cualquier alto de ventana (96px abajo, 32px entre título y párrafo, 32px entre tarjetas).
 
