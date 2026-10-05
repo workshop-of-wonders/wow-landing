@@ -4367,10 +4367,12 @@ main { padding-top: var(--nav-h); }
 .sp-sec--dark .sp-lead { color: var(--cloud); }
 
 /* Qué es */
-.sp-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: start; margin-top: var(--space-3); }
-.sp-intro p { font-size: 20px; line-height: 1.65; margin: 0; }
-.sp-callout { background: var(--purple); color: var(--white); border-radius: 24px; padding: var(--space-4); position: relative; overflow: hidden; }
-.sp-callout p { font-family: var(--font-display); font-size: clamp(22px, 2.3vw, 30px); line-height: 1.25; }
+.sp-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: stretch; margin-top: var(--space-4); }
+.sp-intro-copy { align-self: center; }
+.sp-intro-copy h2 { max-width: 14em; }
+.sp-intro-copy > p:not(.eyebrow) { font-size: 19px; line-height: 1.65; margin: 0; max-width: 34em; }
+.sp-callout { display: flex; align-items: center; background: var(--purple); color: var(--white); border-radius: 24px; padding: var(--space-5); position: relative; overflow: hidden; }
+.sp-callout p { margin: 0; font-family: var(--font-display); font-size: clamp(22px, 2.3vw, 30px); line-height: 1.25; }
 .sp-callout em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: var(--lima); }
 .sp-callout::after { content: ""; position: absolute; right: -40px; bottom: -50px; width: 190px; height: 190px; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; opacity: .12; }
 
@@ -4404,7 +4406,7 @@ main { padding-top: var(--nav-h); }
   .sp-hero-sub { font-size: 16px; }
   .sp-cards { grid-template-columns: 1fr; }
   .sp-card h3 { font-size: 19px; }
-  .sp-intro p { font-size: 16px; }
+  .sp-intro-copy > p:not(.eyebrow) { font-size: 16px; }
   .sp-callout p { font-size: 22px; }
   .sp-float { font-size: 12px; padding: 7px 12px; }
   .sp-float--a { left: -4px; } .sp-float--b { right: -4px; }
