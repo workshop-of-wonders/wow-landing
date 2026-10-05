@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'EfectoWow';
-  src: url("design-system/fonts/EfectoWow-Regular.ttf") format("truetype");
+  src: url("design-system/fonts/EfectoWow-Regular.ttf?v=2") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -612,8 +612,8 @@ main { padding-top: var(--nav-h); }
 .outline-magenta { color: var(--magenta); }
 .outline-blue { color: var(--blue); }
 .outline-lima { color: var(--lima); }
-.method, .toggle-section, .labs, .services, .work, .experiment { position: relative; overflow: hidden; }
-.method > *:not(.outline-word), .toggle-inner, .labs > *:not(.outline-word),
+.method, .toggle-section, .labs, .services, .work, .experiment, .wow-method { position: relative; overflow: hidden; }
+.method > *:not(.outline-word), .wow-method > *:not(.outline-word), .toggle-inner, .labs > *:not(.outline-word),
 .services > *:not(.outline-word):not(.figma-cursor), .work > *:not(.outline-word),
 .experiment > *:not(.outline-word) {
   position: relative;
@@ -3642,109 +3642,99 @@ main { padding-top: var(--nav-h); }
 }
 
 
-/* Método WOW: ciclo Wonder → Optimize → Win. El escenario escala con su propio
-   ancho (container query units); bajo 1200px se apila en una sola columna. */
+/* Método WOW: dos columnas (texto a la izquierda, ciclo Wonder → Optimize → Win
+   a la derecha). El diagrama usa geometría fija en px (838x524, centro en
+   419,372, radio del ciclo 128, nodos de 80px) para que la tipografía se
+   mantenga en la escala del sitio. Bajo 1280px se apila en una columna. */
 .wow-method {
   background: var(--purple);
   color: var(--white);
   padding: var(--space-7) var(--page-x) calc(var(--space-7) * 1.5);
 }
-.wm-stage {
-  position: relative;
-  container-type: inline-size;
-  aspect-ratio: 1650 / 840;
-  font-size: clamp(13px, 1.02cqw, 17px);
-}
-.wm-art { position: absolute; inset: 0; width: 100%; height: 100%; }
-.wm-logo { position: absolute; left: 53.76%; top: 59.05%; width: 5.45%; height: auto; transform: translate(-50%, -50%); }
-.wm-head { position: absolute; left: 0; top: 4%; width: 26%; }
+.wm-stage { --wm-card-h: 176px; font-size: 15px; }
 .wm-head .eyebrow { color: var(--orange); }
-.wm-head h2 { font-size: clamp(26px, 2.6cqw, 46px); line-height: 1.12; color: var(--white); margin: 0 0 1.2em; }
-.wm-intro { font-size: clamp(13px, 1.12cqw, 18px); line-height: 1.6; margin: 0; opacity: .92; }
+.wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); }
+.wm-intro { font-size: var(--intro-size); line-height: 1.6; margin: 0; opacity: .92; }
 
-.wm-step { display: contents; --c: var(--magenta); }
-.wm-2 { --c: var(--orange); }
-.wm-3 { --c: #c4a8f5; }
+/* Colores exactos de cada Lab (los de .labs-panel-insight / .labs-panel-brand): --c sólido para
+   texto, líneas y brillos; --cbg es el degradado del panel, para nodos y etiquetas. */
+.wm-step { --c: #3B82F6; --cbg: linear-gradient(160deg, #5aa9f7, #3B82F6); }   /* Insight Lab */
+.wm-2 { --c: #EC4899; --cbg: linear-gradient(160deg, #f472b6, #EC4899); }   /* Brand & Experience Lab */
+.wm-3 { --c: #c4a8f5; --cbg: #c4a8f5; }   /* Win: morado claro (su etiqueta sigue siendo Insight Lab) */
 .wm-node {
-  position: absolute; width: 6.06%; aspect-ratio: 1; border-radius: 50%;
-  background: var(--c); display: grid; place-items: center; transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 .6cqw rgba(255,255,255,.04);
+  width: 80px; aspect-ratio: 1; border-radius: 50%; background: var(--cbg);
+  display: grid; place-items: center; box-shadow: 0 0 0 4px rgba(255,255,255,.04);
 }
 .wm-node svg { width: 46%; height: 46%; }
-.wm-1 .wm-node { left: 53.76%; top: 35.36%; }
-.wm-2 .wm-node { left: 64.04%; top: 70.36%; }
-.wm-3 .wm-node { left: 43.47%; top: 70.36%; }
-
 .wm-card {
-  position: absolute; box-sizing: border-box;
+  box-sizing: border-box; display: flex; flex-direction: column;
   background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.22);
-  border-radius: 1.5cqw; padding: 1.3cqw 1.5cqw;
-  width: 22%; height: 27%; display: flex; flex-direction: column;
+  border-radius: 20px; padding: 16px;
 }
-.wm-card h3 { font-size: 1.85em; line-height: 1; margin: 0 0 .45em; color: var(--c); }
-.wm-num { font-family: var(--font-mono); font-size: .5em; color: var(--lima); letter-spacing: .04em; margin-right: .3em; vertical-align: .25em; }
-.wm-card p { margin: 0 0 .8em; line-height: 1.4; font-size: .96em; }
+.wm-card h3 { font-size: 22px; line-height: 1.1; margin: 0 0 var(--space-1); color: var(--c); }
+.wm-num { font-family: var(--font-mono); font-size: 14px; color: var(--lima); letter-spacing: .04em; margin-right: 6px; vertical-align: .1em; }
+.wm-card p { margin: 0 0 var(--space-2); line-height: 1.5; font-size: 15px; }
 .wm-tag {
-  display: inline-block; align-self: flex-start; margin-top: auto; padding: .4em .95em; border-radius: 99px;
-  background: rgba(255,255,255,.12); font-size: .78em; font-weight: 700;
-  letter-spacing: .07em; text-transform: uppercase; white-space: nowrap;
+  display: inline-block; align-self: flex-start; margin-top: auto; max-width: 100%;
+  padding: 6px 12px; border-radius: 99px; background: rgba(255,255,255,.12);
+  font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
 }
-.wm-1 .wm-card { left: 42.76%; bottom: 74%; }
-.wm-2 .wm-card { left: 68.4%; top: 60%; }
-.wm-3 .wm-card { left: 12.4%; top: 60%; }
+/* Etiquetas transparentes con un tinte del color de cada Lab (el borde es un inset para no cambiar su tamaño) */
+.wm-tag-insight { background: rgba(59,130,246,.2); color: #a9cffb; box-shadow: inset 0 0 0 1px rgba(90,169,247,.55); }
+.wm-tag-brand { background: rgba(236,72,153,.2); color: #f9a8d4; box-shadow: inset 0 0 0 1px rgba(244,114,182,.55); }
+.wm-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 15px; }
+.wm-list li { position: relative; padding-left: 22px; line-height: 1.3; }
+.wm-list li::before { content: ''; position: absolute; left: 0; top: 3px; width: 11px; height: 11px; border-radius: 50%; background: var(--c); }
 
-.wm-list { position: absolute; white-space: nowrap; margin: 0; padding: 0; list-style: none; display: grid; gap: .7em; font-size: .98em; }
-.wm-list li { position: relative; padding-left: 1.6em; line-height: 1.3; }
-.wm-list li::before { content: ''; position: absolute; left: 0; top: .25em; width: .8em; height: .8em; border-radius: 50%; background: var(--c); }
-.wm-1 .wm-list { left: 66.2%; top: 5.4%; }
-.wm-2 .wm-list { left: 91.6%; top: 63%; }
-.wm-3 .wm-list { left: 13.6%; top: 88%; }
+/* Interacción: las viñetas de cada paso solo se ven con hover (o foco; en
+   táctil, al tocar la tarjeta). */
+.wm-list li { opacity: 0; transform: translateX(-12px); transition: opacity .3s ease, transform .3s ease; }
+.wm-list li:nth-child(2) { transition-delay: .06s; }
+.wm-list li:nth-child(3) { transition-delay: .12s; }
+.wm-list li:nth-child(4) { transition-delay: .18s; }
+.wm-step:hover .wm-list li, .wm-step:focus-within .wm-list li { opacity: 1; transform: none; }
+.wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+.wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
 
-@media (max-width: 1199px) {
-  .wow-method { padding-bottom: var(--space-7); }
-  .wm-stage { aspect-ratio: auto; container-type: normal; font-size: 16px; display: grid; gap: var(--space-4); }
-  .wm-art, .wm-logo { display: none; }
-  .wm-stage .wm-head, .wm-stage .wm-step .wm-card, .wm-stage .wm-step .wm-list, .wm-stage .wm-step .wm-node { position: static; transform: none; left: auto; top: auto; bottom: auto; width: auto; height: auto; }
-  .wm-list { white-space: normal; }
-  .wm-tag { white-space: normal; }
-  .wm-head { width: auto; }
-  .wm-head h2 { font-size: 24px; margin-bottom: var(--space-2); }
-  .wm-intro { font-size: 16px; }
-  .wm-step {
-    display: grid; grid-template-columns: 56px 1fr; column-gap: var(--space-2);
-    position: relative; align-items: start;
+@media (min-width: 1280px) {
+  .wm-stage { display: grid; grid-template-columns: minmax(260px, 320px) 1fr; column-gap: var(--space-5); align-items: center; }
+  .wm-diagram { position: relative; width: 838px; height: 524px; justify-self: end; margin-right: calc(-1 * clamp(0px, 838px - 100%, var(--page-x) - 24px)); }
+  .wm-art { position: absolute; left: 50%; top: 0; width: 838px; height: 524px; margin-left: -419px; }
+  .wm-logo { position: absolute; left: 50%; top: 374px; width: 64px; height: auto; transform: translate(-50%, -50%); }
+  .wm-step { display: contents; }
+  .wm-node { position: absolute; transform: translate(-50%, -50%); }
+  .wm-1 .wm-node { left: 50%; top: 244.0px; }
+  .wm-2 .wm-node { left: calc(50% + 110.9px); top: 436.0px; }
+  .wm-3 .wm-node { left: calc(50% - 110.9px); top: 436.0px; }
+  .wm-card { position: absolute; width: 240px; height: var(--wm-card-h); }
+  .wm-1 .wm-card { left: calc(50% - 120.0px); top: 0; }
+  .wm-2 .wm-card { left: calc(50% + 178.9px); top: 348.0px; }
+  .wm-3 .wm-card { left: calc(50% - 418.9px); top: 348.0px; }
+  .wm-list { position: absolute; white-space: nowrap; pointer-events: none; }
+  .wm-1 .wm-list { left: calc(50% + 140.0px); top: 8px; }
+  .wm-2 .wm-list { left: calc(50% + 194.9px); top: 538.0px; }
+  .wm-3 .wm-list { left: calc(50% - 402.9px); top: 538.0px; }
+  .wow-method { padding-top: 72px; padding-bottom: 140px; }
+  .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
+
+  /* El cohete orbita el ciclo todo el tiempo (círculo R=128 centrado en 419,372 del
+     SVG, el mismo de las flechas), por debajo de los nodos y visible solo sobre las
+     flechas verdes (arcos a 28°-92°, 148°-212° y 268°-332° de la vuelta). */
+  .wm-rocket {
+    font-size: 28px; pointer-events: none;
+    offset-path: path('M419 244 A128 128 0 1 1 419 500 A128 128 0 1 1 419 244');
+    offset-rotate: auto 45deg;
+    animation: wm-orbit 9s linear infinite;
   }
-  .wm-step:not(:last-of-type)::after {
-    content: ''; position: absolute; left: 27px; top: 60px; bottom: calc(-1 * var(--space-4) + 4px);
-    border-left: 3px dashed var(--c); opacity: .6;
-  }
-  .wm-stage .wm-step .wm-node { width: 56px; height: 56px; grid-row: 1 / span 2; }
-  .wm-card { border-radius: 20px; padding: var(--space-3) 20px; }
-  .wm-card h3 { font-size: 30px; }
-  .wm-card p { font-size: 15px; }
-  .wm-tag { font-size: 12px; }
-  .wm-list { margin-top: var(--space-2); font-size: 15px; gap: 10px; }
-}
-
-/* Interacción: el cohete orbita el ciclo todo el tiempo (círculo R=196 centrado
-   en 887,493 del viewBox 1650x840, el mismo de las flechas); en escritorio con
-   mouse, las viñetas de cada paso se despliegan al pasar por la tarjeta. */
-.wm-rocket {
-  font-size: 34px; pointer-events: none;
-  offset-path: path('M887 297 A196 196 0 1 1 887 689 A196 196 0 1 1 887 297');
-  offset-rotate: auto 45deg;
-  animation: wm-orbit 9s linear infinite;
 }
 @keyframes wm-orbit {
-  /* una vuelta completa; solo es visible mientras recorre cada flecha verde
-     (arcos a 27°-93°, 147°-213° y 267°-333° de la vuelta) y pasa por debajo de los nodos */
   0%    { offset-distance: 0%; opacity: 0; }
-  7%    { opacity: 0; }
-  8.5%  { opacity: 1; }
-  25%   { opacity: 1; }
-  26.5% { opacity: 0; }
-  40%   { opacity: 0; }
-  41.5% { opacity: 1; }
+  7.5%  { opacity: 0; }
+  9%    { opacity: 1; }
+  24.5% { opacity: 1; }
+  26%   { opacity: 0; }
+  40.5% { opacity: 0; }
+  42%   { opacity: 1; }
   58%   { opacity: 1; }
   59.5% { opacity: 0; }
   74%   { opacity: 0; }
@@ -3753,41 +3743,45 @@ main { padding-top: var(--nav-h); }
   93%   { opacity: 0; }
   100%  { offset-distance: 100%; opacity: 0; }
 }
+
 /* Brillo suave del nodo cuando el cohete pasa por él: mismo ciclo de 9 s que
    .wm-rocket. El cohete cruza Optimize a 1/3 de la vuelta (3 s), Win a 2/3
    (6 s) y Wonder al cierre (9 s); el pico del keyframe está al 50% (4.5 s),
    por eso el delay negativo = tiempo de cruce - 4.5 s. */
 @keyframes wm-glow {
-  0%, 30%, 100% { box-shadow: 0 0 0 .6cqw rgba(255,255,255,.04), 0 0 0 0 transparent; }
-  50% { box-shadow: 0 0 0 .6cqw rgba(255,255,255,.07), 0 0 2cqw .3cqw color-mix(in srgb, var(--c) 32%, transparent); }
+  0%, 30%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,.04), 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 4px rgba(255,255,255,.07), 0 0 16px 3px color-mix(in srgb, var(--c) 50%, transparent); }
 }
-@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
   .wm-node { animation: wm-glow 9s ease-in-out infinite; }
   .wm-1 .wm-node { animation-delay: -4.5s; }
   .wm-2 .wm-node { animation-delay: -1.5s; }
   .wm-3 .wm-node { animation-delay: -7.5s; }
 }
-/* Las viñetas de cada paso solo se ven con hover (o foco; en táctil, al tocar la tarjeta). */
-.wm-list li { opacity: 0; transform: translateX(-12px); transition: opacity .3s ease, transform .3s ease; }
-.wm-list li:nth-child(2) { transition-delay: .06s; }
-.wm-list li:nth-child(3) { transition-delay: .12s; }
-.wm-list li:nth-child(4) { transition-delay: .18s; }
-.wm-step:hover .wm-list li, .wm-step:focus-within .wm-list li { opacity: 1; transform: none; }
-.wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
-.wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
-@media (min-width: 1200px) {
-  .wm-list { pointer-events: none; }
-  .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
-}
-@media (max-width: 1199px) {
-  /* apilado: la lista se pliega y se despliega sin dejar hueco mientras está oculta */
-  .wm-stage .wm-step .wm-list { max-height: 0; overflow: hidden; margin-top: 0; transition: max-height .35s ease, margin-top .35s ease; }
-  .wm-stage .wm-step:hover .wm-list, .wm-stage .wm-step:focus-within .wm-list { max-height: 240px; margin-top: var(--space-2); }
-  .wm-card { cursor: pointer; }
-}
 @media (prefers-reduced-motion: reduce) {
   .wm-rocket { animation: none !important; opacity: 0; }
   .wm-list li, .wm-stage .wm-step .wm-list { transition: none !important; }
+}
+
+/* Apilado (<1280px): una sola columna; las viñetas se pliegan y se abren al tocar la tarjeta. */
+@media (max-width: 1279px) {
+  .wm-stage { display: grid; gap: var(--space-4); max-width: 720px; }
+  .wm-art, .wm-logo { display: none; }
+  .wm-diagram { display: grid; gap: var(--space-4); }
+  .wm-head h2 { margin-bottom: var(--space-2); }
+  .wm-step {
+    display: grid; grid-template-columns: 56px 1fr; column-gap: var(--space-2);
+    position: relative; align-items: start;
+  }
+  .wm-step:not(:last-of-type)::after {
+    content: ''; position: absolute; left: 27px; top: 60px; bottom: calc(-1 * var(--space-4) + 4px);
+    border-left: 3px dashed var(--c); opacity: .6;
+  }
+  .wm-node { width: 56px; height: 56px; grid-row: 1 / span 2; }
+  .wm-card { border-radius: 20px; padding: var(--space-3) 20px; cursor: pointer; }
+  .wm-tag { white-space: normal; }
+  .wm-list { margin-top: 0; max-height: 0; overflow: hidden; transition: max-height .35s ease, margin-top .35s ease; }
+  .wm-step:hover .wm-list, .wm-step:focus-within .wm-list { max-height: 240px; margin-top: var(--space-2); }
 }
 
 /* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
@@ -4023,6 +4017,7 @@ main { padding-top: var(--nav-h); }
   /* H3 level */
   .labs-content h3, .labs-panel .labs-label, .labs .labs-label { font-size: 19px; }
   .method-loop .method-step h3 { font-size: 17px; }
+  .wm-card h3 { font-size: 19px; }
   /* Card text */
   .labs-content p { font-size: 15px; line-height: 1.6; }
   /* Footer: body size, not bigger than page text */
