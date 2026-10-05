@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Home: pista de clic en Servicios y Nosotros sin sección fija.**
+  - Servicios (≥901px): la etiqueta chica sobre el marco ahora dice "↗ Haz clic en un servicio para conocerlo a fondo" (`.fg-frame-label`, 12px); la línea `.hub-hint` de abajo queda solo para tablet/móvil.
+  - Nosotros: se quita el pin (`.toggle-section` ya no es `sticky`, `.toggle-pin` sin altura propia) porque en pantallas altas dejaba un hueco bajo la lista. Los switches se encienden por progreso de entrada (`updateScrollScrubs` en `js/main.js`: 0 con el borde superior al 90 % de la pantalla, 1 al 30 %), el primero siempre encendido.
+
 - **2026-10-05 — Home: fila de casos 2+puerta+2, logos sin hover, Labs más bajo y clicable, cursores de Servicios más quietos, Nosotros sin hueco.**
   - Trabajo: la fila visible es caso-caso-puerta-caso-caso (Pretty Pets y Geco pasan de la parte oculta a la visible; se quita `grid-column-start: 2`). Logos de clientes sin ningún hover (se elimina el zoom y el resaltado cruzado `data-match` → `.is-highlighted` en `js/main.js`/`styles.css`).
   - `--sec-wm-gap` baja de 24px a 0 (menos aire entre la palabra grande y el primer texto en todas las secciones); `.labs` usa `var(--sec-top)`.

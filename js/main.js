@@ -1224,17 +1224,14 @@ function updateScrollScrubs() {
   var isMobileTimeline = mobileTimelineQuery.matches;
   if (toggleSection && toggleItems.length) {
     /* .toggle-section isn't sticky-pinned on mobile, so it can't eat extra scroll like the desktop pin does. Instead, tie progress to the section's own entry: 0 when it's just touching the bottom of the viewport, 1 once it's fully on screen (top and bottom both visible) — so the OFF→ON animation rides the same scroll that brings the section into view and is done by the time it has fully arrived, instead of requiring extra swipes once there. */
-    var tProg;
-    if (isMobileTimeline) {
-      var toggleRect = toggleSection.getBoundingClientRect();
-      var vh = window.innerHeight;
-      tProg = Math.max(0, Math.min(1, (vh - toggleRect.top) / toggleRect.height));
-    } else {
-      tProg = togglePin ? pinProgress(togglePin) : scrollProgress(toggleSection);
-    }
+    /* la sección ya no se fija: el progreso va de 0 (su borde superior al 90 % de la altura de la pantalla) a 1 (al 30 %),
+       así los switches se encienden uno tras otro mientras sube y no dependen de scroll extra */
+    var toggleRect = toggleSection.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var tProg = Math.max(0, Math.min(1, (vh * 0.9 - toggleRect.top) / (vh * 0.6)));
     var revealCount = Math.floor(tProg * (toggleItems.length + 1));
     /* the first switch is always on by default on mobile, just like the first process card */
-    if (isMobileTimeline) revealCount = Math.max(1, revealCount);
+    revealCount = Math.max(1, revealCount);
     toggleItems.forEach(function (item, i) {
       var shouldBeOn = i < revealCount;
       var btn = item.querySelector('.switch');
