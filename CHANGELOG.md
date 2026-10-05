@@ -57,6 +57,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Hero sin fotos repetidas, popups en dos filas medianas/grandes, "Ver sitio" bajo el caso y pista de Método más corta.**
+  - Hero (`index.html`): las tres columnas de `.hero-media` usan 15 fotos verticales distintas, 5 por columna (A: Ajá Waffles, Orbit, Geco, Arlo, Centro del Sueño; B: Lámparas Milán, Moosy, Pretty Pets, Indeleble, Tin-T!; C: Epika Store, AM Studios, Prepapp, Seed Capital, Tata's Photos), sin repetir entre columnas. Cada columna lleva su secuencia dos veces para que el bucle `scrollUp` (-50%) sea continuo. Las cards nuevas abren su popup con las imágenes del proyecto.
+  - Popups (`ProjectCollage.renderFit` en `js/main.js`, `js/portafolio.js`, `js/project-popup.js`): siempre 2 líneas y de tamaño mediano/grande. Primero se achica el alto de fila (mínimo `MIN_ROW_H` = 125px); si aun así quedaría muy chico se descarta la pieza menos importante (`opts.maxPieces` en `render`: tarjetas generadas → muestra tipográfica → logos/íconos → últimas fotos) y se recompone. Pretty Pets pasa de 11 piezas diminutas a 5 en filas de ~132px.
+  - "Ver sitio": ahora va al final del popup, debajo del caso de estudio (`.lightbox-site-row`), no en la columna de la descripción.
+  - Método: la pista pasa a "↗ Pasa el mouse (o toca) cada paso."
+
 - **2026-10-05 — Botón "Ver sitio" en los casos y "Lynka" corregido.**
   - `js/cases.js`: nuevo campo opcional `sitio` (y `data-site` en las cards sin caso). Los popups (`js/main.js`, `js/portafolio.js`, `js/project-popup.js`) lo muestran como botón "Ver sitio" (`.lightbox-site`, lima, en pestaña nueva con `rel="noopener noreferrer"`) bajo la descripción. Casos con sitio: Centro del Sueño y Ronquido (clinicadelsuenoyronquido.com), Caminos de la Vida (hogarcaminosdelavida.com), Lámparas Milán (cristaleriamilan.com) y Epika Store (lynka.io/s/epika-store). Pendiente: el de `tiendasinenredos.myshopify.com`, a la espera de saber a qué proyecto corresponde.
   - La herramienta "Linka" pasa a "Lynka" (casos y tarjeta de herramientas de Método), según el link de Epika.

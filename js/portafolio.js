@@ -301,6 +301,22 @@ var ProjectCollage = (function () {
       }
     }
 
+    /* Para que las dos líneas queden medianas/grandes: si hay demasiadas piezas para ese tamaño, renderFit pide un
+       máximo (opts.maxPieces) y aquí se descartan las menos importantes: primero las tarjetas generadas (paleta,
+       patrón, frase), luego la muestra tipográfica, luego logos/íconos y por último las fotos del final. */
+    if (opts.maxPieces && pieces.length > opts.maxPieces) {
+      var rankOf = function (p) {
+        if (p.isPalette || p.isPattern || p.isTaglineImg) return 0;
+        if (/\/type\.webp$/.test(p.src)) return 1;
+        if (/\/(?:logo|icon)\.webp$|\/clients\//.test(p.src)) return 2;
+        return 3;
+      };
+      var dropOrder = pieces.map(function (p, i) { return { i: i, r: rankOf(p) }; })
+        .sort(function (a, b) { return a.r - b.r || b.i - a.i; });
+      var toDrop = {};
+      for (var dk = 0; dk < pieces.length - opts.maxPieces; dk++) toDrop[dropOrder[dk].i] = true;
+      pieces = pieces.filter(function (p, i) { return !toDrop[i]; });
+    }
     var gap = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 3;
     var isSingle = pieces.length === 1;
     var colH = rowH * ROWS + gap * (ROWS - 1);   /* alto de una columna completa */
@@ -467,22 +483,32 @@ var ProjectCollage = (function () {
      resulta más ancha que el popup, se achica ese alto (proporcional al sobrante) y se vuelve a armar, hasta 3 veces.
      El alto del contenedor sale del mismo --pc-row-h, así que el popup también se hace menos alto. Solo si ni así cabe
      (muchísimas imágenes) queda el desplazamiento horizontal de siempre. */
-  /* Máximo 2 líneas: si la tira no cabe a lo ancho se achica el alto de las filas (hasta MIN_ROW_H) en vez de añadir más filas. */
-  var MIN_ROW_H = 60;
+  /* Dos líneas, nunca más, y de tamaño mediano/grande: primero se achica el alto de las filas hasta que quepa todo
+     (sin bajar de MIN_ROW_H); si así quedaría muy chico, se descarta una pieza (la menos importante, ver maxPieces en
+     render) y se recompone al tamaño normal, hasta que todo quepa sin cortarse y sin repetir imágenes. */
+  var MIN_ROW_H = 125;
   async function renderFit(container, images, opts) {
+    opts = Object.assign({}, opts || {});
+    opts.maxPieces = 0;
     container.style.removeProperty('--pc-row-h');
     var wrap = container.parentElement;
     await render(container, images, opts);
     var gapPx = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 16;
-    for (var attempt = 0; attempt < 3; attempt++) {
+    for (var attempt = 0; attempt < 24; attempt++) {
       /* el contenedor crece con su contenido, así que el ancho disponible es el del marco que lo envuelve */
       var avail = (wrap ? wrap.clientWidth : container.clientWidth) - 2 * gapPx;
       var content = container.scrollWidth - 2 * gapPx;
       if (!avail || content <= avail + 1) return;
       var cur = parseFloat(getComputedStyle(container).getPropertyValue('--pc-row-h')) || 150;
-      var next = Math.max(MIN_ROW_H, Math.floor(cur * avail / content) - 1);
-      if (next >= cur) return;
-      container.style.setProperty('--pc-row-h', next + 'px');
+      var next = Math.floor(cur * avail / content) - 1;
+      if (next >= MIN_ROW_H) {
+        container.style.setProperty('--pc-row-h', next + 'px');
+      } else {
+        var count = container.querySelectorAll('.pc-item').length;
+        if (count <= 3) return;
+        opts.maxPieces = count - 1;
+        container.style.removeProperty('--pc-row-h');
+      }
       await render(container, images, opts);
     }
   }
@@ -535,18 +561,21 @@ var ProjectCollage = (function () {
       title.textContent = el.dataset.title || '';
       category.textContent = (el.dataset.category || '').toUpperCase();
       desc.textContent = el.dataset.desc || '';
-      /* botón "Ver sitio" (campo sitio del caso o data-site de la card) */
-      var oldSite = desc.parentNode.querySelector('.lightbox-site');
-      if (oldSite) oldSite.remove();
+      /* botón "Ver sitio" (campo sitio del caso o data-site de la card): va al final del popup, debajo del caso de estudio */
+      var oldSiteRow = lightbox.querySelector('.lightbox-site-row');
+      if (oldSiteRow) oldSiteRow.remove();
       var siteUrl = (CASES[el.dataset.title] && CASES[el.dataset.title].sitio) || el.dataset.site;
       if (siteUrl) {
+        var siteRow = document.createElement('div');
+        siteRow.className = 'lightbox-site-row';
         var siteLink = document.createElement('a');
         siteLink.className = 'lightbox-site';
         siteLink.href = siteUrl;
         siteLink.target = '_blank';
         siteLink.rel = 'noopener noreferrer';
         siteLink.textContent = 'Ver sitio';
-        desc.parentNode.appendChild(siteLink);
+        siteRow.appendChild(siteLink);
+        lightbox.querySelector('.lightbox-inner').appendChild(siteRow);
       }
       if (el.dataset.work) {
         workEl.textContent = el.dataset.work;
