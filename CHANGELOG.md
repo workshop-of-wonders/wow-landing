@@ -57,6 +57,14 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Home: fila de casos 2+puerta+2, logos sin hover, Labs más bajo y clicable, cursores de Servicios más quietos, Nosotros sin hueco.**
+  - Trabajo: la fila visible es caso-caso-puerta-caso-caso (Pretty Pets y Geco pasan de la parte oculta a la visible; se quita `grid-column-start: 2`). Logos de clientes sin ningún hover (se elimina el zoom y el resaltado cruzado `data-match` → `.is-highlighted` en `js/main.js`/`styles.css`).
+  - `--sec-wm-gap` baja de 24px a 0 (menos aire entre la palabra grande y el primer texto en todas las secciones); `.labs` usa `var(--sec-top)`.
+  - Servicios: cursores colaboradores con pasos cortos (`MIN_STEP`/`MAX_STEP`), más lentos y con pausas largas; solo van a pills cercanos. Nueva pista `.hub-hint` bajo el diagrama ("Elige un servicio para conocerlo a fondo…").
+  - Labs: paneles de 520 a 400px; en escritorio un clic en cualquier parte de la tarjeta lleva al Lab (móvil sigue como acordeón).
+  - Nosotros: `.toggle-section` sin `min-height` (la altura la da el contenido) y `.toggle-pin` con fondo `--cloud` y 160vh (antes 190vh), sin hueco blanco debajo en pantallas altas.
+  - Método no se tocó (a pedido de la dueña: no modificar a menos que lo pida explícitamente).
+
 - **2026-10-05 — Home: Nosotros arriba (misma distancia a la palabra grande) y Servicios en tablet.**
   - `styles.css`: `.toggle-section` (≥721px) alinea el contenido arriba (`align-items: flex-start`) en vez de centrarlo, así el eyebrow queda siempre a 24px de "NOSOTROS" aunque la pantalla sea alta (antes llegaba a 37px+ en 1920).
   - `.hub-diagram` usa `margin-top: var(--sec-title-content)` desde 721px (antes 901px): en tablet el diagrama quedaba a 13px del título.
