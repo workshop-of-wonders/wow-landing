@@ -191,51 +191,6 @@ gen.write_page(
 )
 
 gen.write_page(
-    "posts-graficos-pauta",
-    title="Creación de Posts Gráficos para Pauta Digital | Workshop of Wonders",
-    description="Piezas gráficas pensadas para detener el scroll y convertir en cada plataforma de pauta: Meta, Google y TikTok Ads.",
-    canonical="https://efectowow.co/servicios/posts-graficos-pauta.html",
-    breadcrumb_name="Posts para pauta",
-    service_name="Creación de posts gráficos para pauta digital",
-    service_type="Diseño de creatividades publicitarias",
-    eyebrow="CREATIVIDADES PARA PAUTA",
-    h1="Piezas gráficas que detienen el scroll y convierten",
-    hero_sub="Diseñamos las creatividades de cada campaña de pauta digital — el formato, el mensaje y el estilo cambian según la plataforma, pero siempre coordinados con tu estrategia.",
-    faq_topic="creatividades para pauta digital",
-    faq_prefix="postsFaq",
-    faq_items=[
-        ("¿Este servicio incluye la gestión de la campaña de pauta?",
-         "Este servicio es específicamente el diseño de las piezas; la gestión y configuración de campañas está en nuestro servicio de pauta digital y SEM, y normalmente se contratan juntos."),
-        ("¿Diseñan piezas para todas las plataformas de pauta?",
-         "Sí, adaptamos formato y estilo a Meta Ads (Facebook e Instagram), Google Ads (display) y TikTok Ads, respetando los requisitos de cada plataforma."),
-        ("¿Cómo deciden qué diseño va a funcionar mejor?",
-         "Partimos del objetivo de la campaña y la audiencia definida en la estrategia de pauta, y usamos variaciones para identificar qué creatividad convierte mejor."),
-        ("¿Pueden trabajar solo el diseño si ya tengo quien gestione la pauta?",
-         "Sí, podemos entregar únicamente las piezas gráficas si tu equipo o agencia de medios ya gestiona la pauta."),
-    ],
-    body="""  <section class="svc-service-detail">
-    <h2>El diseño decide si alguien se detiene o sigue haciendo scroll</h2>
-    <p>En pauta digital, la pieza gráfica es lo primero que ve tu audiencia, antes que cualquier copy o landing page. Diseñamos cada creatividad para detener el scroll y comunicar el mensaje en segundos.</p>
-
-    <h3>Qué incluye el servicio</h3>
-    <h4>Diseño por plataforma</h4>
-    <p>Formatos y estilos adaptados a Meta Ads, Google Ads y TikTok Ads, respetando las proporciones y buenas prácticas de cada una.</p>
-
-    <h4>Variaciones para pruebas</h4>
-    <p>Múltiples versiones de una misma pieza para identificar, junto con el equipo de pauta, cuál convierte mejor.</p>
-
-    <h4>Coordinación con la estrategia de campaña</h4>
-    <p>Cada pieza se diseña alineada al objetivo y la audiencia de la campaña, no como un elemento gráfico aislado.</p>
-
-    <h3>Se complementa con</h3>
-    <ul>
-      <li><a href="pauta-digital.html">Pauta digital y SEM</a>: estrategia, segmentación y gestión de campañas.</li>
-      <li><a href="diseno-grafico.html">Diseño gráfico</a>: identidad visual consistente en todos los canales.</li>
-    </ul>
-  </section>""",
-)
-
-gen.write_page(
     "configuracion-analitica-tracking",
     title="Configuración de Analítica y Tracking (GA4, Tag Manager) | Workshop of Wonders",
     description="Configuramos GA4, Google Tag Manager y eventos de conversión: la base técnica sin la que no hay datos confiables que analizar.",

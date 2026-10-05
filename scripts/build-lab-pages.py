@@ -292,7 +292,6 @@ write_page(
         ("../servicios/geo-posicionamiento-ia.html", "GEO (posicionamiento en IA)", "Optimizamos tu marca para aparecer en las respuestas de ChatGPT, Google AI y otros buscadores con IA."),
         ("../servicios/cro-optimizacion-conversion.html", "CRO", "Maximizamos las conversiones de tu sitio con pruebas y optimización continua."),
         ("../servicios/pauta-digital.html", "Pauta digital", "Campañas en Meta, Google y TikTok con la segmentación de audiencia correcta detrás."),
-        ("../servicios/posts-graficos-pauta.html", "Posts gráficos para pauta", "Piezas gráficas pensadas para detener el scroll y convertir en cada plataforma."),
         ("../servicios/analitica-de-datos.html", "Analítica de datos", "Dashboards claros que traducen tus datos en decisiones, sin depender de hojas de cálculo."),
         ("../servicios/configuracion-analitica-tracking.html", "Configuración de analítica", "GA4, Tag Manager y eventos de conversión — la base técnica sin la que no hay datos que analizar."),
         ("../servicios/consultoria-de-datos.html", "Consultoría de datos", "Te ayudamos a decidir qué medir y por qué, no solo a entregarte un dashboard."),

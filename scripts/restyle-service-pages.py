@@ -17,7 +17,7 @@ LAB = {
     "uxui-design.html": "brand", "ecommerce.html": "brand", "diseno-grafico.html": "brand",
     "seo.html": "insight", "seo-local.html": "insight", "geo-posicionamiento-ia.html": "insight",
     "cro-optimizacion-conversion.html": "insight", "pauta-digital.html": "insight",
-    "posts-graficos-pauta.html": "insight", "analitica-de-datos.html": "insight",
+    "analitica-de-datos.html": "insight",
     "configuracion-analitica-tracking.html": "insight", "consultoria-de-datos.html": "insight",
     "cursos-digitales.html": "insight",
 }

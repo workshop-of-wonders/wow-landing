@@ -3980,7 +3980,7 @@ main { padding-top: var(--nav-h); }
 .toggle-item { border-radius: 24px; }
 @media (max-width: 720px) {
   /* 1) Hero: button sized to its label instead of full width; the
-     secondary "Ver el portafolio" link is hidden on phones. */
+     secondary "Conoce nuestros servicios" link is hidden on phones. */
   .hero-cta .btn-primary { width: auto; max-width: none; padding: 14px 28px; font-size: 15px; }
   .hero .hero-cta .btn-outline { display: none; }
 
@@ -4132,3 +4132,12 @@ main { padding-top: var(--nav-h); }
   .fg-pop span { display: block; margin-top: 3px; }
   .fg-comment:hover .fg-pop { opacity: 1; transform: none; }
 }
+
+/* Aire inferior uniforme de las secciones del home (Trabajo, Servicios, Nosotros, Método, FAQ): todas terminan con
+   el mismo espacio libre debajo de su último elemento. Va al final del archivo para ganar a las reglas sueltas de
+   cada sección y de cada breakpoint. Labs queda fuera: sus paneles de color llegan hasta el borde de la sección. */
+:root { --sec-bottom: var(--space-7); }                 /* 56px */
+@media (max-width: 720px) { :root { --sec-bottom: var(--space-5); } }   /* 40px */
+.work, .services, #filosofia .toggle-section, .wow-method, .svc-faq#faq { padding-bottom: var(--sec-bottom); }
+.hub-hint { margin-bottom: 0; }
+@media (min-width: 901px) { .hub-diagram { margin-bottom: 0; } }
