@@ -3725,6 +3725,43 @@ main { padding-top: var(--nav-h); }
   .wm-list { margin-top: var(--space-2); font-size: 15px; gap: 10px; }
 }
 
+/* Interacción (solo escritorio con mouse): las viñetas de cada paso se
+   despliegan al pasar por la tarjeta y el cohete recorre la flecha de ese paso.
+   Los paths de offset-path repiten los de las flechas del SVG (viewBox 1650x840). */
+.wm-rocket {
+  font-size: 34px; opacity: 0; pointer-events: none;
+  offset-rotate: auto 45deg; offset-distance: 0%;
+}
+.wm-rocket-1 { offset-path: path('M956 297 Q1085 322 1095 478'); }
+.wm-rocket-2 { offset-path: path('M1012 640 Q885 725 757 632'); }
+.wm-rocket-3 { offset-path: path('M687 495 Q678 342 827 298'); }
+@keyframes wm-fly {
+  0%   { offset-distance: 0%;   opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+@media (min-width: 1200px) and (hover: hover) {
+  .wm-list { pointer-events: none; }
+  .wm-list li { opacity: 0; transform: translateX(-12px); transition: opacity .3s ease, transform .3s ease; }
+  .wm-list li:nth-child(2) { transition-delay: .06s; }
+  .wm-list li:nth-child(3) { transition-delay: .12s; }
+  .wm-list li:nth-child(4) { transition-delay: .18s; }
+  .wm-step:hover .wm-list li, .wm-step:focus-within .wm-list li { opacity: 1; transform: none; }
+  .wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+  .wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
+  .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
+  .wm-stage:has(.wm-1:hover) .wm-rocket-1, .wm-stage:has(.wm-1:focus-within) .wm-rocket-1,
+  .wm-stage:has(.wm-2:hover) .wm-rocket-2, .wm-stage:has(.wm-2:focus-within) .wm-rocket-2,
+  .wm-stage:has(.wm-3:hover) .wm-rocket-3, .wm-stage:has(.wm-3:focus-within) .wm-rocket-3 {
+    animation: wm-fly 1.6s ease-in-out infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wm-rocket { animation: none !important; }
+  .wm-list li { transition: none !important; }
+}
+
 /* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
    popup del proyecto (js/cases.js). La card con caso lleva "Ver caso". */
 .work-item.has-case { position: relative; }
