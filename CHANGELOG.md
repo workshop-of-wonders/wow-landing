@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Pines del mapa de Nosotros más grandes y texto del FAQ quieto.**
+  - `styles.css`: `.world-pin i` de 12px a 24px con halo de 10px y pulso más amplio (`::after` con `inset: -14px`), para que cada pin se vea como un territorio.
+  - `styles.css`: `.faq-chat .fc-head` deja de ser sticky, así el bloque de texto de la izquierda no se mueve al abrir respuestas.
+
 - **2026-10-05 — FAQ chat: la Q de "PREGUNTAS" ya no se corta y la respuesta sale más rápido.**
   - `styles.css`: `.faq-chat .outline-word` con `padding-bottom: 0.25em` para que el overflow del watermark no recorte la cola de la Q. Animación de la burbuja de 0.35s a 0.2s.
   - `js/common.js`: el "escribiendo" del FAQ dura 180ms (antes 450ms).

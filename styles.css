@@ -4163,8 +4163,8 @@ main { padding-top: var(--nav-h); }
 .world { position: relative; width: 100%; aspect-ratio: 1088 / 424; margin: auto 0; }
 .world-dots { position: absolute; inset: 0; background: var(--purple); opacity: .22; -webkit-mask: url('design-system/map/world-dots.svg') center / contain no-repeat; mask: url('design-system/map/world-dots.svg') center / contain no-repeat; }
 .world-pin { position: absolute; transform: translate(-50%, -50%); display: block; width: 0; height: 0; }
-.world-pin i { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 3px rgba(249, 115, 22, .25); }
-.world-pin i::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--orange); opacity: 0; animation: worldPulse 2.4s ease-out infinite; }
+.world-pin i { position: absolute; left: -12px; top: -12px; width: 24px; height: 24px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 10px rgba(249, 115, 22, .22); }
+.world-pin i::after { content: ''; position: absolute; inset: -14px; border-radius: 50%; border: 2px solid var(--orange); opacity: 0; animation: worldPulse 2.4s ease-out infinite; }
 @keyframes worldPulse { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.8); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .world-pin i::after { animation: none; } }
 .nos-side { justify-content: space-between; gap: var(--space-3); }
@@ -4266,3 +4266,5 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 720px) { .svc-faq.faq-chat { padding-top: var(--sec-bottom); } }
 /* La Q de "PREGUNTAS" tiene cola: sin este margen inferior el overflow del watermark la corta */
 .faq-chat .outline-word { padding-bottom: 0.25em; }
+/* El bloque de texto de la izquierda queda quieto al abrir o cerrar respuestas */
+.faq-chat .fc-head { position: static; }
