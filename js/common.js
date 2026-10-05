@@ -81,7 +81,7 @@ function createFocusTrap(modalEl, isOpen) {
       a.hidden = false;
       if (calm) return;
       a.classList.add('is-typing');
-      a._t = setTimeout(function () { a.classList.remove('is-typing'); }, 450);
+      a._t = setTimeout(function () { a.classList.remove('is-typing'); }, 180);
     });
   });
 })();

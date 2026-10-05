@@ -4245,7 +4245,7 @@ main { padding-top: var(--nav-h); }
 .faq-chat .fc-a { display: flex; align-items: flex-end; gap: var(--space-1); max-width: 88%; }
 .faq-chat .fc-a[hidden] { display: none; }
 .faq-chat .fc-avatar { flex: 0 0 36px; width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--white); box-sizing: border-box; }
-.faq-chat .fc-bubble { margin: 0; padding: 14px 20px; background: var(--white); color: var(--ink); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); animation: fc-in .35s ease both; }
+.faq-chat .fc-bubble { margin: 0; padding: 14px 20px; background: var(--white); color: var(--ink); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); animation: fc-in .2s ease both; }
 .faq-chat .fc-typing { display: none; padding: 18px 20px; background: var(--white); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); gap: 5px; }
 .faq-chat .fc-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); opacity: .35; animation: fc-dot .9s infinite ease-in-out; }
 .faq-chat .fc-typing i:nth-child(2) { animation-delay: .15s; }
@@ -4264,3 +4264,5 @@ main { padding-top: var(--nav-h); }
 .faq-chat > *:not(.outline-word) { position: relative; z-index: 1; }
 .faq-chat .fc-grid { margin-top: var(--space-2); }
 @media (max-width: 720px) { .svc-faq.faq-chat { padding-top: var(--sec-bottom); } }
+/* La Q de "PREGUNTAS" tiene cola: sin este margen inferior el overflow del watermark la corta */
+.faq-chat .outline-word { padding-bottom: 0.25em; }
