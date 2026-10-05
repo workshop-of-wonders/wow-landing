@@ -630,19 +630,11 @@ main { padding-top: var(--nav-h); }
   .outline-word { display: none; }
 }
 
-/* Toggle / switch list — pinned until every switch turns on */
-.toggle-pin {
-  position: relative;
-  /* Capped — an uncapped vh multiplier grows the scroll-pin distance (and
-     with it, the rounding error in the sticky child's stick/unstick math)
-     without bound on unusual viewports, the likely cause of a reported
-     gap appearing between this section and the next after zooming out. */
-  height: min(160vh, 1500px);
-  background: var(--cloud);   /* en pantallas altas, bajo la sección fijada ya no se ve un hueco blanco */
-}
+/* Toggle / switch list: ya no se fija en pantalla (antes quedaba pegada y, en pantallas altas, dejaba un hueco vacío
+   debajo de la lista); los switches se encienden mientras la sección sube por la pantalla (ver updateScrollScrubs). */
+.toggle-pin { position: relative; }
 .toggle-section {
-  position: sticky;
-  top: var(--nav-h);
+  position: relative;
   /* La altura la da el contenido (sin min-height): con un mínimo de pantalla la sección se estiraba y quedaba aire
      vacío debajo de la lista (hasta ~130px en pantallas altas). */
   min-height: 0;
@@ -4100,9 +4092,13 @@ main { padding-top: var(--nav-h); }
   }
   .fg-frame-label {
     display: block; position: absolute; left: -1px; top: -24px;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .04em;
-    color: rgba(56, 7, 87, 0.6); pointer-events: none;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .04em;
+    color: rgba(56, 7, 87, 0.85); pointer-events: none;
   }
+  .fg-frame-label b { color: var(--orange); margin-right: 4px; }
+  /* en escritorio la pista va en la etiqueta del marco; la línea de abajo queda para tablet y móvil */
+  .hub-hint { display: none; }
+  .hub-diagram { margin-bottom: var(--space-7); }
   /* selección propia: manijas blancas con borde morado y la medida debajo */
   .fg-sel { display: block; position: absolute; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .12s ease;
     border: 1px solid var(--purple-accent); box-sizing: border-box; }
