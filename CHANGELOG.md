@@ -57,6 +57,11 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Se elimina el servicio "Creación de posts gráficos para pauta"; hero con nuevo copy y botón; aire inferior uniforme.**
+  - Servicio eliminado de todo el sitio: se borra `servicios/posts-graficos-pauta.html`; se quitan sus enlaces del menú (home, `servicios.html`, 14 páginas de servicio, 2 de Labs), su tarjeta en `servicios.html` e Insight Lab, los Offers de JSON-LD, `sitemap.xml`, `llms.txt` y los scripts generadores (`scripts/`). `vercel.json`: redirect 301 de la URL vieja a `/servicios/pauta-digital.html`. En `pauta-digital.html` los enlaces a "creatividades" pasan a Diseño gráfico.
+  - Hero: título "Construimos *maravillas* que se encuentran y convierten"; subtexto "Diseñamos y desarrollamos sitios web, e-commerce y experiencias digitales, y los impulsamos con pauta y datos para conectar tu marca con las personas y generar resultados."; el botón secundario "Ver el portafolio" pasa a "Conoce nuestros servicios" (→ `#servicios`). Los textos salen del admin (`hero.h1`, `hero.sub`, `hero.cta_secondary`): si se publican desde `/admin` pueden reescribirse.
+  - `styles.css`: nueva variable `--sec-bottom` (56px; 40px en ≤720px) al final del archivo; Trabajo, Servicios, Nosotros, Método y FAQ terminan con el mismo aire inferior (Labs queda fuera: paneles a sangre). Se quita el doble margen bajo el diagrama de Servicios.
+
 - **2026-10-05 — Home: pista de hover en Método y nuevo texto del hero.**
   - `index.html`/`styles.css`: nueva línea `.wm-hint` en la columna izquierda de Método ("↗ Pasa el mouse (o toca) cada paso para ver qué incluye."). Pedido explícito de la dueña; el diagrama y las tarjetas no cambian.
   - Hero (`hero.sub`): "Diseñamos y desarrollamos sitios web, e-commerce y experiencias digitales que conectan tu marca con las personas y generan resultados." (antes: "Diseñamos tu sitio web o tienda en línea, lo posicionamos en Google…"). Si se publica ese campo desde `/admin` puede reescribirse.

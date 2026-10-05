@@ -1,6 +1,12 @@
 {
   "rewrites": [],
-  "redirects": [],
+  "redirects": [
+    {
+      "source": "/servicios/posts-graficos-pauta.html",
+      "destination": "/servicios/pauta-digital.html",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
