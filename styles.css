@@ -4412,29 +4412,15 @@ main { padding-top: var(--nav-h); }
 @media (prefers-reduced-motion: reduce) { .sp-float { animation: none; } }
 .wm-tools--one { grid-template-columns: 1fr; }
 
-/* Hero por Lab (variante de .sp-hero): composición centrada, con el degradado del Lab y su ícono gigante como en los paneles de #labs.
-   --blue = Insight Lab (SEO, pauta, analítica, CRO...); el home queda como único hero morado dividido en dos columnas. */
-.sp-hero--blue {
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  min-height: 0; gap: 0; padding-bottom: 0;
-  background: linear-gradient(160deg, #5aa9f7, #3B82F6);
-}
+/* Hero por Lab (variante de .sp-hero): mismo diseño en dos columnas con la maqueta a la derecha, pero con el degradado del Lab y su ícono
+   gigante como en los paneles de #labs. --blue = Insight Lab (SEO, pauta, analítica, CRO...); el morado con textura queda solo para el home. */
+.sp-hero--blue { background: linear-gradient(160deg, #5aa9f7, #3B82F6); }
 .sp-hero--blue::before, .sp-hero--blue::after { content: ""; position: absolute; pointer-events: none; filter: brightness(0) invert(1); opacity: .16; background-repeat: no-repeat; background-size: contain; }
-.sp-hero--blue::before { right: -6%; top: -14%; width: 640px; height: 640px; background-image: url(design-system/icons/icon-star.svg); }
-.sp-hero--blue::after { left: -5%; bottom: -12%; width: 420px; height: 420px; background-image: url(design-system/logo/wow-mark.svg); }
-.sp-hero--blue .sp-hero-copy { position: relative; z-index: 2; max-width: 860px; }
+.sp-hero--blue::before { right: -6%; top: -16%; width: 680px; height: 680px; background-image: url(design-system/icons/icon-star.svg); }
+.sp-hero--blue::after { left: -5%; bottom: -14%; width: 420px; height: 420px; background-image: url(design-system/logo/wow-mark.svg); }
+.sp-hero--blue .sp-hero-copy, .sp-hero--blue .sp-visual { position: relative; z-index: 2; }
 .sp-hero--blue .eyebrow, .sp-hero--blue .eyebrow a { color: var(--white); }
-.sp-hero--blue h1 { max-width: none; margin-left: auto; margin-right: auto; }
 .sp-hero--blue h1 em { color: var(--purple); }
-.sp-hero--blue .sp-hero-sub { color: #f4f8ff; margin-left: auto; margin-right: auto; }
-.sp-hero--blue .sp-hero-cta { justify-content: center; }
-.sp-hero--blue .sp-visual { position: relative; z-index: 2; width: min(100%, 760px); margin-top: var(--space-6); margin-bottom: -96px; padding: 0; }
-.sp-hero--blue .sp-serp { transform: none; box-shadow: 0 -10px 60px rgba(26,19,32,.25); border-radius: 24px 24px 0 0; padding-bottom: 120px; }
-.sp-hero--blue .sp-float--a { left: -34px; top: -18px; }
-.sp-hero--blue .sp-float--b { right: -30px; top: 46%; }
-.sp-hero--blue .sp-float--c { left: 4%; bottom: auto; top: 58%; }
-@media (max-width: 900px) {
-  .sp-hero--blue::before { width: 420px; height: 420px; }
-  .sp-hero--blue .sp-visual { margin-top: var(--space-5); margin-bottom: -72px; }
-  .sp-hero--blue .sp-float--a { left: -8px; } .sp-hero--blue .sp-float--b { right: -8px; }
-}
+.sp-hero--blue .sp-hero-sub { color: #f4f8ff; }
+.sp-hero--blue .sp-serp { box-shadow: 0 30px 70px rgba(26,19,32,.3); }
+@media (max-width: 900px) { .sp-hero--blue::before { width: 420px; height: 420px; } }
