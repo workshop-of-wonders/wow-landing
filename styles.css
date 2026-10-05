@@ -66,6 +66,13 @@
   /* Outline watermark words (.outline-word) — shared so sections can reserve
      exactly their height above the content. */
   --wm-size: clamp(40px, 7vw, 110px);
+  /* Ritmo vertical común de las secciones (escritorio, ≥721px). Cada sección usa estos mismos valores para que, aunque
+     sean distintas, el espacio entre la palabra grande, el eyebrow, el título y el contenido sea siempre el mismo:
+       palabra grande ─ --sec-wm-gap ─ eyebrow ─ 16px ─ título ─ --sec-title-text ─ párrafo ─ --sec-title-content ─ contenido */
+  --sec-wm-gap: var(--space-3);          /* 24px: de la franja de la palabra grande al primer texto */
+  --sec-title-text: var(--space-3);      /* 24px: del título a su párrafo de intro */
+  --sec-title-content: var(--space-6);   /* 48px: del título (o párrafo) al bloque de contenido */
+  --sec-top: calc(var(--space-4) + var(--wm-size) + var(--sec-wm-gap));  /* padding-top de toda sección con palabra grande */
 }
 @media (max-width: 600px) {
   :root { --intro-size: 16px; }
@@ -656,15 +663,15 @@ main { padding-top: var(--nav-h); }
    up into the "NOSOTROS" watermark band. Reserve that band (watermark top +
    its clamp() font-size + a gap) so the heading always starts below it. */
 @media (min-width: 721px) {
-  .toggle-section { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-2)); }
+  .toggle-section { padding-top: var(--sec-top); }
 }
 .toggle-copy { flex: 1 1 480px; min-width: 0; }
 .toggle-section h2 {
   font-size: var(--h2-size);
   color: var(--purple);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--sec-title-text);
 }
-.toggle-intro { font-size: var(--intro-size); line-height: 1.7; margin-bottom: var(--space-4); }
+.toggle-intro { font-size: var(--intro-size); line-height: 1.7; margin-bottom: var(--sec-title-content); }
 .toggle-list {
   list-style: none;
   margin: 0;
@@ -1039,7 +1046,7 @@ main { padding-top: var(--nav-h); }
 .services h2 {
   font-size: var(--h2-size);
   color: var(--purple);
-  margin-top: var(--space-6);
+  margin-top: 0;
   margin-bottom: var(--space-2);
   max-width: 480px;
 }
@@ -1245,7 +1252,7 @@ main { padding-top: var(--nav-h); }
   /* Sin altura mínima: el alto lo da la columna de pills. Con 420px fijos, ahora que son menos pills,
      el diagrama quedaba centrado en una caja más alta que su contenido y flotaba lejos del título. */
 }
-@media (min-width: 901px) { .hub-diagram { margin-top: var(--space-4); } }
+@media (min-width: 901px) { .hub-diagram { margin-top: var(--sec-title-content); } }
 .hub-arrows {
   position: absolute;
   inset: 0;
@@ -1636,7 +1643,7 @@ main { padding-top: var(--nav-h); }
 .work h2 {
   font-size: var(--h2-size);
   color: var(--purple);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--sec-title-content);   /* mismo aire que el resto de secciones entre el título y el contenido */
   max-width: 640px;
 }
 .work-gallery { display: flex; flex-direction: column; }
@@ -2668,11 +2675,11 @@ main { padding-top: var(--nav-h); }
   background: transparent;
   border: none;
   padding: 0;
-  opacity: 0.75;
-  filter: grayscale(1);
-  transition: opacity 0.2s ease, filter 0.2s ease;
+  /* Los logos van siempre a color y sin fondo (los archivos son transparentes). Al pasar el mouse, o cuando se
+     pasa por el proyecto de ese cliente (data-match), el logo crece un poco como señal. */
+  transition: transform 0.2s ease;
 }
-.client-logo:hover, .client-logo.is-highlighted { opacity: 1; filter: grayscale(0); }
+.client-logo:hover, .client-logo.is-highlighted { transform: scale(1.12); }
 .client-logo img {
   height: 100%;
   width: auto;
@@ -3157,7 +3164,7 @@ main { padding-top: var(--nav-h); }
   font-family: var(--font-display);
   font-size: var(--h2-size);
   color: var(--purple);
-  margin: var(--space-2) 0 var(--space-4);
+  margin: var(--space-2) 0 var(--sec-title-content);
 }
 .svc-faq-list { text-align: left; }
 .svc-faq-item {
@@ -3631,14 +3638,9 @@ main { padding-top: var(--nav-h); }
    down, never resize the watermark or the type. (Nosotros: .toggle-section;
    Proceso's loop has its own margin-top clearance.) */
 @media (min-width: 721px) {
-  .services, .experiment, .work { padding-top: calc(var(--space-4) + var(--wm-size) + var(--space-3)); }
+  .services, .experiment, .work, .wow-method { padding-top: var(--sec-top); }
   .labs { padding-top: max(calc(var(--nav-h) + var(--space-4)), calc(var(--space-4) + var(--wm-size) + var(--space-3))); }
   .svc-block:has(> .outline-word) { padding-top: calc(var(--space-3) + var(--wm-size) + var(--space-3)); }
-}
-/* Servicios, desde 1100px: el eyebrow y el título (a la izquierda, 480px máx.) no llegan a la palabra
-   SERVICIOS (a la derecha), así que suben a su lado en vez de esperar debajo de ella. */
-@media (min-width: 1100px) {
-  .services { padding-top: var(--space-7); }
 }
 /* Proceso in its stacked (non-pinned) layout: the heading spans the width,
    so it needs the same clearance. (1200px+ keeps the pinned loop layout.) */
@@ -3661,6 +3663,7 @@ main { padding-top: var(--nav-h); }
   color: var(--white);
   padding: var(--space-7) var(--page-x) calc(var(--space-7) * 1.5);
 }
+@media (min-width: 721px) { .wow-method { padding-top: var(--sec-top); } }  /* misma franja de la palabra grande que el resto */
 .wm-stage { --wm-card-h: 176px; font-size: 15px; }
 .wm-head .eyebrow { color: var(--orange); }
 .wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); white-space: nowrap; }
@@ -3733,7 +3736,7 @@ main { padding-top: var(--nav-h); }
   .wm-3 .wm-list { right: calc(50% + 434.9px); top: 377px; text-align: right; }
   .wm-3 .wm-list li { padding-left: 0; padding-right: 22px; transform: translateX(12px); }
   .wm-3 .wm-list li::before { left: auto; right: 0; }
-  .wow-method { padding-top: 72px; padding-bottom: 72px; }  /* las viñetas ya no cuelgan debajo de las tarjetas */
+  .wow-method { padding-bottom: 72px; }  /* las viñetas ya no cuelgan debajo de las tarjetas */
   .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
 
   /* El cohete orbita el ciclo todo el tiempo (círculo R=128 centrado en 419,372 del
@@ -3988,6 +3991,7 @@ main { padding-top: var(--nav-h); }
   h2, .labs-headline, .faq-headline { line-height: 1.25; }
   .eyebrow { margin-bottom: 14px; }
   .services h2, .work h2, .toggle-section h2 { margin-bottom: 20px; }
+  .work h2 { margin-bottom: 32px; }
   .method h2 { margin-bottom: 20px; }
   .faq-headline { margin-bottom: 28px; }
   /* Labs: eyebrow → headline → intro (the intro used to sit glued on top
