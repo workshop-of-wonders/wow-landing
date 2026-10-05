@@ -3653,8 +3653,9 @@ main { padding-top: var(--nav-h); }
 }
 .wm-stage { --wm-card-h: 176px; font-size: 15px; }
 .wm-head .eyebrow { color: var(--orange); }
-.wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); }
+.wm-head h2 { font-size: var(--h2-size); line-height: 1.15; color: var(--white); margin: 0 0 var(--space-3); white-space: nowrap; }
 .wm-intro { font-size: var(--intro-size); line-height: 1.6; margin: 0; opacity: .92; }
+.wm-nw { white-space: nowrap; }  /* la última frase del intro siempre en una sola línea */
 
 /* Colores exactos de cada Lab (los de .labs-panel-insight / .labs-panel-brand): --c sólido para
    texto, líneas y brillos; --cbg es el degradado del panel, para nodos y etiquetas. */
@@ -3711,7 +3712,7 @@ main { padding-top: var(--nav-h); }
   .wm-2 .wm-card { left: calc(50% + 178.9px); top: 348.0px; }
   .wm-3 .wm-card { left: calc(50% - 418.9px); top: 348.0px; }
   .wm-list { position: absolute; white-space: nowrap; pointer-events: none; }
-  .wm-1 .wm-list { left: calc(50% + 140.0px); top: 8px; }
+  .wm-1 .wm-list { left: calc(50% + 140.0px); top: 64px; }
   .wm-2 .wm-list { left: calc(50% + 194.9px); top: 538.0px; }
   .wm-3 .wm-list { left: calc(50% - 402.9px); top: 538.0px; }
   .wow-method { padding-top: 72px; padding-bottom: 140px; }
@@ -3750,7 +3751,7 @@ main { padding-top: var(--nav-h); }
    por eso el delay negativo = tiempo de cruce - 4.5 s. */
 @keyframes wm-glow {
   0%, 30%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,.04), 0 0 0 0 transparent; }
-  50% { box-shadow: 0 0 0 4px rgba(255,255,255,.07), 0 0 16px 3px color-mix(in srgb, var(--c) 50%, transparent); }
+  50% { box-shadow: 0 0 0 4px rgba(255,255,255,.14), 0 0 32px 10px color-mix(in srgb, var(--c) 85%, transparent); }
 }
 @media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
   .wm-node { animation: wm-glow 9s ease-in-out infinite; }
