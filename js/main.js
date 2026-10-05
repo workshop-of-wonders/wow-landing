@@ -1364,5 +1364,5 @@ updateScrollScrubs();
     started = true;
     nums.forEach(function (el, i) { setTimeout(function () { run(el); }, i * 180); });
     obs.disconnect();
-  }, { threshold: 0.4 }).observe(nums[0].closest('.proof-card'));
+  }, { threshold: 0.4 }).observe(nums[0].closest('.nos-stats'));
 })();

@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Nosotros: rediseño del bloque de autoridad.**
+  - `index.html`/`styles.css`/`js/main.js`: el bloque `.nos-proof` pasa a una franja morada `.nos-stats` con las tres cifras (+17 marcas posicionadas, +58 puestos subidos en Google en menos de 3 semanas, +7 sectores económicos impactados; los contadores observan `.nos-stats`), una fila `.nos-row` con la tarjeta del mapa (título corto, mapa centrado, pines sin nombres) y una tarjeta única con partners (cuadrícula 2×2) y sectores (chips compactos). Se eliminan los títulos grandes de partners y sectores y el CSS del diseño anterior (`.proof-card`, `.proof-sectors`, etc.). En ≤1000px la fila se apila; en ≤720px las cifras van en una columna.
+
 - **2026-10-05 — Caso de Centro del Sueño y Ronquido: resultado.**
   - `js/cases.js`: el campo `resultado` de "Centro del Sueño y Ronquido" pasa de vacío a "Subimos 58 puestos en el ranking de Google en menos de 3 semanas, con SEO, GEO, AEO y optimización de Google My Business." (dato aportado por la dueña; ya aparece en "El resultado" del popup).
 
