@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Nosotros: sin compresión en ventanas bajas.**
+  - `styles.css`: se eliminan los bloques `@media (min-width: 721px) and (max-height: 880px / 760px)` de `.toggle-section` (bajaban márgenes, relleno y separación para que la sección fijada cupiera en la pantalla). Desde que Nosotros ya no se fija no hacían falta y lo dejaban apretado frente a las demás secciones. Ahora tiene el mismo aire a cualquier alto de ventana (96px abajo, 32px entre título y párrafo, 32px entre tarjetas).
+
 - **2026-10-05 — Home: secciones más altas (más aire).**
   - `styles.css`: `--sec-bottom` 56→96px (móvil 40→56px), `--sec-title-content` 48→64px, `--sec-title-text` 24→32px. Nosotros: `.toggle-item` con 24px de relleno vertical (antes 16px) y `.toggle-list` con 32px de separación (antes 24px). Nosotros pasa de ~700 a 812–876px de alto. El aire sobre el título (bajo la palabra grande) no cambia.
 
