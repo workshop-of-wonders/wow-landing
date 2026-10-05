@@ -116,9 +116,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* FAQ accordion is defined in js/common.js, loaded before this file. */
 
-/* Páginas de servicio: la tarjeta de "Qué es" y el lienzo de "Qué hacemos" se animan al entrar en pantalla. */
+/* Páginas de servicio: la tarjeta de "Qué es" y las franjas de "Qué hacemos" se animan al entrar en pantalla. */
 (function () {
-  var els = document.querySelectorAll('.sp-callout, .sp-canvas');
+  var els = document.querySelectorAll('.sp-callout, .sp-stack');
   if (!els.length) return;
   if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
   var io = new IntersectionObserver(function (entries) {
