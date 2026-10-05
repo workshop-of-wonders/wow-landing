@@ -116,13 +116,49 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* FAQ accordion is defined in js/common.js, loaded before this file. */
 
-/* Páginas de servicio: la tarjeta de "Qué es" y el bento de "Qué hacemos" se animan al entrar en pantalla. */
+/* Páginas de servicio: la tarjeta de "Qué es" se anima al entrar en pantalla. */
 (function () {
-  var els = document.querySelectorAll('.sp-callout, .sp-bento');
+  var els = document.querySelectorAll('.sp-callout');
   if (!els.length) return;
   if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
   }, { threshold: 0.25 });
   els.forEach(function (e) { io.observe(e); });
+})();
+
+/* "Qué hacemos" de SEO: según cuántos servicios se han cruzado al hacer scroll, la fila de la marca sube un lugar y las demás se recorren. */
+(function () {
+  var wrap = document.querySelector('.sp-climb');
+  if (!wrap) return;
+  var steps = [].slice.call(wrap.querySelectorAll('.sp-cstep'));
+  var others = [].slice.call(wrap.querySelectorAll('.sp-r:not(.sp-r--me)'));
+  var me = wrap.querySelector('.sp-r--me');
+  var chip = me.querySelector('.me-chip');
+  var total = others.length;
+  var current = -1;
+  function apply(s) {
+    var slot = total - s;                       // 0 = primer lugar
+    me.style.setProperty('--slot', slot);
+    me.querySelector('.n').textContent = slot + 1;
+    others.forEach(function (r, j) {
+      var pos = j < slot ? j : j + 1;
+      r.style.setProperty('--slot', pos);
+      r.querySelector('.n').textContent = pos + 1;
+    });
+    chip.textContent = s ? steps[s - 1].getAttribute('data-label') : 'Punto de partida';
+    me.classList.toggle('is-top', s === total);
+    steps.forEach(function (st, i) { st.classList.toggle('is-active', i === s - 1); });
+  }
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var mid = window.innerHeight * 0.55, s = 0;
+    steps.forEach(function (st) { if (st.getBoundingClientRect().top < mid) s++; });
+    if (s !== current) { current = s; apply(s); }
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
 })();
