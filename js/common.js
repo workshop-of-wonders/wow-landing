@@ -56,6 +56,36 @@ function createFocusTrap(modalEl, isOpen) {
   });
 })();
 
+/* FAQ en chat (home): la respuesta aparece tras una breve animación de "escribiendo". */
+(function () {
+  var turns = document.querySelectorAll('.fc-turn');
+  if (!turns.length) return;
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function close(t) {
+    t.classList.remove('is-open');
+    t.querySelector('.fc-q').setAttribute('aria-expanded', 'false');
+    var a = t.querySelector('.fc-a');
+    a.hidden = true;
+    a.classList.remove('is-typing');
+    clearTimeout(a._t);
+  }
+  turns.forEach(function (t) {
+    var q = t.querySelector('.fc-q');
+    var a = t.querySelector('.fc-a');
+    q.addEventListener('click', function () {
+      var was = t.classList.contains('is-open');
+      turns.forEach(close);
+      if (was) return;
+      t.classList.add('is-open');
+      q.setAttribute('aria-expanded', 'true');
+      a.hidden = false;
+      if (calm) return;
+      a.classList.add('is-typing');
+      a._t = setTimeout(function () { a.classList.remove('is-typing'); }, 450);
+    });
+  });
+})();
+
 /* Mobile nav burger: toggles the floating glass menu. Shared by all pages —
    a no-op if #navBurger/#navMobileMenu aren't present. */
 (function () {

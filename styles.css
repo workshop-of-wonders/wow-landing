@@ -4229,3 +4229,38 @@ main { padding-top: var(--nav-h); }
 .wm-ai-note { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.7); }
 @media (max-width: 1000px) { .wm-tools { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .wm-tools { padding: var(--space-3); margin-top: var(--space-5); } }
+
+/* FAQ en formato chat (solo home #faq): pregunta = burbuja del usuario, respuesta = burbuja WOW */
+.svc-faq.faq-chat { max-width: none; margin: 0; text-align: left; padding: var(--sec-top) var(--page-x) var(--sec-bottom); }
+.faq-chat .fc-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-6); align-items: start; max-width: 1200px; margin: 0 auto; }
+.faq-chat .fc-head { position: sticky; top: calc(var(--nav-h, 72px) + var(--space-4)); }
+.svc-faq.faq-chat h2.faq-headline { margin: var(--space-2) 0 var(--sec-title-text); }
+.faq-chat .fc-intro { margin: 0 0 var(--space-3); max-width: 38ch; color: var(--ink); opacity: 0.8; }
+.faq-chat .fc-thread { display: flex; flex-direction: column; gap: var(--space-3); }
+.faq-chat .fc-turn { display: flex; flex-direction: column; gap: var(--space-1); }
+.faq-chat .fc-q-h { margin: 0; align-self: flex-end; max-width: 88%; }
+.faq-chat .fc-q { font: inherit; font-weight: 500; text-align: left; cursor: pointer; border: 0; color: var(--white); background: var(--purple); padding: 14px 20px; border-radius: 22px 22px 6px 22px; transition: transform .2s, box-shadow .2s; }
+.faq-chat .fc-q:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56,7,87,.25); }
+.faq-chat .fc-q:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
+.faq-chat .fc-a { display: flex; align-items: flex-end; gap: var(--space-1); max-width: 88%; }
+.faq-chat .fc-a[hidden] { display: none; }
+.faq-chat .fc-avatar { flex: 0 0 36px; width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--white); box-sizing: border-box; }
+.faq-chat .fc-bubble { margin: 0; padding: 14px 20px; background: var(--white); color: var(--ink); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); animation: fc-in .35s ease both; }
+.faq-chat .fc-typing { display: none; padding: 18px 20px; background: var(--white); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); gap: 5px; }
+.faq-chat .fc-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); opacity: .35; animation: fc-dot .9s infinite ease-in-out; }
+.faq-chat .fc-typing i:nth-child(2) { animation-delay: .15s; }
+.faq-chat .fc-typing i:nth-child(3) { animation-delay: .3s; }
+.faq-chat .fc-a.is-typing .fc-typing { display: flex; }
+.faq-chat .fc-a.is-typing .fc-bubble { display: none; }
+@keyframes fc-dot { 0%, 100% { transform: translateY(0); opacity: .35; } 50% { transform: translateY(-4px); opacity: 1; } }
+@keyframes fc-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .faq-chat .fc-bubble, .faq-chat .fc-typing i { animation: none; } }
+@media (max-width: 860px) {
+  .faq-chat .fc-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+  .faq-chat .fc-head { position: static; }
+  .faq-chat .fc-q-h, .faq-chat .fc-a { max-width: 100%; }
+}
+.svc-faq.faq-chat { background: var(--cloud); overflow: hidden; }
+.faq-chat > *:not(.outline-word) { position: relative; z-index: 1; }
+.faq-chat .fc-grid { margin-top: var(--space-2); }
+@media (max-width: 720px) { .svc-faq.faq-chat { padding-top: var(--sec-bottom); } }

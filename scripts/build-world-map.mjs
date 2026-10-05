@@ -14,7 +14,7 @@ for (let j=0;j<=H;j++) for (let i=0;i<=W;i++){
   if (geoContains(land,[lon,lat])) dots.push([i*cell+cell/2, j*cell+cell/2]);
 }
 const vw=(W+1)*cell, vh=(H+1)*cell;
-const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${vw} ${vh}" aria-hidden="true">`+`<path stroke="currentColor" stroke-width="4.6" stroke-linecap="round" fill="none" d="`+dots.map(d=>`M${d[0]} ${d[1]}h0`).join('')+`"/>`+`</svg>`;
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${vw} ${vh}" aria-hidden="true">`+`<path stroke="currentColor" stroke-width="7.4" stroke-linecap="round" fill="none" d="`+dots.map(d=>`M${d[0]} ${d[1]}h0`).join('')+`"/>`+`</svg>`;
 fs.mkdirSync('/home/user/wow-landing/design-system/map',{recursive:true});
 fs.writeFileSync('/home/user/wow-landing/design-system/map/world-dots.svg',svg);
 const pos=(lat,lon)=>({x:((lon-LON0)/STEP*cell+cell/2)/vw*100, y:((LAT1-lat)/STEP*cell+cell/2)/vh*100});

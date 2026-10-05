@@ -57,6 +57,11 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — FAQ del home en formato chat, mapa de Nosotros con puntos más grandes y nuevo texto del hero.**
+  - FAQ (`index.html`, `styles.css`, `js/common.js`): `#faq` pasa a layout de dos columnas con palabra grande "PREGUNTAS". Izquierda: eyebrow, título, texto corto y botón "Escríbenos" (`data-open-form`), sticky en desktop. Derecha: cada pregunta es una burbuja morada a la derecha y la respuesta una burbuja blanca con avatar del logo WOW, con animación de "escribiendo" de 450ms (sin animación con `prefers-reduced-motion`). Una respuesta abierta a la vez, la primera abierta por defecto. Estilos acotados a `.svc-faq.faq-chat`; las páginas de servicio siguen con el acordeón anterior. Preguntas y JSON-LD sin cambios.
+  - Mapa (`design-system/map/world-dots.svg`, `scripts/build-world-map.mjs`): grosor de punto 4.6 a 7.4 para que se vea más territorio.
+  - Hero (`index.html`): nuevo texto "Creamos y optimizamos sitios web, e-commerce y experiencias digitales donde estrategia, creatividad, tecnología y datos trabajan juntos para conectar con las personas y generar resultados."
+
 - **2026-10-05 — Hero sin fotos repetidas, popups en dos filas medianas/grandes, "Ver sitio" bajo el caso y pista de Método más corta.**
   - Hero (`index.html`): las tres columnas de `.hero-media` usan 15 fotos verticales distintas, 5 por columna (A: Ajá Waffles, Orbit, Geco, Arlo, Centro del Sueño; B: Lámparas Milán, Moosy, Pretty Pets, Indeleble, Tin-T!; C: Epika Store, AM Studios, Prepapp, Seed Capital, Tata's Photos), sin repetir entre columnas. Cada columna lleva su secuencia dos veces para que el bucle `scrollUp` (-50%) sea continuo. Las cards nuevas abren su popup con las imágenes del proyecto.
   - Popups (`ProjectCollage.renderFit` en `js/main.js`, `js/portafolio.js`, `js/project-popup.js`): siempre 2 líneas y de tamaño mediano/grande. Primero se achica el alto de fila (mínimo `MIN_ROW_H` = 125px); si aun así quedaría muy chico se descarta la pieza menos importante (`opts.maxPieces` en `render`: tarjetas generadas → muestra tipográfica → logos/íconos → últimas fotos) y se recompone. Pretty Pets pasa de 11 piezas diminutas a 5 en filas de ~132px.
