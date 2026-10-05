@@ -6,6 +6,9 @@
    Un campo vacío ('') no se muestra. Las cards con caso muestran la
    etiqueta "Ver caso".
 
+   herramientas: (opcional) herramientas usadas en el caso; salen como un grupo "Herramientas" junto a las
+   capacidades. Solo van las que se deducen de lo que se hizo (a revisar con la dueña).
+
    capacidades: las etiquetas del popup, agrupadas por Lab (mismo formato
    para todas las marcas). Reemplazan a data-capabilities del HTML.
 
@@ -24,6 +27,7 @@ window.WOW_CASES = {
     construimos: 'Un refresh de marca que conserva su esencia con una imagen más actual; un sitio web donde los productos se ven en ambientes reales; y una estrategia de SEO y pauta digital para llegar a quienes están decorando o remodelando su hogar.',
     resultado: '',
     aprendizaje: 'Renovar no es empezar de cero: lo que la gente ya reconoce de una marca es un activo que hay que cuidar.',
+    herramientas: ['Wix', 'Adobe Illustrator', 'Semrush', 'Search Console', 'Google Analytics 4', 'Google My Business', 'Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Rebranding', 'Diseño web', 'Desarrollo web'],
       'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO']
@@ -34,9 +38,10 @@ window.WOW_CASES = {
     titulo: '¿Waffles de yuca? ¡Ajá, eso!',
     reto: 'Ajá Waffles es un emprendimiento gastronómico nuevo con un diferencial claro: waffles a base de yuca. Sin marca ni presencia digital todavía, competía por atención frente a cafeterías ya conocidas.',
     insight: 'Su público no buscaba una cafetería más: buscaba algo distinto a las cafeterías tradicionales.',
-    construimos: 'Una estrategia de lanzamiento centrada en su diferencial —waffles de yuca con el sabor de la costa—: un mensaje que lo pone en primer plano desde el primer contacto y contenidos pensados para despertar curiosidad en quienes buscan algo distinto a la cafetería de siempre.',
+    construimos: 'Una estrategia de lanzamiento centrada en su diferencial (waffles de yuca con el sabor de la costa): un mensaje que lo pone en primer plano desde el primer contacto y contenidos pensados para despertar curiosidad en quienes buscan algo distinto a la cafetería de siempre.',
     resultado: '',
     aprendizaje: 'Un producto diferente necesita un mensaje igual de distinto para encontrar a quien lo estaba buscando.',
+    herramientas: ['Canva', 'Adobe Illustrator'],
     capacidades: {
       'Insight Lab': ['Estrategia de marketing digital', 'Estrategia de lanzamiento']
     }
@@ -49,6 +54,7 @@ window.WOW_CASES = {
     construimos: 'Una estrategia digital que parte de las mascotas y sus dueños, no del catálogo, y campañas de pauta segmentadas por intereses que llevan directo a sus canales de venta.',
     resultado: '',
     aprendizaje: 'La pauta rinde más cuando lleva a la gente a donde ya compra, no a un canal nuevo.',
+    herramientas: ['Meta Ads'],
     capacidades: {
       'Insight Lab': ['Estrategia digital', 'Pauta digital']
     }
@@ -61,6 +67,7 @@ window.WOW_CASES = {
     construimos: 'Una estrategia digital que explica con claridad por qué cada producto es una mejor elección, con un tono cercano y sin sermones, y un recorrido pensado para pasar del interés a la compra.',
     resultado: '',
     aprendizaje: 'En lo sostenible, la coherencia vende más que el discurso.',
+    herramientas: ['Shopify', 'Meta Ads', 'Google Ads'],
     capacidades: {
       'Insight Lab': ['Estrategia de marketing digital']
     }
@@ -70,11 +77,13 @@ window.WOW_CASES = {
     titulo: 'Orlando, a un clic de distancia.',
     reto: 'Epika Store trae productos de Disney Parks y Universal Studios desde Orlando. Tenía un producto que enamora, pero necesitaba llegar a los fans y convertir ese entusiasmo en ventas.',
     insight: 'Sus clientes no buscan un producto: buscan un pedacito de la experiencia de los parques sin viajar a Orlando.',
-    construimos: 'Una estrategia de marketing digital que vende la experiencia antes que el objeto: contenidos que evocan los parques y campañas dirigidas a fans de Disney y Universal.',
+    construimos: 'Todo el recorrido, desde el desarrollo de marca y el logo hasta el sitio, los posts para redes y la pauta digital: una estrategia que vende la experiencia antes que el objeto, con contenidos que evocan los parques y campañas dirigidas a fans de Disney y Universal.',
     resultado: '',
     aprendizaje: 'Cuando el producto es emoción, la comunicación tiene que vender la experiencia, no el objeto.',
+    herramientas: ['Linka', 'Meta Ads'],
     capacidades: {
-      'Insight Lab': ['Estrategia de marketing digital']
+      'Brand & Experience Lab': ['Desarrollo de marca', 'Logo', 'Sitio web'],
+      'Insight Lab': ['Estrategia de marketing digital', 'Contenido para redes', 'Pauta digital']
     }
   },
 
@@ -85,6 +94,7 @@ window.WOW_CASES = {
     construimos: 'Un sitio web claro, pensado para resolver dudas y agendar; un blog con artículos sobre ronquido, apnea y trastornos del sueño optimizados para SEO; y pauta digital para llegar a pacientes en Medellín.',
     resultado: 'Subimos 58 puestos en el ranking de Google en menos de 3 semanas, con SEO, GEO, AEO y optimización de Google My Business.',
     aprendizaje: 'En salud, un sitio claro y confiable es el primer paso de la consulta.',
+    herramientas: ['Wix', 'Semrush', 'Search Console', 'Google Analytics 4', 'Google My Business', 'Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Sitio web'],
       'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'SEO', 'Blog y contenidos']
@@ -98,6 +108,7 @@ window.WOW_CASES = {
     construimos: 'Un sitio web que explica sus servicios en lenguaje sencillo, contenido educativo para redes sociales sobre temas neurológicos y pauta digital para llegar a pacientes en Medellín.',
     resultado: '',
     aprendizaje: 'En salud, la confianza se construye con información útil, no con promesas.',
+    herramientas: ['Wix', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Diseño web'],
       'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital', 'Contenido para redes']
@@ -111,6 +122,7 @@ window.WOW_CASES = {
     construimos: 'Un sitio web que muestra el día a día del hogar y responde las preguntas de las familias, y una estrategia de marketing y pauta digital dirigida a hijos y familiares que están buscando opciones.',
     resultado: '',
     aprendizaje: 'Cuando la decisión es emocional, la comunicación tiene que hablarle a quien decide.',
+    herramientas: ['Google Ads', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Desarrollo web'],
       'Insight Lab': ['Estrategia de marketing digital', 'Pauta digital']
@@ -121,9 +133,10 @@ window.WOW_CASES = {
     titulo: 'Primero la vitrina, después la fila.',
     reto: 'La Marquessa ya vendía accesorios en su tienda en línea y quería vender más. Invertir en pauta sin revisar el sitio era arriesgarse a pagar por visitas que no compran.',
     insight: 'Llevar más visitas a un sitio que no está listo para vender es pagar dos veces: primero había que ajustar el sitio.',
-    construimos: 'Optimizamos el sitio para que comprar fuera más fácil —navegación, fichas de producto y proceso de compra— y después diseñamos una estrategia de pauta digital para llevar tráfico a una tienda lista para vender.',
+    construimos: 'Optimizamos el sitio para que comprar fuera más fácil (navegación, fichas de producto y proceso de compra) y después diseñamos una estrategia de pauta digital para llevar tráfico a una tienda lista para vender.',
     resultado: '',
     aprendizaje: 'Primero se optimiza la tienda, después se invierte en pauta.',
+    herramientas: ['Vercel', 'GitHub', 'Google My Business', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Optimización del sitio web'],
       'Insight Lab': ['Pauta digital']
@@ -137,6 +150,7 @@ window.WOW_CASES = {
     construimos: 'Ajustes puntuales al sitio para que las familias encuentren rápido lo que buscan y entiendan el valor de cada juguete, y una estrategia de pauta digital medida contra un solo objetivo: las ventas.',
     resultado: '',
     aprendizaje: 'Un solo objetivo hace que cada ajuste y cada peso de pauta se midan contra lo mismo.',
+    herramientas: ['Vercel', 'GitHub', 'Google My Business', 'Meta Ads'],
     capacidades: {
       'Brand & Experience Lab': ['Ajustes al sitio web'],
       'Insight Lab': ['Pauta digital']
@@ -145,11 +159,12 @@ window.WOW_CASES = {
 
   'Orbit': {
     titulo: 'De cero a órbita.',
-    reto: 'Orbit quería entrar al mercado de ropa deportiva en Centroamérica sin nada construido —ni nombre, ni logo, ni colores— y competir con marcas ya conocidas.',
+    reto: 'Orbit quería entrar al mercado de ropa deportiva en Centroamérica sin nada construido (ni nombre, ni logo, ni colores) y competir con marcas ya conocidas.',
     insight: 'En ropa deportiva la gente compra identidad: quiere sentirse parte de algo cuando entrena.',
     construimos: 'Un nombre que habla de movimiento y constancia, un logo pensado para vivir en las prendas y un sistema de color con energía deportiva.',
     resultado: '',
     aprendizaje: 'Cuando se parte de cero, el nombre y el color son la primera promesa de la marca.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Naming', 'Logo', 'Sistema de color']
     }
@@ -162,6 +177,7 @@ window.WOW_CASES = {
     construimos: 'Definimos su propuesta de valor, organizamos su sistema de marca, seleccionamos la paleta de color y construimos un Brand Book para que la marca se use igual en todas partes.',
     resultado: '',
     aprendizaje: 'Ordenar un sistema de marca también es diseño: a veces el trabajo es darle estructura a lo que ya existe.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Sistema de marca', 'Brand Book']
     }
@@ -171,9 +187,10 @@ window.WOW_CASES = {
     titulo: 'Cafecito, Aguacatico y una marca con personalidad.',
     reto: 'Tin-T! es un emprendimiento colombiano de merchandising. En un mercado lleno de recuerdos parecidos, necesitaba una marca que se quedara en la memoria.',
     insight: 'Un recuerdo se compra por la historia que cuenta, no por el objeto.',
-    construimos: 'Propuesta de valor, identidad visual y dos personajes —Cafecito y Aguacatico— inspirados en íconos colombianos, diseñados para vivir en productos y aplicaciones de la marca.',
+    construimos: 'Propuesta de valor, identidad visual y dos personajes, Cafecito y Aguacatico, inspirados en íconos colombianos, diseñados para vivir en productos y aplicaciones de la marca.',
     resultado: '',
     aprendizaje: 'Los personajes convierten un producto en un recuerdo.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Propuesta de valor', 'Identidad visual', 'Personajes', 'Merchandising']
     }
@@ -186,6 +203,7 @@ window.WOW_CASES = {
     construimos: 'Una identidad visual con carácter, pensada para destacar en redes y en la tienda.',
     resultado: '',
     aprendizaje: 'Una tienda con personalidad propia necesita una identidad que no se parezca a las demás.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Identidad visual']
     }
@@ -198,6 +216,7 @@ window.WOW_CASES = {
     construimos: 'Un sistema visual construido a partir del nombre: la idea de una huella que no se borra, traducida en logo, colores y aplicaciones.',
     resultado: '',
     aprendizaje: 'Cuando el nombre es fuerte, la identidad tiene que amplificarlo, no competir con él.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Identidad visual', 'Sistema visual']
     }
@@ -210,6 +229,7 @@ window.WOW_CASES = {
     construimos: 'Naming, propuesta de valor, identidad visual, logo y colores, y un sistema de personajes que acompaña al estudiante y le da a la app personalidad más allá de la funcionalidad.',
     resultado: '',
     aprendizaje: 'Los personajes le dan a una app algo que la funcionalidad sola no da: cercanía.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Logo', 'Personajes']
     }
@@ -222,6 +242,7 @@ window.WOW_CASES = {
     construimos: 'Naming, propuesta de valor y sistema de identidad visual (logo, colores y aplicaciones) pensados para funcionar tanto en el podcast como en sus redes y piezas de difusión.',
     resultado: '',
     aprendizaje: 'Una identidad pensada desde el inicio para redes y piezas de difusión trabaja en todos los canales.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Naming', 'Propuesta de valor', 'Identidad visual', 'Piezas para redes']
     }
@@ -234,6 +255,7 @@ window.WOW_CASES = {
     construimos: 'Desde el naming, construimos el logo, la paleta de color y una identidad visual con un lenguaje que une diseño y datos.',
     resultado: '',
     aprendizaje: 'La marca de una agencia es su primera muestra de trabajo.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Logo', 'Paleta de color', 'Identidad visual']
     }
@@ -258,6 +280,7 @@ window.WOW_CASES = {
     construimos: 'Una identidad visual sobria y profesional, pensada para sus presentaciones, propuestas y redes.',
     resultado: '',
     aprendizaje: 'La marca personal tiene que transmitir lo mismo que la persona en una reunión.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Marca personal', 'Identidad visual']
     }
@@ -270,6 +293,7 @@ window.WOW_CASES = {
     construimos: 'Una identidad de marca cercana y amigable, pensada para funcionar en todos sus puntos de contacto.',
     resultado: '',
     aprendizaje: 'En servicios de cuidado, la identidad tiene que inspirar confianza desde el primer vistazo.',
+    herramientas: ['Adobe Illustrator'],
     capacidades: {
       'Brand & Experience Lab': ['Identidad de marca']
     }

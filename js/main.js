@@ -606,6 +606,33 @@ var ProjectCollage = (function () {
     var patternPromise = slugGuess ? loadImage('design-system/portfolio/' + slugGuess + '/pattern.webp') : Promise.resolve(null);
     var loaded = await loadedPromise;
     if (myToken !== renderToken) return; // a newer render started meanwhile — discard this one
+    /* Nunca repetir imágenes: se descartan las que son idénticas (o casi) a otra ya incluida, aunque tengan otro nombre
+       de archivo. Se compara una miniatura de 16x16 en grises. */
+    (function () {
+      function signature(img) {
+        try {
+          var c = document.createElement('canvas'); c.width = 16; c.height = 16;
+          var ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, 16, 16);
+          var d = ctx.getImageData(0, 0, 16, 16).data, out = [];
+          for (var k = 0; k < d.length; k += 4) out.push((d[k] + d[k + 1] + d[k + 2]) / 3);
+          return out;
+        } catch (e) { return null; }
+      }
+      function dist(a, b) { var t = 0; for (var k = 0; k < a.length; k++) t += Math.abs(a[k] - b[k]); return t / a.length / 255; }
+      var sigs = [], keep = [];
+      items.forEach(function (it, i) {
+        var sig = loaded[i] ? signature(loaded[i]) : null;
+        if (sig) {
+          if (sigs.some(function (s) { return dist(s, sig) < 0.03; })) return;
+          sigs.push(sig);
+        }
+        keep.push(i);
+      });
+      if (keep.length !== items.length) {
+        items = keep.map(function (i) { return items[i]; });
+        loaded = keep.map(function (i) { return loaded[i]; });
+      }
+    })();
     var pieces = items.map(function (it, i) {
       var img = loaded[i];
       var ratio = img ? (img.naturalWidth || 1) / (img.naturalHeight || 1) : 4 / 3;
@@ -896,45 +923,10 @@ var ProjectCollage = (function () {
      resulta más ancha que el popup, se achica ese alto (proporcional al sobrante) y se vuelve a armar, hasta 3 veces.
      El alto del contenedor sale del mismo --pc-row-h, así que el popup también se hace menos alto. Solo si ni así cabe
      (muchísimas imágenes) queda el desplazamiento horizontal de siempre. */
-  var MIN_ROW_H = 110;
-  /* Último recurso (muchísimas imágenes: ni en 2 filas caben con un tamaño decente): se reparten en filas "justificadas",
-     todas del ancho del marco, con el mismo espacio (--pc-gap) entre imágenes y sin recortes. */
-  function justify(container, availW) {
-    var gapPx = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 16;
-    var avail = availW - 2 * gapPx;
-    var items = [].slice.call(container.querySelectorAll('.pc-item'));
-    if (!items.length || avail <= 0) return;
-    var ratios = items.map(function (it) { return (parseFloat(it.style.width) / parseFloat(it.style.height)) || 1; });
-    var total = ratios.reduce(function (a, r) { return a + r; }, 0);
-    var k = Math.max(2, Math.round(total * 200 / avail));      /* ~200px de alto por fila */
-    var rows = [], row = [], acc = 0;
-    items.forEach(function (it, i) {
-      row.push(i); acc += ratios[i];
-      if (rows.length < k - 1 && acc >= total * (rows.length + 1) / k) { rows.push(row); row = []; }
-    });
-    if (row.length) rows.push(row);
-    var avgH = avail * k / total;
-    container.innerHTML = '';
-    container.classList.add('pc-justified');
-    rows.forEach(function (idxs) {
-      var sum = idxs.reduce(function (a, i) { return a + ratios[i]; }, 0);
-      /* tope: la última fila (con menos imágenes) no puede quedar mucho más alta que las demás */
-      var h = Math.min(avgH * 1.1, (avail - gapPx * (idxs.length - 1)) / sum);
-      var rowEl = document.createElement('div');
-      rowEl.className = 'pc-row';
-      idxs.forEach(function (i) {
-        items[i].style.width = Math.floor(ratios[i] * h) + 'px';
-        items[i].style.height = Math.round(h) + 'px';
-        /* el relleno en % de las tarjetas de logo se mide contra el ancho de la fila (no de la tarjeta): se fija en px */
-        if (items[i].classList.contains('pc-item-logo')) items[i].style.padding = Math.round(Math.min(ratios[i] * h, h) * 0.14) + 'px';
-        rowEl.appendChild(items[i]);
-      });
-      container.appendChild(rowEl);
-    });
-  }
+  /* Máximo 2 líneas: si la tira no cabe a lo ancho se achica el alto de las filas (hasta MIN_ROW_H) en vez de añadir más filas. */
+  var MIN_ROW_H = 60;
   async function renderFit(container, images, opts) {
     container.style.removeProperty('--pc-row-h');
-    container.classList.remove('pc-justified');
     var wrap = container.parentElement;
     await render(container, images, opts);
     var gapPx = parseFloat(getComputedStyle(container).getPropertyValue('--pc-gap')) || 16;
@@ -944,12 +936,11 @@ var ProjectCollage = (function () {
       var content = container.scrollWidth - 2 * gapPx;
       if (!avail || content <= avail + 1) return;
       var cur = parseFloat(getComputedStyle(container).getPropertyValue('--pc-row-h')) || 150;
-      var next = Math.floor(cur * avail / content) - 1;
-      if (next < MIN_ROW_H) break;      /* demasiado chico: se reparte en más filas */
+      var next = Math.max(MIN_ROW_H, Math.floor(cur * avail / content) - 1);
+      if (next >= cur) return;
       container.style.setProperty('--pc-row-h', next + 'px');
       await render(container, images, opts);
     }
-    justify(container, wrap ? wrap.clientWidth : container.clientWidth);
   }
   return { render: renderFit };
 })();
@@ -998,6 +989,9 @@ var ProjectCollage = (function () {
         // padding the collage with unrelated projects' photos.
         images = [mainImg];
       }
+      /* una card sin imágenes (aún) no muestra la tira del collage */
+      images = (images || []).filter(Boolean);
+      collageEl.parentNode.style.display = images.length ? '' : 'none';
       ProjectCollage.render(collageEl, images, { alt: el.dataset.title || '', phrase: el.dataset.tagline || el.dataset.desc || '' }).then(updatePcNav);
 
       title.textContent = el.dataset.title || '';
@@ -1025,10 +1019,14 @@ var ProjectCollage = (function () {
       if (caseCaps) {
         groups = Object.keys(caseCaps).map(function (lab) { return { lab: lab, tags: caseCaps[lab] }; });
       }
+      var caseTools = (CASES[el.dataset.title] && CASES[el.dataset.title].herramientas) ||
+        (el.dataset.tools ? el.dataset.tools.split('·').map(function (t) { return t.trim(); }).filter(Boolean) : null);
+      if (caseTools && caseTools.length) groups.push({ lab: 'Herramientas', tags: caseTools, isTools: true });
       groups.forEach(function (group) {
         if (group.lab === null && !group.tags.length) return;
         var groupEl = document.createElement('div');
         groupEl.className = 'lightbox-lab-group';
+        if (group.isTools) groupEl.classList.add('lightbox-lab-group-tools');
         var label = document.createElement('p');
         label.className = 'lightbox-label';
         if (LAB_LABEL_CLASS[group.lab]) label.classList.add(LAB_LABEL_CLASS[group.lab]);
