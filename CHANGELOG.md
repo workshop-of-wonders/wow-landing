@@ -57,6 +57,11 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+- **2026-10-05 — Nosotros: bloque más compacto, logos de partners y herramientas/IA.**
+  - `styles.css`/`index.html`: la franja `.nos-stats` y las tarjetas `.nos-card` pasan a un tamaño menor (cifras hasta 68px, menos relleno, título 20px, chips de 13px); se quita la empresa del +58 ("Centro del Sueño y Ronquido · …"); `.nos-proof` recupera el `padding-bottom: var(--sec-bottom)` (otra regla lo dejaba en 0).
+  - Partners con logos reales en `design-system/partners/` (`wix-official-expert.webp`, `meta-experts.webp`, `google-partner.webp`); Canva queda como insignia de texto hasta tener su sello oficial.
+  - Nueva tarjeta `.nos-tools`: "Herramientas que usamos" (Semrush, WordPress, Wix, Figma, Adobe Illustrator, Google Analytics 4, Search Console, Google Ads, Meta Ads, Google My Business, Bing Business) e "IA que potencia nuestro trabajo" (Claude, ChatGPT, ElevenLabs, Google AI y más). Pendiente: campo "Herramientas" por caso en los popups, a la espera de qué herramientas usó cada proyecto.
+
 - **2026-10-05 — Nosotros: rediseño del bloque de autoridad.**
   - `index.html`/`styles.css`/`js/main.js`: el bloque `.nos-proof` pasa a una franja morada `.nos-stats` con las tres cifras (+17 marcas posicionadas, +58 puestos subidos en Google en menos de 3 semanas, +7 sectores económicos impactados; los contadores observan `.nos-stats`), una fila `.nos-row` con la tarjeta del mapa (título corto, mapa centrado, pines sin nombres) y una tarjeta única con partners (cuadrícula 2×2) y sectores (chips compactos). Se eliminan los títulos grandes de partners y sectores y el CSS del diseño anterior (`.proof-card`, `.proof-sectors`, etc.). En ≤1000px la fila se apila; en ≤720px las cifras van en una columna.
 
