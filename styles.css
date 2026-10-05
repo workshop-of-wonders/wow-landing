@@ -4369,6 +4369,7 @@ main { padding-top: var(--nav-h); }
 /* Qué es */
 .sp-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: stretch; margin-top: var(--space-4); }
 .sp-intro-copy { align-self: center; }
+.sp-intro .sp-callout { order: -1; }   /* tarjeta a la izquierda en escritorio; en móvil el título va primero (ver @media 900px) */
 .sp-intro-copy h2 { max-width: 14em; }
 .sp-intro-copy > p:not(.eyebrow) { font-size: 19px; line-height: 1.65; margin: 0; max-width: 34em; }
 .sp-callout { display: flex; flex-direction: column; justify-content: center; gap: var(--space-4); background: var(--purple); color: var(--white); border-radius: 24px; padding: var(--space-5); position: relative; overflow: hidden; }
@@ -4386,6 +4387,7 @@ main { padding-top: var(--nav-h); }
   .sp-hero { grid-template-columns: 1fr; min-height: 0; gap: var(--space-5); padding-bottom: var(--space-6); }
   .sp-visual { width: min(100%, 440px); }
   .sp-intro, .sp-work { grid-template-columns: 1fr; }
+  .sp-intro .sp-callout { order: 0; }
 }
 @media (max-width: 720px) {
   .sp-hero h1 { font-size: 30px; }
