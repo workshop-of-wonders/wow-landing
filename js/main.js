@@ -81,7 +81,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* Labs accordion: on touch/mobile, tap a panel to expand it (only one open at a time) */
 document.querySelectorAll('.labs-panel').forEach(function (panel) {
   panel.addEventListener('click', function (e) {
-    if (window.innerWidth > 900) return;
+    if (e.target.closest('a')) return;   /* el enlace de la tarjeta navega por sí solo */
+    if (window.innerWidth > 900) {   /* escritorio: un clic en cualquier parte de la tarjeta lleva al Lab */
+      var go = panel.querySelector('.labs-panel-link');
+      if (go) window.location.href = go.href;
+      return;
+    }
     var wasOpen = panel.classList.contains('is-open');
     document.querySelectorAll('.labs-panel').forEach(function (p) { p.classList.remove('is-open'); });
     if (!wasOpen) panel.classList.add('is-open');
@@ -120,18 +125,6 @@ document.querySelectorAll('.labs-panel').forEach(function (panel) {
     io.observe(frame);
   }
 })();
-
-/* Marcas logos: hovering a logo we can tie to a real project subtly highlights that card
-   in the gallery above — a secondary, elegant hint, not a navigation */
-document.querySelectorAll('[data-match]').forEach(function (el) {
-  var key = el.dataset.match;
-  el.addEventListener('mouseenter', function () {
-    document.querySelectorAll('[data-match="' + key + '"]').forEach(function (m) { m.classList.add('is-highlighted'); });
-  });
-  el.addEventListener('mouseleave', function () {
-    document.querySelectorAll('[data-match="' + key + '"]').forEach(function (m) { m.classList.remove('is-highlighted'); });
-  });
-});
 
 /* Figma-style collaborative cursor over the services diagram */
 (function () {
@@ -293,7 +286,7 @@ function hubPillColor(pill) {
 
   /* colaboradores: casi siempre deambulan libremente por el diagrama; solo a veces (PILL_CHANCE) van a un pill y lo
      seleccionan, para que no parezca que van a hacer clic en todos. */
-  var PILL_CHANCE = 0.15;
+  var PILL_CHANCE = 0.1;
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function rand(a, b) { return a + Math.random() * (b - a); }
   function tipFor(pill) {
@@ -323,17 +316,24 @@ function hubPillColor(pill) {
   function inRect(x, y, r) { return x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h; }
   /* punto libre, lejos de la posición actual y fuera de los pills y del texto (no debe parecer un clic). Casi siempre
      dentro del frame, pero a veces (OUT_CHANCE) en cualquier lugar libre de la sección, fuera del marco. */
-  var OUT_CHANCE = 0.45;
+  var OUT_CHANCE = 0.12;
+  /* Movimientos cortos: cada colaborador solo se desplaza un poco desde donde está (MAX_STEP), para que las flechas
+     no estén cruzando todo el diagrama y confundan. */
+  var MIN_STEP = 50, MAX_STEP = 150;
   function freePoint(g, area) {
     var W = hubDiagramEl.clientWidth, H = hubDiagramEl.clientHeight, p;
-    for (var i = 0; i < 24; i++) {
-      p = Math.random() < OUT_CHANCE
-        ? { x: rand(area.x0, area.x1), y: rand(area.y0, area.y1) }
-        : { x: rand(24, W - 90), y: rand(14, H - 36) };
+    for (var i = 0; i < 30; i++) {
+      var a = rand(0, Math.PI * 2), d = rand(MIN_STEP, MAX_STEP);
+      p = { x: g.x + Math.cos(a) * d, y: g.y + Math.sin(a) * d };
+      if (Math.random() < OUT_CHANCE) {   /* de vez en cuando se asoma fuera del marco, siempre cerca */
+        p.x = Math.min(Math.max(p.x, area.x0), area.x1); p.y = Math.min(Math.max(p.y, area.y0), area.y1);
+      } else {
+        p.x = Math.min(Math.max(p.x, 24), W - 90); p.y = Math.min(Math.max(p.y, 14), H - 36);
+      }
       var onText = area.blocked.some(function (r) { return inRect(p.x, p.y, r); });
-      if (Math.hypot(p.x - g.x, p.y - g.y) > 90 && !onText && !insidePill(p.x, p.y)) return p;
+      if (Math.hypot(p.x - g.x, p.y - g.y) > 40 && !onText && !insidePill(p.x, p.y)) return p;
     }
-    return p;
+    return { x: g.x, y: g.y };
   }
   /* la trayectoria tampoco debe cruzar el texto */
   function pathClear(from, ctrl, to, area) {
@@ -354,13 +354,17 @@ function hubPillColor(pill) {
   }
   function pickPill(g) {
     var other = ghosts[0] === g ? ghosts[1] : ghosts[0];
-    var pool = hubPills.filter(function (p) { return p !== g.pill && p !== other.pill; });
-    return pool[Math.floor(Math.random() * pool.length)];
+    var pool = hubPills.filter(function (p) {
+      if (p === g.pill || p === other.pill) return false;
+      var t = tipFor(p);
+      return Math.hypot(t.x - g.x, t.y - g.y) < 280;   /* solo pills cercanos: nada de cruzar todo el diagrama */
+    });
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
   }
   function startMove(g, now) {
     var area = roamArea(), t, ctrl, dx, dy, dist, bend, pill = null;
     for (var tries = 0; tries < 8; tries++) {
-      pill = Math.random() < PILL_CHANCE ? pickPill(g) : null;
+      pill = Math.random() < PILL_CHANCE ? pickPill(g) : null;   /* pickPill puede devolver null si no hay ninguno cerca */
       t = pill ? tipFor(pill) : freePoint(g, area);
       dx = t.x - g.x; dy = t.y - g.y; dist = Math.hypot(dx, dy) || 1;
       bend = rand(-0.2, 0.2) * dist;
@@ -372,7 +376,7 @@ function hubPillColor(pill) {
     }
     g.pill = pill;
     g.from = { x: g.x, y: g.y }; g.to = t; g.ctrl = ctrl;
-    g.t0 = now; g.dur = 1100 + dist * 2.2 + rand(0, 700);
+    g.t0 = now; g.dur = 1800 + dist * 6 + rand(0, 900);
     g.state = 'move'; selectFor(g, null);
   }
   function tick(now) {
@@ -383,7 +387,7 @@ function hubPillColor(pill) {
         if (t >= 1) {
           g.state = 'dwell';
           if (g.pill) { g.until = now + rand(1200, 2200); selectFor(g, g.pill); }   /* se detiene a seleccionar el pill */
-          else { g.until = now + rand(150, 900); }                                  /* en el aire: pausa corta y sigue */
+          else { g.until = now + rand(1500, 3800); }                                /* en el aire: se queda quieto un buen rato */
         }
       } else if (g.state === 'dwell' && now >= g.until) {
         startMove(g, now);
