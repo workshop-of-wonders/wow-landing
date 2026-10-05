@@ -56,6 +56,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
+**2026-10-05** — Método WOW, pulido final: (1) las viñetas de cada paso solo se ven con hover/foco en todos los tamaños; bajo 1200px se pliegan (`max-height`) y se abren al tocar la tarjeta. (2) Cada nodo se ilumina suavemente al paso del cohete (`wm-glow`, mismo ciclo de 9 s que `wm-orbit`, delays -4.5s/-1.5s/-7.5s; solo ≥1200px y sin `prefers-reduced-motion`). (3) Corregidas dos llaves `}` sobrantes en `styles.css` que quedaron de ediciones previas del bloque del cohete.
+
 **2026-10-05** — Método WOW, cohete: ahora orbita el ciclo de forma continua (9 s por vuelta, un solo `<text>` con `offset-path` sobre el círculo R=196 de las flechas), pasa por debajo de los nodos y solo es visible mientras recorre cada flecha verde (keyframes de opacidad por tramos de arco). Reemplaza a los tres cohetes que salían solo con el hover; las viñetas de las tarjetas siguen apareciendo solo con hover (en táctil, siempre visibles).
 
 **2026-10-05** — Método WOW, pulido: nodos a 120° exactos sobre un círculo (R=196, centro 887,493 en el viewBox 1650x840) y flechas/cohete como arcos de ese mismo círculo, con 27° de separación respecto a cada nodo; círculos de fondo más pequeños (r 246 y 150) y concéntricos; las tres tarjetas del mismo ancho (22%) y alto (27%) con la etiqueta de Lab al fondo; copy de Wonder sin "creamos": "Investigamos tu marca, tu público y tu competencia para descubrir oportunidades.".

@@ -3753,21 +3753,41 @@ main { padding-top: var(--nav-h); }
   93%   { opacity: 0; }
   100%  { offset-distance: 100%; opacity: 0; }
 }
+/* Brillo suave del nodo cuando el cohete pasa por él: mismo ciclo de 9 s que
+   .wm-rocket. El cohete cruza Optimize a 1/3 de la vuelta (3 s), Win a 2/3
+   (6 s) y Wonder al cierre (9 s); el pico del keyframe está al 50% (4.5 s),
+   por eso el delay negativo = tiempo de cruce - 4.5 s. */
+@keyframes wm-glow {
+  0%, 30%, 100% { box-shadow: 0 0 0 .6cqw rgba(255,255,255,.04), 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 .6cqw rgba(255,255,255,.07), 0 0 2cqw .3cqw color-mix(in srgb, var(--c) 32%, transparent); }
 }
-@media (min-width: 1200px) and (hover: hover) {
+@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+  .wm-node { animation: wm-glow 9s ease-in-out infinite; }
+  .wm-1 .wm-node { animation-delay: -4.5s; }
+  .wm-2 .wm-node { animation-delay: -1.5s; }
+  .wm-3 .wm-node { animation-delay: -7.5s; }
+}
+/* Las viñetas de cada paso solo se ven con hover (o foco; en táctil, al tocar la tarjeta). */
+.wm-list li { opacity: 0; transform: translateX(-12px); transition: opacity .3s ease, transform .3s ease; }
+.wm-list li:nth-child(2) { transition-delay: .06s; }
+.wm-list li:nth-child(3) { transition-delay: .12s; }
+.wm-list li:nth-child(4) { transition-delay: .18s; }
+.wm-step:hover .wm-list li, .wm-step:focus-within .wm-list li { opacity: 1; transform: none; }
+.wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+.wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
+@media (min-width: 1200px) {
   .wm-list { pointer-events: none; }
-  .wm-list li { opacity: 0; transform: translateX(-12px); transition: opacity .3s ease, transform .3s ease; }
-  .wm-list li:nth-child(2) { transition-delay: .06s; }
-  .wm-list li:nth-child(3) { transition-delay: .12s; }
-  .wm-list li:nth-child(4) { transition-delay: .18s; }
-  .wm-step:hover .wm-list li, .wm-step:focus-within .wm-list li { opacity: 1; transform: none; }
-  .wm-card, .wm-node { transition: border-color .3s ease, transform .3s ease, background .3s ease; }
-  .wm-step:hover .wm-card, .wm-step:focus-within .wm-card { border-color: var(--c); background: rgba(255,255,255,.09); outline: none; }
   .wm-step:hover .wm-node, .wm-step:focus-within .wm-node { transform: translate(-50%, -50%) scale(1.1); }
+}
+@media (max-width: 1199px) {
+  /* apilado: la lista se pliega y se despliega sin dejar hueco mientras está oculta */
+  .wm-stage .wm-step .wm-list { max-height: 0; overflow: hidden; margin-top: 0; transition: max-height .35s ease, margin-top .35s ease; }
+  .wm-stage .wm-step:hover .wm-list, .wm-stage .wm-step:focus-within .wm-list { max-height: 240px; margin-top: var(--space-2); }
+  .wm-card { cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wm-rocket { animation: none !important; opacity: 0; }
-  .wm-list li { transition: none !important; }
+  .wm-list li, .wm-stage .wm-step .wm-list { transition: none !important; }
 }
 
 /* Trabajo: el caso de estudio ya no es un bloque aparte — vive dentro del
