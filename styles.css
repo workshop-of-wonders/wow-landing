@@ -4514,3 +4514,12 @@ main { padding-top: var(--nav-h); }
   .nos-stats--4 li:nth-child(n+3) { padding-top: var(--space-3); border-top: 1px solid rgba(255,255,255,.14); }
   .nos-stats--4 li:nth-child(2n) { border-left: 1px solid rgba(255,255,255,.14); }
 }
+
+/* Cifras sin tarjeta: solo los números sobre el fondo de la sección, en colores de la marca (el lima no se lee sobre blanco) */
+.nos-stats--plain { background: none; color: var(--ink); padding: 0; border-radius: 0; }
+.nos-stats--plain li { border-color: rgba(56, 7, 87, .16) !important; }
+.nos-stats--plain .proof-label { color: var(--ink); }
+.nos-stats--plain li:nth-child(1) .proof-num { color: #3B82F6; }
+.nos-stats--plain li:nth-child(2) .proof-num { color: #EC4899; }
+.nos-stats--plain li:nth-child(3) .proof-num { color: #ea580c; }
+.nos-stats--plain li:nth-child(4) .proof-num { color: var(--purple); }
