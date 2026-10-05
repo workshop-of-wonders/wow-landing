@@ -4435,3 +4435,4 @@ main { padding-top: var(--nav-h); }
   .sp-float--a { left: -4px; } .sp-float--b { right: -4px; }
 }
 @media (prefers-reduced-motion: reduce) { .sp-float { animation: none; } }
+.wm-tools--one { grid-template-columns: 1fr; }
