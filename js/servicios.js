@@ -118,7 +118,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* Páginas de servicio: la tarjeta de "Qué es" se anima al entrar en pantalla. */
 (function () {
-  var els = document.querySelectorAll('.sp-callout');
+  var els = document.querySelectorAll('.sp-callout, .sp-reveal');
   if (!els.length) return;
   if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
   var io = new IntersectionObserver(function (entries) {
@@ -190,6 +190,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
   if (reduce && toggle) toggle.hidden = true;
   // medidas de la guía (ancho de diseño 1983px): ancho del elemento, alto, ángulo, separación del centro y opacidad, para |p| = 0, 1, 2, 3
   var T = { w: [445, 252, 330, 270], h: [345, 332, 440, 400], a: [0, 14, 26, 54], x: [0, 352, 640, 860], o: [1, 1, 1, .55] };
+  var R = Math.max(1, Math.floor((N - 1) / 2));            // cuántas tarjetas se ven a cada lado (3 con 7 casos)
+  var RS = R >= 3 ? 1 : 3 / R;                              // con menos casos se estira la escala para que la más lejana quede como el borde de la guía
   var k = 1, offset = 0, target = null, last = null, visible = true, acc = 0, moved = 0, current = -1;
   var hold = { hover: false, focus: false, manual: false, drag: false };
   function paused() { return reduce || hold.hover || hold.focus || hold.manual || hold.drag; }
@@ -210,8 +212,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
       var p = (((i - offset) % N) + N + N / 2) % N - N / 2;
       var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
       if (ap < bd) { bd = ap; best = i; }
-      var w = lerp(T.w, ap) * k, h = lerp(T.h, ap) * k, ang = lerp(T.a, ap), x = sg * lerp(T.x, ap) * k;
-      var op = ap >= 3 ? Math.max(0, .55 * (1 - (ap - 3) / .5)) : lerp(T.o, ap);
+      var rk = Math.min(ap * RS, 3.6);
+      var w = lerp(T.w, rk) * k, h = lerp(T.h, rk) * k, ang = lerp(T.a, rk), x = sg * lerp(T.x, rk) * k;
+      var op = (rk >= 3 ? .55 : lerp(T.o, rk)) * Math.max(0, Math.min(1, (R + 0.5 - ap) / 0.5));
       var el = items[i];
       el.style.width = w + 'px';
       el.style.transform = 'translate3d(' + (x - w / 2) + 'px,0,0)';
@@ -223,7 +226,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       card.style.top = ((stage.querySelector('.sp-cv-track').clientHeight - h) / 2) + 'px';
       card.style.fontSize = Math.max(11, w * 0.046) + 'px';
       card.style.transform = 'perspective(' + Math.round(760 * k) + 'px) rotateY(' + (-sg * ang) + 'deg)';
-      var fh = Math.max(0, Math.min(1, 1 - ap / 0.9));       // en el centro se ve la foto horizontal; hacia los lados, la vertical
+      var fh = Math.max(0, Math.min(1, 1 - rk / 0.9));       // en el centro se ve la foto horizontal; hacia los lados, la vertical
       card.children[0].style.opacity = fh; card.children[1].style.opacity = 1 - fh;
     }
     if (best !== current) { current = best; dots.forEach(function (d, n) { d.setAttribute('aria-current', n === best ? 'true' : 'false'); }); }
@@ -293,4 +296,23 @@ document.getElementById('year').textContent = new Date().getFullYear();
   window.addEventListener('resize', function () { measure(); layout(); });
   measure(); layout();
   requestAnimationFrame(frame);
+})();
+
+/* Puntos calientes (diseño web, SEO local y GEO): al pasar el mouse o enfocar un elemento de la lista se ilumina su lugar en la maqueta (mismo data-hs-t). */
+(function () {
+  [].forEach.call(document.querySelectorAll('[data-hs-group]'), function (g) {
+    var triggers = [].slice.call(g.querySelectorAll('li[data-hs-t], .of-src[data-hs-t]'));
+    function on(t) {
+      [].forEach.call(g.querySelectorAll('[data-hs-t]'), function (e) { e.classList.toggle('is-on', e.getAttribute('data-hs-t') === t); });
+    }
+    triggers.forEach(function (li) {
+      li.addEventListener('mouseenter', function () { on(li.getAttribute('data-hs-t')); });
+      li.addEventListener('focusin', function () { on(li.getAttribute('data-hs-t')); });
+      li.addEventListener('click', function () { on(li.getAttribute('data-hs-t')); });
+    });
+    [].forEach.call(g.querySelectorAll('.of-pin, .of-cite'), function (p) {
+      p.addEventListener('mouseenter', function () { on(p.getAttribute('data-hs-t')); });
+    });
+    if (triggers.length) on(triggers[0].getAttribute('data-hs-t'));
+  });
 })();
