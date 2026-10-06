@@ -5105,3 +5105,17 @@ main { padding-top: var(--nav-h); }
 @media (hover: hover) { .lb-case:hover img { transform: scale(1.07); } .lb-case:hover figcaption { transform: translateY(-4px) rotate(-2deg); } }
 @media (max-width: 900px) { .lb-cases { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .lb-line, .lb-area, .lb-bars i, .lb-hero, .lb-row i { animation: none; } .lb-line { stroke-dashoffset: 0; } .lb-area { opacity: 1; } }
+
+/* ===== Portafolio: héroe con abanico de casos y muro de proyectos ===== */
+.pf-fan { height: 400px; width: min(100%, 520px); }
+.pf-fan img { position: absolute; width: 66%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 22px; border: 6px solid #fff; box-shadow: 0 26px 56px rgba(26,19,32,.35); animation: pfFan 6s ease-in-out infinite; }
+.pf-fan-a { left: 0; top: 4%; transform: rotate(-7deg); }
+.pf-fan-b { right: 0; top: 24%; transform: rotate(5deg); animation-delay: -2s !important; z-index: 1; }
+.pf-fan-c { left: 14%; bottom: 0; transform: rotate(-2deg); animation-delay: -4s !important; z-index: 2; }
+@keyframes pfFan { 50% { translate: 0 -9px; } }
+.pf-wall { position: relative; overflow: hidden; background: var(--cloud); padding-top: var(--space-7); }
+.pf-wall > .eyebrow { max-width: 1400px; margin: 0 auto var(--space-4); }
+.pf-wall > *:not(.outline-word) { position: relative; z-index: 1; }
+@media (max-width: 900px) { .pf-fan { height: 300px; } }
+@media (prefers-reduced-motion: reduce) { .pf-fan img { animation: none; } }
+.pf-fan .sp-float { z-index: 3; }

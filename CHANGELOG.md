@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — Portafolio al estilo WOW.** `portafolio.html`: héroe con abanico animado de 3 casos y etiquetas flotantes, muro de proyectos con palabra outline TRABAJO y eyebrow. Tarjetas, lightbox y JS sin cambios (verificado que abre). 404 ya estaba lista. Con esto todas las páginas públicas quedan en estilo WOW. Home intacto.
+
 - **2026-10-06 — Labs al estilo WOW.** `labs/insight-lab.html` (azul, maqueta de panel con línea y barras animadas) y `labs/brand-experience-lab.html` (rosa, maqueta de sitio con paleta): héroe `sp-hero`, servicios como tarjetas `hb-card`, trabajo real en tarjetas con foto (`.lb-case`), FAQ en chat. Textos y enlaces intactos. Pendiente: portafolio y 404. Home intacto.
 
 - **2026-10-06 — servicios.html (listado) al estilo WOW.** Héroe con degradado azul→rosa y mapa "un solo equipo" (Insight Lab / Brand & Experience Lab), 4 categorías con palabra outline y tarjetas con aparición escalonada y hover, FAQ como chat igual que las páginas de servicio. Textos, `data-ck`, enlaces y JSON-LD intactos. Pendiente: Labs, portafolio y 404. Home intacto.
