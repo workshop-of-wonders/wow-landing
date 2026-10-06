@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html (listado) al estilo WOW.** Héroe con degradado azul→rosa y mapa "un solo equipo" (Insight Lab / Brand & Experience Lab), 4 categorías con palabra outline y tarjetas con aparición escalonada y hover, FAQ como chat igual que las páginas de servicio. Textos, `data-ck`, enlaces y JSON-LD intactos. Pendiente: Labs, portafolio y 404. Home intacto.
+
 - **2026-10-06 — Ofertas animadas (8 servicios).** GEO, pauta, diseño web, UX/UI, e-commerce, diseño gráfico, analítica y consultoría pasan de maquetas estáticas a escenas que se mueven solas (chat que se construye, consola de campaña, sitio que cambia de capa, mapa→interfaz, recorrido de compra, sistema visual que cambia las piezas, tablero, ruido→KPIs). Motor `[data-seq]` en `js/servicios.js` (`data-mode` build/cycle, pausa con hover/fuera de pantalla, clic en un paso lo salta, reduced-motion = estado final). CSS nuevo al final de `styles.css` con prefijos `og/oc/wb/ux/os/ob/od/oq`. Home intacto; SEO local, CRO, cursos y tracking sin cambios. Sin cifras inventadas (rótulos "Ilustrativo"/"Datos de ejemplo"). Reglas viejas `.of-chatwin/.of-bw/.of-camp/.of-wf/.of-shop/.of-board/.of-dash/.of-qa` quedan sin uso (limpiar luego).
 
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
