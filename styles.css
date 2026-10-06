@@ -4504,7 +4504,7 @@ main { padding-top: var(--nav-h); }
 .sp-climb { overflow: clip; }
 
 /* Franja de cifras con 4 elementos (páginas de servicio); la de 5 del home no cambia */
-.sp-intro + .nos-stats { margin-top: var(--space-6); }
+.sp-curve + .nos-stats { width: min(100%, 1040px); margin: var(--space-2) auto 0; }
 .nos-stats--4 ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 1000px) {
   .nos-stats--4 ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
