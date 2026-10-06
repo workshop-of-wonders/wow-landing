@@ -4525,13 +4525,7 @@ main { padding-top: var(--nav-h); }
 /* WORKSHOP de SEO: carrusel curvo en perspectiva (guía de la dueña). El caso del centro es el más grande y plano; a los lados las tarjetas son más chicas
    e inclinadas hacia el centro, y las de los extremos se desvanecen. Nombre y servicio van dentro de cada tarjeta con un botón circular de flecha;
    abajo, flechas y puntos. Máximo 7 tarjetas a la vez, una por caso, sin repetir. js/servicios.js calcula tamaño, ángulo y posición de cada una. */
-.sp-sec--center > .eyebrow, .sp-sec--center > h2, .sp-sec--center > .sp-lead { margin-left: auto; margin-right: auto; text-align: center; }
-.sp-sec--center > h2 { max-width: 20em; font-size: clamp(30px, 4vw, 54px); line-height: 1.12; }
-.sp-hl { position: relative; display: inline-block; color: #5b21d6; white-space: nowrap; }
-.sp-hl::after { content: ""; position: absolute; left: -2%; right: -2%; bottom: -.14em; height: .26em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 13 Q80 4 150 10 T297 8' fill='none' stroke='%23dce157' stroke-width='7' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
-.sp-hl::before { content: ""; position: absolute; right: -.95em; top: -.5em; width: .8em; height: .8em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23dce157' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M30 4 L24 14'/%3E%3Cpath d='M38 18 L26 22'/%3E%3Cpath d='M32 34 L22 32'/%3E%3C/svg%3E") center / contain no-repeat; }
-.sp-sec--center > .sp-lead { max-width: 34em; margin-bottom: var(--space-3); color: #5a4a66; }
-.sp-cv-more { display: flex; align-items: center; gap: 8px; width: fit-content; margin: 0 auto var(--space-2); box-shadow: 0 10px 26px rgba(220, 225, 87, .5); }
+.sp-hl { color: #5b21d6; }   /* "nuestro taller": mismo título que las demás secciones, con la palabra en violeta (sin subrayado) */
 .sp-curve { position: relative; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .sp-curve.is-drag { cursor: grabbing; }
 .sp-cv-track { position: relative; height: var(--cv-h, 420px); }
