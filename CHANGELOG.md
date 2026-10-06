@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html: ajustes de la usuaria.** Solo colores de marca (zonas: blanco, cloud, azul `--blue`, lima; se quitan pasteles y azules ajenos), se eliminan las frases manuscritas (y la fuente Caveat), los botones "Explora servicios de…", el eyebrow numerado de cada zona (ahora mini pill con el nombre del lab, enlazada), los puntos de las pills de salto y el botón "Ver nuestro trabajo" del héroe.
+
 - **2026-10-06 — servicios.html como "Bienvenido al workshop".** Se reemplaza el listado por: héroe morado con arco WOW y chips ("Un taller completo para construir marcas que quieren *más.*"), pills de salto y 4 zonas del taller (01 El taller de diseño, 02 El laboratorio de crecimiento, 03 La sala de datos, 04 La academia WOW), cada una con titular + CTA, escena animada propia en CSS (laptop/paleta/celular; buscador+barras; panel de datos; clase con play y checks), nota manuscrita (Caveat, añadida a la URL de Google Fonts) y tarjetas blancas con ícono SVG (`sv-*`, `hb-card--w`). Enlaces, textos de cada servicio, FAQ y JSON-LD intactos; el H1 pasa a "Un taller completo…" y se mantiene la frase SEO en el eyebrow y el subtítulo. Home intacto.
 
 - **2026-10-06 — Capa WOW para listas y tarjetas básicas.** Chips de `.of-chips`/`.of-when`/`.of-notes` pasan a stickers de color con estrella (máscara `icon-star.svg`), inclinados (propiedad `rotate`, para no chocar con el `transform` de `.rv`) y con aparición escalonada (`sp-reveal` + `rv` en el HTML de las páginas). Tarjetas numeradas de las escenas (`og/oc/wb/ux/os/od/oq`): número grande en contorno al fondo y la activa se pinta de lima. Íconos propios por tarjeta quedan pendientes.
