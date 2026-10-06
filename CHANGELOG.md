@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — Labs: trabajo igual al de servicios + tarjetas con más WOW.** Los dos Labs usan el carrusel curvo `#spCurve` (7 casos, popup de caso, cifras) en vez de la grilla de fotos; se cargan `cases.js` y `project-popup.js`. Las `hb-card` (servicios.html y Labs) pasan a tarjetas de color sólido (morado, lima, rosa, azul, durazno) con número outline grande, leve inclinación y flecha circular que gira al hover. `.lb-case` queda sin uso.
+
 - **2026-10-06 — Redeploy de producción.** El merge del PR #104 (`4896345`) no generó despliegue de Production en Vercel (solo Previews); este commit fuerza uno para publicar listado de servicios, Labs y portafolio. Sin cambios de código.
 
 - **2026-10-06 — Portafolio al estilo WOW.** `portafolio.html`: héroe con abanico animado de 3 casos y etiquetas flotantes, muro de proyectos con palabra outline TRABAJO y eyebrow. Tarjetas, lightbox y JS sin cambios (verificado que abre). 404 ya estaba lista. Con esto todas las páginas públicas quedan en estilo WOW. Home intacto.
