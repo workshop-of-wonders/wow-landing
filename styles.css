@@ -4504,7 +4504,7 @@ main { padding-top: var(--nav-h); }
 .sp-climb { overflow: clip; }
 
 /* Franja de cifras con 4 elementos (páginas de servicio); la de 5 del home no cambia */
-.sp-intro + .nos-stats { margin-top: var(--space-6); }
+.sp-curve + .nos-stats { width: min(100%, 1040px); margin: var(--space-2) auto 0; }
 .nos-stats--4 ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 1000px) {
   .nos-stats--4 ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -4522,26 +4522,22 @@ main { padding-top: var(--nav-h); }
 .nos-stats--plain li:nth-child(3) .proof-num { color: #ea580c; }
 .nos-stats--plain li:nth-child(4) .proof-num { color: var(--purple); }
 
-/* WORKSHOP de SEO: un caso destacado con su resultado + un segundo caso en pequeño */
-.sp-case { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-6); align-items: center; margin-top: var(--space-4); }
-.sp-case-media.svc-work-teaser-item { aspect-ratio: 4 / 3; border-radius: 28px; box-shadow: 0 24px 60px rgba(56, 7, 87, .18); }
-.sp-case-media span, .sp-case-mini-media span { display: none; }
-.sp-case-kicker { margin: 0 0 var(--space-1); font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); }
-.sp-case-num { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px var(--space-2); margin: 0 0 var(--space-2); }
-.sp-case-num b { font-family: var(--font-display); font-weight: 400; font-size: clamp(72px, 9vw, 128px); line-height: .95; color: var(--magenta); background: linear-gradient(transparent 64%, var(--lima) 64%); padding: 0 6px; }
-.sp-case-num span { max-width: 14em; font-size: 17px; line-height: 1.35; font-weight: 600; color: var(--purple); }
-.sp-case-body h3 { margin: 0 0 var(--space-2); font-size: clamp(22px, 2.4vw, 32px); line-height: 1.15; color: var(--purple); }
-.sp-case-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 var(--space-3); padding: 0; }
-.sp-case-tags li { padding: 6px 12px; border-radius: 999px; background: var(--cloud); color: var(--purple); font-size: 13px; font-weight: 600; }
-.sp-case-cta { font: inherit; font-weight: 700; color: var(--purple); background: none; border: 0; border-bottom: 2px solid var(--lima); padding: 0 0 2px; cursor: pointer; }
-.sp-case-cta:hover { color: var(--magenta); }
-.sp-case-mini { display: grid; grid-template-columns: 200px minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid rgba(56, 7, 87, .14); }
-.sp-case-mini-media.svc-work-teaser-item { aspect-ratio: 4 / 3; border-radius: 16px; }
-.sp-case-mini-body h3 { margin: 0; font-size: 24px; color: var(--purple); }
-.sp-case-mini-body p:not(.sp-case-kicker) { margin: 4px 0 0; font-size: 16px; }
-.sp-case ~ .sp-more { margin-top: var(--space-4); }
-@media (max-width: 900px) {
-  .sp-case { grid-template-columns: 1fr; gap: var(--space-3); }
-  .sp-case-mini { grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-2); }
-  .sp-case-cta--mini { grid-column: 1 / -1; justify-self: start; }
-}
+/* WORKSHOP de SEO: carrusel curvo en perspectiva (guía de la dueña). El caso del centro es el más grande y plano; a los lados las tarjetas son más chicas
+   e inclinadas hacia el centro, y las de los extremos se desvanecen. Nombre y servicio van dentro de cada tarjeta con un botón circular de flecha;
+   abajo, flechas y puntos. Máximo 7 tarjetas a la vez, una por caso, sin repetir. js/servicios.js calcula tamaño, ángulo y posición de cada una. */
+.sp-hl { color: #5b21d6; }   /* "nuestro taller": mismo título que las demás secciones, con la palabra en violeta (sin subrayado) */
+.sp-curve { position: relative; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.sp-curve.is-drag { cursor: grabbing; }
+.sp-cv-track { position: relative; height: var(--cv-h, 420px); }
+.sp-cv-item { position: absolute; left: 50%; top: 0; height: 100%; will-change: transform; }
+.sp-cv-card.svc-work-teaser-item { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: auto; border-radius: 1.5em; box-shadow: 0 18px 38px rgba(56, 7, 87, .25); backface-visibility: hidden; cursor: pointer; font-size: 16px; background: #2a1245; }
+.sp-cv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: none; }
+.sp-cv-card.svc-work-teaser-item:hover img { transform: none; }
+.sp-cv-card.has-case::after { display: none; }
+.sp-cv-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(20, 6, 40, .86) 0, rgba(20, 6, 40, .25) 42%, transparent 70%); pointer-events: none; }
+.sp-cv-card.svc-work-teaser-item > span.sp-cv-meta { position: absolute; z-index: 2; left: 0; bottom: 0; right: 4.2em; display: grid; gap: .25em; padding: 0 0 1.1em 1.1em; background: none; text-align: left; font-weight: 400; }
+.sp-cv-meta b { font-family: var(--font-display); font-weight: 400; font-size: 1.55em; line-height: 1.02; color: var(--white); }
+.sp-cv-meta em { font-style: normal; font-size: .9em; line-height: 1.25; color: rgba(255, 255, 255, .92); }
+.sp-cv-go { position: absolute; z-index: 2; right: .9em; bottom: .9em; display: grid; place-items: center; width: 2.5em; height: 2.5em; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 50%; color: var(--white); font-style: normal; font-size: 1.1em; transition: background .2s ease, color .2s ease; }
+.sp-cv-card:hover .sp-cv-go { background: var(--lima); border-color: var(--lima); color: var(--purple); }
+
