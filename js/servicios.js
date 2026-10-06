@@ -173,11 +173,3 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }, { threshold: 0.5 });
   io.observe(vis);
 })();
-
-/* Botones "Ver caso" del WORKSHOP: abren el mismo popup que la tarjeta con foto (la que enlaza project-popup.js). */
-document.addEventListener('click', function (e) {
-  var btn = e.target.closest && e.target.closest('[data-case]');
-  if (!btn) return;
-  var card = document.querySelector('.svc-work-teaser-item[data-project="' + btn.getAttribute('data-case') + '"]');
-  if (card) card.click();
-});

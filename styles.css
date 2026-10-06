@@ -4522,26 +4522,33 @@ main { padding-top: var(--nav-h); }
 .nos-stats--plain li:nth-child(3) .proof-num { color: #ea580c; }
 .nos-stats--plain li:nth-child(4) .proof-num { color: var(--purple); }
 
-/* WORKSHOP de SEO: un caso destacado con su resultado + un segundo caso en pequeño */
-.sp-case { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-6); align-items: center; margin-top: var(--space-4); }
-.sp-case-media.svc-work-teaser-item { aspect-ratio: 4 / 3; border-radius: 28px; box-shadow: 0 24px 60px rgba(56, 7, 87, .18); }
-.sp-case-media span, .sp-case-mini-media span { display: none; }
-.sp-case-kicker { margin: 0 0 var(--space-1); font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); }
-.sp-case-num { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px var(--space-2); margin: 0 0 var(--space-2); }
-.sp-case-num b { font-family: var(--font-display); font-weight: 400; font-size: clamp(72px, 9vw, 128px); line-height: .95; color: var(--magenta); background: linear-gradient(transparent 64%, var(--lima) 64%); padding: 0 6px; }
-.sp-case-num span { max-width: 14em; font-size: 17px; line-height: 1.35; font-weight: 600; color: var(--purple); }
-.sp-case-body h3 { margin: 0 0 var(--space-2); font-size: clamp(22px, 2.4vw, 32px); line-height: 1.15; color: var(--purple); }
-.sp-case-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 var(--space-3); padding: 0; }
-.sp-case-tags li { padding: 6px 12px; border-radius: 999px; background: var(--cloud); color: var(--purple); font-size: 13px; font-weight: 600; }
-.sp-case-cta { font: inherit; font-weight: 700; color: var(--purple); background: none; border: 0; border-bottom: 2px solid var(--lima); padding: 0 0 2px; cursor: pointer; }
-.sp-case-cta:hover { color: var(--magenta); }
-.sp-case-mini { display: grid; grid-template-columns: 200px minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid rgba(56, 7, 87, .14); }
-.sp-case-mini-media.svc-work-teaser-item { aspect-ratio: 4 / 3; border-radius: 16px; }
-.sp-case-mini-body h3 { margin: 0; font-size: 24px; color: var(--purple); }
-.sp-case-mini-body p:not(.sp-case-kicker) { margin: 4px 0 0; font-size: 16px; }
-.sp-case ~ .sp-more { margin-top: var(--space-4); }
+/* WORKSHOP de SEO: mosaico de casos de distinto tamaño (web, SEO y marketing), con un bloque lima de cierre hacia el portafolio */
+.sp-mosaic { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 210px; gap: var(--space-2); margin-top: var(--space-4); }
+.sp-tile.svc-work-teaser-item { aspect-ratio: auto; border-radius: 22px; transition: transform .25s ease, box-shadow .25s ease; }
+.sp-tile.svc-work-teaser-item:hover { transform: translateY(-5px) rotate(-.4deg); box-shadow: 0 22px 44px rgba(56, 7, 87, .22); }
+.sp-tile--a { grid-column: 1 / span 7; grid-row: span 2; }
+.sp-tile--b { grid-column: 8 / span 5; } .sp-tile--c { grid-column: 8 / span 5; }
+.sp-tile--d { grid-column: 1 / span 3; } .sp-tile--e { grid-column: 4 / span 4; }
+.sp-tile.svc-work-teaser-item > span { display: grid; gap: 2px; padding: 40px 18px 16px; background: linear-gradient(0deg, rgba(26, 19, 32, .88), rgba(26, 19, 32, 0)); font-weight: 400; text-align: left; }
+.sp-tile.svc-work-teaser-item > span b { font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 1.7vw, 25px); line-height: 1.1; color: var(--white); }
+.sp-tile.svc-work-teaser-item > span em { font-style: normal; font-size: 13.5px; line-height: 1.35; color: var(--cloud); }
+.sp-tile--a.svc-work-teaser-item > span b { font-size: clamp(24px, 2.4vw, 34px); }
+.sp-tile--logo.svc-work-teaser-item { background: var(--cloud); box-shadow: none; }
+.sp-tile--d.svc-work-teaser-item { background: #f6e9f2; } .sp-tile--e.svc-work-teaser-item { background: #e9f1fb; }
+.sp-tile--logo.svc-work-teaser-item img { object-fit: contain; padding: 16% 18% 30%; }
+.sp-tile--logo.svc-work-teaser-item > span { background: none; padding: 0 18px 14px; }
+.sp-tile--logo.svc-work-teaser-item > span b { color: var(--purple); font-size: 18px; } .sp-tile--logo.svc-work-teaser-item > span em { color: #5a4a66; }
+.sp-tile--cta { position: relative; grid-column: 8 / span 5; display: flex; align-items: flex-end; padding: var(--space-3); border-radius: 22px; background: var(--lima); color: var(--purple); overflow: hidden; transition: transform .25s ease; }
+.sp-tile--cta:hover { transform: translateY(-5px) rotate(.4deg); }
+.sp-tile-cta-text { position: relative; z-index: 1; font-family: var(--font-display); font-size: clamp(24px, 2.4vw, 34px); line-height: 1.1; }
+.sp-tile-cta-text b { display: inline-block; font-weight: 400; transition: transform .25s ease; } .sp-tile--cta:hover .sp-tile-cta-text b { transform: translateX(6px); }
+.sp-tile-cta-mark { position: absolute; right: -24px; top: -26px; width: 190px; height: 190px; background: var(--purple); opacity: .9; -webkit-mask: url(design-system/logo/wow-mark.svg) center / contain no-repeat; mask: url(design-system/logo/wow-mark.svg) center / contain no-repeat; transform: rotate(14deg); transition: transform .4s cubic-bezier(.3, 1.4, .5, 1); }
+.sp-tile--cta:hover .sp-tile-cta-mark { transform: rotate(32deg) scale(1.1); }
 @media (max-width: 900px) {
-  .sp-case { grid-template-columns: 1fr; gap: var(--space-3); }
-  .sp-case-mini { grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-2); }
-  .sp-case-cta--mini { grid-column: 1 / -1; justify-self: start; }
+  .sp-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 180px; }
+  .sp-tile--a { grid-column: 1 / -1; grid-row: span 2; }
+  .sp-tile--b, .sp-tile--c, .sp-tile--d, .sp-tile--e { grid-column: auto; grid-row: auto; }
+  .sp-tile--cta { grid-column: 1 / -1; min-height: 110px; }
+  .sp-tile-cta-mark { width: 120px; height: 120px; right: -14px; top: -34px; }
 }
+@media (prefers-reduced-motion: reduce) { .sp-tile.svc-work-teaser-item, .sp-tile--cta, .sp-tile-cta-mark, .sp-tile-cta-text b { transition: none; } }
