@@ -174,122 +174,115 @@ document.getElementById('year').textContent = new Date().getFullYear();
   io.observe(vis);
 })();
 
-/* WORKSHOP: muro curvo en perspectiva. Cada casilla tiene una posición continua p respecto al centro; de |p| salen sus tres medidas, tomadas de la imagen de
-   referencia de la dueña: ancho del elemento (casi constante al centro y creciendo de golpe hacia los extremos), ángulo rotateY (de cara al centro, ~52° en
-   |p|=3) y proporción alto/ancho. La x sale de integrar el ancho visible (ancho·cos del ángulo) + hueco, así el espaciado es parejo. N casos y M=2N
-   casillas (las copias son decorativas y reenvían el clic al original). Avanza sola, pausable con mouse, foco o botón (WCAG 2.2.2), y se arrastra. */
+/* WORKSHOP: carrusel curvo en perspectiva (guía de la dueña). 7 casos = 7 tarjetas, una por caso y sin copias: máximo 7 a la vez. Cada tarjeta tiene una
+   posición continua p respecto al centro; de |p| salen sus medidas, interpoladas entre las 4 posiciones de la guía (centro grande y plano; ±1 pequeñas;
+   ±2 más altas e inclinadas; ±3 muy inclinadas y desvanecidas). Un clic en una tarjeta lateral la lleva al centro; un clic en la central abre el caso.
+   Avanza solo cada ~4.5 s (pausable con mouse, foco o botón; WCAG 2.2.2), con flechas, puntos, arrastre y teclado. Con movimiento reducido no avanza solo. */
 (function () {
   var stage = document.getElementById('spCurve');
   if (!stage) return;
   var track = stage.querySelector('.sp-cv-track');
   var toggle = document.getElementById('spCurveToggle');
-  var caption = document.getElementById('spCvCaption');
-  var originals = [].slice.call(track.querySelectorAll('.sp-cv-item'));
-  var N = originals.length, M = N * 2;
-  var slots = originals.slice();
-  for (var k = N; k < M; k++) {
-    var src = originals[k % N];
-    var cl = src.cloneNode(true);
-    cl.setAttribute('aria-hidden', 'true');
-    var cc = cl.querySelector('.sp-cv-card');
-    cc.removeAttribute('data-project');            // así project-popup.js no lo trata como un caso más
-    cc.setAttribute('data-clone', '');
-    cc.addEventListener('click', (function (orig) { return function () { orig.click(); }; })(src.querySelector('.sp-cv-card')));
-    track.appendChild(cl);
-    slots.push(cl);
-  }
+  var dots = [].slice.call(document.querySelectorAll('#spCvDots button'));
+  var items = [].slice.call(track.querySelectorAll('.sp-cv-item'));
+  var N = items.length;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce && toggle) toggle.hidden = true;
-  var SPEED = 0.16;                   // casos por segundo (≈ 6 s por caso)
-  var offset = 0, target = null, last = null, visible = true, shown = -1;
+  // medidas de la guía (ancho de diseño 1983px): ancho del elemento, alto, ángulo, separación del centro y opacidad, para |p| = 0, 1, 2, 3
+  var T = { w: [445, 252, 330, 270], h: [345, 332, 440, 400], a: [0, 14, 26, 54], x: [0, 352, 640, 860], o: [1, 1, 1, .55] };
+  var k = 1, offset = 0, target = null, last = null, visible = true, acc = 0, moved = 0, current = -1;
   var hold = { hover: false, focus: false, manual: false, drag: false };
-  var w0, gap, cardH, table = [], STEP = 0.05, PMAX = 7.5, spacing = 100;
   function paused() { return reduce || hold.hover || hold.focus || hold.manual || hold.drag; }
-  function wEl(ap) { return w0 * (1 + 0.045 * Math.pow(Math.min(ap, 3.3), 3.4)); }
-  function ang(ap) { return Math.min(58, 52 * Math.pow(Math.min(ap, 3.6) / 3, 1.7)); }
-  function ratio(ap) { return Math.max(0.95, 1.45 - 0.41 * Math.pow(Math.min(ap, 3.3) / 3, 1.6)); }
-  function vis(ap) { return wEl(ap) * Math.cos(ang(ap) * Math.PI / 180); }
+  function lerp(arr, ap) {
+    if (ap >= 3) return arr[3] + (arr[3] - arr[2]) * Math.min(ap - 3, .6) * .5;
+    var i = Math.floor(ap), f = ap - i;
+    f = f * f * (3 - 2 * f);
+    return arr[i] + (arr[i + 1] - arr[i]) * f;
+  }
   function measure() {
     var W = stage.clientWidth;
-    var k = W < 720 ? W / 931 * 1.6 : Math.min(1.1, W / 931 * 0.7);
-    w0 = 87 * k; gap = 8 * k + 2;
-    cardH = Math.round(wEl(3.3) * ratio(3.3) * 1.18);
-    stage.style.setProperty('--cv-h', (cardH + 10) + 'px');
-    table = [0];
-    for (var i = 1; i <= PMAX / STEP; i++) table.push(table[i - 1] + (vis((i - 0.5) * STEP) + gap) * STEP);
-    spacing = table[Math.round(2 / STEP)] / 2;
-  }
-  function xOf(ap) {
-    var f = Math.min(ap, PMAX - STEP) / STEP, i = Math.floor(f);
-    return table[i] + (table[i + 1] - table[i]) * (f - i);
+    k = W < 720 ? 0.56 : Math.min(1.05, Math.max(0.6, W / 1983));
+    stage.style.setProperty('--cv-h', Math.round(T.h[2] * 1.2 * k + 24) + 'px');
   }
   function layout() {
-    var best = 0, bd = 1e9;
-    for (var i = 0; i < M; i++) {
-      var p = (((i - offset) % M) + M + M / 2) % M - M / 2;
+    var best = 0, bd = 9;
+    for (var i = 0; i < N; i++) {
+      var p = (((i - offset) % N) + N + N / 2) % N - N / 2;
       var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
       if (ap < bd) { bd = ap; best = i; }
-      var w = wEl(ap), h = w * ratio(ap), x = sg * xOf(ap);
-      var el = slots[i];
+      var w = lerp(T.w, ap) * k, h = lerp(T.h, ap) * k, ang = lerp(T.a, ap), x = sg * lerp(T.x, ap) * k;
+      var op = ap >= 3 ? Math.max(0, .55 * (1 - (ap - 3) / .5)) : lerp(T.o, ap);
+      var el = items[i];
       el.style.width = w + 'px';
       el.style.transform = 'translate3d(' + (x - w / 2) + 'px,0,0)';
-      var hide = ap > 5.8;
-      el.style.visibility = hide ? 'hidden' : 'visible';
+      el.style.opacity = op;
+      el.style.visibility = op <= 0.01 ? 'hidden' : 'visible';
       el.style.zIndex = String(100 - Math.round(ap * 10));
       var card = el.firstElementChild;
       card.style.height = h + 'px';
-      card.style.top = ((cardH - h) / 2) + 'px';
-      card.style.transform = 'perspective(600px) rotateY(' + (-sg * ang(ap)) + 'deg)';
+      card.style.top = ((stage.querySelector('.sp-cv-track').clientHeight - h) / 2) + 'px';
+      card.style.fontSize = Math.max(11, w * 0.046) + 'px';
+      card.style.transform = 'perspective(' + Math.round(760 * k) + 'px) rotateY(' + (-sg * ang) + 'deg)';
+      var fh = Math.max(0, Math.min(1, 1 - ap / 0.9));       // en el centro se ve la foto horizontal; hacia los lados, la vertical
+      card.children[0].style.opacity = fh; card.children[1].style.opacity = 1 - fh;
     }
-    var idx = best % N;
-    if (idx !== shown && caption) { shown = idx; setCaption(idx); }
+    if (best !== current) { current = best; dots.forEach(function (d, n) { d.setAttribute('aria-current', n === best ? 'true' : 'false'); }); }
   }
-  function setCaption(idx) {
-    var it = originals[idx];
-    caption.classList.add('is-swap');
-    setTimeout(function () {
-      caption.querySelector('b').textContent = '#' + it.getAttribute('data-n');
-      caption.querySelector('span').textContent = it.querySelector('.sp-cv-card').getAttribute('data-project');
-      caption.querySelector('small').textContent = it.getAttribute('data-what');
-      caption.classList.remove('is-swap');
-    }, shown === idx && caption.querySelector('span').textContent === '' ? 0 : 160);
-  }
+  function goTo(n) { var base = Math.round(target !== null ? target : offset); target = base + (((n - base) % N) + N + N / 2) % N - N / 2; acc = -1.5; if (reduce) { offset = target; target = null; layout(); } }
+  function step(d) { var base = Math.round(target !== null ? target : offset); target = base + d; acc = -1.5; if (reduce) { offset = target; target = null; layout(); } }
   function frame(ts) {
     if (last === null) last = ts;
     var dt = Math.min(0.1, (ts - last) / 1000);
     last = ts;
     if (visible) {
       if (target !== null) {
-        offset += (target - offset) * Math.min(1, dt * 6);
+        offset += (target - offset) * Math.min(1, dt * 5.5);
         if (Math.abs(target - offset) < 0.002) { offset = target; target = null; }
-      } else if (!paused()) offset += SPEED * dt;
+      } else if (!paused()) {
+        acc += dt;
+        if (acc >= 4.5) { acc = 0; step(1); }
+      }
       layout();
     }
     requestAnimationFrame(frame);
   }
-  // arrastrar
-  var startX = 0, startOff = 0, moved = 0, pid = null;
+  // flechas y puntos
+  var prev = document.getElementById('spCvPrev'), next = document.getElementById('spCvNext');
+  if (prev) prev.addEventListener('click', function () { step(-1); });
+  if (next) next.addEventListener('click', function () { step(1); });
+  dots.forEach(function (d, n) { d.addEventListener('click', function () { goTo(n); }); });
+  // arrastrar: al soltar se acomoda en el caso más cercano
+  var startX = 0, startOff = 0, pid = null;
   stage.addEventListener('pointerdown', function (e) { pid = e.pointerId; startX = e.clientX; startOff = offset; moved = 0; target = null; });
   stage.addEventListener('pointermove', function (e) {
     if (pid !== e.pointerId) return;
     var dx = e.clientX - startX;
     moved = Math.max(moved, Math.abs(dx));
-    if (moved > 6) { hold.drag = true; stage.classList.add('is-drag'); offset = startOff - dx / spacing; if (reduce) layout(); }
+    if (moved > 6) { hold.drag = true; stage.classList.add('is-drag'); offset = startOff - dx / (330 * k); if (reduce) layout(); }
   });
-  function endDrag(e) { if (pid !== e.pointerId) return; pid = null; hold.drag = false; stage.classList.remove('is-drag'); }
+  function endDrag(e) {
+    if (pid !== e.pointerId) return;
+    pid = null; stage.classList.remove('is-drag');
+    if (hold.drag) { hold.drag = false; target = Math.round(offset); acc = -1.5; if (reduce) { offset = target; target = null; layout(); } }
+  }
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
-  // si se arrastró, el clic que sigue no debe abrir un caso
-  stage.addEventListener('click', function (e) { if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
+  // clics: tras arrastrar no se abre nada; en una tarjeta lateral solo se lleva al centro; en la central se abre el caso
+  stage.addEventListener('click', function (e) {
+    if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; return; }
+    var card = e.target.closest && e.target.closest('.sp-cv-card');
+    if (!card) return;
+    var idx = items.indexOf(card.parentElement);
+    var p = (((idx - offset) % N) + N + N / 2) % N - N / 2;
+    if (Math.abs(p) > 0.35) { e.stopPropagation(); e.preventDefault(); step(Math.round(p)); }
+  }, true);
   stage.addEventListener('mouseenter', function () { hold.hover = true; });
   stage.addEventListener('mouseleave', function () { hold.hover = false; });
-  // foco de teclado: pausa y centra la tarjeta enfocada
+  // foco de teclado en una tarjeta: pausa y la lleva al centro
   stage.addEventListener('focusin', function (e) {
     var item = e.target.closest && e.target.closest('.sp-cv-item');
     if (!item || !(e.target.matches && e.target.matches(':focus-visible'))) return;
-    hold.focus = true;
-    var idx = originals.indexOf(item);
-    target = idx + Math.round((offset - idx) / M) * M;
+    hold.focus = true; goTo(items.indexOf(item));
   });
   stage.addEventListener('focusout', function () { hold.focus = false; });
   // al cerrar un caso el foco vuelve a la tarjeta: si el mouse ya no está encima, se reanuda
