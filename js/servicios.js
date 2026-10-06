@@ -174,56 +174,124 @@ document.getElementById('year').textContent = new Date().getFullYear();
   io.observe(vis);
 })();
 
-/* WORKSHOP: banda transportadora. Las tarjetas avanzan hacia la derecha a velocidad constante; la que sale por la derecha pasa al inicio (queda
-   detrás de la máquina y vuelve a "salir" de ella), así hay una sola copia de cada caso (todas con su popup). Se pausa con el mouse, con el foco
-   de teclado o con el botón de pausa (WCAG 2.2.2); con movimiento reducido no se anima (la ventana pasa a scroll horizontal, ver CSS). */
+/* WORKSHOP: muro curvo en perspectiva. Hay N casos y M=2N casillas (las N últimas son copias decorativas que reenvían el clic al original, para llenar
+   los extremos). Cada casilla tiene una posición continua p respecto al centro; de p salen su tamaño (más grande al borde), su ángulo (de cara al
+   centro) y su x. Avanza sola (pausable con el mouse, el teclado o el botón; WCAG 2.2.2) y se arrastra. Con movimiento reducido no avanza sola. */
 (function () {
-  var belt = document.getElementById('spBelt');
-  if (!belt) return;
-  var toggle = document.getElementById('spBeltToggle');
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { if (toggle) toggle.hidden = true; return; }
-  var win = belt.querySelector('.sp-belt-window');
-  var track = belt.querySelector('.sp-belt-track');
-  var SPEED = 38;                // px por segundo
-  var x = 0, last = null;
-  var hold = { hover: false, focus: false, manual: false };
-  function isPaused() { return hold.hover || hold.focus || hold.manual; }
-  function sync() { belt.classList.toggle('is-paused', isPaused()); }
-  function gap() { return parseFloat(getComputedStyle(track).columnGap) || 0; }
-  function apply() { track.style.transform = 'translate3d(' + x + 'px,0,0)'; }
-  // manda al inicio las tarjetas que ya salieron por la derecha de la ventana (y compensa x para que nada salte)
-  function recycle() {
-    for (var guard = 0; guard < 12; guard++) {
-      var lastCard = track.lastElementChild;
-      var winRight = win.getBoundingClientRect().right;
-      var left = track.getBoundingClientRect().left + lastCard.offsetLeft;
-      if (left <= winRight + 8) return;
-      x -= lastCard.offsetWidth + gap();
-      track.insertBefore(lastCard, track.firstElementChild);
-      apply();
+  var stage = document.getElementById('spCurve');
+  if (!stage) return;
+  var track = stage.querySelector('.sp-cv-track');
+  var toggle = document.getElementById('spCurveToggle');
+  var originals = [].slice.call(track.querySelectorAll('.sp-cv-item'));
+  var N = originals.length, M = N * 2;                 // dos vueltas completas: así el ciclo de copias es consistente y no se repite un caso a la vista
+  var slots = originals.slice();
+  for (var k = N; k < M; k++) {
+    var src = originals[k % N];
+    var cl = src.cloneNode(true);
+    cl.setAttribute('aria-hidden', 'true');
+    var card = cl.querySelector('.sp-cv-card');
+    card.removeAttribute('data-project');            // así project-popup.js no lo trata como un caso más
+    card.setAttribute('data-clone', '');
+    card.addEventListener('click', (function (orig) { return function () { orig.click(); }; })(src.querySelector('.sp-cv-card')));
+    track.appendChild(cl);
+    slots.push(cl);
+  }
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce && toggle) toggle.hidden = true;
+  var SPEED = 0.16;                   // casos por segundo (≈ 6 s por caso)
+  var offset = 0, target = null, last = null, visible = true;
+  var hold = { hover: false, focus: false, manual: false, drag: false };
+  var base, gap, cardH, labelH = 86, a = 0.56, b = 0.44, K = 4, E = 1.15;
+  function paused() { return reduce || hold.hover || hold.focus || hold.manual || hold.drag; }
+  function measure() {
+    var W = stage.clientWidth;
+    base = W < 720 ? W * 0.4 : Math.max(112, Math.min(300, W * 0.17));
+    gap = Math.max(8, Math.min(18, W * 0.011));
+    cardH = Math.round(base * 1.34);
+    stage.style.setProperty('--cv-h', (cardH + labelH + 12) + 'px');
+    stage.style.setProperty('--cv-label-top', (cardH + 18) + 'px');
+  }
+  function layout() {
+    var coef = b * base / ((E + 1) * Math.pow(K, E));
+    for (var i = 0; i < M; i++) {
+      var p = (((i - offset) % M) + M + M / 2) % M - M / 2;
+      var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
+      var s = a + b * Math.pow(ap / K, E);
+      var x = sg * ((base * a + gap) * ap + coef * Math.pow(ap, E + 1));
+      var w = base * s, h = w * 1.34;
+      var ang = -sg * Math.min(32, 9 * ap);
+      var fade = Math.max(0, Math.min(1, 1 - (ap - 4.4) / 1.0));
+      var el = slots[i];
+      el.style.width = w + 'px';
+      el.style.transform = 'translate3d(' + (x - w / 2) + 'px,0,0)';
+      el.style.opacity = fade;
+      el.style.visibility = fade === 0 ? 'hidden' : 'visible';
+      el.style.zIndex = String(100 - Math.round(ap * 10));
+      var card = el.firstElementChild;
+      card.style.height = h + 'px';
+      card.style.top = ((cardH - h) / 2) + 'px';
+      card.style.transform = 'perspective(850px) rotateY(' + ang + 'deg)';
     }
   }
   function frame(ts) {
     if (last === null) last = ts;
     var dt = Math.min(0.1, (ts - last) / 1000);
     last = ts;
-    if (!isPaused()) { x += SPEED * dt; apply(); recycle(); }
+    if (visible) {
+      if (target !== null) {
+        offset += (target - offset) * Math.min(1, dt * 6);
+        if (Math.abs(target - offset) < 0.002) { offset = target; target = null; }
+      } else if (!paused()) offset += SPEED * dt;
+      layout();
+    }
     requestAnimationFrame(frame);
   }
-  belt.addEventListener('mouseenter', function () { hold.hover = true; sync(); });
-  belt.addEventListener('mouseleave', function () { hold.hover = false; sync(); });
-  belt.addEventListener('focusin', function (e) { if (e.target.matches && e.target.matches(':focus-visible')) { hold.focus = true; sync(); } });
-  belt.addEventListener('focusout', function () { hold.focus = false; sync(); });
-  // al cerrar un caso el foco vuelve a la tarjeta: si el mouse ya no está sobre la banda, se reanuda
-  document.addEventListener('pointermove', function () { if (hold.focus && !belt.matches(':hover')) { hold.focus = false; sync(); } });
+  // arrastrar
+  var startX = 0, startOff = 0, moved = 0, pid = null;
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.target.closest && e.target.closest('.sp-cv-toggle')) return;
+    pid = e.pointerId; startX = e.clientX; startOff = offset; moved = 0; target = null;
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (pid !== e.pointerId) return;
+    var dx = e.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    if (moved > 6) {
+      hold.drag = true; stage.classList.add('is-drag');
+      offset = startOff - dx / (base * 0.78 + gap);
+      if (reduce) layout();
+    }
+  });
+  function endDrag(e) {
+    if (pid !== e.pointerId) return;
+    pid = null; hold.drag = false; stage.classList.remove('is-drag');
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  // si se arrastró, el clic que sigue no debe abrir un caso
+  stage.addEventListener('click', function (e) { if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
+  stage.addEventListener('mouseenter', function () { hold.hover = true; });
+  stage.addEventListener('mouseleave', function () { hold.hover = false; });
+  // foco de teclado: pausa y centra la tarjeta enfocada
+  stage.addEventListener('focusin', function (e) {
+    var item = e.target.closest && e.target.closest('.sp-cv-item');
+    if (!item || !(e.target.matches && e.target.matches(':focus-visible'))) return;
+    hold.focus = true;
+    var idx = originals.indexOf(item);
+    target = idx + Math.round((offset - idx) / M) * M;
+  });
+  stage.addEventListener('focusout', function () { hold.focus = false; });
+  // al cerrar un caso el foco vuelve a la tarjeta: si el mouse ya no está encima, se reanuda
+  document.addEventListener('pointermove', function () { if (hold.focus && !stage.matches(':hover')) hold.focus = false; });
   if (toggle) toggle.addEventListener('click', function () {
     hold.manual = !hold.manual;
     toggle.setAttribute('aria-pressed', hold.manual ? 'true' : 'false');
-    toggle.setAttribute('aria-label', hold.manual ? 'Reanudar la banda' : 'Pausar la banda');
-    toggle.firstElementChild.textContent = hold.manual ? '▶' : '❚❚';
-    sync();
+    toggle.querySelector('.sp-cv-ic').textContent = hold.manual ? '▶' : '❚❚';
+    toggle.querySelector('.sp-cv-tx').textContent = hold.manual ? 'Reanudar' : 'Pausar';
   });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; last = null; }).observe(stage);
   document.addEventListener('visibilitychange', function () { last = null; });
-  recycle();
+  window.addEventListener('resize', function () { measure(); layout(); });
+  measure(); layout();
   requestAnimationFrame(frame);
 })();
