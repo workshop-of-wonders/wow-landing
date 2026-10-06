@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — Capa WOW para listas y tarjetas básicas.** Chips de `.of-chips`/`.of-when`/`.of-notes` pasan a stickers de color con estrella (máscara `icon-star.svg`), inclinados (propiedad `rotate`, para no chocar con el `transform` de `.rv`) y con aparición escalonada (`sp-reveal` + `rv` en el HTML de las páginas). Tarjetas numeradas de las escenas (`og/oc/wb/ux/os/od/oq`): número grande en contorno al fondo y la activa se pinta de lima. Íconos propios por tarjeta quedan pendientes.
+
 - **2026-10-06 — Labs: trabajo igual al de servicios + tarjetas con más WOW.** Los dos Labs usan el carrusel curvo `#spCurve` (7 casos, popup de caso, cifras) en vez de la grilla de fotos; se cargan `cases.js` y `project-popup.js`. Las `hb-card` (servicios.html y Labs) pasan a tarjetas de color sólido (morado, lima, rosa, azul, durazno) con número outline grande, leve inclinación y flecha circular que gira al hover. `.lb-case` queda sin uso.
 
 - **2026-10-06 — Redeploy de producción.** El merge del PR #104 (`4896345`) no generó despliegue de Production en Vercel (solo Previews); este commit fuerza uno para publicar listado de servicios, Labs y portafolio. Sin cambios de código.
