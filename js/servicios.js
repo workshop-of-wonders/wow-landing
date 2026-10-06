@@ -176,7 +176,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* WORKSHOP: carrusel curvo en perspectiva (guía de la dueña). 7 casos = 7 tarjetas, una por caso y sin copias: máximo 7 a la vez. Cada tarjeta tiene una
    posición continua p respecto al centro; de |p| salen sus medidas, interpoladas entre las 4 posiciones de la guía (centro grande y plano; ±1 pequeñas;
-   ±2 más altas e inclinadas; ±3 muy inclinadas y desvanecidas). Un clic en una tarjeta lateral la lleva al centro; un clic en la central abre el caso.
+   ±2 más altas e inclinadas; ±3 muy inclinadas y desvanecidas). Un clic en cualquier tarjeta abre su caso.
    Avanza solo cada ~4.5 s (pausable con mouse, foco o botón; WCAG 2.2.2), con flechas, puntos, arrastre y teclado. Con movimiento reducido no avanza solo. */
 (function () {
   var stage = document.getElementById('spCurve');
@@ -267,14 +267,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
-  // clics: tras arrastrar no se abre nada; en una tarjeta lateral solo se lleva al centro; en la central se abre el caso
+  // clics: tras arrastrar no se abre nada; en cualquier tarjeta (central o lateral) un clic abre el caso (lo hace project-popup.js)
   stage.addEventListener('click', function (e) {
-    if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; return; }
-    var card = e.target.closest && e.target.closest('.sp-cv-card');
-    if (!card) return;
-    var idx = items.indexOf(card.parentElement);
-    var p = (((idx - offset) % N) + N + N / 2) % N - N / 2;
-    if (Math.abs(p) > 0.35) { e.stopPropagation(); e.preventDefault(); step(Math.round(p)); }
+    if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; }
   }, true);
   stage.addEventListener('mouseenter', function () { hold.hover = true; });
   stage.addEventListener('mouseleave', function () { hold.hover = false; });
