@@ -360,3 +360,36 @@ document.getElementById('year').textContent = new Date().getFullYear();
     });
   });
 })();
+
+/* servicios.html: pestañas de las zonas del taller (una a la vez; el contenido sigue en el HTML) */
+(function () {
+  var list = document.querySelector('.sv-tablist');
+  if (!list) return;
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  function show(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var p = document.getElementById(t.getAttribute('aria-controls'));
+      if (p) p.hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t); });
+    t.addEventListener('keydown', function (e) {
+      var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (n === null) return;
+      e.preventDefault();
+      show(tabs[(n + tabs.length) % tabs.length], true);
+    });
+  });
+  function fromHash() {
+    var h = (location.hash || '').slice(1);
+    var hit = tabs.filter(function (t) { return t.getAttribute('aria-controls') === h; })[0];
+    if (hit) show(hit);
+  }
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
+})();

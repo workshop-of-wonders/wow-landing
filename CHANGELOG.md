@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html con pestañas.** Las 4 zonas del taller (Diseño, Crecimiento, Datos, Cursos) pasan a pestañas: las píldoras bajo el héroe son un `tablist` (roles ARIA, flechas/Home/End, enlace con `#digital-experience`, `#growth-marketing`, `#marketing-intelligence`, `#cursos` abre la pestaña) y se muestra un panel a la vez sobre fondo cloud; el contenido de los 4 paneles sigue en el HTML (`hidden`). Lógica en `js/servicios.js` (bloque `.sv-tablist`). Las tarjetas ya no usan `sp-reveal` (dentro de un panel oculto nunca se activaría); entran con animación CSS al cambiar de pestaña. Se quitan los fondos por zona (blanco/morado). Largo de la sección: ~4.070 px → ~900 px.
+
 - **2026-10-06 — servicios.html: fondos solo del home.** Los fondos de zona usan únicamente los del home: blanco, cloud y morado (zonas: blanco → cloud → morado → blanco; tarjetas cloud sobre blanco y blancas sobre cloud/morado; palabra outline por fondo como en el home). Se quitaron el azul y el lima como fondo.
 
 - **2026-10-06 — servicios.html: ajustes de la usuaria.** Solo colores de marca (zonas: blanco, cloud, azul `--blue`, lima; se quitan pasteles y azules ajenos), se eliminan las frases manuscritas (y la fuente Caveat), los botones "Explora servicios de…", el eyebrow numerado de cada zona (ahora mini pill con el nombre del lab, enlazada), los puntos de las pills de salto y el botón "Ver nuestro trabajo" del héroe.
