@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — Ofertas animadas (8 servicios).** GEO, pauta, diseño web, UX/UI, e-commerce, diseño gráfico, analítica y consultoría pasan de maquetas estáticas a escenas que se mueven solas (chat que se construye, consola de campaña, sitio que cambia de capa, mapa→interfaz, recorrido de compra, sistema visual que cambia las piezas, tablero, ruido→KPIs). Motor `[data-seq]` en `js/servicios.js` (`data-mode` build/cycle, pausa con hover/fuera de pantalla, clic en un paso lo salta, reduced-motion = estado final). CSS nuevo al final de `styles.css` con prefijos `og/oc/wb/ux/os/ob/od/oq`. Home intacto; SEO local, CRO, cursos y tracking sin cambios. Sin cifras inventadas (rótulos "Ilustrativo"/"Datos de ejemplo"). Reglas viejas `.of-chatwin/.of-bw/.of-camp/.of-wf/.of-shop/.of-board/.of-dash/.of-qa` quedan sin uso (limpiar luego).
+
 Older entries (2026-09-25 and earlier): see `CHANGELOG-archive.md`.
 
 - **2026-10-05 — SEO, "Qué es": tarjeta a la izquierda.** La tarjeta morada (con la ilustración de intenciones) pasa a la izquierda y el título + párrafo a la derecha en escritorio (`order: -1` en `.sp-intro .sp-callout`); en móvil se apila con el título primero.

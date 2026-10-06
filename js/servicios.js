@@ -316,3 +316,47 @@ document.getElementById('year').textContent = new Date().getFullYear();
     if (triggers.length) on(triggers[0].getAttribute('data-hs-t'));
   });
 })();
+
+/* Escenas animadas de la sección de oferta (.seq). Un solo motor para todas: cuando la escena entra en pantalla avanza sola por sus pasos y repite;
+   fuera de pantalla se detiene; el mouse encima la pausa. El CSS de cada escena reacciona a las clases que pone aquí:
+   data-step="n", .cur-n (paso actual) y .on-1…on-n (pasos ya alcanzados, acumulativos).
+   data-mode="build": 0 → n, se mantiene y reinicia (la escena se "construye"); data-mode="cycle": 1 → n y vuelve a 1 (rota entre pantallas).
+   Con prefers-reduced-motion queda en su estado final (build) o en el primer paso (cycle). Un clic en [data-go="n"] salta a ese paso. */
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  [].forEach.call(document.querySelectorAll('[data-seq]'), function (el) {
+    var N = parseInt(el.getAttribute('data-steps'), 10) || 1;
+    var ms = parseInt(el.getAttribute('data-ms'), 10) || 1600;
+    var build = el.getAttribute('data-mode') === 'build';
+    var i = build ? 0 : 1, timer = null, visible = false, hover = false;
+    el.style.setProperty('--ms', ms + 'ms');
+    function set(n) {
+      i = n; el.setAttribute('data-step', n);
+      for (var k = 1; k <= N; k++) { el.classList.toggle('on-' + k, k <= n); el.classList.toggle('cur-' + k, k === n); }
+    }
+    function tick() {                              // modo cycle: 1 → n → 1
+      if (hover) return;
+      set(i >= N ? 1 : i + 1);
+    }
+    function build_tick() {                        // modo build: 0 → n, pausa en el estado completo y reinicio
+      if (hover) return;
+      if (i === N) { i = N + 1; return; }
+      if (i > N) { set(0); return; }
+      set(i + 1);
+    }
+    function start() { if (timer || reduce) return; timer = setInterval(build ? build_tick : tick, ms); }
+    function stop() { clearInterval(timer); timer = null; }
+    set(reduce ? (build ? N : 1) : (build ? 0 : 1));
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        visible = en[0].isIntersecting; el.classList.toggle('is-live', visible);
+        if (visible) { if (build && i === 0 && !reduce) setTimeout(function () { if (visible) set(1); }, 500); start(); } else stop();
+      }, { threshold: 0.35 }).observe(el);
+    } else { set(build ? N : 1); }
+    el.addEventListener('mouseenter', function () { hover = true; });
+    el.addEventListener('mouseleave', function () { hover = false; });
+    [].forEach.call(el.querySelectorAll('[data-go]'), function (b) {
+      b.addEventListener('click', function () { set(parseInt(b.getAttribute('data-go'), 10)); stop(); if (visible) start(); });
+    });
+  });
+})();
