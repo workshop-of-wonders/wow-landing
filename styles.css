@@ -5263,3 +5263,8 @@ main { padding-top: var(--nav-h); }
 .sv-tablist button[aria-selected="false"]:hover .sv-tn { background: rgba(220,225,87,.25); }
 @media (max-width: 900px) { .sv-tablist { padding: 0; } }
 @media (max-width: 640px) { .sv-tablist button { flex-direction: column; gap: 3px; padding: 10px 2px 9px; } .sv-ti { width: 17px; height: 17px; } .sv-tn { padding: 1px 6px; font-size: 9px; } .sv-tablist button[aria-selected="true"] { padding-bottom: 13px; } }
+/* misma posición del bloque de texto en todas las pestañas (la de Datos como referencia) */
+.sv-frame .sv-zone-in { align-items: start; }
+.sv-frame .sv-copy { padding-top: 77px; }
+@media (max-width: 900px) { .sv-frame .sv-copy { padding-top: 0; } }
+.sv-frame .sv-copy h2 { max-width: 16em; }

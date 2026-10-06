@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html: sin números en pestañas y bloque de texto alineado.** Se quita el contador "n/4" de las pestañas (quedan ícono + nombre). El bloque pill del lab / título / texto arranca a la misma altura en las 4 pestañas (referencia: Datos), con `align-items: start` y `padding-top` en `.sv-copy`; las separaciones internas ya eran iguales (24 px).
+
 - **2026-10-06 — servicios.html: pestañas con ícono y número.** Cada pestaña lleva ícono (laptop, cohete, gráfica, birrete) y contador "1/4"…"4/4"; las pestañas arrancan en la esquina izquierda de la carpeta (sin sangría). En móvil el ícono va sobre la etiqueta.
 
 - **2026-10-06 — servicios.html: pestañas más obvias.** Las píldoras pasan a pestañas tipo carpeta (`.sv-tablist`/`.sv-folder`/`.sv-frame`): lengüetas moradas colgando de un panel blanco enmarcado, la activa blanca y fundida con el panel; frase guía "Elige una sala del taller" con flecha. Tarjetas en cloud sobre el panel blanco. Sin cambios en el JS.
