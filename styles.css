@@ -4412,8 +4412,8 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 900px) { .sp-hero--blue::before { width: 420px; height: 420px; } }
 
 /* Hero de servicio: composición propia (texto a la izquierda y dibujo a la derecha, pero más bajo y con miga de pan, etiqueta de Lab y un solo botón) para no repetir el hero del home */
-.sp-hero--blue { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); min-height: min(68vh, 620px); padding-top: calc(var(--space-6) + var(--nav-h)); padding-bottom: var(--space-6); gap: var(--space-7); }
-.sp-hero--blue h1 { font-size: clamp(28px, 3vw, 46px); margin: var(--space-2) 0; max-width: 16em; }
+.sp-hero--blue { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); min-height: min(92vh, 960px); padding-top: calc(var(--space-7) + var(--nav-h)); padding-bottom: var(--space-7); gap: var(--space-7); }
+.sp-hero--blue h1 { font-size: clamp(28px, 3.3vw, 52px); margin: var(--space-2) 0; max-width: 16em; }
 .sp-hero--blue .sp-hero-sub { font-size: 17px; margin-bottom: var(--space-3); max-width: 500px; }
 .sp-crumbs { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.8); }
 .sp-crumbs a:hover { text-decoration: underline; }
