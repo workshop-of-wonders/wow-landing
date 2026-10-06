@@ -4552,16 +4552,16 @@ main { padding-top: var(--nav-h); }
 .sm-plate { display: grid; place-items: center; width: 108px; height: 70px; margin: 14px 0 0 16px; border-radius: 10px; background: rgba(0, 0, 0, .3); border: 2px solid #7c43b5; }
 .sm-mark { width: 54px; height: 40px; background: var(--lima); -webkit-mask: url(design-system/logo/wow-mark.svg) center / contain no-repeat; mask: url(design-system/logo/wow-mark.svg) center / contain no-repeat; }
 .sm-slot { position: absolute; right: -4px; bottom: 58px; width: 22px; height: 210px;   /* = alto real de .sp-belt-card (medido: 210px); si cambia el ancho/proporción de las tarjetas, igualar aquí */
-  border-radius: 10px 0 0 10px; overflow: hidden; background: linear-gradient(180deg, #1b0636, #7a2bd0 50%, #1b0636); box-shadow: inset 4px 0 0 rgba(220, 225, 87, .8), 0 0 18px 4px rgba(220, 225, 87, .5), 8px 0 34px 6px rgba(236, 72, 153, .38); animation: smGlow 2.4s ease-in-out infinite; }
-/* luz que respira dentro de la ranura */
-.sm-slot::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 55% 50%, #fff 0, rgba(255, 255, 255, .95) 10%, rgba(220, 225, 87, .9) 28%, rgba(236, 72, 153, .6) 55%, transparent 85%); animation: smLight 2.4s ease-in-out infinite; }
+  border-radius: 10px 0 0 10px; overflow: hidden; background: linear-gradient(180deg, #2a0a52, #9333ea 50%, #2a0a52); box-shadow: inset 4px 0 0 #c4a8f5, 0 0 20px 5px rgba(168, 85, 247, .6), 8px 0 40px 8px rgba(168, 85, 247, .5); animation: smGlow 2.4s ease-in-out infinite; }
+/* luz violeta que respira dentro de la ranura */
+.sm-slot::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 55% 50%, #fff 0, rgba(255, 255, 255, .95) 8%, rgba(216, 180, 254, .95) 26%, rgba(168, 85, 247, .75) 55%, transparent 88%); animation: smLight 2.4s ease-in-out infinite; }
 /* destellos que suben por dentro */
-.sm-slot i { position: absolute; left: 50%; bottom: -10px; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px 3px rgba(220, 225, 87, 1); opacity: 0; animation: smRise 2.6s ease-in infinite; }
-.sm-slot i:nth-child(2) { left: 28%; animation-delay: .5s; background: #f9a8d4; box-shadow: 0 0 7px 2px rgba(236, 72, 153, .9); }
+.sm-slot i { position: absolute; left: 50%; bottom: -10px; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px 3px rgba(216, 180, 254, 1); opacity: 0; animation: smRise 2.6s ease-in infinite; }
+.sm-slot i:nth-child(2) { left: 28%; animation-delay: .5s; background: #e9d5ff; box-shadow: 0 0 10px 3px rgba(192, 132, 252, 1); }
 .sm-slot i:nth-child(3) { left: 72%; animation-delay: 1.1s; width: 5px; height: 5px; }
-.sm-slot i:nth-child(4) { left: 40%; animation-delay: 1.6s; background: var(--lima); }
-.sm-slot i:nth-child(5) { left: 62%; animation-delay: 2.1s; background: #a5d8ff; box-shadow: 0 0 7px 2px rgba(165, 216, 255, .9); }
-@keyframes smGlow { 0%, 100% { box-shadow: inset 4px 0 0 rgba(220, 225, 87, .8), 0 0 14px 2px rgba(220, 225, 87, .4), 6px 0 26px 4px rgba(236, 72, 153, .28); } 50% { box-shadow: inset 4px 0 0 rgba(220, 225, 87, 1), 0 0 30px 9px rgba(220, 225, 87, .8), 12px 0 56px 14px rgba(236, 72, 153, .62); } }
+.sm-slot i:nth-child(4) { left: 40%; animation-delay: 1.6s; background: #d8b4fe; }
+.sm-slot i:nth-child(5) { left: 62%; animation-delay: 2.1s; background: #fff; box-shadow: 0 0 10px 3px rgba(168, 85, 247, 1); }
+@keyframes smGlow { 0%, 100% { box-shadow: inset 4px 0 0 #c4a8f5, 0 0 16px 3px rgba(168, 85, 247, .45), 6px 0 30px 6px rgba(168, 85, 247, .38); } 50% { box-shadow: inset 4px 0 0 #e9d5ff, 0 0 32px 10px rgba(168, 85, 247, .85), 12px 0 60px 16px rgba(168, 85, 247, .7); } }
 @keyframes smLight { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
 @keyframes smRise { 0% { transform: translateY(0) scale(.5); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(-190px) scale(1.2); opacity: 0; } }
 .sm-chimney { position: absolute; z-index: 1; right: 30px; top: -22px; width: 34px; height: 30px; border-radius: 6px 6px 0 0; background: #7c43b5; box-shadow: inset 0 6px 0 var(--lima); }
