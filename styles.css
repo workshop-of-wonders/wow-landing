@@ -5233,3 +5233,23 @@ main { padding-top: var(--nav-h); }
 @keyframes svIn { from { opacity: 0; transform: translateY(18px); } }
 .sv-panel .sv-zone-in { margin-top: var(--space-5); }
 @media (prefers-reduced-motion: reduce) { .sv-panel .sv-copy, .sv-panel .sv-art, .sv-panel .sv-rv { animation: none !important; } }
+
+/* pestañas tipo carpeta: las lengüetas cuelgan del panel y la activa se funde con él */
+.sv-tabsec { padding: var(--space-5) var(--page-x) var(--space-7); }
+.sv-guide { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 0 0 var(--space-3); font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
+.sv-guide svg { width: 22px; height: 22px; animation: svNudge 1.6s ease-in-out infinite; } @keyframes svNudge { 50% { translate: 0 6px; } }
+.sv-folder { max-width: 1300px; margin: 0 auto; }
+.sv-tablist { display: flex; align-items: flex-end; gap: 6px; padding: 0 28px; margin: 0; position: relative; z-index: 2; }
+.sv-tablist button { margin: 0; padding: 16px 30px 14px; border-radius: 20px 20px 0 0; background: var(--purple); color: #fff; box-shadow: none; transform: none; font-size: 13px; transition: background .25s, color .25s, padding .25s, transform .25s; }
+.sv-tablist button[aria-selected="true"] { background: var(--white); color: var(--purple); padding-bottom: 20px; box-shadow: none; transform: none; }
+.sv-tablist button[aria-selected="false"]:hover { background: var(--purple-accent); color: var(--lima); transform: translateY(-3px); }
+.sv-frame { position: relative; z-index: 1; margin-top: -1px; background: var(--white); border-radius: 0 36px 36px 36px; box-shadow: 0 30px 60px rgba(56,7,87,.14); overflow: hidden; }
+.sv-frame .sv-panel { padding: var(--space-6) var(--space-6) var(--space-6); }
+.sv-frame .sv-panel .outline-word { left: var(--space-6); top: var(--space-4); }
+.sv-frame .sv-zone-in { margin-top: var(--space-5); }
+.sv-frame .sv-cards { margin-top: var(--space-5); }
+.sv-frame .sv-cards .hb-card.hb-card--w { --bgc: var(--cloud); background: var(--cloud); border-color: transparent; box-shadow: none; }
+@media (hover: hover) { .sv-frame .sv-cards .hb-card--w:hover { background: var(--zt); } }
+@media (max-width: 900px) { .sv-frame .sv-panel { padding: var(--space-5) var(--space-3); } .sv-frame .sv-panel .outline-word { left: var(--space-3); } .sv-tablist { padding: 0 8px; gap: 4px; } }
+@media (max-width: 640px) { .sv-tablist button { flex: 1 1 0; min-width: 0; padding: 14px 4px 12px; font-size: 10.5px; letter-spacing: .02em; border-radius: 14px 14px 0 0; } .sv-tablist button[aria-selected="true"] { padding-bottom: 16px; } .sv-frame { border-radius: 0 24px 24px 24px; } }
+@media (prefers-reduced-motion: reduce) { .sv-guide svg { animation: none; } }
