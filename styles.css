@@ -5162,15 +5162,17 @@ main { padding-top: var(--nav-h); }
 .sv-zone { --zc: var(--magenta); --zt: rgba(236,72,153,.14); position: relative; overflow: hidden; padding: var(--space-7) var(--page-x) var(--space-7); }
 .sv-zone--d { background: var(--white); }
 .sv-zone--g { --zc: var(--orange); --zt: rgba(249,115,22,.16); background: var(--cloud); }
-.sv-zone--a { --zc: var(--purple); --zt: rgba(165,216,255,.55); background: var(--blue); }
-.sv-zone--c { --zc: var(--purple); --zt: rgba(220,225,87,.5); background: var(--lima); }
+.sv-zone--a { --zc: var(--purple); --zt: rgba(165,216,255,.55); background: var(--purple); }
+.sv-zone--c { --zc: var(--purple); --zt: rgba(220,225,87,.5); background: var(--white); }
 .sv-zone .outline-word { left: var(--page-x); right: auto; }
 .sv-zone-in { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--space-6); align-items: center; max-width: 1300px; margin: var(--space-6) auto 0; }
 .sv-lab { display: inline-block; margin: 0 0 var(--space-3); padding: 6px 14px; border-radius: 999px; background: var(--purple); color: var(--lima); font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: transform .3s; }
-.sv-zone--c .sv-lab { background: var(--purple); }
+.sv-zone--a .sv-lab { background: var(--lima); color: var(--purple); }
 @media (hover: hover) { .sv-lab:hover { transform: translateY(-2px); } }
 .sv-copy h2 { margin: 0 0 var(--space-3); font-size: var(--h2-size); line-height: 1.12; color: var(--purple); max-width: 12em; }
 .sv-copy h2 em { color: var(--zc); }
+.sv-zone--a .sv-copy h2 { color: var(--white); } .sv-zone--a .sv-copy h2 em { color: var(--lima); } .sv-zone--a .sv-txt { color: var(--cloud); opacity: 1; }
+.sv-zone--a .sv-side { background: var(--white); } .sv-zone--a .sv-side li { color: var(--purple); }
 .sv-txt { margin: 0 0 var(--space-4); max-width: 30em; font-size: var(--intro-size); line-height: 1.6; color: var(--purple); opacity: .85; }
 .sv-cards { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); max-width: 1300px; margin: var(--space-6) auto 0; }
 .sv-cards .hb-card.hb-card--w { --bgc: #fff; --fg: var(--purple); --ac: var(--zc); --rt: 0deg; min-height: 210px; border-radius: 24px; box-shadow: 0 14px 30px rgba(26,19,32,.1); border: 1px solid rgba(56,7,87,.08); }
@@ -5205,8 +5207,8 @@ main { padding-top: var(--nav-h); }
 .sv-mbar { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #efe9f4; font-size: 12px; font-weight: 600; color: var(--purple); } .sv-mbar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(56,7,87,.22); } .sv-mbar span { margin-left: 6px; } .sv-mbar em { margin-left: auto; padding: 2px 9px; border-radius: 99px; background: var(--orange); font-style: normal; font-size: 11px; }
 .sv-mbody { padding: 12px; display: grid; gap: 10px; } .sv-kp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } .sv-kp b { height: 40px; border-radius: 10px; background: #f6f2f9; border-top: 4px solid var(--c); animation: svPop 7s infinite; } .sv-kp b:nth-child(2) { animation-delay: .3s; } .sv-kp b:nth-child(3) { animation-delay: .6s; }
 .sv-big { width: 100%; height: 120px; display: block; border-radius: 12px; background: #f6f2f9; } .sv-big .ar { fill: rgba(56,7,87,.1); } .sv-big .ln { fill: none; stroke: var(--purple); stroke-width: 3.5; vector-effect: non-scaling-stroke; stroke-dasharray: 420; animation: svDraw 7s infinite; }
-.sv-side { position: absolute; right: 0; top: 22%; width: 40%; margin: 0; padding: 14px; list-style: none; display: grid; gap: 8px; border-radius: 20px; background: var(--purple); box-shadow: 0 24px 40px rgba(56,7,87,.3); } .sv-side li { padding: 10px 14px; border-radius: 12px; color: #fff; font-weight: 600; font-size: 14px; animation: svHi 6.4s infinite; animation-delay: calc(var(--i) * 1.6s); } @keyframes svHi { 0%, 22% { background: var(--lima); color: var(--purple); } 28%, 100% { background: rgba(255,255,255,.1); color: #fff; } }
-.sv-don { position: absolute; right: 8%; bottom: 4%; width: 84px; height: 84px; border-radius: 50%; background: conic-gradient(var(--magenta) 0 40%, var(--purple) 0 70%, var(--lima) 0 100%); -webkit-mask: radial-gradient(circle, transparent 36%, #000 38%); mask: radial-gradient(circle, transparent 36%, #000 38%); animation: svSpin 12s linear infinite; } @keyframes svSpin { to { rotate: 360deg; } }
+.sv-side { position: absolute; right: 0; top: 22%; width: 40%; margin: 0; padding: 14px; list-style: none; display: grid; gap: 8px; border-radius: 20px; background: var(--purple); box-shadow: 0 24px 40px rgba(56,7,87,.3); } .sv-side li { padding: 10px 14px; border-radius: 12px; color: #fff; font-weight: 600; font-size: 14px; animation: svHi 6.4s infinite; animation-delay: calc(var(--i) * 1.6s); } @keyframes svHi { 0%, 22% { background: var(--lima); } 28%, 100% { background: var(--cloud); } }
+.sv-don { position: absolute; right: 8%; bottom: 4%; width: 84px; height: 84px; border-radius: 50%; background: conic-gradient(var(--magenta) 0 40%, var(--blue) 0 70%, var(--lima) 0 100%); -webkit-mask: radial-gradient(circle, transparent 36%, #000 38%); mask: radial-gradient(circle, transparent 36%, #000 38%); animation: svSpin 12s linear infinite; } @keyframes svSpin { to { rotate: 360deg; } }
 
 .sv-cap { position: absolute; left: 4%; top: 0; z-index: 3; width: 28%; rotate: -10deg; filter: drop-shadow(0 14px 14px rgba(56,7,87,.3)); animation: svBob 5s ease-in-out infinite; }
 .sv-les { position: absolute; left: 0; right: 36%; top: 20%; z-index: 2; display: grid; gap: 10px; padding: 14px; border-radius: 22px; background: #fff; box-shadow: 0 24px 44px rgba(56,7,87,.2); }
@@ -5220,3 +5222,5 @@ main { padding-top: var(--nav-h); }
 .btn > span[aria-hidden] { margin-left: 8px; }
 .sv-zone-in { margin-top: calc(var(--space-6) + 28px); }
 .sv-zone--c .sv-cards { grid-template-columns: minmax(240px, 420px); }
+.sv-zone--d .sv-cards .hb-card.hb-card--w, .sv-zone--c .sv-cards .hb-card.hb-card--w { --bgc: var(--cloud); background: var(--cloud); border-color: transparent; }
+@media (hover: hover) { .sv-zone--d .sv-cards .hb-card--w:hover, .sv-zone--c .sv-cards .hb-card--w:hover { background: var(--zt); } }

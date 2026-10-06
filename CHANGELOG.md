@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html: fondos solo del home.** Los fondos de zona usan únicamente los del home: blanco, cloud y morado (zonas: blanco → cloud → morado → blanco; tarjetas cloud sobre blanco y blancas sobre cloud/morado; palabra outline por fondo como en el home). Se quitaron el azul y el lima como fondo.
+
 - **2026-10-06 — servicios.html: ajustes de la usuaria.** Solo colores de marca (zonas: blanco, cloud, azul `--blue`, lima; se quitan pasteles y azules ajenos), se eliminan las frases manuscritas (y la fuente Caveat), los botones "Explora servicios de…", el eyebrow numerado de cada zona (ahora mini pill con el nombre del lab, enlazada), los puntos de las pills de salto y el botón "Ver nuestro trabajo" del héroe.
 
 - **2026-10-06 — servicios.html como "Bienvenido al workshop".** Se reemplaza el listado por: héroe morado con arco WOW y chips ("Un taller completo para construir marcas que quieren *más.*"), pills de salto y 4 zonas del taller (01 El taller de diseño, 02 El laboratorio de crecimiento, 03 La sala de datos, 04 La academia WOW), cada una con titular + CTA, escena animada propia en CSS (laptop/paleta/celular; buscador+barras; panel de datos; clase con play y checks), nota manuscrita (Caveat, añadida a la URL de Google Fonts) y tarjetas blancas con ícono SVG (`sv-*`, `hb-card--w`). Enlaces, textos de cada servicio, FAQ y JSON-LD intactos; el H1 pasa a "Un taller completo…" y se mantiene la frase SEO en el eyebrow y el subtítulo. Home intacto.
