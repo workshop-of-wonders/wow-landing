@@ -4540,15 +4540,4 @@ main { padding-top: var(--nav-h); }
 .sp-cv-meta em { font-style: normal; font-size: .9em; line-height: 1.25; color: rgba(255, 255, 255, .92); }
 .sp-cv-go { position: absolute; z-index: 2; right: .9em; bottom: .9em; display: grid; place-items: center; width: 2.5em; height: 2.5em; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 50%; color: var(--white); font-style: normal; font-size: 1.1em; transition: background .2s ease, color .2s ease; }
 .sp-cv-card:hover .sp-cv-go { background: var(--lima); border-color: var(--lima); color: var(--purple); }
-.sp-cv-ui { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-top: var(--space-3); }
-.sp-cv-nav { display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 50%; font: inherit; font-size: 22px; font-weight: 700; cursor: pointer; transition: transform .2s ease; }
-.sp-cv-prev { background: var(--cloud); color: var(--purple); } .sp-cv-next { background: #5b21d6; color: var(--white); box-shadow: 0 10px 22px rgba(91, 33, 214, .35); }
-.sp-cv-nav:hover { transform: scale(1.08); } .sp-cv-nav:focus-visible, .sp-cv-dots button:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
-.sp-cv-dots { display: flex; align-items: center; gap: 8px; }
-.sp-cv-dots button { width: 58px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: #e3d9f5; cursor: pointer; transition: background .25s ease, width .25s ease; }
-.sp-cv-dots button[aria-current="true"] { background: #5b21d6; width: 74px; }
-.sp-cv-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px 8px 14px; border: 2px solid var(--purple); border-radius: 999px; background: var(--white); color: var(--purple); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s ease, color .2s ease; }
-.sp-cv-ic { font-size: 11px; letter-spacing: -1px; }
-.sp-cv-toggle:hover { background: var(--purple); color: var(--white); } .sp-cv-toggle:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
-.sp-cv-toggle[hidden] { display: none; }
-@media (max-width: 720px) { .sp-cv-ui { gap: var(--space-2) 10px; } .sp-cv-dots { gap: 6px; } .sp-cv-dots button { width: 15px; } .sp-cv-dots button[aria-current="true"] { width: 28px; } .sp-cv-nav { width: 42px; height: 42px; font-size: 20px; } .sp-cv-toggle { margin-top: 2px; } }
+
