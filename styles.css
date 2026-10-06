@@ -5174,9 +5174,9 @@ main { padding-top: var(--nav-h); }
 .sv-cards { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); max-width: 1300px; margin: var(--space-6) auto 0; }
 .sv-cards .hb-card.hb-card--w { --bgc: #fff; --fg: var(--purple); --ac: var(--zc); --rt: 0deg; min-height: 210px; border-radius: 24px; box-shadow: 0 14px 30px rgba(26,19,32,.1); border: 1px solid rgba(56,7,87,.08); }
 .sv-cards .hb-card h3 { font-size: 20px; }
-.sv-ic { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--zt); color: var(--zc); transition: transform .4s cubic-bezier(.2,.8,.2,1), background .3s, color .3s; }
+.sv-ic { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--zt); color: var(--zc); transition: background .3s, color .3s; }
 .sv-ic svg { width: 22px; height: 22px; }
-@media (hover: hover) { .sv-cards .hb-card--w:hover { background: var(--zt); border-radius: 24px; } .sv-cards .hb-card--w:hover .sv-ic { background: var(--zc); color: #fff; transform: rotate(-12deg) scale(1.1); } }
+@media (hover: hover) { .sv-cards .hb-card--w:hover { background: var(--zt); border-radius: 24px; } .sv-cards .hb-card--w:hover .sv-ic { background: var(--zc); color: #fff; } }
 
 /* escenas */
 .sv-art { position: relative; justify-self: center; width: 100%; max-width: 560px; height: 400px; }
