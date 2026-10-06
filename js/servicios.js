@@ -174,64 +174,85 @@ document.getElementById('year').textContent = new Date().getFullYear();
   io.observe(vis);
 })();
 
-/* WORKSHOP: muro curvo en perspectiva. Hay N casos y M=2N casillas (las N últimas son copias decorativas que reenvían el clic al original, para llenar
-   los extremos). Cada casilla tiene una posición continua p respecto al centro; de p salen su tamaño (más grande al borde), su ángulo (de cara al
-   centro) y su x. Avanza sola (pausable con el mouse, el teclado o el botón; WCAG 2.2.2) y se arrastra. Con movimiento reducido no avanza sola. */
+/* WORKSHOP: muro curvo en perspectiva. Cada casilla tiene una posición continua p respecto al centro; de |p| salen sus tres medidas, tomadas de la imagen de
+   referencia de la dueña: ancho del elemento (casi constante al centro y creciendo de golpe hacia los extremos), ángulo rotateY (de cara al centro, ~52° en
+   |p|=3) y proporción alto/ancho. La x sale de integrar el ancho visible (ancho·cos del ángulo) + hueco, así el espaciado es parejo. N casos y M=2N
+   casillas (las copias son decorativas y reenvían el clic al original). Avanza sola, pausable con mouse, foco o botón (WCAG 2.2.2), y se arrastra. */
 (function () {
   var stage = document.getElementById('spCurve');
   if (!stage) return;
   var track = stage.querySelector('.sp-cv-track');
   var toggle = document.getElementById('spCurveToggle');
+  var caption = document.getElementById('spCvCaption');
   var originals = [].slice.call(track.querySelectorAll('.sp-cv-item'));
-  var N = originals.length, M = N * 2;                 // dos vueltas completas: así el ciclo de copias es consistente y no se repite un caso a la vista
+  var N = originals.length, M = N * 2;
   var slots = originals.slice();
   for (var k = N; k < M; k++) {
     var src = originals[k % N];
     var cl = src.cloneNode(true);
     cl.setAttribute('aria-hidden', 'true');
-    var card = cl.querySelector('.sp-cv-card');
-    card.removeAttribute('data-project');            // así project-popup.js no lo trata como un caso más
-    card.setAttribute('data-clone', '');
-    card.addEventListener('click', (function (orig) { return function () { orig.click(); }; })(src.querySelector('.sp-cv-card')));
+    var cc = cl.querySelector('.sp-cv-card');
+    cc.removeAttribute('data-project');            // así project-popup.js no lo trata como un caso más
+    cc.setAttribute('data-clone', '');
+    cc.addEventListener('click', (function (orig) { return function () { orig.click(); }; })(src.querySelector('.sp-cv-card')));
     track.appendChild(cl);
     slots.push(cl);
   }
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce && toggle) toggle.hidden = true;
   var SPEED = 0.16;                   // casos por segundo (≈ 6 s por caso)
-  var offset = 0, target = null, last = null, visible = true;
+  var offset = 0, target = null, last = null, visible = true, shown = -1;
   var hold = { hover: false, focus: false, manual: false, drag: false };
-  var base, gap, cardH, labelH = 86, a = 0.56, b = 0.44, K = 4, E = 1.15;
+  var w0, gap, cardH, table = [], STEP = 0.05, PMAX = 7.5, spacing = 100;
   function paused() { return reduce || hold.hover || hold.focus || hold.manual || hold.drag; }
+  function wEl(ap) { return w0 * (1 + 0.045 * Math.pow(Math.min(ap, 3.3), 3.4)); }
+  function ang(ap) { return Math.min(58, 52 * Math.pow(Math.min(ap, 3.6) / 3, 1.7)); }
+  function ratio(ap) { return Math.max(0.95, 1.45 - 0.41 * Math.pow(Math.min(ap, 3.3) / 3, 1.6)); }
+  function vis(ap) { return wEl(ap) * Math.cos(ang(ap) * Math.PI / 180); }
   function measure() {
     var W = stage.clientWidth;
-    base = W < 720 ? W * 0.4 : Math.max(112, Math.min(300, W * 0.17));
-    gap = Math.max(8, Math.min(18, W * 0.011));
-    cardH = Math.round(base * 1.34);
-    stage.style.setProperty('--cv-h', (cardH + labelH + 12) + 'px');
-    stage.style.setProperty('--cv-label-top', (cardH + 18) + 'px');
+    var k = W < 720 ? W / 931 * 1.6 : Math.min(1.1, W / 931 * 0.7);
+    w0 = 87 * k; gap = 8 * k + 2;
+    cardH = Math.round(wEl(3.3) * ratio(3.3) * 1.18);
+    stage.style.setProperty('--cv-h', (cardH + 10) + 'px');
+    table = [0];
+    for (var i = 1; i <= PMAX / STEP; i++) table.push(table[i - 1] + (vis((i - 0.5) * STEP) + gap) * STEP);
+    spacing = table[Math.round(2 / STEP)] / 2;
+  }
+  function xOf(ap) {
+    var f = Math.min(ap, PMAX - STEP) / STEP, i = Math.floor(f);
+    return table[i] + (table[i + 1] - table[i]) * (f - i);
   }
   function layout() {
-    var coef = b * base / ((E + 1) * Math.pow(K, E));
+    var best = 0, bd = 1e9;
     for (var i = 0; i < M; i++) {
       var p = (((i - offset) % M) + M + M / 2) % M - M / 2;
       var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
-      var s = a + b * Math.pow(ap / K, E);
-      var x = sg * ((base * a + gap) * ap + coef * Math.pow(ap, E + 1));
-      var w = base * s, h = w * 1.34;
-      var ang = -sg * Math.min(32, 9 * ap);
-      var fade = Math.max(0, Math.min(1, 1 - (ap - 4.4) / 1.0));
+      if (ap < bd) { bd = ap; best = i; }
+      var w = wEl(ap), h = w * ratio(ap), x = sg * xOf(ap);
       var el = slots[i];
       el.style.width = w + 'px';
       el.style.transform = 'translate3d(' + (x - w / 2) + 'px,0,0)';
-      el.style.opacity = fade;
-      el.style.visibility = fade === 0 ? 'hidden' : 'visible';
+      var hide = ap > 5.8;
+      el.style.visibility = hide ? 'hidden' : 'visible';
       el.style.zIndex = String(100 - Math.round(ap * 10));
       var card = el.firstElementChild;
       card.style.height = h + 'px';
       card.style.top = ((cardH - h) / 2) + 'px';
-      card.style.transform = 'perspective(850px) rotateY(' + ang + 'deg)';
+      card.style.transform = 'perspective(600px) rotateY(' + (-sg * ang(ap)) + 'deg)';
     }
+    var idx = best % N;
+    if (idx !== shown && caption) { shown = idx; setCaption(idx); }
+  }
+  function setCaption(idx) {
+    var it = originals[idx];
+    caption.classList.add('is-swap');
+    setTimeout(function () {
+      caption.querySelector('b').textContent = '#' + it.getAttribute('data-n');
+      caption.querySelector('span').textContent = it.querySelector('.sp-cv-card').getAttribute('data-project');
+      caption.querySelector('small').textContent = it.getAttribute('data-what');
+      caption.classList.remove('is-swap');
+    }, shown === idx && caption.querySelector('span').textContent === '' ? 0 : 160);
   }
   function frame(ts) {
     if (last === null) last = ts;
@@ -248,24 +269,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   // arrastrar
   var startX = 0, startOff = 0, moved = 0, pid = null;
-  stage.addEventListener('pointerdown', function (e) {
-    if (e.target.closest && e.target.closest('.sp-cv-toggle')) return;
-    pid = e.pointerId; startX = e.clientX; startOff = offset; moved = 0; target = null;
-  });
+  stage.addEventListener('pointerdown', function (e) { pid = e.pointerId; startX = e.clientX; startOff = offset; moved = 0; target = null; });
   stage.addEventListener('pointermove', function (e) {
     if (pid !== e.pointerId) return;
     var dx = e.clientX - startX;
     moved = Math.max(moved, Math.abs(dx));
-    if (moved > 6) {
-      hold.drag = true; stage.classList.add('is-drag');
-      offset = startOff - dx / (base * 0.78 + gap);
-      if (reduce) layout();
-    }
+    if (moved > 6) { hold.drag = true; stage.classList.add('is-drag'); offset = startOff - dx / spacing; if (reduce) layout(); }
   });
-  function endDrag(e) {
-    if (pid !== e.pointerId) return;
-    pid = null; hold.drag = false; stage.classList.remove('is-drag');
-  }
+  function endDrag(e) { if (pid !== e.pointerId) return; pid = null; hold.drag = false; stage.classList.remove('is-drag'); }
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
   // si se arrastró, el clic que sigue no debe abrir un caso

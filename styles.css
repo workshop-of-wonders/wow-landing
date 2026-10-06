@@ -4522,25 +4522,27 @@ main { padding-top: var(--nav-h); }
 .nos-stats--plain li:nth-child(3) .proof-num { color: #ea580c; }
 .nos-stats--plain li:nth-child(4) .proof-num { color: var(--purple); }
 
-/* WORKSHOP de SEO: muro curvo en perspectiva (referencia de la dueña). Las tarjetas verticales de los casos son grandes y anguladas a los lados y
-   más pequeñas y rectas al centro, como vistas desde dentro de un cilindro. js/servicios.js calcula posición, tamaño y ángulo de cada una según su
-   distancia al centro, avanza solo (pausable) y se arrastra; hay 14 casillas (dos vueltas de los 7 casos; las copias son decorativas) para llenar los extremos. */
+/* WORKSHOP de SEO: muro curvo en perspectiva (referencia de la dueña). Las tarjetas del centro son pequeñas y casi rectas y solo las de los extremos crecen
+   y se inclinan mucho (trapecio marcado), como vistas desde dentro de un cilindro. js/servicios.js calcula tamaño, ángulo y posición de cada tarjeta
+   según su distancia al centro (medidas tomadas de la imagen de referencia), avanza sola (pausable) y se arrastra. 14 casillas = 2 vueltas de los
+   7 casos; las copias son decorativas. El título del caso central va en un pie único, no en cada tarjeta. */
 .sp-sec--center > .eyebrow, .sp-sec--center > h2, .sp-sec--center > .sp-lead { margin-left: auto; margin-right: auto; text-align: center; }
 .sp-sec--center > .sp-lead { margin-bottom: var(--space-4); }
-.sp-curve { position: relative; width: min(100vw, 2200px); margin: 0 0 0 calc(50% - min(50vw, 1100px)); overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.sp-curve { position: relative; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .sp-curve.is-drag { cursor: grabbing; }
-.sp-cv-track { position: relative; height: var(--cv-h, 430px); }
+.sp-cv-track { position: relative; height: var(--cv-h, 400px); }
 .sp-cv-item { position: absolute; left: 50%; top: 0; height: 100%; will-change: transform; }
-.sp-cv-card.svc-work-teaser-item { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: auto; border-radius: 22px; box-shadow: 0 16px 34px rgba(56, 7, 87, .22); transform-origin: center; backface-visibility: hidden; cursor: pointer; }
+.sp-cv-card.svc-work-teaser-item { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: auto; border-radius: 15px; box-shadow: 0 10px 24px rgba(56, 7, 87, .14); backface-visibility: hidden; cursor: pointer; }
 .sp-cv-card.svc-work-teaser-item img { transition: none; }
-.sp-cv-card.svc-work-teaser-item:hover img { transform: scale(1.04); transition: transform .3s ease; }
+.sp-cv-card.svc-work-teaser-item:hover img { transform: scale(1.05); transition: transform .3s ease; }
 .sp-cv-card.has-case::after { display: none; }
-.sp-cv-label { position: absolute; left: 0; right: 0; top: var(--cv-label-top, 330px); display: grid; gap: 1px; text-align: center; font-size: 13px; line-height: 1.25; font-weight: 600; color: var(--purple); pointer-events: none; }
-.sp-cv-label b { font-family: var(--font-mono); font-weight: 600; font-size: 12px; letter-spacing: .08em; color: var(--orange); }
-.sp-cv-label small { font-size: 11.5px; font-weight: 400; color: #5a4a66; }
+.sp-cv-caption { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 10px; margin: var(--space-3) auto 0; padding: 0 var(--page-x); text-align: center; font-size: 17px; font-weight: 600; color: var(--purple); min-height: 28px; transition: opacity .25s ease; }
+.sp-cv-caption.is-swap { opacity: 0; }
+.sp-cv-caption b { font-family: var(--font-mono); font-weight: 600; font-size: 14px; letter-spacing: .08em; color: var(--orange); }
+.sp-cv-caption small { flex-basis: 100%; font-size: 14px; font-weight: 400; color: #5a4a66; }
 .sp-cv-controls { display: flex; justify-content: center; margin-top: var(--space-2); }
 .sp-cv-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px 8px 14px; border: 2px solid var(--purple); border-radius: 999px; background: var(--white); color: var(--purple); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s ease, color .2s ease; }
 .sp-cv-ic { font-size: 11px; letter-spacing: -1px; }
 .sp-cv-toggle:hover { background: var(--purple); color: var(--white); } .sp-cv-toggle:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
 .sp-cv-toggle[hidden], .sp-cv-controls:has(.sp-cv-toggle[hidden]) { display: none; }
-@media (max-width: 720px) { .sp-cv-label small { display: none; } .sp-cv-label { font-size: 12px; } }
+@media (max-width: 720px) { .sp-cv-caption { font-size: 15px; } .sp-cv-caption small { font-size: 13px; } }
