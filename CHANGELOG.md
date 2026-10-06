@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html: héroe nuevo.** H1 "Construimos marcas que quieren *más.*" y subtítulo "Diseñamos, hacemos crecer y medimos…" (se mantienen las palabras clave de SEO en el eyebrow y en la segunda frase). Visual: arco WOW sobre pedestal de dos niveles, 4 píldoras con ícono (Diseño lima, Crecimiento azul, Datos naranja, Cursos magenta) unidas al arco por líneas punteadas con puntos, órbita y destello (`.hx-*`; sustituyen a `.sv-arch/.sv-chip/.sv-step`). Sin botón "Ver nuestro trabajo" (decisión previa de la usuaria).
+
 - **2026-10-06 — servicios.html: sin números en pestañas y bloque de texto alineado.** Se quita el contador "n/4" de las pestañas (quedan ícono + nombre). El bloque pill del lab / título / texto arranca a la misma altura en las 4 pestañas (referencia: Datos), con `align-items: start` y `padding-top` en `.sv-copy`; las separaciones internas ya eran iguales (24 px).
 
 - **2026-10-06 — servicios.html: pestañas con ícono y número.** Cada pestaña lleva ícono (laptop, cohete, gráfica, birrete) y contador "1/4"…"4/4"; las pestañas arrancan en la esquina izquierda de la carpeta (sin sangría). En móvil el ícono va sobre la etiqueta.
