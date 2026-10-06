@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-06 — servicios.html: pestañas con ícono y número.** Cada pestaña lleva ícono (laptop, cohete, gráfica, birrete) y contador "1/4"…"4/4"; las pestañas arrancan en la esquina izquierda de la carpeta (sin sangría). En móvil el ícono va sobre la etiqueta.
+
 - **2026-10-06 — servicios.html: pestañas más obvias.** Las píldoras pasan a pestañas tipo carpeta (`.sv-tablist`/`.sv-folder`/`.sv-frame`): lengüetas moradas colgando de un panel blanco enmarcado, la activa blanca y fundida con el panel; frase guía "Elige una sala del taller" con flecha. Tarjetas en cloud sobre el panel blanco. Sin cambios en el JS.
 
 - **2026-10-06 — servicios.html con pestañas.** Las 4 zonas del taller (Diseño, Crecimiento, Datos, Cursos) pasan a pestañas: las píldoras bajo el héroe son un `tablist` (roles ARIA, flechas/Home/End, enlace con `#digital-experience`, `#growth-marketing`, `#marketing-intelligence`, `#cursos` abre la pestaña) y se muestra un panel a la vez sobre fondo cloud; el contenido de los 4 paneles sigue en el HTML (`hidden`). Lógica en `js/servicios.js` (bloque `.sv-tablist`). Las tarjetas ya no usan `sp-reveal` (dentro de un panel oculto nunca se activaría); entran con animación CSS al cambiar de pestaña. Se quitan los fondos por zona (blanco/morado). Largo de la sección: ~4.070 px → ~900 px.
