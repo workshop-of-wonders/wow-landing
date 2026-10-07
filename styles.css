@@ -5282,3 +5282,4 @@ main { padding-top: var(--nav-h); }
 .hx-spark { right: 24%; top: 2%; width: 34px; color: #fff; opacity: .9; animation: hxTw 2.8s ease-in-out infinite; } @keyframes hxTw { 50% { transform: scale(1.35) rotate(15deg); opacity: .5; } }
 @media (max-width: 640px) { .hx-pill { padding: 8px 14px 8px 10px; gap: 7px; } .hx-pill svg { width: 20px; height: 20px; } }
 @media (prefers-reduced-motion: reduce) { .hx-lines path, .hx-lines circle, .hx-pill, .hx-spark, .hx-arch img { animation: none; } }
+.hx-pill { font-family: var(--font-display); font-weight: 400; letter-spacing: .01em; }
