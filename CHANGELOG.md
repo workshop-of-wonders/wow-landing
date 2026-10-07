@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — servicios.html: subtítulo del héroe con "Conoce aquí nuestros servicios…".**
+
 - **2026-10-07 — servicios.html: subtítulo del héroe más corto** ("Bienvenido al workshop. Diseño, crecimiento, datos y formación digital trabajando juntos para que tu marca se vea increíble, se encuentre y convierta.").
 
 - **2026-10-07 — servicios.html: héroe.** Se quita el enlace "Conoce los servicios ↓"; las píldoras del héroe usan la tipografía de títulos WOW (`--font-display`, EfectoWow) en vez de DM Sans. El H1 ya la usaba (verificado: misma fuente que el H1 del home).
