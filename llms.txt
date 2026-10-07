@@ -18,7 +18,6 @@ Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace cre
 - CRO (optimización de la tasa de conversión): https://efectowow.co/servicios/cro-optimizacion-conversion.html
 - Configuración de analítica y tracking: https://efectowow.co/servicios/configuracion-analitica-tracking.html
 - Consultoría de datos: https://efectowow.co/servicios/consultoria-de-datos.html
-- Cursos digitales: https://efectowow.co/servicios/cursos-digitales.html
 
 ## Labs
 - Brand & Experience Lab — diseño web, UX/UI, e-commerce y diseño gráfico: https://efectowow.co/labs/brand-experience-lab.html

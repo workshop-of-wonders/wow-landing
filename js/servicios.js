@@ -314,6 +314,23 @@ document.getElementById('year').textContent = new Date().getFullYear();
       p.addEventListener('mouseenter', function () { on(p.getAttribute('data-hs-t')); });
     });
     if (triggers.length) on(triggers[0].getAttribute('data-hs-t'));
+    // rotan solos (sin depender del mouse): avanzan cada ~3 s mientras la maqueta está en pantalla y no se la está tocando
+    var reduceHs = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (triggers.length > 1 && !reduceHs && 'IntersectionObserver' in window) {
+      var idx = 0, vis = false, touching = false, timerHs = null;
+      g.addEventListener('mouseenter', function () { touching = true; });
+      g.addEventListener('mouseleave', function () { touching = false; });
+      g.addEventListener('focusin', function () { touching = true; });
+      g.addEventListener('focusout', function () { touching = false; });
+      new IntersectionObserver(function (en) {
+        vis = en[0].isIntersecting;
+        if (vis && !timerHs) timerHs = setInterval(function () {
+          if (touching) return;
+          idx = (idx + 1) % triggers.length; on(triggers[idx].getAttribute('data-hs-t'));
+        }, 3000);
+        else if (!vis) { clearInterval(timerHs); timerHs = null; }
+      }, { threshold: 0.3 }).observe(g);
+    }
   });
 })();
 
@@ -353,10 +370,41 @@ document.getElementById('year').textContent = new Date().getFullYear();
         if (visible) { if (build && i === 0 && !reduce) setTimeout(function () { if (visible) set(1); }, 500); start(); } else stop();
       }, { threshold: 0.35 }).observe(el);
     } else { set(build ? N : 1); }
-    el.addEventListener('mouseenter', function () { hover = true; });
-    el.addEventListener('mouseleave', function () { hover = false; });
     [].forEach.call(el.querySelectorAll('[data-go]'), function (b) {
       b.addEventListener('click', function () { set(parseInt(b.getAttribute('data-go'), 10)); stop(); if (visible) start(); });
     });
   });
+})();
+
+/* servicios.html: pestañas de las zonas del taller (una a la vez; el contenido sigue en el HTML) */
+(function () {
+  var list = document.querySelector('.sv-tablist');
+  if (!list) return;
+  var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+  function show(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var p = document.getElementById(t.getAttribute('aria-controls'));
+      if (p) p.hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t); });
+    t.addEventListener('keydown', function (e) {
+      var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (n === null) return;
+      e.preventDefault();
+      show(tabs[(n + tabs.length) % tabs.length], true);
+    });
+  });
+  function fromHash() {
+    var h = (location.hash || '').slice(1);
+    var hit = tabs.filter(function (t) { return t.getAttribute('aria-controls') === h; })[0];
+    if (hit) show(hit);
+  }
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
 })();

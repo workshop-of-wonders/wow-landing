@@ -57,6 +57,52 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Analítica en 2 columnas:** panel a la izquierda (fijo al hacer scroll, sin menú lateral interno) y las 5 tarjetas apiladas a la derecha; en móvil una columna.
+
+- **2026-10-07 — GEO rediseñado + sin verde en tarjetas.** GEO: un solo chat a ancho centrado; las 6 señales se suman dentro de la respuesta de la IA (✓ por señal, medidor Confusa→Clara) con altura constante; se quita la lista de tarjetas aparte. CRO: el nivel activo ya no lleva anillo lima (solo sombra y leve escala).
+
+- **2026-10-07 — SEO local: "Con qué se complementa" como puntos en un mapa.** Los 3 chips pasan a pines sobre un mapa ilustrativo (calles, parque, agua) con "Tu negocio ★★★★★" al centro, rutas punteadas y tarjetas que aparecen pin por pin en bucle (CSS, sin JS). En móvil el mapa pasa a lista con pines. Mismo texto.
+
+- **2026-10-07 — Diseño gráfico: la escena es ahora un diseño que se construye.** Editor ilustrativo con panel de capas y lienzo: cada pieza (post, presentación, anuncio) se arma capa por capa (fondo → forma → título → texto → logo → botón) con cajas de selección y cursor, y rota sola entre las 3 piezas con las tarjetas debajo. Reemplaza el cambio de "sistema visual A/B/C". Solo colores de marca.
+
+- **2026-10-07 — Tarjeta activa de las escenas: sin borde** (queda blanca con sombra suave).
+
+- **2026-10-07 — Tarjetas activas de las escenas sin verde.** La tarjeta activa (og/oc/wb/ux/os/od/oq y tracking) pasa de fondo lima a fondo blanco con borde morado de 2 px. E-commerce ya rotaba solo (verificado con el mouse encima).
+
+- **2026-10-07 — servicios.html: las pestañas NO rotan solas** (decisión de la usuaria; se retira el autoplay y la barra de progreso; solo cambian con clic o teclado).
+
+- **2026-10-07 — Diseño web: la escena cambia más rápido** (`data-ms` 4200 → 2400 ms por paso; ciclo completo ≈ 14 s).
+
+- **2026-10-07 — Todo lo interactivo de servicios rota solo.** (1) `servicios.html`: las pestañas cambian cada ~7 s con barra de progreso mientras la sección está en pantalla; si la persona elige una, se detiene el automático. (2) Puntos calientes de SEO local (`[data-hs-group]`): rotan cada ~3 s, se pausan solo mientras se toca la maqueta. (3) Tracking y CRO entran al motor `[data-seq]`: un resaltado recorre los pasos/niveles (`.k1…`, `.cur-n`). Las demás escenas ya rotaban solas. `prefers-reduced-motion` respetado. SEO (escalera por scroll), carrusel de casos y FAQ no cambian (el FAQ sigue siendo a demanda).
+
+- **2026-10-07 — Escenas animadas (`[data-seq]`): ya no se pausan con el mouse encima.** Si el cursor reposaba sobre la sección (p. ej. al hacer scroll), la escena de diseño web y las demás quedaban congeladas. Siguen pausándose fuera de pantalla y al hacer clic en un paso (salta y continúa).
+
+- **2026-10-07 — Se elimina el servicio "Cursos digitales" de todo el sitio.** Borrada `servicios/cursos-digitales.html` (redirect 301 a `/servicios.html` en `vercel.json`); fuera del sitemap, `llms.txt`, menú desplegable de 14 páginas, pestaña/panel/píldora del héroe y JSON-LD de `servicios.html`, tarjeta y oferta JSON-LD de `labs/insight-lab.html`; textos de FAQ y descripciones ajustados ("dos frentes conectados"). El home no mencionaba cursos (no se tocó). Pendiente/opcional: limpiar CSS muerto (`.of-stairs`, `.sv-art--c`…) y los scripts de `scripts/` que aún generan esa página.
+
+- **2026-10-07 — servicios.html: subtítulo del héroe con "Conoce aquí nuestros servicios…".**
+
+- **2026-10-07 — servicios.html: subtítulo del héroe más corto** ("Bienvenido al workshop. Diseño, crecimiento, datos y formación digital trabajando juntos para que tu marca se vea increíble, se encuentre y convierta.").
+
+- **2026-10-07 — servicios.html: héroe.** Se quita el enlace "Conoce los servicios ↓"; las píldoras del héroe usan la tipografía de títulos WOW (`--font-display`, EfectoWow) en vez de DM Sans. El H1 ya la usaba (verificado: misma fuente que el H1 del home).
+
+- **2026-10-06 — servicios.html: copy del héroe como invitación al taller.** H1 "Conoce lo que hacemos en nuestro *taller.*"; subtítulo "Bienvenido al workshop: …Elige una sala y descubre cómo trabajamos."; enlace secundario "Conoce los servicios ↓" hacia `#taller` (sección de pestañas).
+
+- **2026-10-06 — servicios.html: héroe nuevo.** H1 "Construimos marcas que quieren *más.*" y subtítulo "Diseñamos, hacemos crecer y medimos…" (se mantienen las palabras clave de SEO en el eyebrow y en la segunda frase). Visual: arco WOW sobre pedestal de dos niveles, 4 píldoras con ícono (Diseño lima, Crecimiento azul, Datos naranja, Cursos magenta) unidas al arco por líneas punteadas con puntos, órbita y destello (`.hx-*`; sustituyen a `.sv-arch/.sv-chip/.sv-step`). Sin botón "Ver nuestro trabajo" (decisión previa de la usuaria).
+
+- **2026-10-06 — servicios.html: sin números en pestañas y bloque de texto alineado.** Se quita el contador "n/4" de las pestañas (quedan ícono + nombre). El bloque pill del lab / título / texto arranca a la misma altura en las 4 pestañas (referencia: Datos), con `align-items: start` y `padding-top` en `.sv-copy`; las separaciones internas ya eran iguales (24 px).
+
+- **2026-10-06 — servicios.html: pestañas con ícono y número.** Cada pestaña lleva ícono (laptop, cohete, gráfica, birrete) y contador "1/4"…"4/4"; las pestañas arrancan en la esquina izquierda de la carpeta (sin sangría). En móvil el ícono va sobre la etiqueta.
+
+- **2026-10-06 — servicios.html: pestañas más obvias.** Las píldoras pasan a pestañas tipo carpeta (`.sv-tablist`/`.sv-folder`/`.sv-frame`): lengüetas moradas colgando de un panel blanco enmarcado, la activa blanca y fundida con el panel; frase guía "Elige una sala del taller" con flecha. Tarjetas en cloud sobre el panel blanco. Sin cambios en el JS.
+
+- **2026-10-06 — servicios.html con pestañas.** Las 4 zonas del taller (Diseño, Crecimiento, Datos, Cursos) pasan a pestañas: las píldoras bajo el héroe son un `tablist` (roles ARIA, flechas/Home/End, enlace con `#digital-experience`, `#growth-marketing`, `#marketing-intelligence`, `#cursos` abre la pestaña) y se muestra un panel a la vez sobre fondo cloud; el contenido de los 4 paneles sigue en el HTML (`hidden`). Lógica en `js/servicios.js` (bloque `.sv-tablist`). Las tarjetas ya no usan `sp-reveal` (dentro de un panel oculto nunca se activaría); entran con animación CSS al cambiar de pestaña. Se quitan los fondos por zona (blanco/morado). Largo de la sección: ~4.070 px → ~900 px.
+
+- **2026-10-06 — servicios.html: fondos solo del home.** Los fondos de zona usan únicamente los del home: blanco, cloud y morado (zonas: blanco → cloud → morado → blanco; tarjetas cloud sobre blanco y blancas sobre cloud/morado; palabra outline por fondo como en el home). Se quitaron el azul y el lima como fondo.
+
+- **2026-10-06 — servicios.html: ajustes de la usuaria.** Solo colores de marca (zonas: blanco, cloud, azul `--blue`, lima; se quitan pasteles y azules ajenos), se eliminan las frases manuscritas (y la fuente Caveat), los botones "Explora servicios de…", el eyebrow numerado de cada zona (ahora mini pill con el nombre del lab, enlazada), los puntos de las pills de salto y el botón "Ver nuestro trabajo" del héroe.
+
+- **2026-10-06 — servicios.html como "Bienvenido al workshop".** Se reemplaza el listado por: héroe morado con arco WOW y chips ("Un taller completo para construir marcas que quieren *más.*"), pills de salto y 4 zonas del taller (01 El taller de diseño, 02 El laboratorio de crecimiento, 03 La sala de datos, 04 La academia WOW), cada una con titular + CTA, escena animada propia en CSS (laptop/paleta/celular; buscador+barras; panel de datos; clase con play y checks), nota manuscrita (Caveat, añadida a la URL de Google Fonts) y tarjetas blancas con ícono SVG (`sv-*`, `hb-card--w`). Enlaces, textos de cada servicio, FAQ y JSON-LD intactos; el H1 pasa a "Un taller completo…" y se mantiene la frase SEO en el eyebrow y el subtítulo. Home intacto.
+
 - **2026-10-06 — Capa WOW para listas y tarjetas básicas.** Chips de `.of-chips`/`.of-when`/`.of-notes` pasan a stickers de color con estrella (máscara `icon-star.svg`), inclinados (propiedad `rotate`, para no chocar con el `transform` de `.rv`) y con aparición escalonada (`sp-reveal` + `rv` en el HTML de las páginas). Tarjetas numeradas de las escenas (`og/oc/wb/ux/os/od/oq`): número grande en contorno al fondo y la activa se pinta de lima. Íconos propios por tarjeta quedan pendientes.
 
 - **2026-10-06 — Labs: trabajo igual al de servicios + tarjetas con más WOW.** Los dos Labs usan el carrusel curvo `#spCurve` (7 casos, popup de caso, cifras) en vez de la grilla de fotos; se cargan `cases.js` y `project-popup.js`. Las `hb-card` (servicios.html y Labs) pasan a tarjetas de color sólido (morado, lima, rosa, azul, durazno) con número outline grande, leve inclinación y flecha circular que gira al hover. `.lb-case` queda sin uso.
