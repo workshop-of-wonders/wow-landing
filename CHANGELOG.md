@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — GEO rediseñado + sin verde en tarjetas.** GEO: un solo chat a ancho centrado; las 6 señales se suman dentro de la respuesta de la IA (✓ por señal, medidor Confusa→Clara) con altura constante; se quita la lista de tarjetas aparte. CRO: el nivel activo ya no lleva anillo lima (solo sombra y leve escala).
+
 - **2026-10-07 — SEO local: "Con qué se complementa" como puntos en un mapa.** Los 3 chips pasan a pines sobre un mapa ilustrativo (calles, parque, agua) con "Tu negocio ★★★★★" al centro, rutas punteadas y tarjetas que aparecen pin por pin en bucle (CSS, sin JS). En móvil el mapa pasa a lista con pines. Mismo texto.
 
 - **2026-10-07 — Diseño gráfico: la escena es ahora un diseño que se construye.** Editor ilustrativo con panel de capas y lienzo: cada pieza (post, presentación, anuncio) se arma capa por capa (fondo → forma → título → texto → logo → botón) con cajas de selección y cursor, y rota sola entre las 3 piezas con las tarjetas debajo. Reemplaza el cambio de "sistema visual A/B/C". Solo colores de marca.

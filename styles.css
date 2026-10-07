@@ -5289,21 +5289,21 @@ main { padding-top: var(--nav-h); }
 .of-st, .of-fbar { transition: background .4s, box-shadow .4s, transform .4s cubic-bezier(.2,.8,.2,1), color .4s; }
 .of-pipe.seq .of-st.rv { transition: opacity .5s, transform .5s, background .4s, box-shadow .4s; }
 .of-pipe.cur-1 .of-st.k1 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-1 .of-fbar.k1 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-1 .of-fbar.k1 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-2 .of-st.k2 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-2 .of-fbar.k2 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-2 .of-fbar.k2 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-3 .of-st.k3 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-3 .of-fbar.k3 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-3 .of-fbar.k3 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-4 .of-st.k4 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-4 .of-fbar.k4 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-4 .of-fbar.k4 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-5 .of-st.k5 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-5 .of-fbar.k5 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-5 .of-fbar.k5 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-6 .of-st.k6 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-6 .of-fbar.k6 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-6 .of-fbar.k6 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-7 .of-st.k7 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-7 .of-fbar.k7 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-7 .of-fbar.k7 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 .of-pipe.cur-8 .of-st.k8 { background: #fff; box-shadow: 0 18px 34px rgba(56,7,87,.22); }
-.of-fun.cur-8 .of-fbar.k8 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
+.of-fun.cur-8 .of-fbar.k8 { box-shadow: 0 16px 30px rgba(56,7,87,.3); transform: scale(1.025); }
 
 
 /* diseño gráfico: un diseño que se construye capa por capa (post → presentación → anuncio) */
@@ -5385,3 +5385,32 @@ main { padding-top: var(--nav-h); }
 @media (prefers-reduced-motion: reduce) { .sl-routes path, .sl-pin::after, .sl-pt .sl-pin, .sl-pt .sl-card { animation: none !important; } }
 .sl-card--me { white-space: nowrap; }
 @media (max-width: 760px) { .sl-pin::after { display: none; } .sl-card--me { white-space: normal; } }
+
+/* GEO: un solo chat; las 6 señales se suman dentro de la respuesta de la IA (sin tarjetas aparte) */
+.og { display: block; max-width: 920px; margin-left: auto; margin-right: auto; }
+.og-win { position: static; }
+.og-a { min-height: 0; }
+.og-lead { transition: opacity .5s, max-height .5s; }
+.og-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.og-it { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: transparent; opacity: 0; transform: translateY(10px); max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; transition: opacity .5s, transform .5s var(--ease), max-height .6s var(--ease), padding .4s, background .4s, box-shadow .4s; }
+.og-it h3 { margin: 0 0 2px; font-size: 17px; color: var(--purple); } .og-it p { margin: 0; font-size: 14.5px; line-height: 1.45; color: rgba(56,7,87,.84); }
+.og-it .og-ok { position: static; flex: none; margin: 2px 0 0; transform: scale(0); transition: transform .5s .2s var(--ease); background: var(--purple); color: var(--lima); }
+.og.on-1 .og-it1 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-1 .og-it1 .og-ok { transform: scale(1); }
+.og.cur-1 .og-it1 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+.og.on-2 .og-it2 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-2 .og-it2 .og-ok { transform: scale(1); }
+.og.cur-2 .og-it2 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+.og.on-3 .og-it3 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-3 .og-it3 .og-ok { transform: scale(1); }
+.og.cur-3 .og-it3 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+.og.on-4 .og-it4 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-4 .og-it4 .og-ok { transform: scale(1); }
+.og.cur-4 .og-it4 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+.og.on-5 .og-it5 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-5 .og-it5 .og-ok { transform: scale(1); }
+.og.cur-5 .og-it5 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+.og.on-6 .og-it6 { opacity: 1; transform: none; max-height: none; padding-top: 12px; padding-bottom: 12px; } .og.on-6 .og-it6 .og-ok { transform: scale(1); }
+.og.cur-6 .og-it6 { background: #fff; box-shadow: 0 10px 22px rgba(56,7,87,.12); }
+@media (max-width: 640px) { .og-it { gap: 10px; padding-left: 8px; padding-right: 8px; } .og-it h3 { font-size: 16px; } }
+/* altura constante: la caja no crece ni se encoge mientras se construye (evita saltos de página) */
+.og-a { position: relative; }
+.og-none { position: absolute; left: 16px; right: 16px; top: 16px; margin: 0; }
+.og-lead { max-height: none; overflow: visible; }
+.og-it { max-height: none; padding-top: 12px; padding-bottom: 12px; overflow: visible; }
+.og.on-1 .og-none { max-height: none; margin: 0; opacity: 0; }
