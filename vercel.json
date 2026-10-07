@@ -2,6 +2,11 @@
   "rewrites": [],
   "redirects": [
     {
+      "source": "/servicios/cursos-digitales.html",
+      "destination": "/servicios.html",
+      "permanent": true
+    },
+    {
       "source": "/servicios/posts-graficos-pauta.html",
       "destination": "/servicios/pauta-digital.html",
       "permanent": true
