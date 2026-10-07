@@ -5305,8 +5305,3 @@ main { padding-top: var(--nav-h); }
 .of-pipe.cur-8 .of-st.k8 { background: var(--lima); box-shadow: 0 18px 34px rgba(56,7,87,.22); }
 .of-fun.cur-8 .of-fbar.k8 { box-shadow: 0 0 0 4px var(--lima), 0 16px 30px rgba(56,7,87,.26); }
 
-/* pestañas de servicios.html: rotan solas con una barra de progreso */
-.sv-tablist.is-auto button[aria-selected="true"] { position: relative; overflow: hidden; }
-.sv-tablist.is-auto button[aria-selected="true"]::after { content: ""; position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--lima); transform-origin: left; animation: svTabBar var(--tabms, 7s) linear forwards; }
-@keyframes svTabBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) { .sv-tablist.is-auto button[aria-selected="true"]::after { animation: none; } }

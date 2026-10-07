@@ -407,24 +407,4 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   fromHash();
   window.addEventListener('hashchange', fromHash);
-
-  // rotan solas cada ~7 s mientras la sección está en pantalla; si la persona elige una pestaña, se detiene el automático
-  var reduceT = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var MS = 7000, timerT = null, autoT = !reduceT && !location.hash;
-  list.style.setProperty('--tabms', MS + 'ms');
-  function nextTab() {
-    var i = tabs.findIndex(function (t) { return t.getAttribute('aria-selected') === 'true'; });
-    show(tabs[(i + 1) % tabs.length]);
-  }
-  function stopTabs() { clearInterval(timerT); timerT = null; list.classList.remove('is-auto'); }
-  function userPicked() { autoT = false; stopTabs(); }
-  list.addEventListener('click', userPicked);
-  list.addEventListener('keydown', userPicked);
-  if (autoT && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (en) {
-      if (!autoT) return;
-      if (en[0].isIntersecting) { list.classList.add('is-auto'); if (!timerT) timerT = setInterval(nextTab, MS); }
-      else stopTabs();
-    }, { threshold: 0.35 }).observe(document.querySelector('.sv-folder'));
-  }
 })();
