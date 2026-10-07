@@ -353,8 +353,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
         if (visible) { if (build && i === 0 && !reduce) setTimeout(function () { if (visible) set(1); }, 500); start(); } else stop();
       }, { threshold: 0.35 }).observe(el);
     } else { set(build ? N : 1); }
-    el.addEventListener('mouseenter', function () { hover = true; });
-    el.addEventListener('mouseleave', function () { hover = false; });
     [].forEach.call(el.querySelectorAll('[data-go]'), function (b) {
       b.addEventListener('click', function () { set(parseInt(b.getAttribute('data-go'), 10)); stop(); if (visible) start(); });
     });

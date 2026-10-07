@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Escenas animadas (`[data-seq]`): ya no se pausan con el mouse encima.** Si el cursor reposaba sobre la sección (p. ej. al hacer scroll), la escena de diseño web y las demás quedaban congeladas. Siguen pausándose fuera de pantalla y al hacer clic en un paso (salta y continúa).
+
 - **2026-10-07 — Se elimina el servicio "Cursos digitales" de todo el sitio.** Borrada `servicios/cursos-digitales.html` (redirect 301 a `/servicios.html` en `vercel.json`); fuera del sitemap, `llms.txt`, menú desplegable de 14 páginas, pestaña/panel/píldora del héroe y JSON-LD de `servicios.html`, tarjeta y oferta JSON-LD de `labs/insight-lab.html`; textos de FAQ y descripciones ajustados ("dos frentes conectados"). El home no mencionaba cursos (no se tocó). Pendiente/opcional: limpiar CSS muerto (`.of-stairs`, `.sv-art--c`…) y los scripts de `scripts/` que aún generan esa página.
 
 - **2026-10-07 — servicios.html: subtítulo del héroe con "Conoce aquí nuestros servicios…".**
