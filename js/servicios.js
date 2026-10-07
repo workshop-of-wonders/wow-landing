@@ -314,6 +314,23 @@ document.getElementById('year').textContent = new Date().getFullYear();
       p.addEventListener('mouseenter', function () { on(p.getAttribute('data-hs-t')); });
     });
     if (triggers.length) on(triggers[0].getAttribute('data-hs-t'));
+    // rotan solos (sin depender del mouse): avanzan cada ~3 s mientras la maqueta está en pantalla y no se la está tocando
+    var reduceHs = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (triggers.length > 1 && !reduceHs && 'IntersectionObserver' in window) {
+      var idx = 0, vis = false, touching = false, timerHs = null;
+      g.addEventListener('mouseenter', function () { touching = true; });
+      g.addEventListener('mouseleave', function () { touching = false; });
+      g.addEventListener('focusin', function () { touching = true; });
+      g.addEventListener('focusout', function () { touching = false; });
+      new IntersectionObserver(function (en) {
+        vis = en[0].isIntersecting;
+        if (vis && !timerHs) timerHs = setInterval(function () {
+          if (touching) return;
+          idx = (idx + 1) % triggers.length; on(triggers[idx].getAttribute('data-hs-t'));
+        }, 3000);
+        else if (!vis) { clearInterval(timerHs); timerHs = null; }
+      }, { threshold: 0.3 }).observe(g);
+    }
   });
 })();
 
@@ -390,4 +407,24 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   fromHash();
   window.addEventListener('hashchange', fromHash);
+
+  // rotan solas cada ~7 s mientras la sección está en pantalla; si la persona elige una pestaña, se detiene el automático
+  var reduceT = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var MS = 7000, timerT = null, autoT = !reduceT && !location.hash;
+  list.style.setProperty('--tabms', MS + 'ms');
+  function nextTab() {
+    var i = tabs.findIndex(function (t) { return t.getAttribute('aria-selected') === 'true'; });
+    show(tabs[(i + 1) % tabs.length]);
+  }
+  function stopTabs() { clearInterval(timerT); timerT = null; list.classList.remove('is-auto'); }
+  function userPicked() { autoT = false; stopTabs(); }
+  list.addEventListener('click', userPicked);
+  list.addEventListener('keydown', userPicked);
+  if (autoT && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      if (!autoT) return;
+      if (en[0].isIntersecting) { list.classList.add('is-auto'); if (!timerT) timerT = setInterval(nextTab, MS); }
+      else stopTabs();
+    }, { threshold: 0.35 }).observe(document.querySelector('.sv-folder'));
+  }
 })();
