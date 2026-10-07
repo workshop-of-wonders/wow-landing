@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Tarjeta activa de las escenas: sin borde** (queda blanca con sombra suave).
+
 - **2026-10-07 — Tarjetas activas de las escenas sin verde.** La tarjeta activa (og/oc/wb/ux/os/od/oq y tracking) pasa de fondo lima a fondo blanco con borde morado de 2 px. E-commerce ya rotaba solo (verificado con el mouse encima).
 
 - **2026-10-07 — servicios.html: las pestañas NO rotan solas** (decisión de la usuaria; se retira el autoplay y la barra de progreso; solo cambian con clic o teclado).
