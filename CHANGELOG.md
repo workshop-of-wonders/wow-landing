@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Diseño gráfico: la escena es ahora un diseño que se construye.** Editor ilustrativo con panel de capas y lienzo: cada pieza (post, presentación, anuncio) se arma capa por capa (fondo → forma → título → texto → logo → botón) con cajas de selección y cursor, y rota sola entre las 3 piezas con las tarjetas debajo. Reemplaza el cambio de "sistema visual A/B/C". Solo colores de marca.
+
 - **2026-10-07 — Tarjeta activa de las escenas: sin borde** (queda blanca con sombra suave).
 
 - **2026-10-07 — Tarjetas activas de las escenas sin verde.** La tarjeta activa (og/oc/wb/ux/os/od/oq y tracking) pasa de fondo lima a fondo blanco con borde morado de 2 px. E-commerce ya rotaba solo (verificado con el mouse encima).
