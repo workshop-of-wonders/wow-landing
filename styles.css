@@ -5414,3 +5414,10 @@ main { padding-top: var(--nav-h); }
 .og-lead { max-height: none; overflow: visible; }
 .og-it { max-height: none; padding-top: 12px; padding-bottom: 12px; overflow: visible; }
 .og.on-1 .og-none { max-height: none; margin: 0; opacity: 0; }
+/* analítica: panel a la izquierda, tarjetas en columna a la derecha */
+.od { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.od-win { position: sticky; top: calc(var(--nav-h) + var(--space-3)); }
+.od-grid { grid-template-columns: minmax(0, 1fr); min-height: 380px; } .od-side { display: none; }
+.od-txt { margin-top: 0; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+@media (max-width: 1000px) { .od { grid-template-columns: minmax(0, 1fr); } .od-win { position: static; } }
+.od-tx { padding-right: 72px; }

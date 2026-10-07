@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Analítica en 2 columnas:** panel a la izquierda (fijo al hacer scroll, sin menú lateral interno) y las 5 tarjetas apiladas a la derecha; en móvil una columna.
+
 - **2026-10-07 — GEO rediseñado + sin verde en tarjetas.** GEO: un solo chat a ancho centrado; las 6 señales se suman dentro de la respuesta de la IA (✓ por señal, medidor Confusa→Clara) con altura constante; se quita la lista de tarjetas aparte. CRO: el nivel activo ya no lleva anillo lima (solo sombra y leve escala).
 
 - **2026-10-07 — SEO local: "Con qué se complementa" como puntos en un mapa.** Los 3 chips pasan a pines sobre un mapa ilustrativo (calles, parque, agua) con "Tu negocio ★★★★★" al centro, rutas punteadas y tarjetas que aparecen pin por pin en bucle (CSS, sin JS). En móvil el mapa pasa a lista con pines. Mismo texto.
