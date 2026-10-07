@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-07 — Diseño web: la escena cambia más rápido** (`data-ms` 4200 → 2400 ms por paso; ciclo completo ≈ 14 s).
+
 - **2026-10-07 — Todo lo interactivo de servicios rota solo.** (1) `servicios.html`: las pestañas cambian cada ~7 s con barra de progreso mientras la sección está en pantalla; si la persona elige una, se detiene el automático. (2) Puntos calientes de SEO local (`[data-hs-group]`): rotan cada ~3 s, se pausan solo mientras se toca la maqueta. (3) Tracking y CRO entran al motor `[data-seq]`: un resaltado recorre los pasos/niveles (`.k1…`, `.cur-n`). Las demás escenas ya rotaban solas. `prefers-reduced-motion` respetado. SEO (escalera por scroll), carrusel de casos y FAQ no cambian (el FAQ sigue siendo a demanda).
 
 - **2026-10-07 — Escenas animadas (`[data-seq]`): ya no se pausan con el mouse encima.** Si el cursor reposaba sobre la sección (p. ej. al hacer scroll), la escena de diseño web y las demás quedaban congeladas. Siguen pausándose fuera de pantalla y al hacer clic en un paso (salta y continúa).
