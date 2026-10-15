@@ -23,10 +23,9 @@ function initFallingIcons() {
       MouseConstraint = Matter.MouseConstraint;
 
   var iconSources = [
-    { src: '/design-system/icons/icon-star.svg', w: 1080, h: 1350 },
-    { src: '/design-system/icons/icon-swoosh.svg', w: 1080, h: 1350 },
-    { src: '/design-system/icons/icon-arch.svg', w: 1080, h: 1350 },
-    { src: '/design-system/icons/icon-bloom.svg', w: 1080, h: 1350 },
+    { src: '/design-system/icons/icon-estrella.svg', w: 372, h: 406 },
+    { src: '/design-system/icons/icon-flor.svg', w: 458, h: 432 },
+    { src: '/design-system/icons/icon-comillas.svg', w: 436, h: 352 },
     { src: '/design-system/logo/wow-mark-purple.svg', w: 227.14, h: 257.27 }
   ];
   var ICON_SIZE = zone.offsetWidth < 500 ? 62 : 101;
