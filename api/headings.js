@@ -106,18 +106,18 @@ function analyze(html) {
   while ((m = re.exec(body)) && headings.length < 300) headings.push({ level: +m[1], text: clean(m[2]).slice(0, 200) });
 
   var issues = [], h1 = headings.filter(function (h) { return h.level === 1; });
-  if (!h1.length) issues.push({ type: 'error', msg: 'No tiene H1. Cada página debería tener uno que diga de qué trata.' });
-  if (h1.length > 1) issues.push({ type: 'warn', msg: 'Tiene ' + h1.length + ' H1. Lo recomendable es uno solo por página.' });
-  if (h1.length === 1 && h1[0].text.length > 70) issues.push({ type: 'warn', msg: 'El H1 es muy largo (' + h1[0].text.length + ' caracteres). Intenta dejarlo por debajo de 70.' });
-  if (headings.some(function (h) { return !h.text; })) issues.push({ type: 'warn', msg: 'Hay encabezados vacíos o que solo contienen imágenes.' });
+  if (!h1.length) issues.push({ code: 'no_h1', type: 'error', msg: 'No tiene H1. Cada página debería tener uno que diga de qué trata.' });
+  if (h1.length > 1) issues.push({ code: 'multi_h1', type: 'warn', msg: 'Tiene ' + h1.length + ' H1. Lo recomendable es uno solo por página.' });
+  if (h1.length === 1 && h1[0].text.length > 70) issues.push({ code: 'long_h1', type: 'warn', msg: 'El H1 es muy largo (' + h1[0].text.length + ' caracteres). Intenta dejarlo por debajo de 70.' });
+  if (headings.some(function (h) { return !h.text; })) issues.push({ code: 'empty', type: 'warn', msg: 'Hay encabezados vacíos o que solo contienen imágenes.' });
   for (var i = 1; i < headings.length; i++) {
     if (headings[i].level - headings[i - 1].level > 1) {
-      issues.push({ type: 'warn', msg: 'Salta de H' + headings[i - 1].level + ' a H' + headings[i].level + ' en «' + (headings[i].text || 'encabezado vacío').slice(0, 60) + '». No te saltes niveles.' });
+      issues.push({ code: 'skip', type: 'warn', msg: 'Salta de H' + headings[i - 1].level + ' a H' + headings[i].level + ' en «' + (headings[i].text || 'encabezado vacío').slice(0, 60) + '». No te saltes niveles.' });
       break;
     }
   }
-  if (headings.length && headings[0].level !== 1) issues.push({ type: 'warn', msg: 'El primer encabezado de la página es un H' + headings[0].level + ', no un H1.' });
-  if (!meta) issues.push({ type: 'warn', msg: 'No tiene meta description.' });
+  if (headings.length && headings[0].level !== 1) issues.push({ code: 'first_not_h1', type: 'warn', msg: 'El primer encabezado de la página es un H' + headings[0].level + ', no un H1.' });
+  if (!meta) issues.push({ code: 'no_meta', type: 'warn', msg: 'No tiene meta description.' });
   return { title: title ? clean(title) : '', metaDescription: meta ? decode(meta).trim() : '', headings: headings, counts: [1, 2, 3, 4, 5, 6].map(function (l) { return headings.filter(function (h) { return h.level === l; }).length; }), issues: issues };
 }
 

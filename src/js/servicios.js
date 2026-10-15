@@ -409,40 +409,6 @@ document.getElementById('year').textContent = new Date().getFullYear();
   window.addEventListener('hashchange', fromHash);
 })();
 
-/* SEO: diagnóstico interactivo */
-(function () {
-  var box = document.getElementById('diagnostico');
-  if (!box) return;
-  var sw = box.querySelectorAll('.sd-sw');
-  var ring = document.getElementById('sdRing'), score = document.getElementById('sdScore');
-  var verdict = document.getElementById('sdVerdict'), msg = document.getElementById('sdMsg'), steps = document.getElementById('sdSteps');
-  var tiers = [
-    [30, 'Tu sitio es casi invisible para Google', 'Hoy es muy difícil que un cliente te encuentre sin buscarte por tu nombre. La buena noticia: hay mucho por ganar.'],
-    [60, 'Tienes bases, pero te falta empuje', 'Google ya sabe que existes, aunque otros aparecen antes que tú. Con orden y un plan claro, se acorta la distancia.'],
-    [85, 'Vas bien encaminado', 'Lo esencial está cubierto. Lo que falta es justo lo que te separa de quien hoy te supera.'],
-    [101, 'Tu base SEO es sólida', 'Tienes casi todo en orden. Ahora toca medir, afinar y mantener el ritmo.']
-  ];
-  function update() {
-    var total = 0, missing = [];
-    sw.forEach(function (s) {
-      var w = +s.dataset.w;
-      if (s.checked) total += w; else missing.push({ w: w, t: s.dataset.step });
-    });
-    score.textContent = total;
-    ring.style.strokeDashoffset = 553 * (1 - total / 100);
-    var tier = tiers.filter(function (t) { return total < t[0]; })[0];
-    verdict.textContent = tier[1];
-    msg.textContent = tier[2];
-    missing.sort(function (a, b) { return b.w - a.w; });
-    steps.innerHTML = '';
-    (missing.length ? missing.slice(0, 3).map(function (m) { return m.t; }) : ['Revisar resultados cada mes y seguir optimizando']).forEach(function (t) {
-      var li = document.createElement('li'); li.textContent = t; steps.appendChild(li);
-    });
-  }
-  sw.forEach(function (s) { s.addEventListener('change', update); });
-  update();
-})();
-
 /* SEO: simulador de posiciones en el tiempo */
 (function () {
   var list = document.getElementById('ssList');
@@ -528,6 +494,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       }, reduce ? 0 : 260);
     }
     function result() {
+      if (window.WOWSim && window.WOWLead) return window.WOWSim.result(box, c, a, sec, intro, { cta: cta, el: el });
       var total = score(), t = c.tiers[cuts.findIndex(function (x) { return total < x; })] || c.tiers[3];
       var gaps = c.qs.map(function (q, k) { return { q: q, k: k, lost: q.w * (1 - a[k]) }; }).filter(function (g) { return g.lost > 0; }).sort(function (x, y) { return y.lost - x.lost; });
       var strong = c.qs.filter(function (q, k) { return a[k] === 1; });
@@ -573,7 +540,13 @@ document.getElementById('year').textContent = new Date().getFullYear();
         label: 'Ingresos por cada $1 invertido', big: (Math.round(roas * 10) / 10).toString().replace('.', ',') + 'x',
         kpis: [['CLICS', val(clics)], ['CONTACTOS', val(leads)], ['VENTAS AL MES', val(ventas)], ['COSTO POR VENTA', ventas > 0 ? val(v.inv / ventas, 'money') : '—']],
         hint: (roas < 1 ? 'Con estos números la pauta no se paga sola: antes de subir inversión, revisa el eslabón más débil. ' : 'Con estos números la pauta se paga. ') +
-          'Si tu página convirtiera 1 punto más (' + val(v.conv + 1, 'pct') + '), el retorno subiría a ' + (Math.round(alt * 10) / 10).toString().replace('.', ',') + 'x sin gastar más en anuncios.'
+          'Si tu página convirtiera 1 punto más (' + val(v.conv + 1, 'pct') + '), el retorno subiría a ' + (Math.round(alt * 10) / 10).toString().replace('.', ',') + 'x sin gastar más en anuncios.',
+        viz: [['Clics', clics, 1], ['Contactos', leads, Math.sqrt(clics ? leads / clics : 0)], ['Ventas', ventas, Math.sqrt(clics ? ventas / clics : 0)]],
+        scen: function () {
+          function r(o) { var w = {}; for (var k in v) w[k] = v[k]; for (var k2 in o) w[k2] = o[k2]; var cl = w.inv / w.cpc, ing2 = cl * w.conv / 100 * w.cierre / 100 * w.ticket; return [w.inv ? ing2 / w.inv : 0, ing2]; }
+          var base = r({}), fmtx = function (x) { return (Math.round(x * 10) / 10).toString().replace('.', ',') + 'x'; };
+          return [['Hoy', base], ['Tu página convierte 1 punto más', r({ conv: v.conv + 1 })], ['Tu costo por clic baja 20 %', r({ cpc: v.cpc * 0.8 })], ['Cierras 5 puntos más', r({ cierre: Math.min(100, v.cierre + 5) })], ['Tu ticket promedio sube 10 %', r({ ticket: v.ticket * 1.1 })], ['Las cuatro mejoras juntas', r({ conv: v.conv + 1, cpc: v.cpc * 0.8, cierre: Math.min(100, v.cierre + 5), ticket: v.ticket * 1.1 })]].map(function (x) { return [x[0], fmtx(x[1][0]), val(x[1][1], 'money') + ' / mes']; });
+        }
       };
     },
     cro: function (v) {
@@ -589,7 +562,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
       return {
         label: 'Ventas recuperables al mes', big: val(rec * v.ticket, 'money'),
         kpis: [['PEDIDOS HOY', val(pedidos)], ['CARRITOS ABANDONADOS', val(aband)], ['PEDIDOS RECUPERADOS', val(rec)], ['INGRESOS ACTUALES', val(pedidos * v.ticket, 'money')]],
-        hint: 'Cada carrito abandonado ya mostró intención de compra. Recuperar solo el ' + val(v.rec, 'pct') + ' equivale a ' + val(rec * v.ticket * 12, 'money') + ' al año.'
+        hint: 'Cada carrito abandonado ya mostró intención de compra. Recuperar solo el ' + val(v.rec, 'pct') + ' equivale a ' + val(rec * v.ticket * 12, 'money') + ' al año.',
+        viz: [['Pedidos hoy', pedidos, carritos ? pedidos / carritos : 0], ['Carritos abandonados', aband, carritos ? aband / carritos : 0], ['Recuperables', rec, carritos ? rec / carritos : 0]],
+        scen: function () { return [5, 10, 15, 20, 25, 30].map(function (pc) { var rr = aband * pc / 100; return ['Recuperas el ' + pc + ' % de los carritos', val(rr) + ' pedidos', val(rr * v.ticket, 'money') + ' / mes · ' + val(rr * v.ticket * 12, 'money') + ' / año']; }); }
       };
     }
   };
@@ -604,12 +579,32 @@ document.getElementById('year').textContent = new Date().getFullYear();
       row.querySelector('input').addEventListener('input', function (e) { vals[n.k] = +e.target.value; update(); });
       box.appendChild(row);
     });
-    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-kpis"></div><p class="sc-hint"></p>' + cta(c));
+    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-viz" aria-hidden="true"></div><div class="sc-kpis"></div><p class="sc-hint"></p>' + cta(c));
     card.setAttribute('aria-live', 'polite');
     grid.appendChild(box); grid.appendChild(card); sec.appendChild(grid);
+    var lastR = null, gate = el('div', 'sc-gate'), lockBox = el('div', 'sc-lock');
+    sec.appendChild(gate);
+    if (window.WOWLead) {
+      lockBox.innerHTML = '<p class="qz-lock-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> Escenarios con tus números: qué pasa si mejoras cada eslabón</p>';
+      var leadBox = el('div', 'sc-lead'); gate.appendChild(leadBox); gate.appendChild(lockBox);
+      window.WOWLead.mount(leadBox, {
+        tool: c.title, pitch: 'Te mostramos al instante qué pasa con tus números si mejoras cada eslabón, y cuál conviene mover primero.',
+        data: function () { return { sim: sec.id, page: location.pathname, entradas: vals }; },
+        onUnlock: function () {
+          if (!lastR || !lastR.scen) return;
+          var rows = lastR.scen();
+          lockBox.innerHTML = '<p class="sd-steps-t">TUS ESCENARIOS</p><table class="sc-scen"><tbody>' + rows.map(function (r, i) { return '<tr' + (i === 0 ? ' class="is-base"' : '') + '><th scope="row">' + r[0] + '</th><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') + '</tbody></table><p class="sc-note-s">Cálculo de referencia con los números que ingresaste.</p>';
+        }
+      });
+    }
     function update() {
       c.inputs.forEach(function (n) { outs[n.k].textContent = val(vals[n.k], n.f); });
-      var r = models[c.model](vals);
+      var r = models[c.model](vals); lastR = r;
+      var vz = card.querySelector('.sc-viz');
+      if (r.viz) {
+        if (vz.children.length !== r.viz.length) vz.innerHTML = r.viz.map(function () { return '<div class="sc-bar"><span></span><i></i></div>'; }).join('');
+        r.viz.forEach(function (b, i) { var row = vz.children[i]; row.firstChild.textContent = b[0] + ' · ' + val(b[1]); row.lastChild.style.width = Math.max(3, Math.min(100, b[2] * 100)) + '%'; });
+      }
       card.querySelector('.sc-lab').textContent = r.label;
       card.querySelector('.sc-big').textContent = r.big;
       card.querySelector('.sc-kpis').innerHTML = r.kpis.map(function (k) { return '<div><small>' + k[0] + '</small><strong>' + k[1] + '</strong></div>'; }).join('');
@@ -622,7 +617,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
     var s = sec.querySelector('script[type="application/json"]'), c;
     try { c = JSON.parse(s.textContent); } catch (e) { return; }
     s.remove();
-    (c.type === 'calc' ? buildCalc : buildCheck)(sec, c);
+    var mode = c.type !== 'calc' && c.mode && window.WOWSim && window.WOWLead && window.WOWSim.modes[c.mode];
+    if (mode) mode(sec, c, { head: head, cta: cta, el: el });
+    else (c.type === 'calc' ? buildCalc : buildCheck)(sec, c);
     sec.insertAdjacentHTML('beforeend', '<p class="ss-note sc-note">SIMULACIÓN DE REFERENCIA · LOS RESULTADOS REALES DEPENDEN DE TU NEGOCIO Y DE TU MERCADO</p>');
   });
 })();
