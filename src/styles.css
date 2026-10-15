@@ -5717,8 +5717,10 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .wm-pills { position: relative; }
 .wm-pills li { display: inline-flex; align-items: center; gap: 8px; }
 .wm-pills li img { display: block; width: 20px; height: 20px; flex: none; pointer-events: none; }
-.wm-chips-ai li img { filter: brightness(0); opacity: .85; }
+.wm-chips-ai li:not(.wm-full) img { filter: brightness(0); opacity: .85; }
 .wm-pills.is-live { position: relative; display: block; overflow: hidden; touch-action: pan-y; }
 .wm-pills.is-live li { position: absolute; left: 0; top: 0; cursor: grab; user-select: none; -webkit-user-select: none; white-space: nowrap; will-change: transform; touch-action: none; }
 .wm-pills.is-live li.is-drag { cursor: grabbing; box-shadow: 0 10px 28px rgba(0,0,0,.35); z-index: 2; }
 .wm-pills.is-live:not(.wm-chips-ai) li.is-drag { background: rgba(255,255,255,.22); }
+.wm-pills li.wm-full img { width: auto; max-width: none; }
+.wm-pills li.wm-full { padding: 9px 18px; }

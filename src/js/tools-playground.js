@@ -89,7 +89,13 @@
     });
   }
 
-  function init() { if (window.Matter) lists.forEach(setup); }
+  /* espera a que carguen los logos para medir bien cada pill */
+  function init() {
+    if (!window.Matter) return;
+    var imgs = Array.prototype.slice.call(document.querySelectorAll('.wm-pills img'));
+    Promise.all(imgs.map(function (im) { return im.complete ? 0 : new Promise(function (ok) { im.onload = im.onerror = ok; }); }))
+      .then(function () { lists.forEach(setup); });
+  }
   var loaded = false;
   function load() {
     if (loaded) return; loaded = true;
