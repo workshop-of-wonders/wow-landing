@@ -34,6 +34,7 @@
       var t = 80;
       walls = [
         Bodies.rectangle(w / 2, h + t / 2, w + t * 2, t, { isStatic: true }),
+        Bodies.rectangle(w / 2, -t / 2, w + t * 2, t, { isStatic: true }),
         Bodies.rectangle(-t / 2, h / 2, t, h * 4, { isStatic: true }),
         Bodies.rectangle(w + t / 2, h / 2, t, h * 4, { isStatic: true })
       ];
@@ -54,12 +55,17 @@
     ['mouseup', 'touchend', 'touchcancel', 'pointerup'].forEach(function (ev) { document.addEventListener(ev, release, { passive: true }); });
     window.addEventListener('blur', release);
 
-    /* evita que un lanzamiento rápido atraviese las paredes laterales */
-    M.Events.on(engine, 'afterUpdate', function () {
+        M.Events.on(engine, 'afterUpdate', function () {
+      /* las pills nunca salen del contenedor, ni arrastrándolas ni lanzándolas fuerte */
       bodies.forEach(function (b) {
-        var x = Math.min(Math.max(b.position.x, b._w / 2), w - b._w / 2);
-        if (x !== b.position.x) { M.Body.setPosition(b, { x: x, y: b.position.y }); M.Body.setVelocity(b, { x: b.velocity.x * 0.4, y: b.velocity.y }); }
-        if (b.position.y > h + 200) { M.Body.setPosition(b, { x: b.position.x, y: -60 }); M.Body.setVelocity(b, { x: 0, y: 0 }); }
+        var hw = b._w / 2, hh = b._h / 2;
+        var x = Math.min(Math.max(b.position.x, hw), w - hw);
+        var y = Math.min(Math.max(b.position.y, hh), h - hh);
+        var cx = x !== b.position.x, cy = y !== b.position.y;
+        if (cx || cy) {
+          M.Body.setPosition(b, { x: x, y: y });
+          M.Body.setVelocity(b, { x: cx ? b.velocity.x * 0.4 : b.velocity.x, y: cy ? b.velocity.y * 0.4 : b.velocity.y });
+        }
       });
     });
 
