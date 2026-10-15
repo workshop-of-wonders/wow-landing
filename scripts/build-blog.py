@@ -68,40 +68,132 @@ def card(p, featured=False):
 '''
 
 
+def bx_card(p):
+    return f'''<a class="bx-card" href="{p['slug']}.html" data-cat="{p['cat']}">
+          <div class="bx-cover" data-cat="{p['cat']}"><span class="bx-read">{p['read']} MIN</span><span class="bx-ico" aria-hidden="true"></span></div>
+          <div class="bx-body"><span class="bx-date">{DATE_ES.upper()} · {p['cat'].upper()}</span><h3>{p['h1']}</h3><p>{p['excerpt']}</p></div>
+        </a>
+        '''
+
+
+TOPICS = ['Diseño web', 'SEO', 'Pauta digital', 'E-commerce', 'Marketing médico', 'SEO local', 'Analítica', 'GEO', 'Pymes', 'Medellín']
+SUGGEST = ['SEO', 'pauta', 'médicos', 'Medellín', 'WooCommerce']
+
+
 def index(posts):
     url = SITE + 'blog/'
     title = 'Blog de Marketing Digital y Diseño Web | WOW'
     desc = 'Guías prácticas sobre marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia, escritas por el equipo de WOW.'
     ld = [{'@context': 'https://schema.org', '@type': 'Blog', 'name': 'Blog de Workshop of Wonders', 'url': url, 'inLanguage': 'es-CO',
            'publisher': {'@type': 'Organization', 'name': 'Workshop of Wonders', 'url': SITE}}]
-    chips = '<li><button type="button" class="bl-chip is-on" data-f="">Todos</button></li>' + ''.join(
-        f'<li><button type="button" class="bl-chip" data-f="{c}">{c}</button></li>' for c in CATS)
-    feat = card(posts[0], True)
-    grid = ''.join(card(p) for p in posts[1:])
-    body = f'''<main id="top">
-  <section class="bl-hero">
-    <p class="eyebrow">BLOG WOW</p>
-    <h1>Ideas para que tu marca <em>se encuentre y convierta</em></h1>
-    <p>Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce, pensadas para clínicas, pymes y marcas en Colombia.</p>
-  </section>
-  <section class="bl-wrap">
-    <ul class="bl-chips" aria-label="Categorías">{chips}</ul>
-    {feat}    <div class="bl-grid" id="blGrid">
-      {grid}    </div>
-    <div class="bl-cta">
-      <p>¿Quieres aplicar esto en <em>tu marca</em>?</p>
-      <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
+    n = len(posts)
+    avg = round(sum(p['read'] for p in posts) / n)
+    counts = {c: sum(1 for p in posts if p['cat'] == c) for c in CATS}
+    pills = f'<button type="button" class="bx-pill is-on" data-f="">Todos <b>{n}</b></button>' + ''.join(
+        f'<button type="button" class="bx-pill" data-f="{c}">{c} <b>{counts[c]}</b></button>' for c in CATS if counts[c])
+    sugg = ''.join(f'<button type="button" class="bx-sug" data-q="{s}">{s}</button>' for s in SUGGEST)
+    ticker = ''.join(f'<span>{t}</span><i aria-hidden="true">✦</i>' for t in TOPICS)
+    feat = posts[0]
+    essentials = ''.join(
+        f'<a class="bx-ess" href="{p["slug"]}.html"><span class="bx-ess-n">0{i + 1}</span><span class="bx-ess-t">{p["h1"]}</span><span class="bx-ess-go" aria-hidden="true">→</span></a>\n      '
+        for i, p in enumerate(posts[:3]))
+    body = f'''<main id="top" class="bx-page">
+  <section class="bx-hero">
+    <p class="bx-kicker">BLOG · WOW</p>
+    <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
+    <p class="bx-sub">Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia. Lo que aprendemos en el taller, sin guardarnos nada.</p>
+    <div class="bx-hero-row">
+      <div class="bx-hero-search">
+        <form class="bx-search" role="search" data-hero-search>
+          <input type="search" placeholder="Busca un tema, una ciudad o una herramienta…" aria-label="Buscar en el blog" autocomplete="off">
+          <button type="submit" class="bx-go">Buscar</button>
+        </form>
+        <p class="bx-try">Prueba con: {sugg}</p>
+      </div>
+      <ul class="bx-stats">
+        <li><b>{n}</b><span>Artículos</span></li>
+        <li><b>{len([c for c in CATS if counts[c]])}</b><span>Temas</span></li>
+        <li><b>{avg}&prime;</b><span>Lectura promedio</span></li>
+      </ul>
     </div>
   </section>
+  <div class="bx-ticker" aria-hidden="true"><div class="bx-ticker-track">{ticker}{ticker}</div></div>
+
+  <section class="bx-sec" id="para-empezar">
+    <header class="bx-head"><h2>Para empezar</h2><span class="bx-tag">SELECCIÓN WOW</span></header>
+    <p class="bx-lead">Si solo vas a leer una guía, que sea esta.</p>
+    <a class="bx-feature" href="{feat['slug']}.html" data-cat="{feat['cat']}">
+      <span class="bx-feature-ico" aria-hidden="true"></span>
+      <span class="bx-feature-cat">{feat['cat'].upper()}</span>
+      <h3>{feat['h1']}</h3>
+      <p>{feat['excerpt']}</p>
+      <span class="bx-feature-meta">{DATE_ES.upper()} · {feat['read']} MIN DE LECTURA <b>LEER →</b></span>
+    </a>
+  </section>
+
+  <section class="bx-sec" id="articulos">
+    <header class="bx-head"><h2>Todos los artículos</h2><span class="bx-count" id="bxCount">{n}</span></header>
+    <p class="bx-lead">Filtra por tema o busca lo que necesitas.</p>
+    <div class="bx-filters">
+      <div class="bx-pills" role="group" aria-label="Filtrar por tema">{pills}</div>
+      <form class="bx-search bx-search--sm" role="search" onsubmit="return false"><input type="search" id="bxList" placeholder="Buscar en los artículos…" aria-label="Buscar en los artículos" autocomplete="off"></form>
+    </div>
+    <div class="bx-grid" id="bxGrid">
+        {''.join(bx_card(p) for p in posts)}</div>
+    <p class="bx-empty" id="bxEmpty" hidden>No encontramos artículos con esa búsqueda. <button type="button" class="bx-link" id="bxReset">Ver todos</button></p>
+    <nav class="bx-pager" aria-label="Paginación"><span class="bx-pg" id="bxPg">PÁG 1 DE 1</span><span class="bx-nums" id="bxNums"></span><button type="button" class="bx-next" id="bxNext">SIGUIENTE →</button></nav>
+  </section>
+
+  <section class="bx-sec" id="esenciales">
+    <header class="bx-head"><h2>Guías esenciales</h2><span class="bx-tag">EMPIEZA POR AQUÍ</span></header>
+    <p class="bx-lead">Tres lecturas para ordenar tu marketing digital antes de gastar un peso más.</p>
+    <div class="bx-ess-list">
+      {essentials}</div>
+  </section>
+
+  <section class="bx-cta">
+    <h2>¿Prefieres que lo hagamos <em>juntos?</em></h2>
+    <p>Cuéntanos tu proyecto y te respondemos en máximo 1 día hábil.</p>
+    <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
+  </section>
+  <div class="bx-wordmark" aria-hidden="true"><div class="bx-wordmark-track"><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i></div></div>
 </main>
 <script>
 (function () {{
-  var chips = document.querySelectorAll('.bl-chip'), cards = document.querySelectorAll('.bl-card, .bl-featured');
-  chips.forEach(function (c) {{ c.addEventListener('click', function () {{
-    chips.forEach(function (x) {{ x.classList.toggle('is-on', x === c); }});
-    var f = c.getAttribute('data-f');
-    cards.forEach(function (k) {{ k.hidden = !!f && k.getAttribute('data-cat') !== f; }});
-  }}); }});
+  var PAGE = 9, state = {{ f: '', q: '', p: 1 }};
+  var cards = [].slice.call(document.querySelectorAll('#bxGrid .bx-card'));
+  var pills = [].slice.call(document.querySelectorAll('.bx-pill'));
+  var inputs = [].slice.call(document.querySelectorAll('.bx-search input'));
+  var count = document.getElementById('bxCount'), empty = document.getElementById('bxEmpty');
+  var pg = document.getElementById('bxPg'), nums = document.getElementById('bxNums'), next = document.getElementById('bxNext');
+  function norm(s) {{ return (s || '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, ''); }}
+  cards.forEach(function (c) {{ c._t = norm(c.textContent); }});
+  function render() {{
+    var q = norm(state.q).trim();
+    var hits = cards.filter(function (c) {{ return (!state.f || c.dataset.cat === state.f) && (!q || c._t.indexOf(q) > -1); }});
+    var pages = Math.max(1, Math.ceil(hits.length / PAGE));
+    if (state.p > pages) state.p = pages;
+    cards.forEach(function (c) {{ c.hidden = true; }});
+    hits.slice((state.p - 1) * PAGE, state.p * PAGE).forEach(function (c) {{ c.hidden = false; }});
+    count.textContent = hits.length; empty.hidden = hits.length > 0;
+    pg.textContent = 'PÁG ' + state.p + ' DE ' + pages;
+    nums.innerHTML = '';
+    for (var i = 1; i <= pages; i++) {{
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = i; b.className = 'bx-num' + (i === state.p ? ' is-on' : '');
+      b.onclick = (function (n) {{ return function () {{ state.p = n; render(); document.getElementById('articulos').scrollIntoView({{ behavior: 'smooth' }}); }}; }})(i);
+      nums.appendChild(b);
+    }}
+    next.disabled = state.p >= pages;
+    pills.forEach(function (x) {{ x.classList.toggle('is-on', x.dataset.f === state.f); }});
+  }}
+  pills.forEach(function (x) {{ x.addEventListener('click', function () {{ state.f = x.dataset.f; state.p = 1; render(); }}); }});
+  inputs.forEach(function (i) {{ i.addEventListener('input', function () {{ state.q = i.value; state.p = 1; inputs.forEach(function (o) {{ if (o !== i) o.value = i.value; }}); render(); }}); }});
+  next.addEventListener('click', function () {{ state.p++; render(); document.getElementById('articulos').scrollIntoView({{ behavior: 'smooth' }}); }});
+  document.getElementById('bxReset').addEventListener('click', function () {{ state = {{ f: '', q: '', p: 1 }}; inputs.forEach(function (i) {{ i.value = ''; }}); render(); }});
+  document.querySelector('[data-hero-search]').addEventListener('submit', function (e) {{ e.preventDefault(); document.getElementById('articulos').scrollIntoView({{ behavior: 'smooth' }}); }});
+  [].forEach.call(document.querySelectorAll('.bx-sug'), function (s) {{ s.addEventListener('click', function () {{
+    inputs.forEach(function (i) {{ i.value = s.dataset.q; }}); state.q = s.dataset.q; state.p = 1; render(); document.getElementById('articulos').scrollIntoView({{ behavior: 'smooth' }}); }}); }});
+  render();
 }})();
 </script>
 '''
