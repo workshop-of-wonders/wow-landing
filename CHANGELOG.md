@@ -66,6 +66,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 - Páginas nuevas en `servicios/` (generadas con `scripts/build-seo-pages.py`): agencia-marketing-digital-medellin, diseno-web-{medellin,bogota,cali}, marketing-medico-colombia, pasarelas-de-pago-colombia, cuanto-cuesta-{pagina-web,seo}-colombia.
 - Blog nuevo en `/blog/` (generado con `scripts/build-blog.py`; contenido en `scripts/blog_posts.py`; estilos `.bl-*`, `.sp-geo-*` en `src/styles.css`). 6 artículos iniciales.
 - Índice del blog (`/blog/`) rediseñado (capa "más WOW": formas flotantes con parallax, cintas cruzadas, portadas con forma por tema, revelado al scroll): hero en mayúsculas con buscador y sugerencias, contadores calculados, cinta de temas, "Para empezar", filtros con conteo + búsqueda en vivo + paginación (9 por página), guías esenciales y CTA (clases `.bx-*`). No hay newsletter ni "más leído" a propósito: faltan backend y analítica reales.
+- El JS del blog vive en `src/js/blog.js` (externo): la CSP de `vercel.json` bloquea scripts en línea. El revelado al scroll es mejora progresiva (sin JS todo se ve).
 - Sitemap y llms.txt actualizados. El home no se tocó (falta enlazar el blog desde su nav/footer: requiere visto bueno de la dueña).
 - Pendiente: revisar textos con la dueña (no hay cifras ni precios inventados); Panamá/Villavicencio sin página propia por no tener casos locales.
 
