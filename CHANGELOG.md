@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: tarjetas con vista previa de cada herramienta
+- La sección `#playground` de los servicios y "Más para jugar" en cada herramienta usan `.pgs-vc`: tarjeta blanca con un dibujo SVG propio de la herramienta (sliders, embudo, carritos, web en esqueleto, pantonera, línea de tiempo, chat, candados, recibo, caritas, tres en línea, post-its, rayuela, switches) sobre un fondo suave del color del objetivo, formato · tiempo, título, descripción y "Probar el diagnóstico →" (toda la tarjeta es un enlace). Reemplaza las tarjetas `hb-card` y los botones pill anteriores.
+
 ### 2026-10-15 — Playground: título de la sección "Herramientas gratuitas para ti"
 - En `#playground` de las páginas de servicio: eyebrow "PLAYGROUND", H2 "Herramientas gratuitas para ti" y descripción = el beneficio específico del servicio + qué mide.
 

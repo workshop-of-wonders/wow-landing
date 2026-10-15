@@ -6364,7 +6364,7 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .sc-top, .rs-top, .sc-viz-card, .sp-card { position: static; top: auto; }
 
 /* ===== Sección PLAYGROUND en páginas de servicio + páginas de cada herramienta ===== */
-.pgs-in { max-width: 1000px; display: grid; gap: 14px; justify-items: start; text-align: left; }
+.pgs-in { max-width: 1120px; display: grid; gap: 14px; justify-items: start; text-align: left; }
 .pgs h2 { max-width: 18em; margin: 0; }
 .pgs .sd-sub { margin: 0; max-width: 40em; }
 .pgs-all { margin: 10px 0 0; }
@@ -6381,15 +6381,19 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pgs-fine { margin: 6px 0 0; max-width: 46em; font-size: 14px; line-height: 1.5; opacity: .75; }
 
 /* Tarjetas de los simuladores (sección Playground y "más para jugar") */
-.pgs-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 310px)); gap: var(--space-3); justify-content: start; width: 100%; margin-top: 14px; }
-.pg-more .pgs-cards { justify-content: center; }
-.pgs-card { min-height: 268px; }
-.pgs-card h3 { max-width: 14em; font-size: 21px; }
-.pgs-card p { font-size: 15px; }
-.pgs-card .sv-ic { background: var(--purple); color: #fff; }
-.pgs-tag { font: 700 11px var(--font-mono, monospace); letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
-.pgs-card.pg-n-vender { --bgc: var(--lima); --fg: var(--purple); --ac: var(--purple); }
-.pgs-card.pg-n-encontrar { --bgc: #fbcfe8; --fg: var(--purple); --ac: var(--purple); }
-.pgs-card.pg-n-datos { --bgc: #bfdbfe; --fg: var(--purple); --ac: var(--purple); }
-.pgs-card.pg-n-marca { --bgc: #fed7aa; --fg: var(--purple); --ac: var(--purple); }
-.pgs-cards .pgs-card:nth-child(n) { --rt: 0deg; }
+
+/* Tarjetas con vista previa de cada simulador (sección Playground y "más para jugar") */
+.pgs-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 340px)); gap: var(--space-3); justify-content: start; width: 100%; margin-top: 14px; }
+.pg-more .pgs-cards { justify-content: center; grid-template-columns: repeat(auto-fit, minmax(270px, 340px)); }
+.pgs-vc { display: grid; grid-template-rows: 136px auto; border-radius: 20px; overflow: hidden; background: #fff; color: var(--purple); text-decoration: none; transition: transform .2s, box-shadow .2s; text-align: left; }
+.pgs-vc:hover { transform: translateY(-5px); box-shadow: 0 18px 34px rgba(0,0,0,.35); }
+.pgs-vc:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
+.pgs-pv { display: grid; place-items: center; background: var(--bg); padding: 12px; }
+.pgs-pv svg { width: 100%; max-width: 220px; height: 100%; }
+.pgs-vb { display: grid; gap: 6px; align-content: start; padding: 18px 20px 20px; }
+.pgs-vb h3 { margin: 0; font-size: 19px; line-height: 1.2; color: var(--purple); }
+.pgs-vb p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--purple); opacity: .8; }
+.pgs-tag { font: 700 11px var(--font-mono, monospace); letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+.pgs-go { margin-top: 6px; font-weight: 800; font-size: 14px; }
+.pg-more .pgs-vc { border: 1px solid rgba(56,7,87,.12); box-shadow: 0 10px 24px rgba(26,19,32,.1); }
+@media (prefers-reduced-motion: reduce) { .pgs-vc { transition: none; } }
