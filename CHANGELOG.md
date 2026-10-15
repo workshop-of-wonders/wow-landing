@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: chequeos como quiz interactivo
+- `buildCheck` (src/js/servicios.js) pasa de lista de interruptores a quiz de una pregunta a la vez: progreso, respuestas Sí / En parte / No (100 % / 50 % / 0 % del peso), avance automático, botón Atrás, atajos 1-2-3, resultado con puntaje animado, prioridades (las que más puntos pierden), fortalezas, "Copiar mi resultado" y "Repetir". Cubre los 7 chequeos generados desde JSON; `#diagnostico` de seo.html (hardcodeado) sigue con el formato viejo. Eventos GA4 `sim_start` y `sim_complete`. Estilos `.qz-*` en src/styles.css.
+
 ### 2026-10-15 — Playground: hub de herramientas + 3 herramientas nuevas + entrada por servicio
 - Nueva página `playground.html` (hub): tarjetas de las 11 simuladores existentes (enlazan a su sección en cada servicio) + 3 herramientas nuevas, con filtro por objetivo y por servicio (`playground.html?servicio=seo`). JS: `src/js/playground.js`. Enlazado en menú, footer, sitemap y `llms.txt` (home y servicios).
 - Herramientas nuevas en `playground/`: `encabezados.html` (identificador de H1–H6 a partir de un link; endpoint `api/headings.js` con protección SSRF: IP pública validada en cada conexión, puertos 80/443, redirects revalidados, límite de tiempo y tamaño), `colores.html` (paleta por sector y personalidad, contraste WCAG, vista previa, copia como variables CSS; 100 % en el navegador) y `keywords.html` (ideas por intención + CSV; plantillas, sin datos de volumen).

@@ -487,32 +487,82 @@ document.getElementById('year').textContent = new Date().getFullYear();
   }
   function cta(c) { return '<a href="#contacto" class="btn btn-primary" data-open-form>' + c.cta + ' <span aria-hidden="true">→</span></a>'; }
 
+  /* Chequeo tipo quiz: una pregunta a la vez (Sí = 100 % del peso, En parte = 50 %, No = 0). */
+  var ANS = [['Sí', 1, 'yes'], ['En parte', 0.5, 'half'], ['No', 0, 'no']];
   function buildCheck(sec, c) {
     head(sec, c);
-    var grid = el('div', 'sd-grid'), ul = el('ul', 'sd-list');
-    c.qs.forEach(function (q, i) {
-      ul.appendChild(el('li', 'sd-q', '<span class="sd-n">' + ('0' + (i + 1)).slice(-2) + '</span><label for="simq' + i + '">' + q.q + '</label><input type="checkbox" id="simq' + i + '" class="sd-sw" role="switch">'));
-    });
-    var card = el('aside', 'sd-card',
-      '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88"/></svg><div class="sd-score"><strong>0</strong><span>DE 100</span></div></div>' +
-      '<h3></h3><p></p><p class="sd-steps-t">POR DÓNDE EMPEZAR</p><ul class="sd-steps"></ul>' + cta(c));
-    card.setAttribute('aria-live', 'polite');
-    grid.appendChild(ul); grid.appendChild(card); sec.appendChild(grid);
-    var sw = ul.querySelectorAll('.sd-sw'), ring = card.querySelector('.sd-ring-fg'), sc = card.querySelector('.sd-score strong'),
-        h3 = card.querySelector('h3'), msg = card.querySelector('h3 + p'), steps = card.querySelector('.sd-steps'), cuts = [30, 60, 85, 101];
-    function update() {
-      var total = 0, miss = [];
-      c.qs.forEach(function (q, i) { if (sw[i].checked) total += q.w; else miss.push(q); });
-      sc.textContent = total;
-      ring.style.strokeDashoffset = 553 * (1 - total / 100);
-      var t = c.tiers[cuts.filter(function (x) { return total < x; }).length ? cuts.findIndex(function (x) { return total < x; }) : 3];
-      h3.textContent = t[0]; msg.textContent = t[1];
-      miss.sort(function (a, b) { return b.w - a.w; });
-      steps.innerHTML = '';
-      (miss.length ? miss.slice(0, 3).map(function (m) { return m.s; }) : [c.none]).forEach(function (s) { steps.appendChild(el('li', null, s)); });
+    var n = c.qs.length, cuts = [30, 60, 85, 101], a = [], i = 0, uid = head.n;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var box = el('div', 'qz'); box.setAttribute('aria-live', 'polite');
+    sec.appendChild(box);
+    function score() { return Math.round(c.qs.reduce(function (t, q, k) { return t + (a[k] == null ? 0 : q.w * a[k]); }, 0)); }
+    function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
+    function intro() {
+      box.className = 'qz qz--in';
+      box.innerHTML = '<div class="qz-card qz-intro"><p class="qz-meta">' + n + ' PREGUNTAS · MENOS DE 2 MINUTOS</p><h3>Responde con sinceridad: el resultado solo sirve si es real.</h3><p>Tu puntaje y tus prioridades aparecen al terminar. El cálculo ocurre en tu pantalla.</p><button type="button" class="btn btn-primary qz-start">Empezar <span aria-hidden="true">→</span></button></div>';
+      box.querySelector('.qz-start').addEventListener('click', function () { i = 0; a = []; question(1); if (window.gtag) window.gtag('event', 'sim_start', { sim: sec.id, page: location.pathname }); });
     }
-    sw.forEach(function (s) { s.addEventListener('change', update); });
-    update();
+    function question(dir) {
+      var q = c.qs[i];
+      box.className = 'qz qz--q';
+      box.innerHTML =
+        '<div class="qz-top"><span class="qz-count">PREGUNTA ' + (i + 1) + ' DE ' + n + '</span><div class="qz-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + n + '" aria-valuenow="' + i + '"><i style="width:' + (i / n * 100) + '%"></i></div></div>' +
+        '<div class="qz-card qz-q' + (reduce ? '' : dir > 0 ? ' qz-from-r' : ' qz-from-l') + '"><h3 class="qz-text" id="qzq' + uid + '" tabindex="-1">' + q.q + '</h3><div class="qz-ans" role="group" aria-labelledby="qzq' + uid + '"></div>' +
+        '<div class="qz-foot">' + (i ? '<button type="button" class="qz-back">← Atrás</button>' : '<span></span>') + '<span class="qz-hint">Atajos: 1 · 2 · 3</span></div></div>';
+      var wrap = box.querySelector('.qz-ans');
+      ANS.forEach(function (o, k) {
+        var b = el('button', 'qz-opt qz-' + o[2] + (a[i] === o[1] ? ' is-on' : ''), '<kbd>' + (k + 1) + '</kbd><span>' + o[0] + '</span>'); b.type = 'button';
+        b.addEventListener('click', function () { pick(o[1], b); });
+        wrap.appendChild(b);
+      });
+      var back = box.querySelector('.qz-back');
+      if (back) back.addEventListener('click', function () { i--; question(-1); });
+      if (dir) box.querySelector('.qz-text').focus({ preventScroll: true });
+    }
+    function pick(v, b) {
+      if (box.classList.contains('is-busy')) return;
+      a[i] = v; b.classList.add('is-on'); box.classList.add('is-busy');
+      setTimeout(function () {
+        box.classList.remove('is-busy');
+        if (i < n - 1) { i++; question(1); } else result();
+      }, reduce ? 0 : 260);
+    }
+    function result() {
+      var total = score(), t = c.tiers[cuts.findIndex(function (x) { return total < x; })] || c.tiers[3];
+      var gaps = c.qs.map(function (q, k) { return { q: q, k: k, lost: q.w * (1 - a[k]) }; }).filter(function (g) { return g.lost > 0; }).sort(function (x, y) { return y.lost - x.lost; });
+      var strong = c.qs.filter(function (q, k) { return a[k] === 1; });
+      box.className = 'qz qz--r';
+      box.innerHTML = '<div class="qz-card qz-res"><div class="qz-res-top">' + ring(0) + '<div><h3>' + t[0] + '</h3><p>' + t[1] + '</p></div></div>' +
+        '<div class="qz-cols"><div><p class="sd-steps-t">POR DÓNDE EMPEZAR</p><ol class="qz-steps"></ol></div>' +
+        '<div><p class="sd-steps-t">LO QUE YA HACES BIEN</p><ul class="qz-good"></ul></div></div>' +
+        '<div class="qz-act">' + cta(c) + '<button type="button" class="btn qz-share">Copiar mi resultado</button><button type="button" class="qz-again">Repetir</button></div></div>';
+      var steps = box.querySelector('.qz-steps'), good = box.querySelector('.qz-good');
+      (gaps.length ? gaps.slice(0, 3).map(function (g) { return g.q.s + (a[g.k] === 0.5 ? ' (ya tienes una parte)' : ''); }) : [c.none]).forEach(function (x) { steps.appendChild(el('li', null, x)); });
+      (strong.length ? strong.slice(0, 4).map(function (q) { return q.s.replace(/^[A-ZÁÉÍÓÚ]/, function (m) { return m; }); }) : ['Aún no marcaste ninguno como completo: es normal, ahí está la oportunidad.']).forEach(function (x) { good.appendChild(el('li', null, strong.length ? '✓ ' + x : x)); });
+      /* el puntaje sube contando hasta el valor final */
+      var fg = box.querySelector('.sd-ring-fg'), num = box.querySelector('.sd-score strong');
+      if (reduce) { num.textContent = total; fg.style.strokeDashoffset = 553 * (1 - total / 100); }
+      else {
+        var t0 = null;
+        (function step(ts) { t0 = t0 || ts; var p = Math.min((ts - t0) / 1100, 1), e = 1 - Math.pow(1 - p, 3); num.textContent = Math.round(total * e); fg.style.strokeDashoffset = 553 * (1 - total * e / 100); if (p < 1) requestAnimationFrame(step); })(performance.now());
+      }
+      box.querySelector('.qz-again').addEventListener('click', intro);
+      box.querySelector('.qz-share').addEventListener('click', function (e) {
+        var txt = 'Mi resultado en "' + c.title + '": ' + total + '/100 · ' + t[0] + '. Pruébalo: ' + location.href.split('#')[0] + '#' + sec.id;
+        var b = e.currentTarget, o = b.textContent, done = function () { b.textContent = '¡Copiado!'; setTimeout(function () { b.textContent = o; }, 1400); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () {});
+      });
+      if (window.gtag) window.gtag('event', 'sim_complete', { sim: sec.id, page: location.pathname, score: total });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (!box.classList.contains('qz--q') || e.ctrlKey || e.metaKey || e.altKey) return;
+      var r = sec.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      var k = ({ '1': 0, '2': 1, '3': 2 })[e.key];
+      if (k == null) return;
+      var b = box.querySelectorAll('.qz-opt')[k]; if (b) b.click();
+    });
+    intro();
   }
 
   var models = {
