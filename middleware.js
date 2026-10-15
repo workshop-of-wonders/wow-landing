@@ -50,6 +50,21 @@ function isDocument(request, url) {
   return !last.includes('.') || last.endsWith('.html');
 }
 
+// Deja pasar a SemrushBot (Site Audit) para que pueda auditar el sitio sin
+// la clave. El user-agent se puede falsificar; para cerrarlo, define en Vercel
+// SEMRUSH_IPS con las IPs que Semrush asigna a tu auditoría (separadas por
+// coma). Si está definida, además del user-agent se exige que la IP coincida.
+function isSemrush(request) {
+  const ua = request.headers.get('user-agent') || '';
+  if (!/SemrushBot/i.test(ua)) return false;
+  const allowed = (process.env.SEMRUSH_IPS || '')
+    .split(',').map((s) => s.trim()).filter(Boolean);
+  if (!allowed.length) return true;
+  const ip = (request.headers.get('x-forwarded-for') || '').split(',')[0].trim()
+    || request.headers.get('x-real-ip') || '';
+  return allowed.includes(ip);
+}
+
 async function unlock(request, expected) {
   const url = new URL(request.url);
   const wantsJson = request.headers.get('x-wow-gate') === 'fetch';
@@ -89,6 +104,7 @@ export default async function middleware(request) {
 
   if (url.pathname === UNLOCK_PATH) return unlock(request, expected);
   if (!isDocument(request, url)) return;
+  if (isSemrush(request)) return;
 
   if (safeEqual(readCookie(request, COOKIE), expected)) {
     // Cookie válida: deja ver esta y todas las páginas siguientes.
