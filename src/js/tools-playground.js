@@ -63,8 +63,9 @@
         var y = Math.min(Math.max(b.position.y, hh), h - hh);
         var cx = x !== b.position.x, cy = y !== b.position.y;
         if (cx || cy) {
+          var vx = b.velocity.x, vy = b.velocity.y;
           M.Body.setPosition(b, { x: x, y: y });
-          M.Body.setVelocity(b, { x: cx ? b.velocity.x * 0.4 : b.velocity.x, y: cy ? b.velocity.y * 0.4 : b.velocity.y });
+          M.Body.setVelocity(b, { x: cx ? -vx * 0.6 : vx, y: cy ? -vy * 0.6 : vy });   /* rebota contra el borde */
         }
       });
     });
@@ -81,15 +82,12 @@
         if (!b.isSleeping) b._touched = true;
         if (b._touched) {
           var ang = Math.atan2(Math.sin(b.angle), Math.cos(b.angle));
-          if (Math.abs(ang) > 0.004 || Math.abs(b.angularVelocity) > 0.004) {
+          var calm = Math.hypot(b.velocity.x, b.velocity.y) < 0.8 && Math.abs(b.angularVelocity) < 0.06;
+          if (calm && Math.abs(ang) > 0.004) {
+            /* ya casi quieta: se endereza sola, siempre queda derecha al caer */
             if (b.isSleeping) M.Sleeping.set(b, false);
-            if (Math.hypot(b.velocity.x, b.velocity.y) < 3 && b !== (mc.body || null)) {
-              /* casi quieta: se endereza sola, siempre queda derecha al caer */
-              M.Body.setAngle(b, ang * 0.82); M.Body.setAngularVelocity(b, 0);
-            } else {
-              M.Body.setAngularVelocity(b, b.angularVelocity + (-ang * 0.02 - b.angularVelocity * 0.15));
-            }
-          } else if (ang !== 0) { M.Body.setAngle(b, 0); M.Body.setAngularVelocity(b, 0); }
+            M.Body.setAngle(b, ang * 0.85); M.Body.setAngularVelocity(b, 0);
+          } else if (calm && ang !== 0) { M.Body.setAngle(b, 0); M.Body.setAngularVelocity(b, 0); }
         }
         b._el.style.transform = 'translate(' + (b.position.x - b._w / 2) + 'px,' + (b.position.y - b._h / 2) + 'px) rotate(' + b.angle + 'rad)';
       });
