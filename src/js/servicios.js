@@ -418,9 +418,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
   var verdict = document.getElementById('sdVerdict'), msg = document.getElementById('sdMsg'), steps = document.getElementById('sdSteps');
   var tiers = [
     [30, 'Tu sitio es casi invisible para Google', 'Hoy es muy difícil que un cliente te encuentre sin buscarte por tu nombre. La buena noticia: hay mucho por ganar.'],
-    [60, 'Tienes base, pero estás perdiendo terreno', 'Google ya te conoce un poco, pero tu competencia probablemente aparece primero. Con orden y constancia se recupera rápido.'],
-    [85, 'Vas por buen camino', 'Tienes buena parte resuelta. Los siguientes pasos son los que marcan la diferencia frente a tu competencia.'],
-    [101, 'Tu sitio está muy bien preparado', 'Lo básico y lo avanzado está cubierto. Lo que sigue es medir, afinar y sostener el ritmo.']
+    [60, 'Tienes bases, pero te falta empuje', 'Google ya sabe que existes, aunque otros aparecen antes que tú. Con orden y un plan claro, se acorta la distancia.'],
+    [85, 'Vas bien encaminado', 'Lo esencial está cubierto. Lo que falta es justo lo que te separa de quien hoy te supera.'],
+    [101, 'Tu base SEO es sólida', 'Tienes casi todo en orden. Ahora toca medir, afinar y mantener el ritmo.']
   ];
   function update() {
     var total = 0, missing = [];
@@ -435,7 +435,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     msg.textContent = tier[2];
     missing.sort(function (a, b) { return b.w - a.w; });
     steps.innerHTML = '';
-    (missing.length ? missing.slice(0, 3).map(function (m) { return m.t; }) : ['Mantener el ritmo y medir resultados cada mes']).forEach(function (t) {
+    (missing.length ? missing.slice(0, 3).map(function (m) { return m.t; }) : ['Revisar resultados cada mes y seguir optimizando']).forEach(function (t) {
       var li = document.createElement('li'); li.textContent = t; steps.appendChild(li);
     });
   }
@@ -449,7 +449,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
   if (!list) return;
   var range = document.getElementById('ssRange'), off = document.getElementById('ssOff');
   var pos = [28, 24, 19, 15, 12, 9, 7, 5, 4, 3, 2, 2, 1];
-  var rivals = [['competidor-uno.co', 'Servicio líder en Medellín | Competidor 1', 'C1'], ['directorio-local.co', 'Los 10 mejores proveedores en Medellín', 'D'], ['competidor-dos.co', 'Cotiza hoy | Competidor 2', 'C2'], ['foro-empresas.com', '¿Alguien recomienda un proveedor?', 'F'], ['competidor-tres.com', 'Expertos desde 2010 | Competidor 3', 'C3'], ['competidor-cuatro.com', 'Soluciones para tu empresa | Competidor 4', 'C4']];
+  var rivals = [['competidor-uno.co', 'Líderes del sector | Competidor 1', 'C1'], ['directorio-local.co', 'Ranking: los 10 mejores proveedores', 'D'], ['competidor-dos.co', 'Cotiza hoy | Competidor 2', 'C2'], ['foro-empresas.com', '¿Alguien recomienda un proveedor?', 'F'], ['competidor-tres.com', 'Expertos desde 2010 | Competidor 3', 'C3'], ['competidor-cuatro.com', 'Soluciones para tu empresa | Competidor 4', 'C4']];
   function row(rank, d, me) {
     var li = document.createElement('li');
     li.className = 'ss-row' + (me ? ' ss-row--me' : '');
@@ -460,14 +460,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
     var m = +range.value, p = pos[m], shown = Math.min(p, 6), r = 0;
     list.innerHTML = '';
     for (var i = 1; i <= 6; i++) {
-      list.appendChild(i === shown && p <= 6 ? row(i, ['tuempresa.com', 'Tu empresa: el servicio que tu cliente busca', 'TÚ'], true) : row(i, rivals[r++], false));
+      list.appendChild(i === shown && p <= 6 ? row(i, ['tumarca.com', 'Tu marca: justo lo que tu cliente necesita', 'TÚ'], true) : row(i, rivals[r++], false));
     }
     off.hidden = p <= 6;
-    if (p > 6) off.textContent = 'Tu empresa aparece en la posición #' + p + ' · casi nadie llega hasta ahí.';
-    document.getElementById('ssMonth').textContent = m === 0 ? 'HOY' : 'MES ' + m;
+    if (p > 6) off.textContent = 'Tu marca está en el puesto #' + p + ' · pocos clientes llegan hasta ahí.';
+    document.getElementById('ssMonth').textContent = m === 0 ? 'INICIO' : 'MES ' + m;
     document.getElementById('ssPos').textContent = '#' + p;
     document.getElementById('ssPage').textContent = Math.ceil(p / 10);
-    document.getElementById('ssVis').textContent = p <= 3 ? 'ALTA' : p <= 10 ? 'MEDIA' : 'BAJA';
+    document.getElementById('ssVis').textContent = p <= 3 ? 'MÁXIMO' : p <= 10 ? 'MEDIO' : 'MÍNIMO';
   }
   range.addEventListener('input', update);
   update();
