@@ -13,6 +13,153 @@
   function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
   function lockSvg() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
 
+  /* ---------- visualizaciones vivas (calculadoras y chequeos) ---------- */
+  W.viz = {};
+  var NF = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 });
+
+  /* Pauta: embudo con partículas. Las que no caben en la banda siguiente se escapan por el costado (la geometría ES la conversión). */
+  W.viz.funnel = function (host) {
+    host.classList.add('fn');
+    host.innerHTML = '<canvas class="fn-cv" aria-hidden="true"></canvas><div class="fn-gauge" aria-hidden="true"><div class="fn-zones"><i></i><i></i><i></i></div><b class="fn-mk"></b></div><p class="fn-gl"></p>';
+    var cv = host.querySelector('canvas'), ctx = cv.getContext('2d'), mk = host.querySelector('.fn-mk'), gl = host.querySelector('.fn-gl');
+    var Hh = 236, dpr = Math.min(2, window.devicePixelRatio || 1), Ww = 360;
+    var BT = [8, 92, 176], BH = 30;                      /* tope de cada banda */
+    var cur = [1, 0.3, 0.1], tgt = [1, 0.3, 0.1], vals = [0, 0, 0], rate = 14, parts = [], acc = 0, run = false, raf = 0, last = 0;
+    var LAB = ['CLICS', 'CONTACTOS', 'VENTAS'], COL = ['#dce157', '#fbcfe8', '#fed7aa'];
+    function size() { Ww = host.clientWidth || 360; cv.width = Ww * dpr; cv.height = Hh * dpr; cv.style.width = Ww + 'px'; cv.style.height = Hh + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(); }
+    function bw(i) { return Math.max(26, Ww * 0.9 * cur[i]); }
+    function widthAt(y) {
+      if (y <= BT[0] + BH) return bw(0);
+      for (var i = 0; i < 2; i++) {
+        var a = BT[i] + BH, b = BT[i + 1];
+        if (y <= b) return bw(i) + (bw(i + 1) - bw(i)) * ((y - a) / (b - a));
+        if (y <= b + BH) return bw(i + 1);
+      }
+      return bw(2);
+    }
+    function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+    function draw() {
+      ctx.clearRect(0, 0, Ww, Hh); var cx = Ww / 2;
+      /* paredes del embudo */
+      ctx.beginPath(); ctx.moveTo(cx - bw(0) / 2, BT[0]); ctx.lineTo(cx + bw(0) / 2, BT[0]);
+      for (var i = 0; i < 2; i++) { ctx.lineTo(cx + bw(i) / 2, BT[i] + BH); ctx.lineTo(cx + bw(i + 1) / 2, BT[i + 1]); ctx.lineTo(cx + bw(i + 1) / 2, BT[i + 1] + BH); }
+      ctx.lineTo(cx + bw(2) / 2, Hh - 6);
+      ctx.lineTo(cx - bw(2) / 2, Hh - 6); ctx.lineTo(cx - bw(2) / 2, BT[2] + BH);
+      for (var j = 1; j >= 0; j--) { ctx.lineTo(cx - bw(j + 1) / 2, BT[j + 1]); ctx.lineTo(cx - bw(j) / 2, BT[j] + BH); ctx.lineTo(cx - bw(j) / 2, BT[j]); }
+      ctx.closePath(); ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.lineWidth = 1.5; ctx.stroke();
+      /* bandas con etiqueta */
+      for (var k = 0; k < 3; k++) {
+        ctx.globalAlpha = .22; ctx.fillStyle = COL[k]; rr(cx - bw(k) / 2, BT[k], bw(k), BH, 10); ctx.fill(); ctx.globalAlpha = 1;
+        ctx.fillStyle = '#fff'; ctx.font = '700 11px ui-monospace, Menlo, monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        if (bw(k) > 70) ctx.fillText(LAB[k] + ' ' + NF.format(vals[k]), cx, BT[k] + BH / 2);
+        else { ctx.textAlign = 'left'; ctx.fillText(NF.format(vals[k]) + ' ' + LAB[k], cx + bw(k) / 2 + 8, BT[k] + BH / 2); }
+      }
+      /* partículas */
+      parts.forEach(function (q) {
+        ctx.globalAlpha = Math.max(0, q.a); ctx.fillStyle = q.leak ? '#fb923c' : (q.y > BT[2] + BH ? '#facc15' : '#dce157');
+        ctx.beginPath(); ctx.arc(cx + q.d + q.x, q.y, q.leak ? 3 : (q.y > BT[2] + BH ? 4 : 3), 0, 6.283); ctx.fill();
+      }); ctx.globalAlpha = 1;
+    }
+    function step(now) {
+      if (!run) return; var dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+      for (var i = 0; i < 3; i++) cur[i] += (tgt[i] - cur[i]) * Math.min(1, dt * 6);
+      acc += rate * dt; while (acc >= 1) { acc--; parts.push({ d: (Math.random() - 0.5) * bw(0) * 0.98, x: 0, y: BT[0] - 4, vy: 62 + Math.random() * 26, leak: false, a: 1, vx: 0 }); }
+      parts = parts.filter(function (q) {
+        if (q.leak) { q.x += q.vx * dt; q.y += q.vy * dt * 1.4; q.a -= dt * 1.4; return q.a > 0; }
+        q.y += q.vy * dt;
+        if (Math.abs(q.d) > widthAt(q.y) / 2 - 2) { q.leak = true; q.vx = (q.d > 0 ? 1 : -1) * (26 + Math.random() * 34); q.x = 0; q.d = q.d > 0 ? widthAt(q.y) / 2 : -widthAt(q.y) / 2; }
+        if (q.y > Hh - 8) return false;
+        return true;
+      });
+      draw(); raf = requestAnimationFrame(step);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting && !reduce) { if (!run) { run = true; last = 0; raf = requestAnimationFrame(step); } } else { run = false; cancelAnimationFrame(raf); } }, { threshold: 0.05 }).observe(host);
+    else if (!reduce) { run = true; raf = requestAnimationFrame(step); }
+    window.addEventListener('resize', size);
+    return {
+      update: function (r) {
+        var x = r.raw; if (!x) return;
+        vals = [x.clics, x.leads, x.ventas]; tgt = [1, Math.max(0.16, Math.sqrt(x.clics ? x.leads / x.clics : 0)), Math.max(0.1, Math.sqrt(x.clics ? x.ventas / x.clics : 0))];
+        rate = 10 + Math.min(26, Math.log10(x.clics + 1) * 5);
+        mk.style.left = (Math.min(x.roas, 6) / 6 * 100) + '%';
+        gl.textContent = x.roas < 1 ? 'Todavía no se paga sola: por cada $1 recuperas menos de $1.' : x.roas < 3 ? 'Se paga: por cada $1 recuperas ' + (Math.round(x.roas * 10) / 10).toString().replace('.', ',') + '.' : 'Rinde muy bien: por cada $1 recuperas ' + (Math.round(x.roas * 10) / 10).toString().replace('.', ',') + '.';
+        if (reduce || !run) { cur = tgt.slice(); size(); }
+      }
+    };
+  };
+
+  /* Carritos: 100 carritos. Compran / se van / los recuperas. */
+  var CART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2 12h11l2-8H7"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>';
+  W.viz.ecom = function (host) {
+    host.classList.add('wf');
+    var html = ''; for (var i = 0; i < 100; i++) html += '<i class="wf-c" style="--d:' + (i * 7) + 'ms">' + CART + '</i>';
+    host.innerHTML = '<div class="wf-grid" aria-hidden="true">' + html + '</div><p class="wf-leg"></p>';
+    var cells = host.querySelectorAll('.wf-c'), leg = host.querySelector('.wf-leg');
+    return {
+      update: function (r) {
+        var x = r.raw; if (!x) return;
+        var buy = Math.round((1 - x.ab) * 100), rec = Math.round((100 - buy) * x.rec / 100), lost = 100 - buy - rec;
+        for (var i = 0; i < 100; i++) cells[i].className = 'wf-c ' + (i < buy ? 'is-buy' : i < buy + rec ? 'is-rec' : 'is-lost');
+        leg.innerHTML = '<span class="wf-k is-buy"></span> Compran <b>' + buy + '</b><span class="wf-k is-rec"></span> Podrías recuperar <b>' + rec + '</b><span class="wf-k is-lost"></span> Se van <b>' + lost + '</b><small>De cada 100 personas que llenan el carrito</small>';
+      }
+    };
+  };
+
+  /* Diseño web: la web se arma sola con tus respuestas */
+  var SB = {
+    hero: ['Propuesta clara', '<span class="sb-h"></span><span class="sb-h sb-h2"></span><span class="sb-btn"></span>', 'sb-wide'],
+    proof: ['Pruebas reales', '<span class="sb-st"></span><span class="sb-st"></span><span class="sb-st"></span>', 'sb-wide'],
+    mobile: ['Celular', '<span class="sb-phone"></span>', ''],
+    speed: ['Velocidad', '<span class="sb-speed"><i></i></span>', ''],
+    contact: ['Contacto visible', '<span class="sb-btn"></span><span class="sb-btn sb-b2"></span>', ''],
+    edit: ['Editable', '<span class="sb-pen"></span>', ''],
+    seo: ['Aparece en Google', '<span class="sb-snip"></span>', ''],
+    stats: ['Medición', '<span class="sb-chart"><i></i><i></i><i></i><i></i></span>', '']
+  };
+  var SBC = { hero: '#380757', proof: '#ec4899', mobile: '#2563eb', speed: '#9aa514', contact: '#f97316', edit: '#be185d', seo: '#16a34a', stats: '#0ea5e9' };
+  W.site = function (c) {
+    var aside = el('aside', 'sb'); aside.setAttribute('aria-label', 'Tu web, armándose con tus respuestas');
+    var html = '<div class="sb-bar"><i></i><i></i><i></i><span>tuempresa.com</span></div><div class="sb-grid">';
+    Object.keys(SB).forEach(function (k) { html += '<div class="sb-b ' + SB[k][2] + ' is-wait" data-v="' + k + '" style="--bc:' + SBC[k] + '"><span class="sb-t"></span><div class="sb-art">' + SB[k][1] + '</div><small>' + SB[k][0] + '</small></div>'; });
+    aside.innerHTML = html + '</div><p class="sb-cap">Tu web se arma con lo que respondes: lo que falta se ve punteado.</p>';
+    var blocks = {}; aside.querySelectorAll('.sb-b').forEach(function (b) { blocks[b.getAttribute('data-v')] = b; });
+    return {
+      el: aside,
+      set: function (a) {
+        c.qs.forEach(function (q, k) {
+          var b = blocks[q.v]; if (!b) return; var v = a[k], t = b.querySelector('.sb-t');
+          b.classList.remove('is-wait', 'is-yes', 'is-half', 'is-no');
+          if (v == null) { b.classList.add('is-wait'); t.textContent = ''; }
+          else if (v >= 0.99) { b.classList.add('is-yes'); t.textContent = '✓'; }
+          else if (v > 0) { b.classList.add('is-half'); t.textContent = '½'; }
+          else { b.classList.add('is-no'); t.textContent = 'falta'; }
+        });
+      }
+    };
+  };
+
+  /* Visibilidad: tu marca sube o baja en una página de resultados de Google */
+  var POS = [28, 24, 19, 15, 12, 9, 7, 5, 4, 3, 2, 2, 1];
+  var RIV = [['competidor-uno.co', 'Líderes del sector | Competidor 1', 'C1'], ['directorio-local.co', 'Ranking: los 10 mejores proveedores', 'D'], ['competidor-dos.co', 'Cotiza hoy | Competidor 2', 'C2'], ['foro-empresas.com', '¿Alguien recomienda un proveedor?', 'F'], ['competidor-tres.com', 'Expertos desde 2010 | Competidor 3', 'C3'], ['competidor-cuatro.com', 'Soluciones para tu empresa | Competidor 4', 'C4']];
+  W.serp = function () {
+    var box = el('div', 'sp');
+    var rows = RIV.map(function (r, i) { return '<li class="sp-row"><span class="sp-rk"></span><span class="sp-av">' + r[2] + '</span><div><small>' + r[0] + '</small><strong>' + r[1] + '</strong></div></li>'; }).join('') +
+      '<li class="sp-row sp-me"><span class="sp-rk"></span><span class="sp-av">TÚ</span><div><small>tumarca.com</small><strong>Tu marca: justo lo que tu cliente necesita</strong></div></li>';
+    box.innerHTML = '<div class="sp-bar"><i></i><i></i><i></i><div>mejor servicio cerca de mí</div></div><ol class="sp-list">' + rows + '</ol><p class="sp-off" aria-live="polite"></p><div class="sp-stats"><div><small>TU PUESTO</small><b class="sp-pos">#28</b></div><div><small>PÁGINA</small><b class="sp-pg">3</b></div><div><small>ALCANCE</small><b class="sp-vis">MÍNIMO</b></div></div>';
+    var li = box.querySelectorAll('.sp-row'), me = li[6], H = 58;
+    function place(el2, slot) { el2.style.transform = 'translateY(' + slot * H + 'px)'; }
+    return {
+      el: box,
+      set: function (score) {
+        var p = POS[Math.max(0, Math.min(12, Math.round(score / 100 * 12)))], slot = p <= 6 ? p - 1 : -1, j = 0;
+        for (var i = 0; i < 6; i++) { if (j === slot) j++; place(li[i], j); li[i].querySelector('.sp-rk').textContent = '#' + (j + 1); j++; }
+        if (slot >= 0) { place(me, slot); me.classList.add('is-in'); me.querySelector('.sp-rk').textContent = '#' + p; } else { place(me, 6.4); me.classList.remove('is-in'); }
+        box.querySelector('.sp-off').textContent = p > 10 ? 'Tu marca está en el puesto #' + p + ' (página ' + Math.ceil(p / 10) + '): pocos clientes llegan hasta ahí.' : p > 6 ? 'Tu marca está en el puesto #' + p + ': primera página, pero al final de la lista.' : p <= 3 ? '¡Estás entre los 3 primeros resultados!' : 'Ya estás en la primera página.';
+        box.querySelector('.sp-pos').textContent = '#' + p; box.querySelector('.sp-pg').textContent = Math.ceil(p / 10); box.querySelector('.sp-vis').textContent = p <= 3 ? 'MÁXIMO' : p <= 10 ? 'MEDIO' : 'MÍNIMO';
+      }
+    };
+  };
+
   /* ---------- marcador en vivo ---------- */
   W.hud = function (sec, c) {
     var n = c.qs.length, h = el('div', 'hud');
@@ -124,8 +271,10 @@
   W.modes.paged = function (sec, c, H) {
     H.head(sec, c);
     var n = c.qs.length, per = c.per || 3, pages = Math.ceil(n / per), p = 0, a = [], hud = W.hud(sec, c), box = el('div', 'qz qz--pg');
-    sec.appendChild(box);
-    function again() { a = []; p = 0; hud.reset(); page(1); }
+    var site = c.viz === 'site' ? W.site(c) : null, layout = el('div', 'pgd-wrap' + (site ? ' has-site' : ''));
+    sec.appendChild(layout); layout.appendChild(box); if (site) { layout.appendChild(site.el); site.set([]); }
+    function upd() { hud.set(a); if (site) site.set(a); }
+    function again() { a = []; p = 0; hud.reset(); if (site) site.set([]); page(1); }
     function page(dir) {
       box.className = 'qz qz--pg'; box.textContent = '';
       var dots = ''; for (var d = 0; d < pages; d++) dots += '<i class="' + (d === p ? 'is-on' : d < p ? 'is-done' : '') + '"></i>';
@@ -134,7 +283,7 @@
       var from = p * per, to = Math.min(n, from + per);
       for (var k = from; k < to; k++) (function (k) {
         var row = el('fieldset', 'pgd-q'); row.appendChild(el('legend', null, c.qs[k].q));
-        row.appendChild(opts(function (v) { a[k] = v; hud.set(a); sync(); }, a[k]));
+        row.appendChild(opts(function (v) { a[k] = v; upd(); sync(); }, a[k]));
         card.appendChild(row);
       })(k);
       var foot = el('div', 'pgd-foot');
@@ -142,9 +291,9 @@
       var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado →' : 'Siguiente →'); next.type = 'button';
       foot.appendChild(back); foot.appendChild(next); card.appendChild(foot); box.appendChild(card);
       function sync() { var ok = true; for (var j = from; j < to; j++) if (a[j] == null) ok = false; next.disabled = !ok; }
-      sync(); hud.set(a);
+      sync(); upd();
       back.addEventListener('click', function () { p--; page(-1); });
-      next.addEventListener('click', function () { if (p < pages - 1) { p++; page(1); } else { hud.hide(); W.result(box, c, a, sec, again, H); } });
+      next.addEventListener('click', function () { if (p < pages - 1) { p++; page(1); } else { hud.hide(); if (site) site.el.hidden = true; W.result(box, c, a, sec, function () { if (site) site.el.hidden = false; again(); }, H); } });
       if (dir) track('sim_page', { sim: sec.id, page: p + 1 });
     }
     page(0);
@@ -400,8 +549,9 @@
       var p = 0, a = c.qs.map(function () { return 0; }), touched = c.qs.map(function () { return false; });
       var grid = el('div', 'sd-grid'), left = el('div', 'sl-left'), card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live">Mueve los sliders y mira cómo sube tu puntaje.</p>');
       grid.appendChild(left); grid.appendChild(card); box.appendChild(grid);
+      var serp = c.viz === 'serp' ? W.serp() : null; if (serp) { card.appendChild(serp.el); card.classList.add('sp-card'); }
       var fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong');
-      function live() { var t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); card.querySelector('.sw-live').textContent = 'Con lo que marcas hoy: ' + tierOf(c, t)[0]; }
+      function live() { var t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); card.querySelector('.sw-live').textContent = 'Con lo que marcas hoy: ' + tierOf(c, t)[0]; if (serp) serp.set(t); }
       function page(dir) {
         left.textContent = '';
         var top = el('div', 'pgd-top'); top.innerHTML = '<span class="qz-count">PÁGINA ' + (p + 1) + ' DE ' + pages + '</span>'; left.appendChild(top);

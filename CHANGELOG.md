@@ -57,6 +57,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: visualizaciones vivas en pauta, carritos, diseño web y visibilidad
+- `W.viz` / `W.site` / `W.serp` (src/js/sim-modes.js; `servicios.js` los usa vía `raw` en los modelos de calculadora): Pauta = embudo en canvas con partículas donde las que no caben en la banda siguiente se escapan por el costado (la geometría es la conversión) + medidor de retorno con zonas; Carritos = cuadrícula de 100 carritos (compran / podrías recuperar / se van); Diseño web (`"viz": "site"` + `v` por pregunta en el JSON) = web en esqueleto que se arma con cada respuesta (✓ / ½ / falta); Visibilidad (`"viz": "serp"`) = resultados de Google donde tu marca sube o baja de puesto con los sliders (misma tabla de posiciones que la línea de tiempo).
+- Los números mostrados son los reales; la anchura del embudo usa raíz cuadrada para que se vea cuando casi nada llega a ventas.
+
 ### 2026-10-15 — Playground: switches del chequeo de tracking como los del home
 - `W.modes['switch']` (src/js/sim-modes.js) usa (con el switch a la derecha de cada fila) las filas `.toggle-item` y los `.switch` ON/OFF del home (blancas, en píldora), con el color de encendido ciclando lima / naranja / magenta; la fila completa también enciende. Accesible: `role="switch"` + `aria-checked`. Estilos `.sw-rows` / `.sw-row` en src/styles.css.
 
