@@ -543,6 +543,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
           'Si tu página convirtiera 1 punto más (' + val(v.conv + 1, 'pct') + '), el retorno subiría a ' + (Math.round(alt * 10) / 10).toString().replace('.', ',') + 'x sin gastar más en anuncios.',
         how: 'Clics = inversión ÷ costo por clic. Contactos = clics × % que deja sus datos. Ventas = contactos × % que cierra. Ingresos = ventas × valor promedio. Retorno (ROAS) = ingresos ÷ inversión. Supone que tus números se mantienen; en la práctica, al subir la inversión el costo por clic suele subir.',
         raw: { clics: clics, leads: leads, ventas: ventas, roas: roas },
+        dial: { v: roas, label: 'Por cada $1 invertido recuperas' },
         viz: [['Clics', clics, 1], ['Contactos', leads, Math.sqrt(clics ? leads / clics : 0)], ['Ventas', ventas, Math.sqrt(clics ? ventas / clics : 0)]],
         scen: function () {
           function r(o) { var w = {}; for (var k in v) w[k] = v[k]; for (var k2 in o) w[k2] = o[k2]; var cl = w.inv / w.cpc, ing2 = cl * w.conv / 100 * w.cierre / 100 * w.ticket; return [w.inv ? ing2 / w.inv : 0, ing2]; }
@@ -567,15 +568,23 @@ document.getElementById('year').textContent = new Date().getFullYear();
         hint: 'Cada carrito abandonado ya mostró intención de compra. Recuperar solo el ' + val(v.rec, 'pct') + ' equivale a ' + val(rec * v.ticket * 12, 'money') + ' al año.',
         how: 'Pedidos = visitas × % que compra. Carritos = pedidos ÷ (1 − % que abandona). Abandonados = carritos − pedidos. Recuperables = abandonados × % que logras recuperar. Ingresos = recuperables × valor promedio. Es una estimación: la recuperación real depende de tus correos, recordatorios y oferta.',
         raw: { ab: ab, rec: v.rec },
+        dial: { v: (1 - ab) * 100, label: 'De cada 100 carritos terminan en compra' },
         viz: [['Pedidos hoy', pedidos, carritos ? pedidos / carritos : 0], ['Carritos abandonados', aband, carritos ? aband / carritos : 0], ['Recuperables', rec, carritos ? rec / carritos : 0]],
         scen: function () { return [5, 10, 15, 20, 25, 30].map(function (pc) { var rr = aband * pc / 100; return ['Recuperas el ' + pc + ' % de los carritos', val(rr) + ' pedidos', val(rr * v.ticket, 'money') + ' / mes · ' + val(rr * v.ticket * 12, 'money') + ' / año']; }); }
       };
     }
   };
 
+  var DIALS = {
+    funnel: { max: 6, zones: [[1, '#ef4444'], [2, '#f97316'], [3, '#dce157'], [6, '#22c55e']], ticks: [0, 1, 2, 3, 6], tickFmt: function (v) { return v + 'x' }, fmt: function (v) { return (Math.round(v * 10) / 10).toString().replace('.', ',') + 'x'; }, unit: '' },
+    ecom: { max: 100, zones: [[20, '#ef4444'], [35, '#f97316'], [50, '#dce157'], [100, '#22c55e']], ticks: [0, 20, 35, 50, 100], tickFmt: function (v) { return v + '%' }, fmt: function (v) { return Math.round(v) + '%'; }, unit: '' }
+  };
   function buildCalc(sec, c) {
     head(sec, c);
-    var grid = el('div', 'sd-grid'), box = el('div', 'sc-inputs'), vals = {}, outs = {};
+    var card = el('aside', 'sd-card sc-top', '<div class="sc-dial"></div><div class="sc-res"><small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-kpis"></div></div><div class="sc-foot"><p class="sc-hint"></p><details class="sc-how"><summary>Cómo lo calculamos</summary><p></p></details>' + cta(c) + '</div>');
+    card.setAttribute('aria-live', 'polite'); card.classList.add('sc-m-' + c.model);
+    sec.appendChild(card);
+    var grid = el('div', 'sd-grid sc-grid'), box = el('div', 'sc-inputs'), vals = {}, outs = {};
     c.inputs.forEach(function (n, i) {
       vals[n.k] = n.v;
       var row = el('div', 'sc-in', '<div class="sc-in-l"><label for="simin' + i + '">' + n.l + '</label><output id="simo' + i + '"></output></div><input type="range" id="simin' + i + '" min="' + n.min + '" max="' + n.max + '" step="' + n.step + '" value="' + n.v + '">');
@@ -583,10 +592,11 @@ document.getElementById('year').textContent = new Date().getFullYear();
       row.querySelector('input').addEventListener('input', function (e) { vals[n.k] = +e.target.value; update(); });
       box.appendChild(row);
     });
-    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-viz" aria-hidden="true"></div><div class="sc-kpis"></div><p class="sc-hint"></p><details class="sc-how"><summary>Cómo lo calculamos</summary><p></p></details>' + cta(c));
-    card.setAttribute('aria-live', 'polite');
-    grid.appendChild(box); grid.appendChild(card); sec.appendChild(grid);
-    var cvz = window.WOWSim && window.WOWSim.viz && window.WOWSim.viz[c.model] ? window.WOWSim.viz[c.model](card.querySelector('.sc-viz')) : null;
+    var panel = el('aside', 'sd-card sc-viz-card', '<div class="sc-viz" aria-hidden="true"></div>');
+    grid.appendChild(box); grid.appendChild(panel); sec.appendChild(grid);
+    var dial = window.WOWSim && window.WOWSim.dial && DIALS[c.model] ? window.WOWSim.dial(card.querySelector('.sc-dial'), DIALS[c.model]) : null;
+    if (!dial) card.querySelector('.sc-dial').remove();
+    var cvz = window.WOWSim && window.WOWSim.viz && window.WOWSim.viz[c.model] ? window.WOWSim.viz[c.model](panel.querySelector('.sc-viz')) : null;
     var lastR = null, gate = el('div', 'sc-gate'), lockBox = el('div', 'sc-lock');
     sec.appendChild(gate);
     if (window.WOWLead) {
@@ -605,7 +615,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
     function update() {
       c.inputs.forEach(function (n) { outs[n.k].textContent = val(vals[n.k], n.f); });
       var r = models[c.model](vals); lastR = r;
-      var vz = card.querySelector('.sc-viz');
+      var vz = panel.querySelector('.sc-viz');
+      if (dial && r.dial) dial.set(r.dial.v, { label: r.dial.label });
       if (cvz) { vz.removeAttribute('aria-hidden'); cvz.update(r); }
       else if (r.viz) {
         if (vz.children.length !== r.viz.length) vz.innerHTML = r.viz.map(function () { return '<div class="sc-bar"><span></span><i></i></div>'; }).join('');

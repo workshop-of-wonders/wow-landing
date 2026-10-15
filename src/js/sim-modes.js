@@ -13,6 +13,33 @@
   function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
   function lockSvg() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
 
+  /* ---------- velocímetro: aguja y color según la zona ---------- */
+  var QZ = { max: 100, zones: [[30, '#ef4444'], [60, '#f97316'], [85, '#dce157'], [100, '#22c55e']], ticks: [0, 30, 60, 85, 100], fmt: function (v) { return String(Math.round(v)); }, unit: '/ 100' };
+  W.QUIZ_DIAL = QZ;
+  W.dial = function (host, o) {
+    host.classList.add('dl');
+    var cx = 110, cy = 112, R = 86;
+    function pt(f, r) { return [cx - r * Math.cos(Math.PI * f), cy - r * Math.sin(Math.PI * f)]; }
+    function arc(f0, f1) { var a = pt(f0, R), b = pt(f1, R); return 'M' + a[0].toFixed(2) + ' ' + a[1].toFixed(2) + ' A' + R + ' ' + R + ' 0 0 1 ' + b[0].toFixed(2) + ' ' + b[1].toFixed(2); }
+    var arcs = '', prev = 0;
+    o.zones.forEach(function (z) { var f = z[0] / o.max; arcs += '<path class="dl-z" d="' + arc(prev + 0.005, f - 0.005) + '" stroke="' + z[1] + '"/>'; prev = f; });
+    var ticks = o.ticks.map(function (t) { var f = t / o.max, q = pt(f, R + 17); return '<text class="dl-t" x="' + q[0].toFixed(1) + '" y="' + (q[1] + 3).toFixed(1) + '" text-anchor="middle">' + (o.tickFmt ? o.tickFmt(t) : t) + '</text>'; }).join('');
+    host.innerHTML = '<svg viewBox="0 0 220 128" aria-hidden="true">' + arcs + ticks + '<g class="dl-nd"><path d="M110 112 L105 107 L110 38 L115 107Z"/></g><circle class="dl-hub" cx="110" cy="112" r="9"/></svg><div class="dl-read"><b class="dl-n">0</b><span class="dl-u">' + (o.unit || '') + '</span></div><p class="dl-lab"></p>';
+    var nd = host.querySelector('.dl-nd'), num = host.querySelector('.dl-n'), lab = host.querySelector('.dl-lab'), cur = 0, raf = 0;
+    void nd.getBoundingClientRect();
+    function zoneColor(v) { for (var i = 0; i < o.zones.length; i++) if (v <= o.zones[i][0]) return o.zones[i][1]; return o.zones[o.zones.length - 1][1]; }
+    return {
+      set: function (v, x) {
+        v = Math.max(0, Math.min(o.max, v)); var f = v / o.max, to = v, from = cur;
+        nd.style.transform = 'rotate(' + (-90 + 180 * f) + 'deg)'; num.style.color = zoneColor(v);
+        cancelAnimationFrame(raf);
+        if (reduce || from === to) num.textContent = o.fmt(to);
+        else { var t0 = null; (function step(ts) { t0 = t0 || ts; var p = Math.min((ts - t0) / 900, 1), e = 1 - Math.pow(1 - p, 3); num.textContent = o.fmt(from + (to - from) * e); if (p < 1) raf = requestAnimationFrame(step); })(performance.now()); }
+        cur = to; if (x && x.label != null) lab.textContent = x.label;
+      }
+    };
+  };
+
   /* ---------- visualizaciones vivas (calculadoras y chequeos) ---------- */
   W.viz = {};
   var NF = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 });
@@ -20,8 +47,8 @@
   /* Pauta: embudo con partículas. Las que no caben en la banda siguiente se escapan por el costado (la geometría ES la conversión). */
   W.viz.funnel = function (host) {
     host.classList.add('fn');
-    host.innerHTML = '<canvas class="fn-cv" aria-hidden="true"></canvas><div class="fn-gauge" aria-hidden="true"><div class="fn-zones"><i></i><i></i><i></i></div><b class="fn-mk"></b></div><p class="fn-gl"></p>';
-    var cv = host.querySelector('canvas'), ctx = cv.getContext('2d'), mk = host.querySelector('.fn-mk'), gl = host.querySelector('.fn-gl');
+    host.innerHTML = '<canvas class="fn-cv" aria-hidden="true"></canvas>';
+    var cv = host.querySelector('canvas'), ctx = cv.getContext('2d');
     var Hh = 236, dpr = Math.min(2, window.devicePixelRatio || 1), Ww = 360;
     var BT = [8, 92, 176], BH = 30;                      /* tope de cada banda */
     var cur = [1, 0.3, 0.1], tgt = [1, 0.3, 0.1], vals = [0, 0, 0], rate = 14, parts = [], acc = 0, run = false, raf = 0, last = 0;
@@ -81,8 +108,6 @@
         var x = r.raw; if (!x) return;
         vals = [x.clics, x.leads, x.ventas]; tgt = [1, Math.max(0.16, Math.sqrt(x.clics ? x.leads / x.clics : 0)), Math.max(0.1, Math.sqrt(x.clics ? x.ventas / x.clics : 0))];
         rate = 10 + Math.min(26, Math.log10(x.clics + 1) * 5);
-        mk.style.left = (Math.min(x.roas, 6) / 6 * 100) + '%';
-        gl.textContent = x.roas < 1 ? 'Todavía no se paga sola: por cada $1 recuperas menos de $1.' : x.roas < 3 ? 'Se paga: por cada $1 recuperas ' + (Math.round(x.roas * 10) / 10).toString().replace('.', ',') + '.' : 'Rinde muy bien: por cada $1 recuperas ' + (Math.round(x.roas * 10) / 10).toString().replace('.', ',') + '.';
         if (reduce || !run) { cur = tgt.slice(); size(); }
       }
     };
@@ -208,7 +233,7 @@
     var strong = c.qs.filter(function (q, k) { return a[k] >= 0.99; });
     box.className = 'qz qz--r'; box.textContent = '';
     var card = el('div', 'qz-card qz-res');
-    card.innerHTML = '<div class="qz-res-top">' + ring(0) + '<div><h3>' + t[0] + '</h3><p>' + t[1] + '</p></div></div>' +
+    card.innerHTML = '<div class="qz-res-top"><div class="qz-dial"></div><div><h3>' + t[0] + '</h3><p>' + t[1] + '</p></div></div>' +
       scaleHtml(c, total, t) +
       '<p class="sd-steps-t">TU PRIMER PASO</p><ol class="qz-steps"><li>' + (gaps.length ? gaps[0].q.s + (a[gaps[0].k] === 0.5 ? ' (ya tienes una parte)' : '') : c.none) + '</li></ol>' +
       breakdownHtml(c, a) +
@@ -244,9 +269,9 @@
       onUnlock: full
     });
 
-    var fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong');
-    if (reduce) { num.textContent = total; fg.style.strokeDashoffset = 553 * (1 - total / 100); }
-    else { var t0 = null; (function step(ts) { t0 = t0 || ts; var p = Math.min((ts - t0) / 1100, 1), e = 1 - Math.pow(1 - p, 3); num.textContent = Math.round(total * e); fg.style.strokeDashoffset = 553 * (1 - total * e / 100); if (p < 1) requestAnimationFrame(step); })(performance.now()); }
+    var dl = W.dial(card.querySelector('.qz-dial'), QZ);
+    dl.set(0, { label: 'Tu puntaje' });
+    if (reduce) dl.set(total, { label: 'Tu puntaje' }); else setTimeout(function () { dl.set(total, { label: 'Tu puntaje' }); }, 250);
     card.querySelector('.qz-again').addEventListener('click', again);
     card.querySelector('.qz-share').addEventListener('click', function (e) {
       var txt = 'Mi resultado en "' + c.title + '": ' + total + '/100 · ' + t[0] + '. Pruébalo: ' + location.href.split('#')[0] + '#' + sec.id, b = e.currentTarget, o = b.textContent;
@@ -348,7 +373,9 @@
     sec.appendChild(box);
     function build() {
       box.className = 'qz qz--sw'; box.textContent = '';
-      var grid = el('div', 'sd-grid'), ul = el('ul', 'sw-rows'), COL = ['lima', 'orange', 'magenta'];
+      var top = el('aside', 'sd-card rs-top'), dh = el('div', 'rs-dial'), live = el('p', 'sw-live'); live.setAttribute('aria-live', 'polite');
+      top.appendChild(dh); top.appendChild(live); box.appendChild(top);
+      var dial = W.dial(dh, QZ), ul = el('ul', 'sw-rows'), COL = ['lima', 'orange', 'magenta'];
       c.qs.forEach(function (q, i) {
         var li = el('li', 'toggle-item sw-row toggle-on-' + COL[i % 3]);
         li.innerHTML = '<button type="button" class="switch" role="switch" aria-checked="false"><span class="switch-label">OFF</span><span class="switch-knob"></span></button><span class="toggle-text"></span>';
@@ -356,10 +383,10 @@
         li.querySelector('.switch').setAttribute('aria-label', q.q);
         ul.appendChild(li);
       });
-      var card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live" aria-live="polite"></p><button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <span aria-hidden="true">→</span></button>');
-      grid.appendChild(ul); grid.appendChild(card); box.appendChild(grid);
-      var sw = ul.querySelectorAll('.switch'), fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong'), live = card.querySelector('.sw-live');
-      function upd() { var a = [].map.call(sw, function (s) { return s.classList.contains('is-on') ? 1 : 0; }), t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); live.textContent = a.filter(function (x) { return x; }).length + ' de ' + n + ' encendidos · ' + tierOf(c, t)[0]; return a; }
+      box.appendChild(ul);
+      var foot = el('div', 'sw-foot', '<button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <span aria-hidden="true">→</span></button>'); box.appendChild(foot);
+      var card = foot, sw = ul.querySelectorAll('.switch');
+      function upd() { var a = [].map.call(sw, function (s) { return s.classList.contains('is-on') ? 1 : 0; }), t = scoreOf(c, a); dial.set(t, { label: tierOf(c, t)[0] }); live.textContent = a.filter(function (x) { return x; }).length + ' de ' + n + ' encendidos'; return a; }
       function flip(s) { var on = !s.classList.contains('is-on'); s.classList.toggle('is-on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); s.querySelector('.switch-label').textContent = on ? 'ON' : 'OFF'; upd(); }
       [].forEach.call(sw, function (s) { s.addEventListener('click', function (e) { e.stopPropagation(); flip(s); }); s.parentNode.addEventListener('click', function () { flip(s); }); });
       upd();
@@ -547,11 +574,14 @@
     function build() {
       box.className = 'qz qz--sl'; box.textContent = '';
       var p = 0, a = c.qs.map(function () { return 0; }), touched = c.qs.map(function () { return false; });
-      var grid = el('div', 'sd-grid'), left = el('div', 'sl-left'), card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live">Mueve los sliders y mira cómo sube tu puntaje.</p>');
-      grid.appendChild(left); grid.appendChild(card); box.appendChild(grid);
-      var serp = c.viz === 'serp' ? W.serp() : null; if (serp) { card.appendChild(serp.el); card.classList.add('sp-card'); }
-      var fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong');
-      function live() { var t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); card.querySelector('.sw-live').textContent = 'Con lo que marcas hoy: ' + tierOf(c, t)[0]; if (serp) serp.set(t); }
+      var top = el('aside', 'sd-card rs-top'), dh = el('div', 'rs-dial'), liv = el('p', 'sw-live'); liv.setAttribute('aria-live', 'polite');
+      top.appendChild(dh); top.appendChild(liv); box.appendChild(top);
+      var dial = W.dial(dh, QZ), serp = c.viz === 'serp' ? W.serp() : null;
+      liv.textContent = 'La aguja se mueve con cada slider.';
+      var grid = el('div', 'sd-grid' + (serp ? '' : ' sd-one')), left = el('div', 'sl-left');
+      grid.appendChild(left); if (serp) { var side = el('aside', 'sd-card sp-card'); side.appendChild(serp.el); grid.appendChild(side); }
+      box.appendChild(grid);
+      function live() { var t = scoreOf(c, a); dial.set(t, { label: tierOf(c, t)[0] }); if (serp) serp.set(t); }
       function page(dir) {
         left.textContent = '';
         var top = el('div', 'pgd-top'); top.innerHTML = '<span class="qz-count">PÁGINA ' + (p + 1) + ' DE ' + pages + '</span>'; left.appendChild(top);
