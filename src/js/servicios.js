@@ -479,7 +479,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
   function val(n, f) { n = isFinite(n) ? n : 0; return f === 'money' ? '$' + fmt.format(Math.round(n)) : f === 'pct' ? (Math.round(n * 10) / 10).toString().replace('.', ',') + '%' : fmt.format(Math.round(n)); }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function head(sec, c) {
-    var h = el('div', 'sd-head', '<p class="eyebrow">' + c.eyebrow + '</p><h2 id="simTitle">' + c.title + '</h2><p class="sd-sub">' + c.sub + '</p>');
+    head.n = (head.n || 0) + 1;
+    var tid = 'simTitle' + (head.n > 1 ? head.n : '');
+    sec.setAttribute('aria-labelledby', tid);
+    var h = el('div', 'sd-head', '<p class="eyebrow">' + c.eyebrow + '</p><h2 id="' + tid + '">' + c.title + '</h2><p class="sd-sub">' + c.sub + '</p>');
     sec.appendChild(h);
   }
   function cta(c) { return '<a href="#contacto" class="btn btn-primary" data-open-form>' + c.cta + ' <span aria-hidden="true">→</span></a>'; }
