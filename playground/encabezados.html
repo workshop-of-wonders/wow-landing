@@ -106,12 +106,32 @@
 
   <section class="hd-sec" aria-labelledby="hdTitle">
     <h2 id="hdTitle" class="pg-title">Revisa una página</h2>
-    <form class="hd-form" id="hdForm" novalidate>
-      <label for="hdUrl" class="sr-only">Link del sitio</label>
-      <input id="hdUrl" type="text" inputmode="url" autocomplete="url" placeholder="tusitio.com" required>
-      <button type="submit" class="btn btn-primary" id="hdGo">Analizar <span aria-hidden="true">→</span></button>
-    </form>
-    <p class="hd-status" id="hdStatus" role="status" aria-live="polite"></p>
+    <div class="hd-machine">
+      <p class="hd-machine-t">MÁQUINA DE RECIBOS</p>
+      <form class="hd-screen" id="hdForm" novalidate>
+        <p class="hd-screen-t" aria-hidden="true">TU SITIO WEB</p>
+        <label for="hdUrl" class="sr-only">Link del sitio</label>
+        <input id="hdUrl" type="text" inputmode="url" autocomplete="url" placeholder="www.tusitio.com" required>
+        <fieldset class="hd-opts">
+          <legend>¿QUÉ REVISAMOS?</legend>
+          <div class="hd-seg">
+            <label><input type="radio" name="hdMode" value="h"><span>Encabezados</span></label>
+            <label><input type="radio" name="hdMode" value="p"><span>Párrafos</span></label>
+            <label><input type="radio" name="hdMode" value="all" checked><span>Todo</span></label>
+          </div>
+          <div class="hd-level" id="hdLevelBox">
+            <label for="hdLevel">Encabezados hasta el nivel</label>
+            <select id="hdLevel">
+              <option value="1">H1</option><option value="2">H2</option><option value="3">H3</option>
+              <option value="4">H4</option><option value="5">H5</option><option value="6" selected>H6 (todos)</option>
+            </select>
+          </div>
+        </fieldset>
+        <button type="submit" class="hd-print" id="hdGo">IMPRIMIR RECIBO</button>
+        <p class="hd-status" id="hdStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div class="hd-slot" aria-hidden="true"></div>
+    </div>
     <div id="hdOut" hidden></div>
     <p class="pg-note">Analizamos el HTML público de la página que escribas; no guardamos el link ni el resultado.</p>
     <div class="hd-cta"><p>¿Quieres que revisemos la estructura completa de tu sitio?</p><a href="#contacto" class="btn btn-primary" data-open-form>Pide tu auditoría <span aria-hidden="true">→</span></a></div>
