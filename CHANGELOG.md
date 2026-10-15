@@ -58,7 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Playground: switches del chequeo de tracking como los del home
-- `W.modes['switch']` (src/js/sim-modes.js) usa las filas `.toggle-item` y los `.switch` ON/OFF del home (blancas, en píldora), con el color de encendido ciclando lima / naranja / magenta; la fila completa también enciende. Accesible: `role="switch"` + `aria-checked`. Estilos `.sw-rows` / `.sw-row` en src/styles.css.
+- `W.modes['switch']` (src/js/sim-modes.js) usa (con el switch a la derecha de cada fila) las filas `.toggle-item` y los `.switch` ON/OFF del home (blancas, en píldora), con el color de encendido ciclando lima / naranja / magenta; la fila completa también enciende. Accesible: `role="switch"` + `aria-checked`. Estilos `.sw-rows` / `.sw-row` en src/styles.css.
 
 ### 2026-10-15 — Playground: marcador en vivo y resultado auditable
 - `W.hud` (src/js/sim-modes.js): barra de puntos acumulados sobre 100 que sube con cada respuesta (cuenta animada, "+N", marcas de los niveles 30/60/85 y respondidas n de N), pegada arriba mientras juegas y oculta al mostrar el resultado. La usan `paged`, `chat`, `faces`, `postit`, `hop` y `tictac`; `switch` y `sliders` muestran el nivel junto a su anillo.

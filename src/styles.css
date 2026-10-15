@@ -6248,3 +6248,7 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .sw-row .switch.is-on .switch-label { color: #fff; }
 .sw-row.toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
 @media (prefers-reduced-motion: reduce) { .sw-row { transition: none; } }
+.sw-row { padding: 14px var(--space-3) 14px var(--space-4); }
+.sw-row .switch { order: 2; margin-left: auto; }
+.sw-row .toggle-text { order: 1; }
+@media (max-width: 600px) { .sw-row { padding: var(--space-3) 16px var(--space-3) 20px; align-items: center; } .sw-row .switch { margin-top: 0; } }
