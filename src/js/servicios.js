@@ -408,3 +408,168 @@ document.getElementById('year').textContent = new Date().getFullYear();
   fromHash();
   window.addEventListener('hashchange', fromHash);
 })();
+
+/* SEO: diagnóstico interactivo */
+(function () {
+  var box = document.getElementById('diagnostico');
+  if (!box) return;
+  var sw = box.querySelectorAll('.sd-sw');
+  var ring = document.getElementById('sdRing'), score = document.getElementById('sdScore');
+  var verdict = document.getElementById('sdVerdict'), msg = document.getElementById('sdMsg'), steps = document.getElementById('sdSteps');
+  var tiers = [
+    [30, 'Tu sitio es casi invisible para Google', 'Hoy es muy difícil que un cliente te encuentre sin buscarte por tu nombre. La buena noticia: hay mucho por ganar.'],
+    [60, 'Tienes bases, pero te falta empuje', 'Google ya sabe que existes, aunque otros aparecen antes que tú. Con orden y un plan claro, se acorta la distancia.'],
+    [85, 'Vas bien encaminado', 'Lo esencial está cubierto. Lo que falta es justo lo que te separa de quien hoy te supera.'],
+    [101, 'Tu base SEO es sólida', 'Tienes casi todo en orden. Ahora toca medir, afinar y mantener el ritmo.']
+  ];
+  function update() {
+    var total = 0, missing = [];
+    sw.forEach(function (s) {
+      var w = +s.dataset.w;
+      if (s.checked) total += w; else missing.push({ w: w, t: s.dataset.step });
+    });
+    score.textContent = total;
+    ring.style.strokeDashoffset = 553 * (1 - total / 100);
+    var tier = tiers.filter(function (t) { return total < t[0]; })[0];
+    verdict.textContent = tier[1];
+    msg.textContent = tier[2];
+    missing.sort(function (a, b) { return b.w - a.w; });
+    steps.innerHTML = '';
+    (missing.length ? missing.slice(0, 3).map(function (m) { return m.t; }) : ['Revisar resultados cada mes y seguir optimizando']).forEach(function (t) {
+      var li = document.createElement('li'); li.textContent = t; steps.appendChild(li);
+    });
+  }
+  sw.forEach(function (s) { s.addEventListener('change', update); });
+  update();
+})();
+
+/* SEO: simulador de posiciones en el tiempo */
+(function () {
+  var list = document.getElementById('ssList');
+  if (!list) return;
+  var range = document.getElementById('ssRange'), off = document.getElementById('ssOff');
+  var pos = [28, 24, 19, 15, 12, 9, 7, 5, 4, 3, 2, 2, 1];
+  var rivals = [['competidor-uno.co', 'Líderes del sector | Competidor 1', 'C1'], ['directorio-local.co', 'Ranking: los 10 mejores proveedores', 'D'], ['competidor-dos.co', 'Cotiza hoy | Competidor 2', 'C2'], ['foro-empresas.com', '¿Alguien recomienda un proveedor?', 'F'], ['competidor-tres.com', 'Expertos desde 2010 | Competidor 3', 'C3'], ['competidor-cuatro.com', 'Soluciones para tu empresa | Competidor 4', 'C4']];
+  function row(rank, d, me) {
+    var li = document.createElement('li');
+    li.className = 'ss-row' + (me ? ' ss-row--me' : '');
+    li.innerHTML = '<span class="ss-rk">#' + rank + '</span><span class="ss-av">' + d[2] + '</span><div><small>' + d[0] + '</small><strong>' + d[1] + '</strong></div>';
+    return li;
+  }
+  function update() {
+    var m = +range.value, p = pos[m], shown = Math.min(p, 6), r = 0;
+    list.innerHTML = '';
+    for (var i = 1; i <= 6; i++) {
+      list.appendChild(i === shown && p <= 6 ? row(i, ['tumarca.com', 'Tu marca: justo lo que tu cliente necesita', 'TÚ'], true) : row(i, rivals[r++], false));
+    }
+    off.hidden = p <= 6;
+    if (p > 6) off.textContent = 'Tu marca está en el puesto #' + p + ' · pocos clientes llegan hasta ahí.';
+    document.getElementById('ssMonth').textContent = m === 0 ? 'INICIO' : 'MES ' + m;
+    document.getElementById('ssPos').textContent = '#' + p;
+    document.getElementById('ssPage').textContent = Math.ceil(p / 10);
+    document.getElementById('ssVis').textContent = p <= 3 ? 'MÁXIMO' : p <= 10 ? 'MEDIO' : 'MÍNIMO';
+  }
+  range.addEventListener('input', update);
+  update();
+})();
+
+/* Simuladores por servicio: <section data-sim> + <script type="application/json"> con la configuración */
+(function () {
+  var fmt = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 });
+  function val(n, f) { n = isFinite(n) ? n : 0; return f === 'money' ? '$' + fmt.format(Math.round(n)) : f === 'pct' ? (Math.round(n * 10) / 10).toString().replace('.', ',') + '%' : fmt.format(Math.round(n)); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function head(sec, c) {
+    var h = el('div', 'sd-head', '<p class="eyebrow">' + c.eyebrow + '</p><h2 id="simTitle">' + c.title + '</h2><p class="sd-sub">' + c.sub + '</p>');
+    sec.appendChild(h);
+  }
+  function cta(c) { return '<a href="#contacto" class="btn btn-primary" data-open-form>' + c.cta + ' <span aria-hidden="true">→</span></a>'; }
+
+  function buildCheck(sec, c) {
+    head(sec, c);
+    var grid = el('div', 'sd-grid'), ul = el('ul', 'sd-list');
+    c.qs.forEach(function (q, i) {
+      ul.appendChild(el('li', 'sd-q', '<span class="sd-n">' + ('0' + (i + 1)).slice(-2) + '</span><label for="simq' + i + '">' + q.q + '</label><input type="checkbox" id="simq' + i + '" class="sd-sw" role="switch">'));
+    });
+    var card = el('aside', 'sd-card',
+      '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88"/></svg><div class="sd-score"><strong>0</strong><span>DE 100</span></div></div>' +
+      '<h3></h3><p></p><p class="sd-steps-t">POR DÓNDE EMPEZAR</p><ul class="sd-steps"></ul>' + cta(c));
+    card.setAttribute('aria-live', 'polite');
+    grid.appendChild(ul); grid.appendChild(card); sec.appendChild(grid);
+    var sw = ul.querySelectorAll('.sd-sw'), ring = card.querySelector('.sd-ring-fg'), sc = card.querySelector('.sd-score strong'),
+        h3 = card.querySelector('h3'), msg = card.querySelector('h3 + p'), steps = card.querySelector('.sd-steps'), cuts = [30, 60, 85, 101];
+    function update() {
+      var total = 0, miss = [];
+      c.qs.forEach(function (q, i) { if (sw[i].checked) total += q.w; else miss.push(q); });
+      sc.textContent = total;
+      ring.style.strokeDashoffset = 553 * (1 - total / 100);
+      var t = c.tiers[cuts.filter(function (x) { return total < x; }).length ? cuts.findIndex(function (x) { return total < x; }) : 3];
+      h3.textContent = t[0]; msg.textContent = t[1];
+      miss.sort(function (a, b) { return b.w - a.w; });
+      steps.innerHTML = '';
+      (miss.length ? miss.slice(0, 3).map(function (m) { return m.s; }) : [c.none]).forEach(function (s) { steps.appendChild(el('li', null, s)); });
+    }
+    sw.forEach(function (s) { s.addEventListener('change', update); });
+    update();
+  }
+
+  var models = {
+    funnel: function (v) {
+      var clics = v.inv / v.cpc, leads = clics * v.conv / 100, ventas = leads * v.cierre / 100, ing = ventas * v.ticket;
+      var roas = v.inv ? ing / v.inv : 0, alt = v.inv ? (clics * (v.conv + 1) / 100 * v.cierre / 100 * v.ticket) / v.inv : 0;
+      return {
+        label: 'Ingresos por cada $1 invertido', big: (Math.round(roas * 10) / 10).toString().replace('.', ',') + 'x',
+        kpis: [['CLICS', val(clics)], ['CONTACTOS', val(leads)], ['VENTAS AL MES', val(ventas)], ['COSTO POR VENTA', ventas > 0 ? val(v.inv / ventas, 'money') : '—']],
+        hint: (roas < 1 ? 'Con estos números la pauta no se paga sola: antes de subir inversión, revisa el eslabón más débil. ' : 'Con estos números la pauta se paga. ') +
+          'Si tu página convirtiera 1 punto más (' + val(v.conv + 1, 'pct') + '), el retorno subiría a ' + (Math.round(alt * 10) / 10).toString().replace('.', ',') + 'x sin gastar más en anuncios.'
+      };
+    },
+    cro: function (v) {
+      var hoy = v.vis * v.conv / 100, nuevo = hoy * (1 + v.mej / 100), extra = nuevo - hoy;
+      return {
+        label: 'Ingresos extra al año', big: val(extra * v.ticket * 12, 'money'),
+        kpis: [['CONVERSIONES HOY', val(hoy)], ['CON LA MEJORA', val(nuevo)], ['EXTRA AL MES', val(extra)], ['INGRESO EXTRA AL MES', val(extra * v.ticket, 'money')]],
+        hint: 'Lograr lo mismo comprando tráfico implicaría ' + val(v.vis * v.mej / 100) + ' visitas más cada mes. Mejorar la página aprovecha las que ya tienes.'
+      };
+    },
+    ecom: function (v) {
+      var ab = Math.min(v.ab, 95) / 100, pedidos = v.vis * v.conv / 100, carritos = pedidos / (1 - ab), aband = carritos - pedidos, rec = aband * v.rec / 100;
+      return {
+        label: 'Ventas recuperables al mes', big: val(rec * v.ticket, 'money'),
+        kpis: [['PEDIDOS HOY', val(pedidos)], ['CARRITOS ABANDONADOS', val(aband)], ['PEDIDOS RECUPERADOS', val(rec)], ['INGRESOS ACTUALES', val(pedidos * v.ticket, 'money')]],
+        hint: 'Cada carrito abandonado ya mostró intención de compra. Recuperar solo el ' + val(v.rec, 'pct') + ' equivale a ' + val(rec * v.ticket * 12, 'money') + ' al año.'
+      };
+    }
+  };
+
+  function buildCalc(sec, c) {
+    head(sec, c);
+    var grid = el('div', 'sd-grid'), box = el('div', 'sc-inputs'), vals = {}, outs = {};
+    c.inputs.forEach(function (n, i) {
+      vals[n.k] = n.v;
+      var row = el('div', 'sc-in', '<div class="sc-in-l"><label for="simin' + i + '">' + n.l + '</label><output id="simo' + i + '"></output></div><input type="range" id="simin' + i + '" min="' + n.min + '" max="' + n.max + '" step="' + n.step + '" value="' + n.v + '">');
+      outs[n.k] = row.querySelector('output');
+      row.querySelector('input').addEventListener('input', function (e) { vals[n.k] = +e.target.value; update(); });
+      box.appendChild(row);
+    });
+    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-kpis"></div><p class="sc-hint"></p>' + cta(c));
+    card.setAttribute('aria-live', 'polite');
+    grid.appendChild(box); grid.appendChild(card); sec.appendChild(grid);
+    function update() {
+      c.inputs.forEach(function (n) { outs[n.k].textContent = val(vals[n.k], n.f); });
+      var r = models[c.model](vals);
+      card.querySelector('.sc-lab').textContent = r.label;
+      card.querySelector('.sc-big').textContent = r.big;
+      card.querySelector('.sc-kpis').innerHTML = r.kpis.map(function (k) { return '<div><small>' + k[0] + '</small><strong>' + k[1] + '</strong></div>'; }).join('');
+      card.querySelector('.sc-hint').textContent = r.hint;
+    }
+    update();
+  }
+
+  document.querySelectorAll('section[data-sim]').forEach(function (sec) {
+    var s = sec.querySelector('script[type="application/json"]'), c;
+    try { c = JSON.parse(s.textContent); } catch (e) { return; }
+    s.remove();
+    (c.type === 'calc' ? buildCalc : buildCheck)(sec, c);
+    sec.insertAdjacentHTML('beforeend', '<p class="ss-note sc-note">SIMULACIÓN DE REFERENCIA · LOS RESULTADOS REALES DEPENDEN DE TU NEGOCIO Y DE TU MERCADO</p>');
+  });
+})();
