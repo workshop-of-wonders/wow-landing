@@ -22,7 +22,7 @@
     var World = M.World, Bodies = M.Bodies;
     var bodies = items.map(function (el, i) {
       var bw = pos[i].w, bh = pos[i].h;
-      var b = Bodies.rectangle(pos[i].x + bw / 2, pos[i].y + bh / 2, bw, bh, { isSleeping: true, chamfer: { radius: bh / 2 }, restitution: 0.7, friction: 0.1, frictionAir: 0.01, density: 0.002 });
+      var b = Bodies.rectangle(pos[i].x + bw / 2, pos[i].y + bh / 2, bw, bh, { isSleeping: true, chamfer: { radius: bh / 2 }, restitution: 0.95, friction: 0.1, frictionAir: 0.01, density: 0.002 });
       b._w = bw; b._h = bh; b._el = el;
       el.style.transform = 'translate(' + pos[i].x + 'px,' + pos[i].y + 'px)';
       return b;
@@ -79,14 +79,20 @@
       M.Engine.update(engine, dt || 16);
       bodies.forEach(function (b) {
         /* se inclinan al chocar o al lanzarlas, pero un resorte las vuelve a dejar derechas */
-        if (!b.isSleeping) b._touched = true;
+        if (!b.isSleeping) {
+          b._touched = true;
+          /* giro natural: amortiguado y con tope, para que se inclinen sin dar vueltas de trompo */
+          var av = b.angularVelocity * 0.97;
+          if (av > 0.05) av = 0.05; else if (av < -0.05) av = -0.05;
+          M.Body.setAngularVelocity(b, av);
+        }
         if (b._touched) {
           var ang = Math.atan2(Math.sin(b.angle), Math.cos(b.angle));
           var calm = Math.hypot(b.velocity.x, b.velocity.y) < 0.8 && Math.abs(b.angularVelocity) < 0.06;
           if (calm && Math.abs(ang) > 0.004) {
             /* ya casi quieta: se endereza sola, siempre queda derecha al caer */
             if (b.isSleeping) M.Sleeping.set(b, false);
-            M.Body.setAngle(b, ang * 0.85); M.Body.setAngularVelocity(b, 0);
+            M.Body.setAngle(b, ang * 0.92); M.Body.setAngularVelocity(b, 0);
           } else if (calm && ang !== 0) { M.Body.setAngle(b, 0); M.Body.setAngularVelocity(b, 0); }
         }
         b._el.style.transform = 'translate(' + (b.position.x - b._w / 2) + 'px,' + (b.position.y - b._h / 2) + 'px) rotate(' + b.angle + 'rad)';
