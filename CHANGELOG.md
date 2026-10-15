@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Tamaño óptico de logos: alto = 21·(ancho/alto÷5)^-0.4 px (los anchos quedan más bajos y los compactos más altos para que pesen parecido); pill de 40px de alto. Para ajustar, cambiar el 21 (tamaño general) o el 0.4 (cuánto se compensa).
 - Ahora todos los logos tienen el mismo alto de imagen (20px, recortes ajustados al borde) en vez de igualar la altura de las letras; el ancho sale de cada logo. Los de ícono grande + texto chico (Adobe CC, Analytics, Search Console) muestran el texto más pequeño.
 - Pills compactas como las de texto originales (alto 38px, padding 12px, letras del logo a ~9.5px de alto, ancho según logo); grilla 8fr/4fr; 3 filas a ~1540px de ancho.
 - Pills de ancho variable (según su logo), alto fijo 48px y letras a la misma altura; grilla 5fr/2fr en el home para que las herramientas queden en 3 filas en desktop (a anchos menores pasan a más filas). Letras más grandes ya no caben en 3 filas.
