@@ -4307,7 +4307,7 @@ main { padding-top: var(--nav-h); }
 /* Móvil/tablet: los conectores cruzaban los pills; sin flujo de prototipo queda limpio */
 @media (max-width: 900px) { #hubArrows { display: none; } }
 
-/* ==================================================================
+/* ===========================================================
    Páginas de servicio v2 (.sp-*) — mismo lenguaje que el home: hero morado
    con textura, titular con palabra en cursiva lima, palabras grandes en
    contorno, tarjetas sobre morado, método Wonder · Optimize · Win en sus
@@ -5725,6 +5725,23 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 @media (max-width: 720px) { .bx-sticker { display: none; } .bx-sh--arch, .bx-sh--swoosh { display: none; } .bx-tapes { height: 130px; } .bx-feature { box-shadow: 6px 6px 0 var(--lima); } }
 @media (prefers-reduced-motion: reduce) { .bx-sh, .bx-sticker, .bx-feature-ico, .bx-spin, .bx-hero h1 em::after { animation: none; } .bx-rv { opacity: 1; transform: none; transition: none; } }
 
+/* Herramientas del home: pills con logo + nombre, quietas hasta que las mueves (js/tools-playground.js).
+   Sin JS quedan como chips normales; con JS, .is-live las deja dormidas en su lugar con piso para rebotar. */
+.wm-pills { position: relative; }
+.wm-pills li { display: inline-flex; align-items: center; gap: 8px; }
+.wm-pills li img { display: block; width: 20px; height: 20px; flex: none; pointer-events: none; }
+.wm-chips-ai li:not(.wm-full) img { filter: brightness(0); opacity: .85; }
+.wm-pills.is-live { position: relative; display: block; overflow: hidden; touch-action: pan-y; }
+.wm-pills.is-live li { position: absolute; left: 0; top: 0; cursor: grab; user-select: none; -webkit-user-select: none; white-space: nowrap; will-change: transform; touch-action: none; }
+.wm-pills.is-live li.is-drag { cursor: grabbing; box-shadow: 0 10px 28px rgba(0,0,0,.35); z-index: 2; }
+.wm-pills.is-live:not(.wm-chips-ai) li.is-drag { background: rgba(255,255,255,.22); }
+.wm-pills li.wm-full img { width: auto; max-width: none; }
+.wm-pills li { box-sizing: border-box; height: 38px; padding: 0 12px; justify-content: center; overflow: hidden; }
+.wm-pills li.wm-full { padding: 0 12px; }
+
+/* Home: la columna de herramientas es más ancha para que quepan hasta 3 filas de pills (ancho según cada logo); la de IA queda angosta. */
+@media (min-width: 1001px) { .wm-tools:has(.wm-pills) { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); } }
+=======
 /* Artículo: encabezado morado con foto */
 .bl-post-head { position: relative; overflow: hidden; background: radial-gradient(60% 80% at 90% 0%, rgba(236, 72, 153, .4), transparent 60%), var(--purple); color: var(--white); }
 .bl-post-head::after { content: ""; position: absolute; left: -60px; bottom: -80px; width: 280px; aspect-ratio: 1; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; opacity: .1; pointer-events: none; }
