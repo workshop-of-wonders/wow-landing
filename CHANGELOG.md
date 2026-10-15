@@ -57,6 +57,14 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — SEO: páginas y blog para keywords de la competencia (Semrush)
+- Retarget on-page (título, meta, subtítulo del hero, FAQs + JSON-LD) en `servicios/diseno-web`, `ecommerce`, `seo` y `pauta-digital` hacia: diseño de páginas web Colombia, cotización, tiendas virtuales/pasarelas, agencia SEO Colombia, qué es pautar en redes.
+- Páginas nuevas en `servicios/` (generadas con `scripts/build-seo-pages.py`): agencia-marketing-digital-medellin, diseno-web-{medellin,bogota,cali}, marketing-medico-colombia, pasarelas-de-pago-colombia, cuanto-cuesta-{pagina-web,seo}-colombia.
+- Blog nuevo en `/blog/` (generado con `scripts/build-blog.py`; contenido en `scripts/blog_posts.py`; estilos `.bl-*`, `.sp-geo-*` en `src/styles.css`). 6 artículos iniciales.
+- Índice del blog (`/blog/`) rediseñado (capa "más WOW": formas flotantes con parallax, cintas cruzadas, portadas con forma por tema, revelado al scroll): hero en mayúsculas con buscador y sugerencias, contadores calculados, cinta de temas, "Para empezar", filtros con conteo + búsqueda en vivo + paginación (9 por página), guías esenciales y CTA (clases `.bx-*`). No hay newsletter ni "más leído" a propósito: faltan backend y analítica reales.
+- Sitemap y llms.txt actualizados. El home no se tocó (falta enlazar el blog desde su nav/footer: requiere visto bueno de la dueña).
+- Pendiente: revisar textos con la dueña (no hay cifras ni precios inventados); Panamá/Villavicencio sin página propia por no tener casos locales.
+
 - **2026-10-15 — Semrush pasa el lock**: `middleware.js` deja pasar a user-agent `SemrushBot`/`SiteAuditBot` (Site Audit) sin clave; opcional `SEMRUSH_IPS` en Vercel (IPs separadas por coma) para exigir también la IP. Quitar esto al abrir el sitio.
 
 - **2026-10-07 — Analítica en 2 columnas:** panel a la izquierda (fijo al hacer scroll, sin menú lateral interno) y las 5 tarjetas apiladas a la derecha; en móvil una columna.
