@@ -71,6 +71,20 @@
       var dt = Math.min(32, now - (last || now)); last = now;
       M.Engine.update(engine, dt || 16);
       bodies.forEach(function (b) {
+        /* se inclinan al chocar o al lanzarlas, pero un resorte las vuelve a dejar derechas */
+        if (!b.isSleeping) b._touched = true;
+        if (b._touched) {
+          var ang = Math.atan2(Math.sin(b.angle), Math.cos(b.angle));
+          if (Math.abs(ang) > 0.004 || Math.abs(b.angularVelocity) > 0.004) {
+            if (b.isSleeping) M.Sleeping.set(b, false);
+            if (Math.hypot(b.velocity.x, b.velocity.y) < 3 && b !== (mc.body || null)) {
+              /* casi quieta: se endereza sola, siempre queda derecha al caer */
+              M.Body.setAngle(b, ang * 0.82); M.Body.setAngularVelocity(b, 0);
+            } else {
+              M.Body.setAngularVelocity(b, b.angularVelocity + (-ang * 0.02 - b.angularVelocity * 0.15));
+            }
+          } else if (ang !== 0) { M.Body.setAngle(b, 0); M.Body.setAngularVelocity(b, 0); }
+        }
         b._el.style.transform = 'translate(' + (b.position.x - b._w / 2) + 'px,' + (b.position.y - b._h / 2) + 'px) rotate(' + b.angle + 'rad)';
       });
       raf = requestAnimationFrame(tick);
