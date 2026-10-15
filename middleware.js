@@ -56,7 +56,7 @@ function isDocument(request, url) {
 // coma). Si está definida, además del user-agent se exige que la IP coincida.
 function isSemrush(request) {
   const ua = request.headers.get('user-agent') || '';
-  if (!/SemrushBot/i.test(ua)) return false;
+  if (!/SemrushBot|SiteAuditBot/i.test(ua)) return false;
   const allowed = (process.env.SEMRUSH_IPS || '')
     .split(',').map((s) => s.trim()).filter(Boolean);
   if (!allowed.length) return true;
