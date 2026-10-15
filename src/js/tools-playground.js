@@ -23,6 +23,7 @@
     var bodies = items.map(function (el, i) {
       var bw = pos[i].w, bh = pos[i].h;
       var b = Bodies.rectangle(pos[i].x + bw / 2, pos[i].y + bh / 2, bw, bh, { isSleeping: true, chamfer: { radius: bh / 2 }, restitution: 0.7, friction: 0.1, frictionAir: 0.01, density: 0.002 });
+      M.Body.setInertia(b, Infinity);   /* sin rotación: las pills no giran */
       b._w = bw; b._h = bh; b._el = el;
       el.style.transform = 'translate(' + pos[i].x + 'px,' + pos[i].y + 'px)';
       return b;
@@ -71,7 +72,7 @@
       var dt = Math.min(32, now - (last || now)); last = now;
       M.Engine.update(engine, dt || 16);
       bodies.forEach(function (b) {
-        b._el.style.transform = 'translate(' + (b.position.x - b._w / 2) + 'px,' + (b.position.y - b._h / 2) + 'px) rotate(' + b.angle + 'rad)';
+        b._el.style.transform = 'translate(' + (b.position.x - b._w / 2) + 'px,' + (b.position.y - b._h / 2) + 'px)';
       });
       raf = requestAnimationFrame(tick);
     }
