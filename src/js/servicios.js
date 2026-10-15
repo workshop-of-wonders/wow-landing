@@ -408,3 +408,67 @@ document.getElementById('year').textContent = new Date().getFullYear();
   fromHash();
   window.addEventListener('hashchange', fromHash);
 })();
+
+/* SEO: diagnóstico interactivo */
+(function () {
+  var box = document.getElementById('diagnostico');
+  if (!box) return;
+  var sw = box.querySelectorAll('.sd-sw');
+  var ring = document.getElementById('sdRing'), score = document.getElementById('sdScore');
+  var verdict = document.getElementById('sdVerdict'), msg = document.getElementById('sdMsg'), steps = document.getElementById('sdSteps');
+  var tiers = [
+    [30, 'Tu sitio es casi invisible para Google', 'Hoy es muy difícil que un cliente te encuentre sin buscarte por tu nombre. La buena noticia: hay mucho por ganar.'],
+    [60, 'Tienes base, pero estás perdiendo terreno', 'Google ya te conoce un poco, pero tu competencia probablemente aparece primero. Con orden y constancia se recupera rápido.'],
+    [85, 'Vas por buen camino', 'Tienes buena parte resuelta. Los siguientes pasos son los que marcan la diferencia frente a tu competencia.'],
+    [101, 'Tu sitio está muy bien preparado', 'Lo básico y lo avanzado está cubierto. Lo que sigue es medir, afinar y sostener el ritmo.']
+  ];
+  function update() {
+    var total = 0, missing = [];
+    sw.forEach(function (s) {
+      var w = +s.dataset.w;
+      if (s.checked) total += w; else missing.push({ w: w, t: s.dataset.step });
+    });
+    score.textContent = total;
+    ring.style.strokeDashoffset = 553 * (1 - total / 100);
+    var tier = tiers.filter(function (t) { return total < t[0]; })[0];
+    verdict.textContent = tier[1];
+    msg.textContent = tier[2];
+    missing.sort(function (a, b) { return b.w - a.w; });
+    steps.innerHTML = '';
+    (missing.length ? missing.slice(0, 3).map(function (m) { return m.t; }) : ['Mantener el ritmo y medir resultados cada mes']).forEach(function (t) {
+      var li = document.createElement('li'); li.textContent = t; steps.appendChild(li);
+    });
+  }
+  sw.forEach(function (s) { s.addEventListener('change', update); });
+  update();
+})();
+
+/* SEO: simulador de posiciones en el tiempo */
+(function () {
+  var list = document.getElementById('ssList');
+  if (!list) return;
+  var range = document.getElementById('ssRange'), off = document.getElementById('ssOff');
+  var pos = [28, 24, 19, 15, 12, 9, 7, 5, 4, 3, 2, 2, 1];
+  var rivals = [['competidor-uno.co', 'Servicio líder en Medellín | Competidor 1', 'C1'], ['directorio-local.co', 'Los 10 mejores proveedores en Medellín', 'D'], ['competidor-dos.co', 'Cotiza hoy | Competidor 2', 'C2'], ['foro-empresas.com', '¿Alguien recomienda un proveedor?', 'F'], ['competidor-tres.com', 'Expertos desde 2010 | Competidor 3', 'C3'], ['competidor-cuatro.com', 'Soluciones para tu empresa | Competidor 4', 'C4']];
+  function row(rank, d, me) {
+    var li = document.createElement('li');
+    li.className = 'ss-row' + (me ? ' ss-row--me' : '');
+    li.innerHTML = '<span class="ss-rk">#' + rank + '</span><span class="ss-av">' + d[2] + '</span><div><small>' + d[0] + '</small><strong>' + d[1] + '</strong></div>';
+    return li;
+  }
+  function update() {
+    var m = +range.value, p = pos[m], shown = Math.min(p, 6), r = 0;
+    list.innerHTML = '';
+    for (var i = 1; i <= 6; i++) {
+      list.appendChild(i === shown && p <= 6 ? row(i, ['tuempresa.com', 'Tu empresa: el servicio que tu cliente busca', 'TÚ'], true) : row(i, rivals[r++], false));
+    }
+    off.hidden = p <= 6;
+    if (p > 6) off.textContent = 'Tu empresa aparece en la posición #' + p + ' · casi nadie llega hasta ahí.';
+    document.getElementById('ssMonth').textContent = m === 0 ? 'HOY' : 'MES ' + m;
+    document.getElementById('ssPos').textContent = '#' + p;
+    document.getElementById('ssPage').textContent = Math.ceil(p / 10);
+    document.getElementById('ssVis').textContent = p <= 3 ? 'ALTA' : p <= 10 ? 'MEDIA' : 'BAJA';
+  }
+  range.addEventListener('input', update);
+  update();
+})();
