@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Genera el blog: /blog/index.html y un artículo por post en /blog/<slug>.html.
+"""Genera el blog: /blog/index.html y un artículo por post en /blog/<slug>.html (archivo físico).
+Las URLs públicas de los artículos son /<slug> (sin /blog ni .html): `sync_vercel()` escribe en vercel.json el rewrite
+/<slug> -> /blog/<slug>.html y el 301 de /blog/<slug>[.html] -> /<slug>. Los enlaces internos usan siempre /<slug>.
 Reutiliza nav, cierre y scripts de servicios/diseno-web.html (ambas carpetas están a un nivel de la raíz).
 
 Uso: python3 scripts/build-blog.py   (desde la raíz del repo; luego `npm run minify` si cambió el CSS)
@@ -60,7 +62,7 @@ def head(title, desc, url, ld, extra='', image=None):
 def card(p, featured=False):
     cls = 'bl-featured' if featured else 'bl-card'
     h = 'h2' if featured else 'h3'
-    return f'''<a class="{cls}" href="{p['slug']}.html" data-cat="{p['cat']}">
+    return f'''<a class="{cls}" href="/{p['slug']}" data-cat="{p['cat']}">
         <div class="bl-card-top" data-cat="{p['cat']}"><span class="bl-cat">{p['cat']}</span></div>
         <div class="bl-card-body"><{h}>{p['h1']}</{h}><p>{p['excerpt']}</p><span class="bl-meta">{DATE_ES} · {p['read']} min de lectura</span></div>
       </a>
@@ -68,7 +70,7 @@ def card(p, featured=False):
 
 
 def bx_card(p):
-    return f'''<a class="bx-card bx-rv" href="{p['slug']}.html" data-cat="{p['cat']}">
+    return f'''<a class="bx-card bx-rv" href="/{p['slug']}" data-cat="{p['cat']}">
           <div class="bx-cover" data-cat="{p['cat']}"><span class="bx-read">{p['read']} MIN</span><span class="bx-ico" aria-hidden="true"></span></div>
           <div class="bx-body"><span class="bx-date">{DATE_ES.upper()} · {p['cat'].upper()}</span><h3>{p['h1']}</h3><p>{p['excerpt']}</p></div>
         </a>
@@ -94,7 +96,7 @@ def index(posts):
     ticker = ''.join(f'<span>{t}</span><i aria-hidden="true">✦</i>' for t in TOPICS)
     feat = posts[0]
     essentials = ''.join(
-        f'<a class="bx-ess" href="{p["slug"]}.html"><span class="bx-ess-n">0{i + 1}</span><span class="bx-ess-t">{p["h1"]}</span><span class="bx-ess-go" aria-hidden="true">→</span></a>\n      '
+        f'<a class="bx-ess" href="/{p["slug"]}"><span class="bx-ess-n">0{i + 1}</span><span class="bx-ess-t">{p["h1"]}</span><span class="bx-ess-go" aria-hidden="true">→</span></a>\n      '
         for i, p in enumerate(posts[:3]))
     body = f'''<main id="top" class="bx-page">
   <section class="bx-hero">
@@ -172,7 +174,7 @@ def index(posts):
 
 
 def article(p, posts):
-    url = SITE + 'blog/' + p['slug'] + '.html'
+    url = SITE + p['slug']
     secs = p['sections']
     toc = ''.join(f'<li><a href="#s{i + 1}">{s[0]}</a></li>' for i, s in enumerate(secs)) + '<li><a href="#faq">Preguntas frecuentes</a></li>'
     inner = ''
@@ -199,7 +201,7 @@ def article(p, posts):
   <header class="bl-post-head">
     <div class="bl-inner">
       <div class="bl-post-copy">
-        <nav class="bl-crumbs" aria-label="Ruta"><a href="index.html">Blog</a><span aria-hidden="true">›</span><span>{p['cat']}</span></nav>
+        <nav class="bl-crumbs" aria-label="Ruta"><a href="/blog/">Blog</a><span aria-hidden="true">›</span><span>{p['cat']}</span></nav>
         <span class="bl-cat">{p['cat']}</span>
         <h1>{p['h1']}</h1>
         <p class="bl-lead">{p['lead']}</p>
@@ -215,6 +217,7 @@ def article(p, posts):
       <p>{p['cta']}</p>
       <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
     </div>
+    <img class="wd wd--end" src="../design-system/wonders/Wonder_Rosa_Leyendo_Libro.png" alt="" width="1200" height="1139" loading="lazy">
   </article>
   <section class="bl-related">
     <h2>Sigue leyendo</h2>
@@ -235,7 +238,24 @@ CTA_DEFAULT = '¿Quieres aplicar esto en <em>tu marca</em>? Cuéntanos tu proyec
 
 from blog_posts import POSTS  # noqa: E402  (contenido de los artículos, en scripts/blog_posts.py)
 
+def sync_vercel(posts):
+    """Rewrites y redirecciones de los artículos en vercel.json (reemplaza las que ya apuntaban al blog)."""
+    path = os.path.join(ROOT, 'vercel.json')
+    cfg = json.load(open(path, encoding='utf-8'))
+    for p in posts:
+        for ext in ('', '.html'):
+            assert not os.path.exists(os.path.join(ROOT, p['slug'] + ext)), 'el slug choca con una página de la raíz: ' + p['slug']
+    cfg['rewrites'] = [r for r in cfg.get('rewrites', []) if not r['destination'].startswith('/blog/')] + [
+        {'source': '/' + p['slug'], 'destination': '/blog/' + p['slug'] + '.html'} for p in posts]
+    old = [r for r in cfg.get('redirects', []) if not r['source'].startswith('/blog/')]
+    cfg['redirects'] = old + [
+        {'source': '/blog/' + p['slug'] + ext, 'destination': '/' + p['slug'], 'permanent': True} for p in posts for ext in ('.html', '')]
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(json.dumps(cfg, ensure_ascii=False, indent=2) + chr(10))
+
+
 if __name__ == '__main__':
     index(POSTS)
     for post in POSTS:
         article(post, POSTS)
+    sync_vercel(POSTS)

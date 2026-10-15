@@ -1,5 +1,30 @@
 {
-  "rewrites": [],
+  "rewrites": [
+    {
+      "source": "/agencia-de-marketing-digital-para-medicos",
+      "destination": "/blog/agencia-de-marketing-digital-para-medicos.html"
+    },
+    {
+      "source": "/como-conseguir-pacientes-por-internet",
+      "destination": "/blog/como-conseguir-pacientes-por-internet.html"
+    },
+    {
+      "source": "/que-es-pautar-en-redes-sociales",
+      "destination": "/blog/que-es-pautar-en-redes-sociales.html"
+    },
+    {
+      "source": "/como-elegir-agencia-de-marketing-digital-en-medellin",
+      "destination": "/blog/como-elegir-agencia-de-marketing-digital-en-medellin.html"
+    },
+    {
+      "source": "/woocommerce-o-shopify-para-tu-tienda-en-colombia",
+      "destination": "/blog/woocommerce-o-shopify-para-tu-tienda-en-colombia.html"
+    },
+    {
+      "source": "/agencia-de-marketing-digital-para-pymes",
+      "destination": "/blog/agencia-de-marketing-digital-para-pymes.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/servicios/cursos-digitales.html",
@@ -9,6 +34,66 @@
     {
       "source": "/servicios/posts-graficos-pauta.html",
       "destination": "/servicios/pauta-digital.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agencia-de-marketing-digital-para-medicos.html",
+      "destination": "/agencia-de-marketing-digital-para-medicos",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agencia-de-marketing-digital-para-medicos",
+      "destination": "/agencia-de-marketing-digital-para-medicos",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-conseguir-pacientes-por-internet.html",
+      "destination": "/como-conseguir-pacientes-por-internet",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-conseguir-pacientes-por-internet",
+      "destination": "/como-conseguir-pacientes-por-internet",
+      "permanent": true
+    },
+    {
+      "source": "/blog/que-es-pautar-en-redes-sociales.html",
+      "destination": "/que-es-pautar-en-redes-sociales",
+      "permanent": true
+    },
+    {
+      "source": "/blog/que-es-pautar-en-redes-sociales",
+      "destination": "/que-es-pautar-en-redes-sociales",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-elegir-agencia-de-marketing-digital-en-medellin.html",
+      "destination": "/como-elegir-agencia-de-marketing-digital-en-medellin",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-elegir-agencia-de-marketing-digital-en-medellin",
+      "destination": "/como-elegir-agencia-de-marketing-digital-en-medellin",
+      "permanent": true
+    },
+    {
+      "source": "/blog/woocommerce-o-shopify-para-tu-tienda-en-colombia.html",
+      "destination": "/woocommerce-o-shopify-para-tu-tienda-en-colombia",
+      "permanent": true
+    },
+    {
+      "source": "/blog/woocommerce-o-shopify-para-tu-tienda-en-colombia",
+      "destination": "/woocommerce-o-shopify-para-tu-tienda-en-colombia",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agencia-de-marketing-digital-para-pymes.html",
+      "destination": "/agencia-de-marketing-digital-para-pymes",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agencia-de-marketing-digital-para-pymes",
+      "destination": "/agencia-de-marketing-digital-para-pymes",
       "permanent": true
     }
   ],
