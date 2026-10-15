@@ -57,7 +57,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
-- **2026-10-15 — Semrush pasa el lock**: `middleware.js` deja pasar a user-agent `SemrushBot` (Site Audit) sin clave; opcional `SEMRUSH_IPS` en Vercel (IPs separadas por coma) para exigir también la IP. Quitar esto al abrir el sitio.
+- **2026-10-15 — Semrush pasa el lock**: `middleware.js` deja pasar a user-agent `SemrushBot`/`SiteAuditBot` (Site Audit) sin clave; opcional `SEMRUSH_IPS` en Vercel (IPs separadas por coma) para exigir también la IP. Quitar esto al abrir el sitio.
 
 - **2026-10-07 — Analítica en 2 columnas:** panel a la izquierda (fijo al hacer scroll, sin menú lateral interno) y las 5 tarjetas apiladas a la derecha; en móvil una columna.
 
