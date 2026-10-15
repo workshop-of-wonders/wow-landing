@@ -10,18 +10,21 @@
     var M = window.Matter;
     var items = Array.prototype.slice.call(list.children);
     var w = list.clientWidth;
-    var h = Math.max(150, Math.min(210, Math.round(w * 0.32)));
+    /* posiciones del layout original (chips en flujo) antes de pasarlos a absolute */
+    var pos = items.map(function (el) { return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; });
+    var flowH = list.offsetHeight;
+    var h = flowH + 110;
     list.classList.add('is-live');
     list.style.height = h + 'px';
 
-    var engine = M.Engine.create();
+    var engine = M.Engine.create({ enableSleeping: true });
     engine.gravity.y = 0.85;
     var World = M.World, Bodies = M.Bodies;
-    var bodies = items.map(function (el) {
-      var bw = el.offsetWidth, bh = el.offsetHeight;
-      var b = Bodies.rectangle(bw / 2, -100, bw, bh, { chamfer: { radius: bh / 2 }, restitution: 0.7, friction: 0.1, frictionAir: 0.01, density: 0.002 });
+    var bodies = items.map(function (el, i) {
+      var bw = pos[i].w, bh = pos[i].h;
+      var b = Bodies.rectangle(pos[i].x + bw / 2, pos[i].y + bh / 2, bw, bh, { isSleeping: true, chamfer: { radius: bh / 2 }, restitution: 0.7, friction: 0.1, frictionAir: 0.01, density: 0.002 });
       b._w = bw; b._h = bh; b._el = el;
-      el.style.transform = 'translate(-999px,-999px)';
+      el.style.transform = 'translate(' + pos[i].x + 'px,' + pos[i].y + 'px)';
       return b;
     });
 
@@ -60,16 +63,7 @@
       });
     });
 
-    var dropped = false;
-    function drop() {
-      if (dropped) return; dropped = true;
-      bodies.forEach(function (b, i) {
-        M.Body.setPosition(b, { x: b._w / 2 + Math.random() * Math.max(1, w - b._w), y: -40 - Math.random() * 500 });
-        M.Body.setAngle(b, (Math.random() - 0.5) * 1.2);
-        M.Body.setVelocity(b, { x: (Math.random() - 0.5) * 3, y: 0 });
-        setTimeout(function () { World.add(engine.world, b); }, i * 90);
-      });
-    }
+    World.add(engine.world, bodies);
 
     var running = false, raf = 0, last = 0;
     function tick(now) {
@@ -82,14 +76,12 @@
       raf = requestAnimationFrame(tick);
     }
     if ('IntersectionObserver' in window) {
-      var seen = false;
       new IntersectionObserver(function (es) {
         if (es[0].isIntersecting) {
-          if (!seen) { seen = true; drop(); }
           if (!running) { running = true; last = 0; raf = requestAnimationFrame(tick); }
         } else { running = false; cancelAnimationFrame(raf); }
       }, { threshold: 0.3 }).observe(list);
-    } else { drop(); running = true; raf = requestAnimationFrame(tick); }
+    } else { running = true; raf = requestAnimationFrame(tick); }
 
     window.addEventListener('resize', function () {
       w = list.clientWidth;
