@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Cuarta tanda: Google Search Console y ElevenLabs con logo completo adjunto. Solo falta Lynka (texto; su logo.png no se pudo descargar desde el entorno, hay que subirlo a `design-system/tools/full/`).
 - Tercera tanda de logos adjuntos: Google Analytics, Google Ads, Meta, GitHub y ChatGPT (ChatGPT en tinta oscura sobre la pill lima). Quedan en ícono + texto: Search Console y ElevenLabs; Lynka solo texto.
 - Segunda tanda de logos adjuntos: Semrush, Figma, Canva, Wix y Google My Business (`design-system/tools/full/*-wordmark.png`, fondo blanco quitado, texto negro→blanco). Siguen en ícono + texto: Google Ads/Analytics/Search Console, Meta, ElevenLabs; Lynka solo texto.
 - La dueña adjuntó logos completos: WordPress, Bing, Adobe Creative Cloud (reemplaza el ícono de Illustrator), Vercel y TikTok (`design-system/tools/full/`). Se recolorearon para el fondo oscuro (texto gris/negro → blanco; WordPress azul y Bing teal aclarados). Bing sin el subtítulo "Places for Business". Siguen en ícono + texto: Semrush, Wix, Figma, Google Ads/Analytics/Search Console/My Business, Meta, Canva, ElevenLabs, y Lynka (solo texto).
