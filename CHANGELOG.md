@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Home: herramientas como pills flotantes y arrastrables
+- "Herramientas que usamos" (`.wm-tools`, index.html) ahora es un campo de juego: las pills flotan, rebotan entre sí y se arrastran/lanzan (`src/js/tools-playground.js`, Matter.js lazy con el mismo CDN+SRI de falling-icons). Sin JS o con reduced-motion quedan como chips estáticos. Estilos `.wm-pills*` al final de `src/styles.css`. Solo en el home; las páginas de servicios siguen con chips.
+
 - **2026-10-15 — Simuladores en las 11 páginas de servicios restantes** (`#simulador`, antes del FAQ). Motor único en `src/js/servicios.js` (`section[data-sim]` + JSON de configuración embebido en cada HTML; estilos `.sd-*`/`.sc-*`). Chequeos con puntaje (SEO local, GEO, analítica, tracking, consultoría de datos, diseño gráfico, diseño web, UX/UI) y calculadoras (pauta: retorno; CRO: ingreso extra; e-commerce: carritos recuperables). Las cifras son cálculos sobre los números que ingresa el usuario; pesos y textos son propuesta y deben validarse con la dueña.
 
 - **2026-10-15 — SEO: simulador de posiciones + diagnóstico interactivo** en `servicios/seo.html` (`#simulador`, `#diagnostico`, antes del FAQ). Estilos `.sd-*`/`.ss-*` en `src/styles.css`, JS en `src/js/servicios.js` (minificado a `styles.css`/`js/servicios.js`). El home no se tocó. Los textos/puntajes son ilustrativos; la dueña debe validarlos.
