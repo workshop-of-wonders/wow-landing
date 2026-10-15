@@ -54,6 +54,10 @@
   }
 
   // Triángulo de advertencia con "!" (SVG propio: el glifo ⚠ cambia de forma según el dispositivo).
+  // Wonder decorativo (mascota) debajo del resultado; sin texto.
+  function wonder(file, w, h) { var i = el('img', 'wd wd--end'); i.src = '/design-system/wonders/Wonder_' + file + '.png'; i.alt = ''; i.width = w; i.height = h; i.loading = 'lazy'; return i; }
+  var runner = el('img', 'wd ld--busy-wonder'); runner.src = '/design-system/wonders/Wonder_Morado_Corriendo.png'; runner.alt = ''; runner.width = 466; runner.height = 564; runner.hidden = true; status.parentNode.insertBefore(runner, status.nextSibling);
+
   function warnIcon() {
     var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('viewBox', '0 0 48 44'); svg.setAttribute('width', '48'); svg.setAttribute('height', '44'); svg.setAttribute('aria-hidden', 'true');
@@ -89,6 +93,7 @@
     line('rc-rule');
     line('rc-bar', null); farewell(line, true);
     wrap.appendChild(paper);
+    out.appendChild(wonder('Morado_Boca_Abajo', 472, 463));
     out.hidden = false;
     wrap.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
@@ -246,6 +251,7 @@
     }
     toolbar(); tools.hidden = false;
     draw();
+    out.appendChild(r.score == null ? wonder('Azul_Analizando_Datos', 1200, 1152) : r.score >= 85 ? wonder('Morado_Celebrando', 534, 525) : wonder('Morado_Con_Idea', 534, 595));
     out.hidden = false;
     wrap.scrollIntoView({ block: 'start', behavior: 'smooth' }); // el recibo empieza arriba de la pantalla
   }
@@ -258,7 +264,7 @@
     e.preventDefault();
     var url = input.value.trim();
     if (!url) { status.textContent = ''; renderError('', ERR.invalid_url, errCode('invalid_url')); input.focus(); return; }
-    btn.disabled = true; out.hidden = true; tools.hidden = true; status.textContent = 'Revisando tu sitio…'; state = null; machine.classList.add('is-busy');
+    btn.disabled = true; out.hidden = true; tools.hidden = true; status.textContent = 'Revisando tu sitio…'; runner.hidden = false; state = null; machine.classList.add('is-busy');
     if (window.gtag) window.gtag('event', 'playground_headings_run');
     fetch('/api/headings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url }) })
       .then(function (r) { return r.json().catch(function () { return {}; }); })
@@ -267,6 +273,6 @@
         else { status.textContent = ''; renderError(url, errInfo(d.error), errCode(d.error)); }
       })
       .catch(function () { status.textContent = ''; renderError(url, ERR.default, errCode('default')); })
-      .then(function () { btn.disabled = false; machine.classList.remove('is-busy'); });
+      .then(function () { btn.disabled = false; runner.hidden = true; machine.classList.remove('is-busy'); });
   });
 })();

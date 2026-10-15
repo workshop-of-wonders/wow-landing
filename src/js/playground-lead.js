@@ -37,7 +37,7 @@
           if (!d.success) throw new Error(d.error || 'error');
           remember(email);
           if (window.gtag) window.gtag('event', 'playground_lead', { tool: o.tool });
-          var ok = el('div', 'ld ld--ok'); ok.appendChild(el('p', 'ld-eyebrow', '¡LISTO!'));
+          var ok = el('div', 'ld ld--ok'); var wdi = el('img', 'wd'); wdi.src = '/design-system/wonders/Wonder_Morado_Celebrando.png'; wdi.alt = ''; wdi.width = 534; wdi.height = 525; ok.appendChild(wdi); ok.appendChild(el('p', 'ld-eyebrow', '¡LISTO!'));
           ok.appendChild(el('p', 'ld-pitch', o.okText ? (typeof o.okText === 'function' ? o.okText(email, d) : o.okText) : 'Aquí está tu diagnóstico completo. Si quieres que lo revisemos contigo, escríbenos.'));
           wrap.replaceWith(ok);
           if (o.onUnlock) o.onUnlock(d);

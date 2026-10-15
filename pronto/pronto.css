@@ -345,6 +345,10 @@ body.is-open .stage { animation: exit .7s .5s cubic-bezier(.6, 0, .4, 1) forward
   .team { margin-top: 24px; }
 }
 
+/* Wonder que se asoma por la esquina inferior (easter egg) */
+.wd-peek { position: fixed; right: clamp(12px, 4vw, 56px); bottom: -34px; width: clamp(84px, 11vw, 132px); height: auto; z-index: 2; pointer-events: none; user-select: none; transition: transform .4s ease; }
+body.is-open .wd-peek { transform: translateY(120%); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .band-track { animation: none; }

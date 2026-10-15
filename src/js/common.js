@@ -339,3 +339,8 @@ function createFocusTrap(modalEl, isOpen) {
     obs.disconnect();
   }, { threshold: 0.4 }).observe(nums[0].closest('.nos-stats'));
 })();
+
+/* Easter egg para quien abre la consola. */
+(function () {
+  try { console.log('%c✦ Workshop of Wonders', 'font:700 16px sans-serif;color:#380757;background:#dce157;padding:4px 10px;border-radius:8px', '\n¿Curioseando el código? Nos gusta. Escríbenos: hola@efectowow.co'); } catch (e) {}
+})();
