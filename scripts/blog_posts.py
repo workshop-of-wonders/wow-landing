@@ -8,7 +8,7 @@ S = '../servicios/'
 
 POSTS = [
     dict(
-        slug='agencia-de-marketing-digital-para-medicos', cat='Marketing médico',
+        slug='agencia-de-marketing-digital-para-medicos', img='portfolio/clinica-del-cerebro/extra-1.webp', alt='Papelería y marca de la Clínica del Cerebro, proyecto de WOW', iw=900, ih=720, cat='Marketing médico',
         title='Agencia de Marketing Digital para Médicos | WOW Blog',
         desc='Qué debe hacer una agencia de marketing digital para médicos y clínicas: sitio, SEO, contenido y pauta, qué evitar y cómo elegir bien.',
         h1='Agencia de marketing digital para médicos: qué debe hacer por ti',
@@ -45,7 +45,7 @@ POSTS = [
         cta='¿Quieres atraer más pacientes con <em>información clara</em>? Cuéntanos tu consultorio.'),
 
     dict(
-        slug='como-conseguir-pacientes-por-internet', cat='Marketing médico',
+        slug='como-conseguir-pacientes-por-internet', img='hero-photos/centro-sueno-ronquido-horizontal.webp', alt='Sitio web del Centro del Sueño y Ronquido, proyecto de WOW', iw=1024, ih=683, cat='Marketing médico',
         title='Cómo Conseguir Pacientes por Internet | WOW Blog',
         desc='Pasos para que tu consultorio o clínica consiga pacientes por internet: Google, sitio web, reseñas, contenido y pauta, sin promesas milagrosas.',
         h1='Cómo conseguir pacientes por internet para tu consultorio',
@@ -74,7 +74,7 @@ POSTS = [
         cta='¿Quieres un plan para <em>conseguir más pacientes</em>? Escríbenos.'),
 
     dict(
-        slug='que-es-pautar-en-redes-sociales', cat='Redes y pauta',
+        slug='que-es-pautar-en-redes-sociales', img='hero-photos/pretty-pets-horizontal.webp', alt='Campaña y contenido para redes de Pretty Pets, proyecto de WOW', iw=1536, ih=1024, cat='Redes y pauta',
         title='Qué es Pautar en Redes Sociales y Cómo Hacerlo | WOW',
         desc='Qué significa pautar en redes sociales, cómo funciona la pauta en Instagram, Facebook y TikTok y cómo empezar una campaña sin gastar a ciegas.',
         h1='Qué es pautar en redes sociales y cómo hacerlo bien',
@@ -105,7 +105,7 @@ POSTS = [
         cta='¿Quieres pautar con <em>estrategia y medición</em>? Hablemos.'),
 
     dict(
-        slug='como-elegir-agencia-de-marketing-digital-en-medellin', cat='Agencias y pymes',
+        slug='como-elegir-agencia-de-marketing-digital-en-medellin', img='hero-photos/lamparas-milan-horizontal.webp', alt='Sitio web de Lámparas Milán, proyecto de WOW', iw=1536, ih=1024, cat='Agencias y pymes',
         title='Cómo Elegir una Agencia de Marketing en Medellín | WOW',
         desc='Criterios para elegir una agencia de marketing digital en Medellín: servicios, casos reales, propuesta, medición y señales de alerta antes de firmar.',
         h1='Cómo elegir una agencia de marketing digital en Medellín',
@@ -134,7 +134,7 @@ POSTS = [
         cta='¿Estás comparando agencias? <em>Cuéntanos tu proyecto</em> y te enviamos una propuesta.'),
 
     dict(
-        slug='woocommerce-o-shopify-para-tu-tienda-en-colombia', cat='Diseño web y e-commerce',
+        slug='woocommerce-o-shopify-para-tu-tienda-en-colombia', img='hero-photos/epika-store-horizontal.webp', alt='Marca y tienda de Epika Store, proyecto de WOW', iw=1536, ih=1024, cat='Diseño web y e-commerce',
         title='WooCommerce o Shopify para tu Tienda en Colombia | WOW',
         desc='Comparamos WooCommerce y Shopify para montar una tienda online en Colombia: costos recurrentes, pasarelas de pago, libertad y mantenimiento.',
         h1='WooCommerce o Shopify: cuál elegir para tu tienda en Colombia',
@@ -161,7 +161,7 @@ POSTS = [
         cta='¿Vas a montar tu tienda? <em>Te ayudamos a elegir</em> y a lanzarla.'),
 
     dict(
-        slug='agencia-de-marketing-digital-para-pymes', cat='Agencias y pymes',
+        slug='agencia-de-marketing-digital-para-pymes', img='hero-photos/aja-waffles-horizontal.webp', alt='Marca y empaques de Ajá Waffles, emprendimiento acompañado por WOW', iw=1536, ih=1024, cat='Agencias y pymes',
         title='Marketing Digital para Pymes en Colombia: por Dónde Empezar',
         desc='Marketing digital para pymes en Colombia con presupuesto limitado: qué priorizar primero (sitio, Google, contenido, pauta) y qué dejar para después.',
         h1='Marketing digital para pymes: por dónde empezar con poco presupuesto',

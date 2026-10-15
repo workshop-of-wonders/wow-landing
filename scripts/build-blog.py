@@ -31,7 +31,8 @@ def strip(s):
     return re.sub(r'<[^>]+>', '', s)
 
 
-def head(title, desc, url, ld, extra=''):
+def head(title, desc, url, ld, extra='', image=None):
+    image = image or SITE + 'design-system/og-image.jpg'
     assert len(title) <= 60, (title, len(title))
     assert len(desc) <= 165, (desc, len(desc))
     return f'''{GTAG}<meta charset="UTF-8">
@@ -47,13 +48,11 @@ def head(title, desc, url, ld, extra=''):
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
-<meta property="og:image" content="{SITE}design-system/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="{image}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{esc(title)}">
 <meta name="twitter:description" content="{esc(desc)}">
-<meta name="twitter:image" content="{SITE}design-system/og-image.jpg">
+<meta name="twitter:image" content="{image}">
 {''.join(f'<script type="application/ld+json">{json.dumps(o, ensure_ascii=False)}</script>' + chr(10) for o in ld)}
 '''
 
@@ -186,7 +185,7 @@ def article(p, posts):
     ld = [
         {'@context': 'https://schema.org', '@type': 'BlogPosting', 'headline': p['h1'], 'description': p['desc'], 'inLanguage': 'es-CO',
          'datePublished': DATE, 'dateModified': DATE, 'mainEntityOfPage': url,
-         'image': SITE + 'design-system/og-image.jpg',
+         'image': SITE + 'design-system/' + p['img'],
          'author': {'@type': 'Organization', 'name': 'Workshop of Wonders', 'url': SITE},
          'publisher': {'@type': 'Organization', 'name': 'Workshop of Wonders', 'url': SITE,
                        'logo': {'@type': 'ImageObject', 'url': SITE + 'design-system/logo/wow-logo-white.webp'}}},
@@ -199,11 +198,14 @@ def article(p, posts):
     body = f'''<main id="top">
   <header class="bl-post-head">
     <div class="bl-inner">
-      <nav class="bl-crumbs" aria-label="Ruta"><a href="index.html">Blog</a><span aria-hidden="true">›</span><span>{p['cat']}</span></nav>
-      <span class="bl-cat">{p['cat']}</span>
-      <h1>{p['h1']}</h1>
-      <p class="bl-lead">{p['lead']}</p>
-      <p class="bl-meta">Por el equipo de Workshop of Wonders · {DATE_ES} · {p['read']} min de lectura</p>
+      <div class="bl-post-copy">
+        <nav class="bl-crumbs" aria-label="Ruta"><a href="index.html">Blog</a><span aria-hidden="true">›</span><span>{p['cat']}</span></nav>
+        <span class="bl-cat">{p['cat']}</span>
+        <h1>{p['h1']}</h1>
+        <p class="bl-lead">{p['lead']}</p>
+        <p class="bl-meta">Por el equipo de Workshop of Wonders · {DATE_ES} · {p['read']} min de lectura</p>
+      </div>
+      <figure class="bl-post-photo"><img src="../design-system/{p['img']}" alt="{p['alt']}" width="{p['iw']}" height="{p['ih']}" fetchpriority="high"></figure>
     </div>
   </header>
   <article class="bl-article">
@@ -224,7 +226,7 @@ def article(p, posts):
     tail = TAIL.replace('</main>\n', '', 1) if TAIL.startswith('</main>') else TAIL
     tail = tail.replace('Hablemos de tu <em>próximo proyecto</em> web', 'Hablemos de tu <em>próximo proyecto</em>')
     open(os.path.join(ROOT, 'blog', p['slug'] + '.html'), 'w', encoding='utf-8').write(
-        '<!DOCTYPE html>\n<html lang="es">\n<head>\n' + head(p['title'], p['desc'], url, ld, extra='article') + NAV + body + tail)
+        '<!DOCTYPE html>\n<html lang="es">\n<head>\n' + head(p['title'], p['desc'], url, ld, extra='article', image=SITE + 'design-system/' + p['img']) + NAV + body + tail)
     print('ok', p['slug'], len(p['title']), len(p['desc']))
 
 
