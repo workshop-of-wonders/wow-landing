@@ -57,6 +57,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: el hub pasa de cuadrícula a "patio" con física
+- `playground.html`: las herramientas son juguetes (color por objetivo: lima = vender, rosa = encontrar, azul = datos, naranja = marca) que caen, rebotan, se arrastran y se lanzan; un toque abre la herramienta. Globo con la descripción al pasar el cursor o enfocar con teclado. Botones "Sacude el patio" y "Sorpréndeme" (abre una herramienta al azar). Los filtros apagan los juguetes que no coinciden y hacen saltar a los que sí. `?servicio=` deja solo los juguetes de ese servicio.
+- Arrastre propio con Matter.Constraint (no MouseConstraint): `touch-action: none` solo sobre los juguetes, así el scroll en celular sigue funcionando. Matter.js 0.19.0 por jsDelivr con el mismo SRI de tools-playground.js.
+- Degradación: sin JS, con `prefers-reduced-motion` o si Matter no carga, se queda la cuadrícula de tarjetas filtrable de antes (`.pg-grid`). Los enlaces del tablero son `<a>` reales (teclado y lectores de pantalla). Eventos GA4: `playground_toy_throw`, `playground_shake`, `playground_surprise`.
+- Pendiente: llevar el mismo espíritu a cada herramienta (hoy siguen siendo formularios/quiz).
+
 ### 2026-10-15 — Playground: chequeos como quiz interactivo
 - `buildCheck` (src/js/servicios.js) pasa de lista de interruptores a quiz de una pregunta a la vez: progreso, respuestas Sí / En parte / No (100 % / 50 % / 0 % del peso), avance automático, botón Atrás, atajos 1-2-3, resultado con puntaje animado, prioridades (las que más puntos pierden), fortalezas, "Copiar mi resultado" y "Repetir". Cubre los 7 chequeos generados desde JSON; `#diagnostico` de seo.html (hardcodeado) sigue con el formato viejo. Eventos GA4 `sim_start` y `sim_complete`. Estilos `.qz-*` en src/styles.css.
 
