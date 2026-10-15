@@ -106,12 +106,37 @@
 
   <section class="hd-sec" aria-labelledby="hdTitle">
     <h2 id="hdTitle" class="pg-title">Revisa una página</h2>
-    <form class="hd-form" id="hdForm" novalidate>
-      <label for="hdUrl" class="sr-only">Link del sitio</label>
-      <input id="hdUrl" type="text" inputmode="url" autocomplete="url" placeholder="tusitio.com" required>
-      <button type="submit" class="btn btn-primary" id="hdGo">Analizar <span aria-hidden="true">→</span></button>
-    </form>
-    <p class="hd-status" id="hdStatus" role="status" aria-live="polite"></p>
+    <div class="rm" id="rmMachine">
+      <div class="rm-top">
+        <span class="rm-brand">WOW <em>PRINT</em></span>
+        <span class="rm-leds" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+      <form class="rm-body" id="hdForm" novalidate>
+        <div class="rm-lcd">
+          <p class="rm-lcd-t" aria-hidden="true">&gt; TU SITIO WEB</p>
+          <label for="hdUrl" class="sr-only">Link del sitio</label>
+          <input id="hdUrl" type="text" inputmode="url" autocomplete="url" placeholder="www.tusitio.com" required>
+        </div>
+        <fieldset class="rm-keys">
+          <legend>¿QUÉ REVISAMOS?</legend>
+          <div class="rm-seg">
+            <label><input type="radio" name="hdMode" value="h"><span>Encabezados</span></label>
+            <label><input type="radio" name="hdMode" value="p"><span>Párrafos</span></label>
+            <label><input type="radio" name="hdMode" value="all" checked><span>Todo</span></label>
+          </div>
+          <div class="rm-level" id="hdLevelBox">
+            <label for="hdLevel">Hasta el nivel</label>
+            <select id="hdLevel">
+              <option value="1">H1</option><option value="2">H2</option><option value="3">H3</option>
+              <option value="4">H4</option><option value="5">H5</option><option value="6" selected>H6 · todos</option>
+            </select>
+          </div>
+        </fieldset>
+        <button type="submit" class="rm-print" id="hdGo"><span>IMPRIMIR RECIBO</span></button>
+        <p class="rm-status" id="hdStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div class="rm-slot" aria-hidden="true"><i></i></div>
+    </div>
     <div id="hdOut" hidden></div>
     <p class="pg-note">Analizamos el HTML público de la página que escribas; no guardamos el link ni el resultado.</p>
     <div class="hd-cta"><p>¿Quieres que revisemos la estructura completa de tu sitio?</p><a href="#contacto" class="btn btn-primary" data-open-form>Pide tu auditoría <span aria-hidden="true">→</span></a></div>

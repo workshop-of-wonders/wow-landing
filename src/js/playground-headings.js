@@ -4,7 +4,8 @@
   var form = document.getElementById('hdForm');
   if (!form) return;
   var input = document.getElementById('hdUrl'), btn = document.getElementById('hdGo'), status = document.getElementById('hdStatus'), out = document.getElementById('hdOut');
-  var unlocked = false;
+  var levelSel = document.getElementById('hdLevel'), levelBox = document.getElementById('hdLevelBox');
+  var machine = document.getElementById('rmMachine'), unlocked = false;
   var ERR = {
     invalid_url: 'Ese link no parece válido. Escribe una dirección pública, por ejemplo tusitio.com.',
     unreachable: 'No pudimos abrir ese sitio. Revisa que esté en línea y vuelve a intentar.',
@@ -25,41 +26,61 @@
   };
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function pad(n) { return ('0' + n).slice(-2); }
-  function trunc(s, n) { return s.length > n ? s.slice(0, n - 1) + '…' : s; }
-  function host(u) { try { return new URL(u).hostname; } catch (e) { return u; } }
+    function host(u) { try { return new URL(u).hostname; } catch (e) { return u; } }
 
-  function render(r, url) {
-    out.textContent = '';
+  var state = null, wrap = null;
+  function mode() { var c = form.querySelector('input[name="hdMode"]:checked'); return c ? c.value : 'all'; }
+  function maxLevel() { return +levelSel.value || 6; }
+  function syncLevelBox() { levelBox.hidden = mode() === 'p'; }
+
+  // Dibuja el recibo según lo que se quiera revisar (encabezados hasta cierto nivel, párrafos o todo).
+  function draw() {
+    var r = state.r, url = state.url, m = mode(), max = maxLevel(), showH = m !== 'p', showP = m !== 'h';
     var now = new Date(), when = pad(now.getDate()) + '/' + pad(now.getMonth() + 1) + '/' + now.getFullYear() + '  ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-    var paper = el('div', 'rc'); paper.setAttribute('role', 'region'); paper.setAttribute('aria-label', 'Recibo con la estructura de encabezados');
+    var blocks = (r.blocks || r.headings.map(function (h) { return { type: 'h', level: h.level, text: h.text }; })).filter(function (b) { return b.type === 'p' ? showP : showH && b.level <= max; });
+    var paper = el('div', 'rc'); paper.setAttribute('role', 'region'); paper.setAttribute('aria-label', 'Recibo con la estructura de la página');
     var n = 0;
-    function line(cls, text, extra) { var l = el('div', 'rc-line ' + (cls || '')); l.style.setProperty('--d', (n++ * 70) + 'ms'); if (text != null) l.textContent = text; if (extra) l.appendChild(extra); paper.appendChild(l); return l; }
-    function rule() { line('rc-rule', '- - - - - - - - - - - - - - - - - - - - -'); }
+    function line(cls, text, extra) { var l = el('div', 'rc-line ' + (cls || '')); l.style.setProperty('--d', Math.min(n++ * 45, 1400) + 'ms'); if (text != null) l.textContent = text; if (extra) l.appendChild(extra); paper.appendChild(l); return l; }
+    function rule() { line('rc-rule', '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'); }
+    function sum(label, value) { var s = document.createDocumentFragment(); s.appendChild(el('span', null, label)); s.appendChild(el('b', null, String(value))); line('rc-sum', null, s); }
     line('rc-c rc-big', 'WOW SUPERMERCADO');
     line('rc-c', 'DE PÁGINAS WEB');
     rule();
-    line('', 'CLIENTE: ' + trunc(host(url), 28));
+    line('', 'CLIENTE: ' + host(url));
     line('', 'FECHA:   ' + when);
-    if (r.title) line('', 'TÍTULO:  ' + trunc(r.title, 28));
+    if (r.title) line('', 'TÍTULO:  ' + r.title);
+    line('', 'REVISIÓN: ' + (m === 'h' ? 'encabezados H1–H' + max : m === 'p' ? 'párrafos' : 'todo (H1–H' + max + ' y párrafos)'));
     rule();
-    line('rc-h', 'NIVEL  ARTÍCULO');
-    if (!r.headings.length) line('rc-note', 'No encontramos encabezados en el HTML. Si tu sitio se arma con JavaScript, los buscadores podrían ver lo mismo.');
-    r.headings.forEach(function (h) {
-      var l = line('rc-item rc-l' + h.level); l.appendChild(el('b', null, 'H' + h.level)); var t = el('span', null, h.text || '(vacío)'); t.style.paddingLeft = (h.level - 1) * 10 + 'px'; l.appendChild(t);
+    line('rc-h', 'TIPO  ARTÍCULO');
+    if (!blocks.length) line('rc-note', showH && !showP ? 'No encontramos encabezados en ese rango en el HTML. Si tu sitio se arma con JavaScript, los buscadores podrían ver lo mismo.' : 'No encontramos contenido para mostrar en el HTML de esta página.');
+    blocks.forEach(function (b) {
+      var isP = b.type === 'p', l = line('rc-item ' + (isP ? 'rc-p' : 'rc-l' + b.level));
+      l.appendChild(el('b', null, isP ? 'P' : 'H' + b.level));
+      var t = el('span', null, b.text || '(vacío)'); if (!isP) t.style.paddingLeft = (b.level - 1) * 10 + 'px'; l.appendChild(t);
     });
     rule();
-    var total = r.headings.length;
-    line('rc-sum', null, (function () { var s = document.createDocumentFragment(); var a = el('span', null, 'ARTÍCULOS'), b = el('b', null, String(total)); s.appendChild(a); s.appendChild(b); return s; })());
-    [1, 2, 3, 4, 5, 6].forEach(function (lv, i) { if (r.counts[i]) line('rc-sum', null, (function () { var s = document.createDocumentFragment(); s.appendChild(el('span', null, '  H' + lv + ' x' + r.counts[i])); s.appendChild(el('b', null, '')); return s; })()); });
-    rule();
-    line('rc-h', r.issues.length ? 'CARGOS (ALERTAS)' : 'DESCUENTOS');
-    if (!r.issues.length) line('rc-ok', '✓ ESTRUCTURA BÁSICA EN ORDEN');
-    r.issues.forEach(function (i) { line('rc-issue rc-' + i.type, (i.type === 'error' ? '✗ ' : '! ') + i.msg); });
-    rule();
-    line('rc-total', null, (function () { var s = document.createDocumentFragment(); s.appendChild(el('span', null, 'A MEJORAR')); s.appendChild(el('b', null, String(r.issues.length))); return s; })());
+    var hs = blocks.filter(function (b) { return b.type === 'h'; }), ps = blocks.length - hs.length;
+    sum('ARTÍCULOS', blocks.length);
+    if (showH) [1, 2, 3, 4, 5, 6].forEach(function (lv) { var c = hs.filter(function (b) { return b.level === lv; }).length; if (c) sum('  H' + lv, 'x' + c); });
+    if (showP) { sum('  PÁRRAFOS', 'x' + ps); sum('  PALABRAS', blocks.filter(function (b) { return b.type === 'p'; }).reduce(function (a, b) { return a + b.text.split(/\s+/).length; }, 0)); }
+    if (showH) {
+      rule();
+      line('rc-h', r.issues.length ? 'CARGOS (ALERTAS)' : 'DESCUENTOS');
+      if (!r.issues.length) line('rc-ok', '✓ ESTRUCTURA BÁSICA EN ORDEN');
+      r.issues.forEach(function (i) { line('rc-issue rc-' + i.type, (i.type === 'error' ? '✗ ' : '! ') + i.msg); });
+      rule();
+      sum('A MEJORAR', r.issues.length); paper.lastChild.classList.add('rc-total');
+    }
     line('rc-bar', null); line('rc-c', '*** GRACIAS POR SU VISITA ***');
-    var wrap = el('div', 'rc-wrap'); wrap.appendChild(paper); out.appendChild(wrap);
+    wrap.textContent = ''; wrap.appendChild(paper);
+    return paper;
+  }
 
+  function render(r, url) {
+    state = { r: r, url: url };
+    out.textContent = '';
+    wrap = el('div', 'rc-wrap is-printing'); out.appendChild(wrap);
+    var paper = draw(), total = r.headings.length;
     var gate = el('div', 'rc-gate'), lockBox = el('div', 'rc-lock');
     function full() {
       unlocked = true; lockBox.textContent = '';
@@ -80,11 +101,18 @@
     out.hidden = false;
     paper.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
+  // Cambiar el modo o el nivel reimprime el mismo resultado, sin volver a consultar el sitio.
+  form.addEventListener('change', function (e) {
+    if (e.target === input) return;
+    syncLevelBox();
+    if (state) draw();
+  });
+  syncLevelBox();
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var url = input.value.trim();
     if (!url) { status.textContent = ERR.invalid_url; input.focus(); return; }
-    btn.disabled = true; out.hidden = true; status.textContent = 'Imprimiendo tu recibo…';
+    btn.disabled = true; out.hidden = true; status.textContent = 'Imprimiendo tu recibo…'; state = null; machine.classList.add('is-busy');
     if (window.gtag) window.gtag('event', 'playground_headings_run');
     fetch('/api/headings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url }) })
       .then(function (r) { return r.json().catch(function () { return {}; }); })
@@ -93,6 +121,6 @@
         else status.textContent = ERR[d.error] || ERR.default;
       })
       .catch(function () { status.textContent = ERR.default; })
-      .then(function () { btn.disabled = false; });
+      .then(function () { btn.disabled = false; machine.classList.remove('is-busy'); });
   });
 })();

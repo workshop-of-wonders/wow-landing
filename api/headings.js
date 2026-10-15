@@ -14,6 +14,8 @@ var https = require('https');
 var MAX_BYTES = 1500000;
 var MAX_REDIRECTS = 3;
 var TIMEOUT_MS = 8000;
+var MAX_HEADING = 500;
+var MAX_PARAGRAPH = 1500;
 
 function isPrivateIp(ip) {
   if (net.isIPv4(ip)) {
@@ -102,8 +104,17 @@ function analyze(html) {
   var title = (body.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1];
   var metaTag = body.match(/<meta[^>]+name=["']description["'][^>]*>/i);
   var meta = metaTag && (metaTag[0].match(/content=["']([^"']*)["']/i) || [])[1];
-  var headings = [], re = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi, m;
-  while ((m = re.exec(body)) && headings.length < 300) headings.push({ level: +m[1], text: clean(m[2]).slice(0, 200) });
+  // Encabezados y párrafos en el orden en que aparecen en la página (blocks); headings es solo la parte H.
+  var headings = [], blocks = [], re = /<(h[1-6]|p)\b[^>]*>([\s\S]*?)<\/\1>/gi, m;
+  while ((m = re.exec(body)) && blocks.length < 600) {
+    if (m[1].toLowerCase() === 'p') {
+      var pt = clean(m[2]).slice(0, MAX_PARAGRAPH);
+      if (pt) blocks.push({ type: 'p', text: pt });
+    } else if (headings.length < 300) {
+      var h = { level: +m[1].slice(1), text: clean(m[2]).slice(0, MAX_HEADING) };
+      headings.push(h); blocks.push({ type: 'h', level: h.level, text: h.text });
+    }
+  }
 
   var issues = [], h1 = headings.filter(function (h) { return h.level === 1; });
   if (!h1.length) issues.push({ code: 'no_h1', type: 'error', msg: 'No tiene H1. Cada página debería tener uno que diga de qué trata.' });
@@ -118,7 +129,7 @@ function analyze(html) {
   }
   if (headings.length && headings[0].level !== 1) issues.push({ code: 'first_not_h1', type: 'warn', msg: 'El primer encabezado de la página es un H' + headings[0].level + ', no un H1.' });
   if (!meta) issues.push({ code: 'no_meta', type: 'warn', msg: 'No tiene meta description.' });
-  return { title: title ? clean(title) : '', metaDescription: meta ? decode(meta).trim() : '', headings: headings, counts: [1, 2, 3, 4, 5, 6].map(function (l) { return headings.filter(function (h) { return h.level === l; }).length; }), issues: issues };
+  return { title: title ? clean(title) : '', metaDescription: meta ? decode(meta).trim() : '', headings: headings, blocks: blocks, paragraphs: blocks.filter(function (b) { return b.type === 'p'; }).length, counts: [1, 2, 3, 4, 5, 6].map(function (l) { return headings.filter(function (h) { return h.level === l; }).length; }), issues: issues };
 }
 
 module.exports = async function handler(req, res) {
