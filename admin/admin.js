@@ -99,9 +99,9 @@ async function renderLeads() {
     const rows = leads.map((l) => `
       <tr class="clickable" data-id="${l.id}">
         <td>${new Date(l.created_at).toLocaleDateString('es-CO')}</td>
-        <td>${l.name}</td>
-        <td>${l.email}</td>
-        <td>${l.company || ''}</td>
+        <td>${esc(l.name)}</td>
+        <td>${esc(l.email)}</td>
+        <td>${esc(l.company)}</td>
         <td><span class="badge ${l.status}">${labels[l.status] || l.status}</span></td>
       </tr>`).join('');
     const counts = { new: 0, contacted: 0, won: 0, lost: 0 };
@@ -139,9 +139,9 @@ function renderLeadDetail(id) {
   const box = document.getElementById('leadDetail');
   box.innerHTML = `
     <div class="lead-detail">
-      <p class="lead-name">${lead.name} <span class="badge ${lead.status}">${lead.status}</span></p>
-      <p class="lead-meta">${lead.email} ${lead.company ? '· ' + lead.company : ''} · Necesidad: ${lead.need || '—'} · País: ${lead.country || '—'} · Presupuesto: ${lead.budget || '—'} · Página: ${lead.page || '—'}</p>
-      <p style="white-space: pre-wrap;">${lead.details || ''}</p>
+      <p class="lead-name">${esc(lead.name)} <span class="badge ${lead.status}">${lead.status}</span></p>
+      <p class="lead-meta">${esc(lead.email)} ${lead.company ? '· ' + esc(lead.company) : ''} · Necesidad: ${esc(lead.need) || '—'} · País: ${esc(lead.country) || '—'} · Presupuesto: ${esc(lead.budget) || '—'} · Página: ${esc(lead.page) || '—'}</p>
+      <p style="white-space: pre-wrap;">${esc(lead.details)}</p>
       <div class="field">
         <label>Estado</label>
         <select id="statusSel">
@@ -168,7 +168,7 @@ function renderLeadDetail(id) {
 
 // ---------- Utils ----------
 
-function esc(s) { return String(s || '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+function esc(s) { return String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
 // ---------- Boot ----------
 

@@ -26,15 +26,18 @@ module.exports = async function handler(req, res) {
   var email = typeof body.email === 'string' ? body.email.trim() : '';
   var name = typeof body.name === 'string' ? body.name.trim() : '';
   var company = typeof body.company === 'string' ? body.company.trim() : '';
-  var need = typeof body.need === 'string' ? body.need.trim() : '';
+  var need = typeof body.need === 'string' ? body.need.trim().slice(0, 200) : '';
   var budget = typeof body.budget === 'string' ? body.budget.trim() : '';
   var country = typeof body.country === 'string' ? body.country.trim().slice(0, 80) : '';
-  var details = typeof body.details === 'string' ? body.details.trim() : '';
+  var details = typeof body.details === 'string' ? body.details.trim().slice(0, 4000) : '';
   var lang = typeof body.lang === 'string' ? body.lang.trim() : '';
   var page = typeof body.page === 'string' ? body.page.trim() : '';
   // Honeypot field, if the frontend forwards it — never trust client-side
   // filtering alone; a bot that skips JS can still hit this endpoint directly.
   var website = typeof body.website === 'string' ? body.website.trim() : '';
+  // Playground: el visitante solo deja el correo para recibir su diagnóstico, sin nombre.
+  var isPlayground = body.kind === 'playground';
+  if (isPlayground && !name) name = 'Playground';
 
   // Server-side validation — never trust the frontend alone.
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
