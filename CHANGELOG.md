@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-15 — Fixes de auditoría SEO (Semrush)**: `address` (PostalAddress CO) en el schema `ProfessionalService` de todas las páginas y generadores; URLs/canonical/sitemap/robots/llms.txt pasan a `https://www.efectowow.co` (sin redirects 308); títulos ≤60 caracteres (sufijo `| WOW`); **CSS/JS minificados: editar `src/styles.css` y `src/js/*.js` y correr `npm run minify`** (genera `styles.css` y `js/*.js`, que son lo que sirve Vercel); nueva sección de texto `#agencia` ("Sobre Workshop of Wonders") en `index.html`, antes de Contacto, para subir el ratio texto/HTML sobre 10 % (autorizada por la dueña, excepción a "el home no se toca"). PR #110.
+
 - **2026-10-15 — Semrush pasa el lock**: `middleware.js` deja pasar a user-agent `SemrushBot`/`SiteAuditBot` (Site Audit) sin clave; opcional `SEMRUSH_IPS` en Vercel (IPs separadas por coma) para exigir también la IP. Quitar esto al abrir el sitio.
 
 - **2026-10-07 — Analítica en 2 columnas:** panel a la izquierda (fijo al hacer scroll, sin menú lateral interno) y las 5 tarjetas apiladas a la derecha; en móvil una columna.

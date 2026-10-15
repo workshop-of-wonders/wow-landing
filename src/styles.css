@@ -5421,3 +5421,12 @@ main { padding-top: var(--nav-h); }
 .od-txt { margin-top: 0; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 @media (max-width: 1000px) { .od { grid-template-columns: minmax(0, 1fr); } .od-win { position: static; } }
 .od-tx { padding-right: 72px; }
+
+/* Home: bloque de texto "Sobre Workshop of Wonders" (contenido crawleable para SEO; ratio texto/HTML). */
+.home-about { position: relative; z-index: 1; background: var(--cloud); color: var(--ink); padding: var(--sec-title-content) var(--page-x) var(--sec-bottom); }
+.home-about-inner { max-width: 1200px; margin: 0 auto; }
+.home-about h2 { font-family: var(--font-display); color: var(--purple); margin: 0 0 var(--space-4); max-width: 22ch; }
+.home-about-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.home-about h3 { font-family: var(--font-display); color: var(--purple); margin: 0 0 var(--space-2); }
+.home-about p { font-family: var(--font-body); margin: 0 0 var(--space-2); line-height: 1.6; }
+@media (max-width: 900px) { .home-about-cols { grid-template-columns: 1fr; gap: var(--space-3); } }
