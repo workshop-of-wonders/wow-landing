@@ -6388,3 +6388,5 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pg-more-t { margin: 0 0 12px; font: 700 12px var(--font-mono, monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--purple); opacity: .75; }
 /* La Q de PLAYGROUND tiene cola: sin este margen el overflow del watermark la corta (igual que en PREGUNTAS) */
 .pgs .outline-word { padding-bottom: 0.25em; }
+.pgs-tx small { font: 600 12.5px var(--font-body); letter-spacing: 0; text-transform: none; opacity: .8; }
+.pgs-fine { margin: 6px 0 0; max-width: 46em; font-size: 14px; line-height: 1.5; opacity: .75; }

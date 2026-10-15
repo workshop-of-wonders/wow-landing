@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: textos de la sección en las páginas de servicio, serios y con el beneficio claro
+- Cada servicio tiene su propio título y descripción (qué mide y qué obtiene el usuario), eyebrow "PLAYGROUND · DIAGNÓSTICOS GRATUITOS", subtítulo de cada botón = el resultado que entrega (p. ej. "Calcula tu retorno real"), y una línea de transparencia: "Resultado inmediato y gratuito. Solo te pedimos el correo si quieres el diagnóstico completo con tu plan de acción." Estilos `.pgs-tx small` / `.pgs-fine`.
+
 ### 2026-10-15 — Playground: velocímetro arriba + simuladores fuera de las páginas de servicio
 - `W.dial` (src/js/sim-modes.js): velocímetro SVG con zonas de color (rojo / naranja / lima / verde), aguja con rebote y número que cambia de color según la zona. Va ARRIBA (resultado primero, controles debajo) en las calculadoras (`servicios.js`: ROAS 0–6x en pauta; "de cada 100 carritos terminan en compra" en carritos), en los chequeos `switch` y `sliders` y en el resultado final de todos los formatos (reemplaza al anillo). El viejo medidor horizontal del embudo se quitó. `.sc-top` / `.rs-top` / `.sc-viz-card` / `.sp-card` van `position: static` (`.sd-card` es sticky por defecto).
 - Los simuladores ya NO están incrustados en las páginas de servicio: cada uno vive en su página `playground/<slug>.html` (11 nuevas: pauta-retorno, carritos-abandonados, web-lista, visibilidad-google, ranking-mes-a-mes, ias-te-citan, te-encuentran-cerca, marca-consistente, datos-que-deciden, madurez-de-datos, medicion-instalada), con su propio hero y navegación a las demás herramientas del servicio. El hub (`playground.html`) apunta a esas páginas; sitemap actualizado. Se quitó también el chequeo/línea de tiempo de `seo.html` y el código muerto asociado.
