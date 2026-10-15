@@ -5723,4 +5723,5 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .wm-pills.is-live li.is-drag { cursor: grabbing; box-shadow: 0 10px 28px rgba(0,0,0,.35); z-index: 2; }
 .wm-pills.is-live:not(.wm-chips-ai) li.is-drag { background: rgba(255,255,255,.22); }
 .wm-pills li.wm-full img { width: auto; max-width: none; }
-.wm-pills li.wm-full { padding: 9px 18px; }
+.wm-pills li { box-sizing: border-box; width: 176px; height: 46px; padding: 0 14px; justify-content: center; overflow: hidden; }
+.wm-pills li.wm-full { padding: 0 14px; }
