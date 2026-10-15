@@ -57,6 +57,11 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: marcador en vivo y resultado auditable
+- `W.hud` (src/js/sim-modes.js): barra de puntos acumulados sobre 100 que sube con cada respuesta (cuenta animada, "+N", marcas de los niveles 30/60/85 y respondidas n de N), pegada arriba mientras juegas y oculta al mostrar el resultado. La usan `paged`, `chat`, `faces`, `postit`, `hop` y `tictac`; `switch` y `sliders` muestran el nivel junto a su anillo.
+- Resultado: escala de los 4 niveles con marcador de dónde caíste, y "Cómo se calculó tu puntaje" (puntos ganados / peso de cada criterio) + nota de método (Sí = 100 %, En parte = 50 %, No = 0; diagnóstico de referencia, no auditoría). Calculadoras: "Cómo lo calculamos" con las fórmulas y sus supuestos. Colores: nota de la fórmula de contraste WCAG 2.1.
+- CSS: `.sp-sec > *:not(.outline-word)` fuerza `position: relative`, por eso `.hud` usa `.sp-sec > .hud` para poder ser sticky.
+
 ### 2026-10-15 — Playground: un formato distinto por herramienta + captura de correo en todas
 - Formatos nuevos en `src/js/sim-modes.js` (cada `<section data-sim>` elige el suyo con `"mode"` en su JSON; `servicios.js` hace el despacho): `paged` (encuesta por páginas, diseño web), `chat` (WOW-bot, GEO), `switch` (tablero de switches, tracking), `faces` (caritas de acuerdo, SEO local, usa `st` por pregunta), `postit` (post-its que se arrastran a Sí / En parte / Todavía no, analítica), `hop` (rayuela, madurez de datos), `tictac` (tres en línea con casilla central libre, diseño gráfico, usa `t` por pregunta), `sliders` ("qué tanto", chequeo de SEO migrado de HTML a mano a JSON `data-sim`). Sin `mode` queda el quiz de una pregunta a la vez.
 - Calculadoras (pauta, carritos): gráfico de barras que reacciona a los sliders + tabla de escenarios con sus números que se desbloquea con el correo.

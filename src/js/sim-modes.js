@@ -13,7 +13,48 @@
   function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
   function lockSvg() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
 
+  /* ---------- marcador en vivo ---------- */
+  W.hud = function (sec, c) {
+    var n = c.qs.length, h = el('div', 'hud');
+    h.setAttribute('role', 'status');
+    h.innerHTML = '<div class="hud-score"><small>PUNTOS ACUMULADOS</small><b class="hud-n">0</b><span>/ 100</span><em class="hud-pop" aria-hidden="true"></em></div>' +
+      '<div class="hud-meter" aria-hidden="true"><i class="hud-fill"></i><s style="left:30%"></s><s style="left:60%"></s><s style="left:85%"></s></div>' +
+      '<div class="hud-prog"><small class="hud-ans"></small><div class="hud-pbar" aria-hidden="true"><i></i></div></div>';
+    sec.appendChild(h);
+    var num = h.querySelector('.hud-n'), fill = h.querySelector('.hud-fill'), pop = h.querySelector('.hud-pop'), ans = h.querySelector('.hud-ans'), pb = h.querySelector('.hud-pbar i');
+    var cur = 0, raf = 0;
+    function count(to) {
+      cancelAnimationFrame(raf); var from = +num.textContent || 0;
+      if (reduce || from === to) { num.textContent = to; return; }
+      var t0 = null; (function step(ts) { t0 = t0 || ts; var p = Math.min((ts - t0) / 380, 1); num.textContent = Math.round(from + (to - from) * p); if (p < 1) raf = requestAnimationFrame(step); })(performance.now());
+    }
+    var api = {
+      set: function (a, answered) {
+        var t = scoreOf(c, a), k = answered != null ? answered : a.filter(function (x) { return x != null; }).length;
+        count(t); fill.style.width = t + '%'; pb.style.width = (k / n * 100) + '%'; ans.textContent = k + ' de ' + n + ' respondidas';
+        if (t > cur && !reduce) { pop.textContent = '+' + (t - cur); pop.classList.remove('is-go'); void pop.offsetWidth; pop.classList.add('is-go'); }
+        cur = t;
+      },
+      reset: function () { cur = 0; h.hidden = false; api.set([], 0); },
+      hide: function () { h.hidden = true; }
+    };
+    api.set([], 0);
+    return api;
+  };
+
   /* ---------- resultado común ---------- */
+  var RANGES = ['0 a 29', '30 a 59', '60 a 84', '85 a 100'];
+  function scaleHtml(c, total, t) {
+    var segs = [30, 30, 25, 15].map(function (w, i) { return '<div class="qz-seg qz-seg' + i + '" style="flex:' + w + '"><span>' + RANGES[i] + '</span></div>'; }).join('');
+    return '<div class="qz-scale"><div class="qz-sc-bar" aria-hidden="true">' + segs + '<i class="qz-mark" style="left:' + Math.min(99, total) + '%"><b>' + total + '</b></i></div><p class="qz-sc-t">Estás en el nivel: <b>' + t[0] + '</b></p></div>';
+  }
+  function breakdownHtml(c, a) {
+    var rows = c.qs.map(function (q, k) {
+      var got = Math.round(q.w * a[k] * 10) / 10, cls = a[k] >= 0.99 ? 'full' : a[k] > 0 ? 'half' : 'none';
+      return '<li class="qz-br qz-br-' + cls + '"><span class="qz-br-n">' + q.s + '</span><span class="qz-br-p">' + (got % 1 ? got.toFixed(1) : got) + ' / ' + q.w + '</span><span class="qz-br-b" aria-hidden="true"><i style="width:' + Math.round(a[k] * 100) + '%"></i></span></li>';
+    }).join('');
+    return '<details class="qz-how" open><summary>Cómo se calculó tu puntaje</summary><ul class="qz-brl">' + rows + '</ul><p class="qz-how-n">Cada criterio pesa según su impacto en resultados. Sí suma el 100 % de su peso, En parte el 50 % y No cero; la suma da tu puntaje sobre 100. Es un diagnóstico de referencia basado en buenas prácticas, no una auditoría: para revisar tu caso con datos reales lo hacemos contigo.</p></details>';
+  }
   W.result = function (box, c, a, sec, again, H) {
     var total = scoreOf(c, a), t = tierOf(c, total);
     var gaps = c.qs.map(function (q, k) { return { q: q, k: k, lost: q.w * (1 - a[k]) }; }).filter(function (g) { return g.lost > 0.01; }).sort(function (x, y) { return y.lost - x.lost; });
@@ -21,7 +62,9 @@
     box.className = 'qz qz--r'; box.textContent = '';
     var card = el('div', 'qz-card qz-res');
     card.innerHTML = '<div class="qz-res-top">' + ring(0) + '<div><h3>' + t[0] + '</h3><p>' + t[1] + '</p></div></div>' +
+      scaleHtml(c, total, t) +
       '<p class="sd-steps-t">TU PRIMER PASO</p><ol class="qz-steps"><li>' + (gaps.length ? gaps[0].q.s + (a[gaps[0].k] === 0.5 ? ' (ya tienes una parte)' : '') : c.none) + '</li></ol>' +
+      breakdownHtml(c, a) +
       '<div class="qz-lead"></div><div class="qz-lock"></div>' +
       '<div class="qz-act">' + H.cta(c) + '<button type="button" class="btn qz-share">Copiar mi resultado</button><button type="button" class="qz-again">Repetir</button></div>';
     box.appendChild(card);
@@ -80,9 +123,9 @@
   /* ---------- 1. Encuesta por páginas ---------- */
   W.modes.paged = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, per = c.per || 3, pages = Math.ceil(n / per), p = 0, a = [], box = el('div', 'qz qz--pg');
+    var n = c.qs.length, per = c.per || 3, pages = Math.ceil(n / per), p = 0, a = [], hud = W.hud(sec, c), box = el('div', 'qz qz--pg');
     sec.appendChild(box);
-    function again() { a = []; p = 0; page(1); }
+    function again() { a = []; p = 0; hud.reset(); page(1); }
     function page(dir) {
       box.className = 'qz qz--pg'; box.textContent = '';
       var dots = ''; for (var d = 0; d < pages; d++) dots += '<i class="' + (d === p ? 'is-on' : d < p ? 'is-done' : '') + '"></i>';
@@ -91,7 +134,7 @@
       var from = p * per, to = Math.min(n, from + per);
       for (var k = from; k < to; k++) (function (k) {
         var row = el('fieldset', 'pgd-q'); row.appendChild(el('legend', null, c.qs[k].q));
-        row.appendChild(opts(function (v) { a[k] = v; sync(); }, a[k]));
+        row.appendChild(opts(function (v) { a[k] = v; hud.set(a); sync(); }, a[k]));
         card.appendChild(row);
       })(k);
       var foot = el('div', 'pgd-foot');
@@ -99,9 +142,9 @@
       var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado →' : 'Siguiente →'); next.type = 'button';
       foot.appendChild(back); foot.appendChild(next); card.appendChild(foot); box.appendChild(card);
       function sync() { var ok = true; for (var j = from; j < to; j++) if (a[j] == null) ok = false; next.disabled = !ok; }
-      sync();
+      sync(); hud.set(a);
       back.addEventListener('click', function () { p--; page(-1); });
-      next.addEventListener('click', function () { if (p < pages - 1) { p++; page(1); } else W.result(box, c, a, sec, again, H); });
+      next.addEventListener('click', function () { if (p < pages - 1) { p++; page(1); } else { hud.hide(); W.result(box, c, a, sec, again, H); } });
       if (dir) track('sim_page', { sim: sec.id, page: p + 1 });
     }
     page(0);
@@ -110,12 +153,12 @@
   /* ---------- 2. Chatbot ---------- */
   W.modes.chat = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, a = [], i = 0, box = el('div', 'qz qz--ch');
+    var n = c.qs.length, a = [], i = 0, hud = W.hud(sec, c), box = el('div', 'qz qz--ch');
     sec.appendChild(box);
     var REACT = { 1: ['¡Eso suma!', 'Bien, anotado.', 'Perfecto, sigamos.'], 0.5: ['Algo es algo.', 'Anotado: hay camino por recorrer.'], 0: ['Sin problema, ahí hay oportunidad.', 'Tranqui, lo vemos en tu plan.'] };
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function start() {
-      a = []; i = 0; box.className = 'qz qz--ch'; box.textContent = '';
+      a = []; i = 0; hud.reset(); box.className = 'qz qz--ch'; box.textContent = '';
       var chat = el('div', 'ch'), log = el('div', 'ch-log'), reply = el('div', 'ch-reply');
       log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite');
       chat.appendChild(el('div', 'ch-bar', '<i></i><b>WOW-bot</b><small>en línea</small>')); chat.appendChild(log); chat.appendChild(reply); box.appendChild(chat);
@@ -133,9 +176,9 @@
           ANS.forEach(function (o) {
             var b = el('button', 'ch-quick', o[0]); b.type = 'button';
             b.addEventListener('click', function () {
-              reply.textContent = ''; a[i] = o[1]; say('me', o[0]);
+              reply.textContent = ''; a[i] = o[1]; hud.set(a); say('me', o[0]);
               var r = pick(REACT[o[1]]); i++;
-              if (i < n) say('bot', r, ask); else say('bot', r, function () { say('bot', 'Listo, ya hice las cuentas…', function () { setTimeout(function () { W.result(box, c, a, sec, start, H); }, reduce ? 0 : 700); }); });
+              if (i < n) say('bot', r, ask); else say('bot', r, function () { say('bot', 'Listo, ya hice las cuentas…', function () { setTimeout(function () { hud.hide(); W.result(box, c, a, sec, start, H); }, reduce ? 0 : 700); }); });
             });
             reply.appendChild(b);
           });
@@ -162,7 +205,7 @@
       var card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live" aria-live="polite"></p><button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <span aria-hidden="true">→</span></button>');
       grid.appendChild(ul); grid.appendChild(card); box.appendChild(grid);
       var sw = ul.querySelectorAll('.sd-sw'), fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong'), live = card.querySelector('.sw-live');
-      function upd() { var a = [].map.call(sw, function (s) { return s.checked ? 1 : 0; }), t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); live.textContent = [].filter.call(sw, function (s) { return s.checked; }).length + ' de ' + n + ' encendidos'; return a; }
+      function upd() { var a = [].map.call(sw, function (s) { return s.checked ? 1 : 0; }), t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); live.textContent = [].filter.call(sw, function (s) { return s.checked; }).length + ' de ' + n + ' encendidos · ' + tierOf(c, t)[0]; return a; }
       [].forEach.call(sw, function (s) { s.addEventListener('change', upd); });
       upd();
       card.querySelector('.sw-go').addEventListener('click', function () { W.result(box, c, upd(), sec, build, H); });
@@ -178,9 +221,9 @@
   function face(m) { return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="' + FC[m] + '" stroke="#1a1320" stroke-width="3"/><circle cx="36" cy="40" r="5" fill="#1a1320"/><circle cx="64" cy="40" r="5" fill="#1a1320"/><path d="' + MOUTH[m] + '" fill="' + (m === 4 ? '#1a1320' : 'none') + '" stroke="#1a1320" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
   W.modes.faces = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, a = [], i = 0, box = el('div', 'qz qz--fc');
+    var n = c.qs.length, a = [], i = 0, hud = W.hud(sec, c), box = el('div', 'qz qz--fc');
     sec.appendChild(box);
-    function again() { a = []; i = 0; q(1); }
+    function again() { a = []; i = 0; hud.reset(); q(1); }
     function q(dir) {
       box.className = 'qz qz--fc'; box.textContent = '';
       box.appendChild(el('div', 'qz-top', '<span class="qz-count">FRASE ' + (i + 1) + ' DE ' + n + '</span><div class="qz-bar"><i style="width:' + (i / n * 100) + '%"></i></div>'));
@@ -191,8 +234,8 @@
       for (var m = 0; m < 5; m++) (function (m) {
         var b = el('button', 'fc-face' + (a[i] === m / 4 ? ' is-on' : ''), face(m) + '<span>' + FLAB[m] + '</span>'); b.type = 'button'; b.setAttribute('aria-label', FLAB[m]);
         b.addEventListener('click', function () {
-          if (box.classList.contains('is-busy')) return; a[i] = m / 4; b.classList.add('is-on', 'is-pop'); box.classList.add('is-busy');
-          setTimeout(function () { box.classList.remove('is-busy'); if (i < n - 1) { i++; q(1); } else W.result(box, c, a, sec, again, H); }, reduce ? 0 : 380);
+          if (box.classList.contains('is-busy')) return; a[i] = m / 4; hud.set(a); b.classList.add('is-on', 'is-pop'); box.classList.add('is-busy');
+          setTimeout(function () { box.classList.remove('is-busy'); if (i < n - 1) { i++; q(1); } else { hud.hide(); W.result(box, c, a, sec, again, H); } }, reduce ? 0 : 380);
         });
         row.appendChild(b);
       })(m);
@@ -208,12 +251,12 @@
   /* ---------- 5. Post-its que se arrastran ---------- */
   W.modes.postit = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, box = el('div', 'qz qz--po');
+    var n = c.qs.length, hud = W.hud(sec, c), box = el('div', 'qz qz--po');
     sec.appendChild(box);
     var COLS = [['Sí lo hago', 1, 'yes'], ['En parte', 0.5, 'half'], ['Todavía no', 0, 'no']];
     function build() {
       box.className = 'qz qz--po'; box.textContent = '';
-      var a = [], sel = null, drag = null;
+      var a = [], sel = null, drag = null; hud.reset();
       box.appendChild(el('p', 'po-help', 'Arrastra cada post-it a la columna que mejor lo describa. En el celular: toca el post-it y luego la columna.'));
       var pile = el('div', 'po-pile'); pile.setAttribute('aria-label', 'Post-its por ordenar'); box.appendChild(pile);
       var cols = el('div', 'po-cols'); box.appendChild(cols);
@@ -221,7 +264,7 @@
       var drops = COLS.map(function (col) { var s = el('section', 'po-col po-' + col[2], '<h4>' + col[0] + '</h4><div class="po-drop"></div>'); s._v = col[1]; cols.appendChild(s); return s; });
       var count = foot.querySelector('.po-count');
       function refresh() { var done = a.filter(function (v) { return v != null; }).length; count.textContent = done + ' de ' + n + ' pegados'; go.disabled = done < n; }
-      function place(note, col) { var k = +note.getAttribute('data-k'); a[k] = col._v; col.querySelector('.po-drop').appendChild(note); note.classList.remove('is-sel'); sel = null; refresh(); }
+      function place(note, col) { var k = +note.getAttribute('data-k'); a[k] = col._v; hud.set(a); col.querySelector('.po-drop').appendChild(note); note.classList.remove('is-sel'); sel = null; refresh(); }
       c.qs.forEach(function (q, k) {
         var note = el('button', 'po-note po-c' + (k % 4)); note.type = 'button'; note.setAttribute('data-k', k); note.style.setProperty('--r', ((k * 37) % 9 - 4) + 'deg'); note.textContent = q.q;
         pile.appendChild(note);
@@ -249,7 +292,7 @@
       box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
       drops.forEach(function (col) { col.addEventListener('click', function () { if (sel) place(sel, col); }); });
       box.addEventListener('keydown', function (e) { var note = e.target.closest && e.target.closest('.po-note'); var k = ({ '1': 0, '2': 1, '3': 2 })[e.key]; if (note && k != null) { place(note, drops[k]); note.focus(); } });
-      go.addEventListener('click', function () { W.result(box, c, a, sec, build, H); });
+      go.addEventListener('click', function () { hud.hide(); W.result(box, c, a, sec, build, H); });
       refresh(); track('sim_start', { sim: sec.id });
     }
     build();
@@ -258,11 +301,11 @@
   /* ---------- 6. Rayuela ---------- */
   W.modes.hop = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, box = el('div', 'qz qz--hp');
+    var n = c.qs.length, hud = W.hud(sec, c), box = el('div', 'qz qz--hp');
     sec.appendChild(box);
     function build() {
       box.className = 'qz qz--hp'; box.textContent = '';
-      var a = [], i = 0, busy = false;
+      var a = [], i = 0, busy = false; hud.reset();
       var wrap = el('div', 'hp'), board = el('div', 'hp-board'), panel = el('div', 'qz-card hp-panel');
       var pat = [1, 1, 2, 1, 2, 1, 2, 1], rows = [], idx = 0, r = 0;
       while (idx < n) { var size = Math.min(pat[r % pat.length], n - idx), row = []; for (var s = 0; s < size; s++) row.push(idx++); rows.push(row); r++; }
@@ -282,10 +325,10 @@
         ANS.forEach(function (o, k) {
           var b = el('button', 'qz-opt qz-' + o[2], '<kbd>' + (k + 1) + '</kbd><span>' + o[0] + '</span>'); b.type = 'button';
           b.addEventListener('click', function () {
-            if (busy) return; busy = true; a[i] = o[1]; sq[i].classList.add('is-' + o[2]); b.classList.add('is-on');
+            if (busy) return; busy = true; a[i] = o[1]; hud.set(a); sq[i].classList.add('is-' + o[2]); b.classList.add('is-on');
             var last = i === n - 1; i++;
             setTimeout(function () { hopTo(last ? board.querySelector('.hp-sky') : sq[i]); }, reduce ? 0 : 180);
-            setTimeout(function () { busy = false; if (last) { board.querySelector('.hp-sky').classList.add('is-won'); setTimeout(function () { W.result(box, c, a, sec, build, H); }, reduce ? 0 : 500); } else show(); }, reduce ? 0 : 800);
+            setTimeout(function () { busy = false; if (last) { board.querySelector('.hp-sky').classList.add('is-won'); setTimeout(function () { hud.hide(); W.result(box, c, a, sec, build, H); }, reduce ? 0 : 500); } else show(); }, reduce ? 0 : 800);
           });
           ans.appendChild(b);
         });
@@ -305,14 +348,14 @@
   /* ---------- 7. Tres en línea ---------- */
   W.modes.tictac = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, box = el('div', 'qz qz--tt');
+    var n = c.qs.length, hud = W.hud(sec, c), box = el('div', 'qz qz--tt');
     sec.appendChild(box);
     var LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     var X = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 8l24 24M32 8L8 32" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>';
     var O = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="6"/></svg>';
     function build() {
       box.className = 'qz qz--tt'; box.textContent = '';
-      var a = [], state = [], cellQ = [0, 1, 2, 3, -1, 4, 5, 6, 7], lines = 0;
+      var a = [], state = [], cellQ = [0, 1, 2, 3, -1, 4, 5, 6, 7], lines = 0, touched = {}; hud.reset();
       var wrap = el('div', 'tt'), board = el('div', 'tt-board'), side = el('div', 'qz-card tt-side');
       side.innerHTML = '<p class="qz-meta">TRES EN LÍNEA</p><h3 class="qz-text">Marca lo que ya tienes</h3><p class="tt-rule">Toca una casilla: <b>X</b> = lo tengo · <b>O</b> = en parte · vacía = todavía no. Si juntas 3 en línea, tu marca está bien amarrada.</p><p class="tt-detail" aria-live="polite">Toca o pasa el cursor por una casilla para ver la pregunta completa.</p><p class="tt-lines" aria-live="polite"></p>';
       var go = el('button', 'btn btn-primary', 'Ver mi resultado →'); go.type = 'button'; side.appendChild(go);
@@ -321,7 +364,7 @@
         var b = el('button', 'tt-cell' + (k < 0 ? ' is-free' : '')); b.type = 'button';
         if (k < 0) { b.innerHTML = '<span class="tt-mark">✦</span><small>Tu marca</small>'; b.disabled = true; state[pos] = 'X'; }
         else { b.innerHTML = '<span class="tt-mark"></span><small>' + (c.qs[k].t || c.qs[k].s) + '</small>'; b.setAttribute('aria-label', c.qs[k].q + ' — vacío'); a[k] = 0;
-          b.addEventListener('click', function () { var s = state[pos]; s = !s ? 'X' : s === 'X' ? 'O' : null; state[pos] = s; a[k] = s === 'X' ? 1 : s === 'O' ? 0.5 : 0; b.className = 'tt-cell' + (s ? ' is-' + s : ''); b.querySelector('.tt-mark').innerHTML = s === 'X' ? X : s === 'O' ? O : ''; b.setAttribute('aria-label', c.qs[k].q + ' — ' + (s === 'X' ? 'lo tengo' : s === 'O' ? 'en parte' : 'vacío')); detail(k); lineCheck(true); });
+          b.addEventListener('click', function () { var s = state[pos]; s = !s ? 'X' : s === 'X' ? 'O' : null; state[pos] = s; a[k] = s === 'X' ? 1 : s === 'O' ? 0.5 : 0; touched[k] = 1; hud.set(a, Object.keys(touched).length); b.className = 'tt-cell' + (s ? ' is-' + s : ''); b.querySelector('.tt-mark').innerHTML = s === 'X' ? X : s === 'O' ? O : ''; b.setAttribute('aria-label', c.qs[k].q + ' — ' + (s === 'X' ? 'lo tengo' : s === 'O' ? 'en parte' : 'vacío')); detail(k); lineCheck(true); });
           b.addEventListener('mouseenter', function () { detail(k); }); b.addEventListener('focus', function () { detail(k); }); }
         cells[pos] = b; board.appendChild(b);
       });
@@ -334,7 +377,7 @@
         else ln.textContent = done.length ? done.length + (done.length === 1 ? ' línea completa' : ' líneas completas') : '';
         lines = done.length;
       }
-      go.addEventListener('click', function () { W.result(box, c, a, sec, build, H); });
+      go.addEventListener('click', function () { hud.hide(); W.result(box, c, a, sec, build, H); });
       wrap.appendChild(board); wrap.appendChild(side); box.appendChild(wrap); track('sim_start', { sim: sec.id });
     }
     build();
@@ -352,7 +395,7 @@
       var grid = el('div', 'sd-grid'), left = el('div', 'sl-left'), card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live">Mueve los sliders y mira cómo sube tu puntaje.</p>');
       grid.appendChild(left); grid.appendChild(card); box.appendChild(grid);
       var fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong');
-      function live() { var t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); }
+      function live() { var t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); card.querySelector('.sw-live').textContent = 'Con lo que marcas hoy: ' + tierOf(c, t)[0]; }
       function page(dir) {
         left.textContent = '';
         var top = el('div', 'pgd-top'); top.innerHTML = '<span class="qz-count">PÁGINA ' + (p + 1) + ' DE ' + pages + '</span>'; left.appendChild(top);

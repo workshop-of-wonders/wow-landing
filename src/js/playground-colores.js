@@ -106,6 +106,7 @@
     /* contraste */
     var btnText = readable(p.primario), accText = readable(p.acento);
     var checks = [['Texto sobre el fondo', ratio(p.texto, p.fondo)], ['Texto del botón principal', ratio(btnText, p.primario)], ['Texto del botón de acento', ratio(accText, p.acento)]];
+    out.appendChild(txt('p', 'cl-how', 'Contraste calculado con la fórmula de WCAG 2.1: 4,5 a 1 es el mínimo (AA) para texto normal y 7 a 1 el nivel AAA.'));
     var ul = el('ul', 'cl-checks');
     checks.forEach(function (c) { var li = el('li', c[1] >= 4.5 ? 'ok' : 'bad'); li.appendChild(txt('span', null, c[0])); li.appendChild(txt('b', null, c[1].toFixed(1) + ' · ' + grade(c[1]))); ul.appendChild(li); });
     out.appendChild(ul);

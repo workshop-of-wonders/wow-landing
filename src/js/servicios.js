@@ -541,6 +541,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
         kpis: [['CLICS', val(clics)], ['CONTACTOS', val(leads)], ['VENTAS AL MES', val(ventas)], ['COSTO POR VENTA', ventas > 0 ? val(v.inv / ventas, 'money') : '—']],
         hint: (roas < 1 ? 'Con estos números la pauta no se paga sola: antes de subir inversión, revisa el eslabón más débil. ' : 'Con estos números la pauta se paga. ') +
           'Si tu página convirtiera 1 punto más (' + val(v.conv + 1, 'pct') + '), el retorno subiría a ' + (Math.round(alt * 10) / 10).toString().replace('.', ',') + 'x sin gastar más en anuncios.',
+        how: 'Clics = inversión ÷ costo por clic. Contactos = clics × % que deja sus datos. Ventas = contactos × % que cierra. Ingresos = ventas × valor promedio. Retorno (ROAS) = ingresos ÷ inversión. Supone que tus números se mantienen; en la práctica, al subir la inversión el costo por clic suele subir.',
         viz: [['Clics', clics, 1], ['Contactos', leads, Math.sqrt(clics ? leads / clics : 0)], ['Ventas', ventas, Math.sqrt(clics ? ventas / clics : 0)]],
         scen: function () {
           function r(o) { var w = {}; for (var k in v) w[k] = v[k]; for (var k2 in o) w[k2] = o[k2]; var cl = w.inv / w.cpc, ing2 = cl * w.conv / 100 * w.cierre / 100 * w.ticket; return [w.inv ? ing2 / w.inv : 0, ing2]; }
@@ -563,6 +564,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
         label: 'Ventas recuperables al mes', big: val(rec * v.ticket, 'money'),
         kpis: [['PEDIDOS HOY', val(pedidos)], ['CARRITOS ABANDONADOS', val(aband)], ['PEDIDOS RECUPERADOS', val(rec)], ['INGRESOS ACTUALES', val(pedidos * v.ticket, 'money')]],
         hint: 'Cada carrito abandonado ya mostró intención de compra. Recuperar solo el ' + val(v.rec, 'pct') + ' equivale a ' + val(rec * v.ticket * 12, 'money') + ' al año.',
+        how: 'Pedidos = visitas × % que compra. Carritos = pedidos ÷ (1 − % que abandona). Abandonados = carritos − pedidos. Recuperables = abandonados × % que logras recuperar. Ingresos = recuperables × valor promedio. Es una estimación: la recuperación real depende de tus correos, recordatorios y oferta.',
         viz: [['Pedidos hoy', pedidos, carritos ? pedidos / carritos : 0], ['Carritos abandonados', aband, carritos ? aband / carritos : 0], ['Recuperables', rec, carritos ? rec / carritos : 0]],
         scen: function () { return [5, 10, 15, 20, 25, 30].map(function (pc) { var rr = aband * pc / 100; return ['Recuperas el ' + pc + ' % de los carritos', val(rr) + ' pedidos', val(rr * v.ticket, 'money') + ' / mes · ' + val(rr * v.ticket * 12, 'money') + ' / año']; }); }
       };
@@ -579,7 +581,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       row.querySelector('input').addEventListener('input', function (e) { vals[n.k] = +e.target.value; update(); });
       box.appendChild(row);
     });
-    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-viz" aria-hidden="true"></div><div class="sc-kpis"></div><p class="sc-hint"></p>' + cta(c));
+    var card = el('aside', 'sd-card sc-card', '<small class="sc-lab"></small><strong class="sc-big"></strong><div class="sc-viz" aria-hidden="true"></div><div class="sc-kpis"></div><p class="sc-hint"></p><details class="sc-how"><summary>Cómo lo calculamos</summary><p></p></details>' + cta(c));
     card.setAttribute('aria-live', 'polite');
     grid.appendChild(box); grid.appendChild(card); sec.appendChild(grid);
     var lastR = null, gate = el('div', 'sc-gate'), lockBox = el('div', 'sc-lock');
@@ -605,6 +607,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
         if (vz.children.length !== r.viz.length) vz.innerHTML = r.viz.map(function () { return '<div class="sc-bar"><span></span><i></i></div>'; }).join('');
         r.viz.forEach(function (b, i) { var row = vz.children[i]; row.firstChild.textContent = b[0] + ' · ' + val(b[1]); row.lastChild.style.width = Math.max(3, Math.min(100, b[2] * 100)) + '%'; });
       }
+      card.querySelector('.sc-how p').textContent = r.how || '';
       card.querySelector('.sc-lab').textContent = r.label;
       card.querySelector('.sc-big').textContent = r.big;
       card.querySelector('.sc-kpis').innerHTML = r.kpis.map(function (k) { return '<div><small>' + k[0] + '</small><strong>' + k[1] + '</strong></div>'; }).join('');
