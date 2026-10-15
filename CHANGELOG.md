@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Giro más natural: velocidad angular amortiguada (×0.97) y con tope (0.05 rad/frame), enderezado más suave (×0.92); rebote más vivo (restitution 0.95) para que reboten al caer unas sobre otras.
 - Rebote y giro libres otra vez (el enderezado y el límite del contenedor los frenaban): en el aire giran y rebotan; el límite del recuadro ahora rebota en vez de frenar en seco, y solo cuando la pill ya está casi quieta se endereza sola, así que siempre queda derecha al caer.
 - Las pills no pueden salirse del contenedor: pared superior nueva y clamp en x/y cada frame (también al arrastrar o lanzar fuerte fuera del recuadro).
 - Tamaños de logo ajustados a mano (13–18px de alto): los sólidos/anchos (ElevenLabs, Meta, Vercel, Semrush, Wix) más bajos; los de ícono + texto chico (Analytics, Adobe CC, Search Console) un poco más altos. Sin fórmula: son valores por logo en el `style` de cada `<img>`.
