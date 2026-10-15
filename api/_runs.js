@@ -31,7 +31,7 @@ async function saveRun(tool, u, analysis, country) {
   });
   if (useMemory()) {
     var id = 'L' + (++memSeq);
-    mem[id] = { id: id, tool: tool, url: clean, host: u.hostname, score: analysis.score, result: result, token: token };
+    mem[id] = { id: id, created_at: new Date().toISOString(), tool: tool, url: clean, host: u.hostname, score: analysis.score, result: result, token: token };
     return id + '.' + token;
   }
   try {
@@ -97,4 +97,33 @@ async function claimEmail(run, email) {
   }
 }
 
-module.exports = { saveRun: saveRun, getRun: getRun, claimEmail: claimEmail };
+// Lista de usos para el panel /admin (más recientes primero). Nunca devuelve el token. tool = simulador ('encabezados').
+async function listRuns(tool, limit) {
+  limit = Math.min(Math.max(parseInt(limit, 10) || 100, 1), 500);
+  function shape(r) {
+    var res = null; try { res = typeof r.result === 'string' ? JSON.parse(r.result) : r.result; } catch (e) {}
+    return { id: r.id, created_at: r.created_at || null, tool: r.tool, url: r.url, host: r.host, score: r.score, country: r.country || null,
+      emailed_to: r.emailed_to || null, emailed_at: r.emailed_at || null, result: res };
+  }
+  if (useMemory()) {
+    return Object.keys(mem).map(function (k) { return mem[k]; }).filter(function (r) { return r.tool === tool; }).reverse().slice(0, limit).map(shape);
+  }
+  var db = require('./admin/_db');
+  await ensure(db);
+  var r = await db.sql`SELECT id, created_at, tool, url, host, score, country, result, emailed_to, emailed_at
+    FROM playground_runs WHERE tool = ${tool} ORDER BY created_at DESC LIMIT ${limit}`;
+  return r.rows.map(shape);
+}
+
+// Cantidad de usos por simulador, para los contadores de las pestañas.
+async function countRuns() {
+  var out = {};
+  if (useMemory()) { Object.keys(mem).forEach(function (k) { out[mem[k].tool] = (out[mem[k].tool] || 0) + 1; }); return out; }
+  var db = require('./admin/_db');
+  await ensure(db);
+  var r = await db.sql`SELECT tool, COUNT(*)::int AS n FROM playground_runs GROUP BY tool`;
+  r.rows.forEach(function (x) { out[x.tool] = x.n; });
+  return out;
+}
+
+module.exports = { saveRun: saveRun, getRun: getRun, claimEmail: claimEmail, listRuns: listRuns, countRuns: countRuns };

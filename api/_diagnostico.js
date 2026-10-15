@@ -45,6 +45,7 @@ function encabezados(run) {
   text.push('', NOTE, '', '¿Quieres que lo revisemos contigo? Responde este correo o escríbenos a hola@efectowow.co.', '', 'Workshop of Wonders · efectowow.co');
 
   var H = '<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1320;max-width:600px;margin:0 auto;padding:24px;line-height:1.55">' +
+    '<img src="https://www.efectowow.co/design-system/wonders/Wonder_Azul_Analizando_Datos.png" alt="" width="72" height="69" style="display:block;width:72px;height:auto;margin:0 0 6px;border:0">' +
     '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.14em;font-weight:700;color:#380757">WORKSHOP OF WONDERS · PLAYGROUND</p>' +
     '<h1 style="margin:0 0 12px;font-size:24px;color:#380757">Tu auditoría de títulos</h1>' +
     '<p style="margin:0 0 16px">Estos son los resultados de <a href="' + esc(run.url) + '" style="color:#380757">' + esc(run.url) + '</a>.</p>' +
@@ -98,4 +99,17 @@ async function sendMail(to, mail) {
   }
 }
 
-module.exports = { buildEmail: buildEmail, sendMail: sendMail };
+// Para el panel /admin: el correo de un simulador armado con un resultado de ejemplo.
+var SAMPLES = {
+  encabezados: {
+    tool: 'encabezados', url: 'https://tusitio.com/', host: 'www.tusitio.com',
+    result: { score: 72, issues: [
+      { code: 'multi_h1', type: 'error', msg: 'La página tiene 2 H1; debería tener uno solo.' },
+      { code: 'skip', type: 'warning', msg: 'Hay un salto de H2 a H4.' },
+      { code: 'meta_len', type: 'warning', msg: 'La meta description mide 98 caracteres (ideal 120–160).' }
+    ], passed: ['El title existe y mide 54 caracteres', 'El primer encabezado es un H1'] }
+  }
+};
+function sampleEmail(tool) { return SAMPLES[tool] ? buildEmail(SAMPLES[tool]) : null; }
+
+module.exports = { buildEmail: buildEmail, sendMail: sendMail, sampleEmail: sampleEmail };
