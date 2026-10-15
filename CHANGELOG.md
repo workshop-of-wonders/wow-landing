@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Tercera tanda de logos adjuntos: Google Analytics, Google Ads, Meta, GitHub y ChatGPT (ChatGPT en tinta oscura sobre la pill lima). Quedan en ícono + texto: Search Console y ElevenLabs; Lynka solo texto.
 - Segunda tanda de logos adjuntos: Semrush, Figma, Canva, Wix y Google My Business (`design-system/tools/full/*-wordmark.png`, fondo blanco quitado, texto negro→blanco). Siguen en ícono + texto: Google Ads/Analytics/Search Console, Meta, ElevenLabs; Lynka solo texto.
 - La dueña adjuntó logos completos: WordPress, Bing, Adobe Creative Cloud (reemplaza el ícono de Illustrator), Vercel y TikTok (`design-system/tools/full/`). Se recolorearon para el fondo oscuro (texto gris/negro → blanco; WordPress azul y Bing teal aclarados). Bing sin el subtítulo "Places for Business". Siguen en ícono + texto: Semrush, Wix, Figma, Google Ads/Analytics/Search Console/My Business, Meta, Canva, ElevenLabs, y Lynka (solo texto).
 - Logos completos oficiales (ícono + wordmark, de svgl, en `design-system/tools/full/`) para Shopify, TikTok, Vercel, GitHub, Claude, OpenAI y Gemini. Para el resto (Semrush, Wix, Figma, WordPress, Google Ads/Analytics/Search Console/My Business, Meta, Bing, Canva, Illustrator, ElevenLabs) no hay versión con nombre en las fuentes gratuitas: ícono + nombre en texto. Pendiente: reemplazarlos por el logo oficial si lo suben (brand kits de cada marca). Lynka sigue solo texto.
