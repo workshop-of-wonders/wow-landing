@@ -5421,3 +5421,16 @@ main { padding-top: var(--nav-h); }
 .od-txt { margin-top: 0; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 @media (max-width: 1000px) { .od { grid-template-columns: minmax(0, 1fr); } .od-win { position: static; } }
 .od-tx { padding-right: 72px; }
+
+/* Services dropdown: numbered entries with a one-line benefit, 2 columns */
+.nav-dropdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nav-dropdown-link:has(.nav-dd-t) {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 8px;
+  align-self: stretch;
+}
+.nav-dd-n { grid-row: 1 / span 2; font-family: var(--font-mono); font-size: 11px; color: var(--lima); padding-top: 3px; }
+.nav-dd-t { font-weight: 700; font-size: 15px; color: var(--white); text-transform: uppercase; letter-spacing: 0.02em; }
+.nav-dd-d { font-family: var(--font-body); font-size: 13px; text-transform: none; letter-spacing: normal; color: #d9d2e0; }
+.nav-dropdown-link:hover .nav-dd-t { color: var(--lima); }

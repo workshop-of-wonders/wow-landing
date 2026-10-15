@@ -2,6 +2,16 @@
   "rewrites": [],
   "redirects": [
     {
+      "source": "/servicios/uxui-design.html",
+      "destination": "/servicios/diseno-web.html",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/cro-optimizacion-conversion.html",
+      "destination": "/servicios/pauta-digital.html",
+      "permanent": true
+    },
+    {
       "source": "/servicios/cursos-digitales.html",
       "destination": "/servicios.html",
       "permanent": true
