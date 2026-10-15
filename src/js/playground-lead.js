@@ -21,7 +21,7 @@
     wrap.appendChild(row);
     var msg = el('p', 'ld-msg'); msg.setAttribute('role', 'status'); msg.setAttribute('aria-live', 'polite');
     wrap.appendChild(msg);
-    wrap.appendChild(el('p', 'ld-fine', 'Usaremos tu correo solo para enviarte este diagnóstico y contactarte sobre él. Sin spam.'));
+    if (o.fine !== false) wrap.appendChild(el('p', 'ld-fine', 'Usaremos tu correo solo para enviarte este diagnóstico y contactarte sobre él. Sin spam.')); // fine: false lo oculta
     box.appendChild(wrap);
 
     wrap.addEventListener('submit', function (e) {
@@ -31,16 +31,16 @@
       btn.disabled = true; msg.className = 'ld-msg'; msg.textContent = 'Preparando tu diagnóstico…';
       var data = typeof o.data === 'function' ? o.data() : (o.data || {});
       var details = 'Origen: Playground · ' + (o.tool || '') + '\n' + JSON.stringify(data);
-      fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'playground', email: email, name: '', need: 'Playground: ' + (o.tool || ''), details: details, page: location.pathname + location.hash, lang: 'es', website: hp.value }) })
+      fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'playground', email: email, name: '', need: 'Playground: ' + (o.tool || ''), details: details, runKey: typeof o.runKey === 'function' ? o.runKey() : null, page: location.pathname + location.hash, lang: 'es', website: hp.value }) })
         .then(function (r) { return r.json().catch(function () { return {}; }); })
         .then(function (d) {
           if (!d.success) throw new Error(d.error || 'error');
           remember(email);
           if (window.gtag) window.gtag('event', 'playground_lead', { tool: o.tool });
           var ok = el('div', 'ld ld--ok'); ok.appendChild(el('p', 'ld-eyebrow', '¡LISTO!'));
-          ok.appendChild(el('p', 'ld-pitch', 'Aquí está tu diagnóstico completo. Si quieres que lo revisemos contigo, escríbenos.'));
+          ok.appendChild(el('p', 'ld-pitch', o.okText ? (typeof o.okText === 'function' ? o.okText(email, d) : o.okText) : 'Aquí está tu diagnóstico completo. Si quieres que lo revisemos contigo, escríbenos.'));
           wrap.replaceWith(ok);
-          if (o.onUnlock) o.onUnlock();
+          if (o.onUnlock) o.onUnlock(d);
         })
         .catch(function () { btn.disabled = false; msg.className = 'ld-msg is-err'; msg.textContent = 'No pudimos guardarlo. Revisa tu conexión e inténtalo de nuevo.'; });
     });
