@@ -669,18 +669,17 @@ main { padding-top: var(--nav-h); }
   object-fit: contain;
   padding: 24px;
   opacity: 0;
-  animation: morphCycle 7.5s infinite;
+  animation: morphCycle 6s infinite;
 }
 .mi-1 { animation-delay: 0s; }
 .mi-2 { animation-delay: 1.5s; }
 .mi-3 { animation-delay: 3s; }
 .mi-4 { animation-delay: 4.5s; }
-.mi-5 { animation-delay: 6s; }
 @keyframes morphCycle {
   0% { opacity: 0; transform: scale(0.5) rotate(-30deg); }
-  4% { opacity: 1; transform: scale(1) rotate(0deg); }
-  16% { opacity: 1; transform: scale(1) rotate(0deg); }
-  20% { opacity: 0; transform: scale(0.5) rotate(30deg); }
+  5% { opacity: 1; transform: scale(1) rotate(0deg); }
+  20% { opacity: 1; transform: scale(1) rotate(0deg); }
+  25% { opacity: 0; transform: scale(0.5) rotate(30deg); }
   100% { opacity: 0; }
 }
 @media (min-width: 901px) {
@@ -6546,3 +6545,16 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .pgs-vc[href$="datos-que-deciden.html"] { --wd: url(design-system/wonders/Wonder_Morado_Sentado.png); }
 .pgs-vc[href$="madurez-de-datos.html"] { --wd: url(design-system/wonders/Wonder_Rosa_Leyendo_Libro.png); }
 .pgs-vc[href$="marca-consistente.html"] { --wd: url(design-system/wonders/Wonder_Morado_Mostrando_Celular.png); }
+
+/* Easter egg del home: clic en la W del centro del proceso y sale el wonder morado desde un portal */
+.wm-logo { cursor: pointer; }
+.wm-wonder { position: absolute; left: 50%; top: 374px; width: 168px; height: auto; margin-left: -84px; margin-top: -92px; pointer-events: none; user-select: none; opacity: 0; transform: translateY(26px) scale(.15); transform-origin: 50% 70%; z-index: 3; }
+.wm-wonder.is-on { animation: wm-wonder-pop 2.8s cubic-bezier(.2, .8, .2, 1) forwards; }
+@keyframes wm-wonder-pop {
+  0% { opacity: 0; transform: translateY(26px) scale(.15) rotate(-14deg); }
+  18% { opacity: 1; transform: translateY(-6px) scale(1.06) rotate(3deg); }
+  28% { transform: translateY(0) scale(1) rotate(0); }
+  82% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(14px) scale(.4) rotate(8deg); }
+}
+@media (prefers-reduced-motion: reduce) { .wm-wonder.is-on { animation: wm-wonder-fade 2.8s linear forwards; } @keyframes wm-wonder-fade { 0%, 100% { opacity: 0; } 15%, 85% { opacity: 1; transform: none; } } }

@@ -1377,3 +1377,24 @@ updateScrollScrubs();
 
 
 /* FAQ accordion is defined in js/common.js, loaded before this file. */
+
+/* Easter egg: clic en la W del centro del proceso (#metodologia) y sale el wonder morado desde un portal. */
+(function () {
+  var logo = document.querySelector('.wm-logo');
+  if (!logo || !logo.parentNode) return;
+  var wonder = document.createElement('img');
+  wonder.className = 'wm-wonder';
+  wonder.src = 'design-system/wonders/Wonder_Morado_En_Portal.png';
+  wonder.alt = '';
+  wonder.width = 610; wonder.height = 577;
+  wonder.setAttribute('aria-hidden', 'true');
+  logo.parentNode.appendChild(wonder);
+  var timer = null;
+  logo.addEventListener('click', function () {
+    wonder.classList.remove('is-on');
+    void wonder.offsetWidth; // reinicia la animación si se vuelve a hacer clic
+    wonder.classList.add('is-on');
+    clearTimeout(timer);
+    timer = setTimeout(function () { wonder.classList.remove('is-on'); }, 2900);
+  });
+})();
