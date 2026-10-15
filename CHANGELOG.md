@@ -57,6 +57,8 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+- **2026-10-15 — Simuladores en las 11 páginas de servicios restantes** (`#simulador`, antes del FAQ). Motor único en `src/js/servicios.js` (`section[data-sim]` + JSON de configuración embebido en cada HTML; estilos `.sd-*`/`.sc-*`). Chequeos con puntaje (SEO local, GEO, analítica, tracking, consultoría de datos, diseño gráfico, diseño web, UX/UI) y calculadoras (pauta: retorno; CRO: ingreso extra; e-commerce: carritos recuperables). Las cifras son cálculos sobre los números que ingresa el usuario; pesos y textos son propuesta y deben validarse con la dueña.
+
 - **2026-10-15 — SEO: simulador de posiciones + diagnóstico interactivo** en `servicios/seo.html` (`#simulador`, `#diagnostico`, antes del FAQ). Estilos `.sd-*`/`.ss-*` en `src/styles.css`, JS en `src/js/servicios.js` (minificado a `styles.css`/`js/servicios.js`). El home no se tocó. Los textos/puntajes son ilustrativos; la dueña debe validarlos.
 
 - **2026-10-15 — Semrush pasa el lock**: `middleware.js` deja pasar a user-agent `SemrushBot`/`SiteAuditBot` (Site Audit) sin clave; opcional `SEMRUSH_IPS` en Vercel (IPs separadas por coma) para exigir también la IP. Quitar esto al abrir el sitio.

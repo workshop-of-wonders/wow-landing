@@ -5490,3 +5490,18 @@ main { padding-top: var(--nav-h); }
 .ss-note { max-width: 860px; margin: var(--space-2) auto 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--cloud); }
 @media (max-width: 560px) { .ss-stats strong { font-size: 22px; } .ss-row { grid-template-columns: 28px 36px 1fr; gap: 10px; padding: 10px 12px; } }
 @media (prefers-reduced-motion: reduce) { .ss-search b { animation: none; } }
+
+/* ---- Simuladores por servicio: calculadoras (.sc-*) ---- */
+.sc-inputs { display: grid; gap: var(--space-3); }
+.sc-in-l { display: flex; justify-content: space-between; gap: var(--space-2); margin-bottom: 8px; font-weight: 500; }
+.sc-in-l output { font-family: var(--font-mono); color: var(--lima); white-space: nowrap; }
+.sc-in input[type="range"] { width: 100%; accent-color: var(--lima); height: 28px; cursor: pointer; }
+.sc-card { text-align: left; }
+.sc-lab { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--cloud); }
+.sc-big { display: block; font-family: var(--font-display); font-size: clamp(36px, 5vw, 56px); line-height: 1.1; color: var(--lima); margin: 8px 0 var(--space-3); overflow-wrap: anywhere; }
+.sc-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: var(--space-3); }
+.sc-kpis > div { background: rgba(255,255,255,.08); border-radius: 14px; padding: 12px 14px; }
+.sc-kpis small { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: var(--cloud); margin-bottom: 4px; }
+.sc-kpis strong { font-size: 18px; overflow-wrap: anywhere; }
+.sd-card .sc-hint { text-align: left; }
+.sc-note { margin: var(--space-4) 0 0; max-width: none; }
