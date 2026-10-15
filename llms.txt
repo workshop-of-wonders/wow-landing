@@ -5,28 +5,28 @@
 Workshop of Wonders diseña y desarrolla sitios web y tiendas online, y hace crecer marcas con SEO, SEM, pauta digital y analítica. Trabaja 100% remoto con clientes en Colombia, Latinoamérica y otros países.
 
 ## Servicios
-- Todos los servicios: https://efectowow.co/servicios.html
-- Diseño web y desarrollo de sitios: https://efectowow.co/servicios/diseno-web.html
-- SEO y posicionamiento: https://efectowow.co/servicios/seo.html
-- E-commerce: https://efectowow.co/servicios/ecommerce.html
-- Pauta digital y SEM: https://efectowow.co/servicios/pauta-digital.html
-- Analítica de datos, reportería y dashboards: https://efectowow.co/servicios/analitica-de-datos.html
-- GEO, posicionamiento en respuestas de IA: https://efectowow.co/servicios/geo-posicionamiento-ia.html
-- UX/UI Design: https://efectowow.co/servicios/uxui-design.html
-- Diseño gráfico: https://efectowow.co/servicios/diseno-grafico.html
-- SEO local / Google Business Profile: https://efectowow.co/servicios/seo-local.html
-- CRO (optimización de la tasa de conversión): https://efectowow.co/servicios/cro-optimizacion-conversion.html
-- Configuración de analítica y tracking: https://efectowow.co/servicios/configuracion-analitica-tracking.html
-- Consultoría de datos: https://efectowow.co/servicios/consultoria-de-datos.html
+- Todos los servicios: https://www.efectowow.co/servicios.html
+- Diseño web y desarrollo de sitios: https://www.efectowow.co/servicios/diseno-web.html
+- SEO y posicionamiento: https://www.efectowow.co/servicios/seo.html
+- E-commerce: https://www.efectowow.co/servicios/ecommerce.html
+- Pauta digital y SEM: https://www.efectowow.co/servicios/pauta-digital.html
+- Analítica de datos, reportería y dashboards: https://www.efectowow.co/servicios/analitica-de-datos.html
+- GEO, posicionamiento en respuestas de IA: https://www.efectowow.co/servicios/geo-posicionamiento-ia.html
+- UX/UI Design: https://www.efectowow.co/servicios/uxui-design.html
+- Diseño gráfico: https://www.efectowow.co/servicios/diseno-grafico.html
+- SEO local / Google Business Profile: https://www.efectowow.co/servicios/seo-local.html
+- CRO (optimización de la tasa de conversión): https://www.efectowow.co/servicios/cro-optimizacion-conversion.html
+- Configuración de analítica y tracking: https://www.efectowow.co/servicios/configuracion-analitica-tracking.html
+- Consultoría de datos: https://www.efectowow.co/servicios/consultoria-de-datos.html
 
 ## Labs
-- Brand & Experience Lab — diseño web, UX/UI, e-commerce y diseño gráfico: https://efectowow.co/labs/brand-experience-lab.html
-- Insight Lab — SEO, GEO, pauta digital, CRO y analítica de datos: https://efectowow.co/labs/insight-lab.html
+- Brand & Experience Lab — diseño web, UX/UI, e-commerce y diseño gráfico: https://www.efectowow.co/labs/brand-experience-lab.html
+- Insight Lab — SEO, GEO, pauta digital, CRO y analítica de datos: https://www.efectowow.co/labs/insight-lab.html
 
 ## Páginas
-- Inicio: https://efectowow.co/
-- Servicios: https://efectowow.co/servicios.html
+- Inicio: https://www.efectowow.co/
+- Servicios: https://www.efectowow.co/servicios.html
 
 ## Contacto
-- Sitio: https://efectowow.co/
+- Sitio: https://www.efectowow.co/
 - Formulario de contacto disponible en todas las páginas del sitio.
