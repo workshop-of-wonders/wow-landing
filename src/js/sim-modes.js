@@ -199,14 +199,20 @@
     sec.appendChild(box);
     function build() {
       box.className = 'qz qz--sw'; box.textContent = '';
-      var grid = el('div', 'sd-grid'), ul = el('ul', 'sd-list');
-      var id = 'swq' + (++uid) + '_';
-      c.qs.forEach(function (q, i) { ul.appendChild(el('li', 'sd-q', '<span class="sd-n">' + ('0' + (i + 1)).slice(-2) + '</span><label for="' + id + i + '">' + q.q + '</label><input type="checkbox" id="' + id + i + '" class="sd-sw" role="switch">')); });
+      var grid = el('div', 'sd-grid'), ul = el('ul', 'sw-rows'), COL = ['lima', 'orange', 'magenta'];
+      c.qs.forEach(function (q, i) {
+        var li = el('li', 'toggle-item sw-row toggle-on-' + COL[i % 3]);
+        li.innerHTML = '<button type="button" class="switch" role="switch" aria-checked="false"><span class="switch-label">OFF</span><span class="switch-knob"></span></button><span class="toggle-text"></span>';
+        li.querySelector('.toggle-text').textContent = q.q;
+        li.querySelector('.switch').setAttribute('aria-label', q.q);
+        ul.appendChild(li);
+      });
       var card = el('aside', 'sd-card sw-card', ring(0) + '<p class="sw-live" aria-live="polite"></p><button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <span aria-hidden="true">→</span></button>');
       grid.appendChild(ul); grid.appendChild(card); box.appendChild(grid);
-      var sw = ul.querySelectorAll('.sd-sw'), fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong'), live = card.querySelector('.sw-live');
-      function upd() { var a = [].map.call(sw, function (s) { return s.checked ? 1 : 0; }), t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); live.textContent = [].filter.call(sw, function (s) { return s.checked; }).length + ' de ' + n + ' encendidos · ' + tierOf(c, t)[0]; return a; }
-      [].forEach.call(sw, function (s) { s.addEventListener('change', upd); });
+      var sw = ul.querySelectorAll('.switch'), fg = card.querySelector('.sd-ring-fg'), num = card.querySelector('.sd-score strong'), live = card.querySelector('.sw-live');
+      function upd() { var a = [].map.call(sw, function (s) { return s.classList.contains('is-on') ? 1 : 0; }), t = scoreOf(c, a); num.textContent = t; fg.style.strokeDashoffset = 553 * (1 - t / 100); live.textContent = a.filter(function (x) { return x; }).length + ' de ' + n + ' encendidos · ' + tierOf(c, t)[0]; return a; }
+      function flip(s) { var on = !s.classList.contains('is-on'); s.classList.toggle('is-on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); s.querySelector('.switch-label').textContent = on ? 'ON' : 'OFF'; upd(); }
+      [].forEach.call(sw, function (s) { s.addEventListener('click', function (e) { e.stopPropagation(); flip(s); }); s.parentNode.addEventListener('click', function () { flip(s); }); });
       upd();
       card.querySelector('.sw-go').addEventListener('click', function () { W.result(box, c, upd(), sec, build, H); });
       track('sim_start', { sim: sec.id });

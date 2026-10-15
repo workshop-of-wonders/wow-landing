@@ -6237,3 +6237,14 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .sc-how p { margin: 8px 0 0; line-height: 1.5; opacity: .8; }
 .cl-how { margin: 14px 0 0; font-size: 13px; opacity: .7; }
 @media (prefers-reduced-motion: reduce) { .hud-pop.is-go { animation: none; } .hud-fill, .hud-pbar i, .qz-mark { transition: none; } }
+
+/* Switches del chequeo de tracking: mismas filas y switches de colores del home (.toggle-item / .switch) */
+.sw-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.sw-row { cursor: pointer; transition: transform .15s; }
+.sw-row:hover { transform: translateX(4px); }
+.sw-row .toggle-text { font-size: 16px; }
+.sw-row .switch { min-width: 70px; }
+.sw-row .switch:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+.sw-row .switch.is-on .switch-label { color: #fff; }
+.sw-row.toggle-on-lima .switch.is-on .switch-label { color: var(--purple); }
+@media (prefers-reduced-motion: reduce) { .sw-row { transition: none; } }
