@@ -5,7 +5,7 @@
   if (!form) return;
   var input = document.getElementById('hdUrl'), btn = document.getElementById('hdGo'), status = document.getElementById('hdStatus'), out = document.getElementById('hdOut');
   var levelSel = document.getElementById('hdLevel'), levelBox = document.getElementById('hdLevelBox');
-  var unlocked = false;
+  var machine = document.getElementById('rmMachine'), unlocked = false;
   var ERR = {
     invalid_url: 'Ese link no parece válido. Escribe una dirección pública, por ejemplo tusitio.com.',
     unreachable: 'No pudimos abrir ese sitio. Revisa que esté en línea y vuelve a intentar.',
@@ -79,7 +79,7 @@
   function render(r, url) {
     state = { r: r, url: url };
     out.textContent = '';
-    wrap = el('div', 'rc-wrap'); out.appendChild(wrap);
+    wrap = el('div', 'rc-wrap is-printing'); out.appendChild(wrap);
     var paper = draw(), total = r.headings.length;
     var gate = el('div', 'rc-gate'), lockBox = el('div', 'rc-lock');
     function full() {
@@ -112,7 +112,7 @@
     e.preventDefault();
     var url = input.value.trim();
     if (!url) { status.textContent = ERR.invalid_url; input.focus(); return; }
-    btn.disabled = true; out.hidden = true; status.textContent = 'Imprimiendo tu recibo…'; state = null;
+    btn.disabled = true; out.hidden = true; status.textContent = 'Imprimiendo tu recibo…'; state = null; machine.classList.add('is-busy');
     if (window.gtag) window.gtag('event', 'playground_headings_run');
     fetch('/api/headings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url }) })
       .then(function (r) { return r.json().catch(function () { return {}; }); })
@@ -121,6 +121,6 @@
         else status.textContent = ERR[d.error] || ERR.default;
       })
       .catch(function () { status.textContent = ERR.default; })
-      .then(function () { btn.disabled = false; });
+      .then(function () { btn.disabled = false; machine.classList.remove('is-busy'); });
   });
 })();
