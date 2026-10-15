@@ -13,7 +13,7 @@
     /* posiciones del layout original (chips en flujo) antes de pasarlos a absolute */
     var pos = items.map(function (el) { return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; });
     var flowH = list.offsetHeight;
-    var h = flowH + 110;
+    var h = flowH + 80;
     list.classList.add('is-live');
     list.style.height = h + 'px';
 

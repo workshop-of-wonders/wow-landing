@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Pills compactas como las de texto originales (alto 38px, padding 12px, letras del logo a ~9.5px de alto, ancho según logo); grilla 8fr/4fr; 3 filas a ~1540px de ancho.
 - Pills de ancho variable (según su logo), alto fijo 48px y letras a la misma altura; grilla 5fr/2fr en el home para que las herramientas queden en 3 filas en desktop (a anchos menores pasan a más filas). Letras más grandes ya no caben en 3 filas.
 - Pills de herramientas: tamaño fijo 188×48 y logos escalados para que la altura de las letras sea la misma (~10.5px) en todos; el límite lo marcan los logos más largos (Adobe Creative Cloud, Google Search Console). En el home la grilla de `.wm-tools` pasó a 8fr/4fr para que quepan 3 pills por fila. Para letras más grandes habría que ensanchar las pills o usar versiones más cortas de esos dos logos.
 - Cuarta tanda: Google Search Console y ElevenLabs con logo completo adjunto. Solo falta Lynka (texto; su logo.png no se pudo descargar desde el entorno, hay que subirlo a `design-system/tools/full/`).
