@@ -58,6 +58,7 @@ This file is the working log for this project. **Claude: at the start of a sessi
 ## Log
 
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
+- Ajuste: logos más chicos y compensación más suave — alto = min(21, 17.5·(ancho/alto÷5)^-0.3) px; pill de 38px.
 - Tamaño óptico de logos: alto = 21·(ancho/alto÷5)^-0.4 px (los anchos quedan más bajos y los compactos más altos para que pesen parecido); pill de 40px de alto. Para ajustar, cambiar el 21 (tamaño general) o el 0.4 (cuánto se compensa).
 - Ahora todos los logos tienen el mismo alto de imagen (20px, recortes ajustados al borde) en vez de igualar la altura de las letras; el ancho sale de cada logo. Los de ícono grande + texto chico (Adobe CC, Analytics, Search Console) muestran el texto más pequeño.
 - Pills compactas como las de texto originales (alto 38px, padding 12px, letras del logo a ~9.5px de alto, ancho según logo); grilla 8fr/4fr; 3 filas a ~1540px de ancho.
