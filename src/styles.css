@@ -6364,12 +6364,10 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .sc-top, .rs-top, .sc-viz-card, .sp-card { position: static; top: auto; }
 
 /* ===== Sección PLAYGROUND en páginas de servicio + páginas de cada herramienta ===== */
-.sp-sec.pgs { display: grid; align-items: center; min-height: 540px; padding-top: var(--space-6); padding-bottom: var(--space-6); }
-.pgs .outline-word { -webkit-text-stroke-width: 2px; top: 50%; left: 0; right: 0; bottom: auto; transform: translateY(-50%); text-align: center; font-size: clamp(44px, 12vw, 200px); opacity: .2; padding: 0 var(--space-3); overflow: visible; }
-.pgs-in { max-width: 1000px; margin: 0 auto; text-align: center; display: grid; gap: 14px; justify-items: center; }
-.pgs h2 { max-width: 16em; margin: 0; }
+.pgs-in { max-width: 1000px; display: grid; gap: 14px; justify-items: start; text-align: left; }
+.pgs h2 { max-width: 18em; margin: 0; }
 .pgs .sd-sub { margin: 0; max-width: 40em; }
-.pgs-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 12px; }
+.pgs-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-start; margin-top: 12px; }
 .pgs-btn { display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px 12px 12px; border-radius: 999px; text-decoration: none; color: var(--purple); box-shadow: 0 6px 0 rgba(0,0,0,.22); transition: transform .15s, box-shadow .15s; text-align: left; }
 .pgs-btn:hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 9px 0 rgba(0,0,0,.22); }
 .pgs-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.22); }
@@ -6381,7 +6379,6 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pgs-btn i { font-style: normal; font-weight: 800; font-size: 18px; }
 .pgs-all { margin: 10px 0 0; }
 .pgs-all a { color: var(--lima); font-weight: 700; }
-@media (max-width: 720px) { .sp-sec.pgs { min-height: 0; } }
 .sp-sec.pg-solo { padding-top: var(--space-5); }
 .pg-solo .sd-head .eyebrow, .pg-solo .sd-head h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .pg-solo .sd-head { margin-bottom: 0; }
@@ -6389,3 +6386,5 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pgs-back { margin: 0 0 var(--space-3); }
 .pgs-back a { color: var(--purple); font-weight: 700; }
 .pg-more-t { margin: 0 0 12px; font: 700 12px var(--font-mono, monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--purple); opacity: .75; }
+/* La Q de PLAYGROUND tiene cola: sin este margen el overflow del watermark la corta (igual que en PREGUNTAS) */
+.pgs .outline-word { padding-bottom: 0.25em; }
