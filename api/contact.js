@@ -39,6 +39,18 @@ module.exports = async function handler(req, res) {
   var isPlayground = body.kind === 'playground';
   if (isPlayground && !name) name = 'Playground';
 
+  // Playground: si trae la clave de un uso del simulador, se anota el resultado en el lead y se entrega el detalle.
+  var run = null;
+  if (isPlayground && typeof body.runKey === 'string') {
+    try {
+      run = await require('./_runs').getRun(body.runKey);
+      if (run) {
+        var saved = JSON.parse(run.result);
+        details = (details + '\nPuntaje: ' + (saved.score == null ? 'n/d' : saved.score) + ' · Alertas: ' + (saved.issues.map(function (i) { return i.code; }).join(', ') || 'ninguna')).slice(0, 4000);
+      }
+    } catch (runErr) { console.error('contact.js: no se pudo leer el uso del simulador', runErr); run = null; }
+  }
+
   // Server-side validation — never trust the frontend alone.
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (website) {
@@ -52,7 +64,10 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ success: false, error: 'invalid_name' });
   }
 
+  // En desarrollo local sin base de datos el lead no se guarda (solo se avisa en la consola), para poder probar el flujo.
+  var localNoDb = !process.env.VERCEL && !process.env.POSTGRES_URL && !process.env.DATABASE_URL;
   try {
+    if (localNoDb) { console.log('[local] lead no guardado (sin base de datos):', email); throw { skipDb: true }; }
     var db = require('./admin/_db');
     // La columna `country` se agregó después de crear la tabla: se asegura aquí (idempotente) y, si por algún motivo
     // no se pudo crear, el lead se guarda igual sin país en vez de perderse.
@@ -77,9 +92,22 @@ module.exports = async function handler(req, res) {
       `;
     }
   } catch (dbErr) {
-    console.error('contact.js: no se pudo guardar el lead en la base de datos', dbErr);
-    return res.status(500).json({ success: false, error: 'db_error' });
+    if (!(dbErr && dbErr.skipDb)) {
+      console.error('contact.js: no se pudo guardar el lead en la base de datos', dbErr);
+      return res.status(500).json({ success: false, error: 'db_error' });
+    }
   }
 
-  return res.status(200).json({ success: true });
+  // Playground: envía por correo el diagnóstico de la revisión (un correo por revisión). Si falla, el lead ya quedó guardado.
+  var emailed = 'skipped';
+  if (run) {
+    try {
+      var diag = require('./_diagnostico'), mail = diag.buildEmail(run);
+      if (mail && await require('./_runs').claimEmail(run, email)) emailed = await diag.sendMail(email, mail);
+    } catch (mailErr) {
+      console.error('contact.js: no se pudo enviar el diagnóstico', mailErr);
+      emailed = 'error';
+    }
+  }
+  return res.status(200).json({ success: true, emailed: emailed });
 };
