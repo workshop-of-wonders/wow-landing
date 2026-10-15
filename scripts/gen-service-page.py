@@ -32,7 +32,7 @@ HEAD = """<!DOCTYPE html>
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
-<meta property="og:image" content="https://efectowow.co/design-system/og-image.jpg">
+<meta property="og:image" content="https://www.efectowow.co/design-system/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Workshop of Wonders">
@@ -41,7 +41,7 @@ HEAD = """<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{description}">
-<meta name="twitter:image" content="https://efectowow.co/design-system/og-image.jpg">
+<meta name="twitter:image" content="https://www.efectowow.co/design-system/og-image.jpg">
 
 <script type="application/ld+json">
 {{
@@ -49,7 +49,7 @@ HEAD = """<!DOCTYPE html>
   "@type": "Service",
   "name": "{service_name}",
   "serviceType": "{service_type}",
-  "provider": {{ "@type": "ProfessionalService", "name": "Workshop of Wonders", "url": "https://efectowow.co/" }},
+  "provider": {{ "@type": "ProfessionalService", "name": "Workshop of Wonders", "url": "https://www.efectowow.co/", "address": {{ "@type": "PostalAddress", "addressCountry": "CO" }} }},
   "areaServed": "Global",
   "url": "{canonical}",
   "description": "{description}"

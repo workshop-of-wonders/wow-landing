@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /index-alt.html
 
-Sitemap: https://efectowow.co/sitemap.xml
+Sitemap: https://www.efectowow.co/sitemap.xml

@@ -30,7 +30,7 @@ TEMPLATE = """<!DOCTYPE html>
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
-<meta property="og:image" content="https://efectowow.co/design-system/og-image.jpg">
+<meta property="og:image" content="https://www.efectowow.co/design-system/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Workshop of Wonders">
@@ -39,7 +39,7 @@ TEMPLATE = """<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{description}">
-<meta name="twitter:image" content="https://efectowow.co/design-system/og-image.jpg">
+<meta name="twitter:image" content="https://www.efectowow.co/design-system/og-image.jpg">
 
 <script type="application/ld+json">
 {{
@@ -47,7 +47,7 @@ TEMPLATE = """<!DOCTYPE html>
   "@type": "Service",
   "name": "{lab_name}",
   "serviceType": "{service_type}",
-  "provider": {{ "@type": "ProfessionalService", "name": "Workshop of Wonders", "url": "https://efectowow.co/" }},
+  "provider": {{ "@type": "ProfessionalService", "name": "Workshop of Wonders", "url": "https://www.efectowow.co/", "address": {{ "@type": "PostalAddress", "addressCountry": "CO" }} }},
   "areaServed": "Global",
   "url": "{canonical}",
   "description": "{description}",
@@ -229,7 +229,7 @@ write_page(
     offers=["Diseño web", "UX/UI Design", "E-commerce", "Diseño gráfico"],
     title="Brand & Experience Lab: Diseño Web y UX/UI | Workshop of Wonders",
     description="Brand & Experience Lab convierte objetivos de negocio en un sitio real: diseño web, UX/UI, e-commerce y diseño gráfico, con dirección de marca desde el primer boceto.",
-    canonical="https://efectowow.co/labs/brand-experience-lab.html",
+    canonical="https://www.efectowow.co/labs/brand-experience-lab.html",
     lab_name="Brand & Experience Lab",
     service_type="Diseño web, UX/UI, e-commerce y diseño gráfico",
     dot_class="nav-dot-magenta",
@@ -272,7 +272,7 @@ write_page(
     offers=["SEO", "SEO local", "GEO", "CRO", "Pauta digital", "Posts gráficos para pauta", "Analítica de datos", "Configuración de analítica", "Consultoría de datos", "Cursos digitales"],
     title="Insight Lab: SEO, SEM y Analítica de Datos | Workshop of Wonders",
     description="Insight Lab lleva tu marca a las personas correctas y mide lo que realmente funciona: SEO, GEO, pauta digital, CRO y analítica de datos convertidos en decisiones.",
-    canonical="https://efectowow.co/labs/insight-lab.html",
+    canonical="https://www.efectowow.co/labs/insight-lab.html",
     lab_name="Insight Lab",
     service_type="SEO, SEM, GEO, CRO y analítica de datos",
     dot_class="nav-dot-orange",
