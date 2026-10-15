@@ -6367,16 +6367,6 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pgs-in { max-width: 1000px; display: grid; gap: 14px; justify-items: start; text-align: left; }
 .pgs h2 { max-width: 18em; margin: 0; }
 .pgs .sd-sub { margin: 0; max-width: 40em; }
-.pgs-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-start; margin-top: 12px; }
-.pgs-btn { display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px 12px 12px; border-radius: 999px; text-decoration: none; color: var(--purple); box-shadow: 0 6px 0 rgba(0,0,0,.22); transition: transform .15s, box-shadow .15s; text-align: left; }
-.pgs-btn:hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 9px 0 rgba(0,0,0,.22); }
-.pgs-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.22); }
-.pgs-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-.pgs-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--purple); color: #fff; }
-.pgs-ic svg { width: 20px; height: 20px; }
-.pgs-tx b { display: block; font-size: 16px; line-height: 1.2; }
-.pgs-tx small { display: block; margin-top: 2px; font: 600 11px var(--font-mono, monospace); letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
-.pgs-btn i { font-style: normal; font-weight: 800; font-size: 18px; }
 .pgs-all { margin: 10px 0 0; }
 .pgs-all a { color: var(--lima); font-weight: 700; }
 .sp-sec.pg-solo { padding-top: var(--space-5); }
@@ -6388,5 +6378,18 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .pg-more-t { margin: 0 0 12px; font: 700 12px var(--font-mono, monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--purple); opacity: .75; }
 /* La Q de PLAYGROUND tiene cola: sin este margen el overflow del watermark la corta (igual que en PREGUNTAS) */
 .pgs .outline-word { padding-bottom: 0.25em; }
-.pgs-tx small { font: 600 12.5px var(--font-body); letter-spacing: 0; text-transform: none; opacity: .8; }
 .pgs-fine { margin: 6px 0 0; max-width: 46em; font-size: 14px; line-height: 1.5; opacity: .75; }
+
+/* Tarjetas de los simuladores (sección Playground y "más para jugar") */
+.pgs-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 310px)); gap: var(--space-3); justify-content: start; width: 100%; margin-top: 14px; }
+.pg-more .pgs-cards { justify-content: center; }
+.pgs-card { min-height: 268px; }
+.pgs-card h3 { max-width: 14em; font-size: 21px; }
+.pgs-card p { font-size: 15px; }
+.pgs-card .sv-ic { background: var(--purple); color: #fff; }
+.pgs-tag { font: 700 11px var(--font-mono, monospace); letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
+.pgs-card.pg-n-vender { --bgc: var(--lima); --fg: var(--purple); --ac: var(--purple); }
+.pgs-card.pg-n-encontrar { --bgc: #fbcfe8; --fg: var(--purple); --ac: var(--purple); }
+.pgs-card.pg-n-datos { --bgc: #bfdbfe; --fg: var(--purple); --ac: var(--purple); }
+.pgs-card.pg-n-marca { --bgc: #fed7aa; --fg: var(--purple); --ac: var(--purple); }
+.pgs-cards .pgs-card:nth-child(n) { --rt: 0deg; }

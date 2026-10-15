@@ -57,6 +57,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: una tarjeta por simulador en vez de botones
+- La sección `#playground` de las páginas de servicio (y "Más para jugar" en cada herramienta) usa tarjetas `hb-card` del sitio, coloreadas por objetivo, con ícono, formato · tiempo, título, descripción de lo que obtienes y "Probar el diagnóstico →" (toda la tarjeta es clicable). Rectas, sin la inclinación del home (`.pgs-cards .pgs-card:nth-child(n) { --rt: 0deg }`).
+
 ### 2026-10-15 — Playground: textos de la sección en las páginas de servicio, serios y con el beneficio claro
 - Cada servicio tiene su propio título y descripción (qué mide y qué obtiene el usuario), eyebrow "PLAYGROUND · DIAGNÓSTICOS GRATUITOS", subtítulo de cada botón = el resultado que entrega (p. ej. "Calcula tu retorno real"), y una línea de transparencia: "Resultado inmediato y gratuito. Solo te pedimos el correo si quieres el diagnóstico completo con tu plan de acción." Estilos `.pgs-tx small` / `.pgs-fine`.
 
