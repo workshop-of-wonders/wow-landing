@@ -69,7 +69,7 @@ def card(p, featured=False):
 
 
 def bx_card(p):
-    return f'''<a class="bx-card" href="{p['slug']}.html" data-cat="{p['cat']}">
+    return f'''<a class="bx-card bx-rv" href="{p['slug']}.html" data-cat="{p['cat']}">
           <div class="bx-cover" data-cat="{p['cat']}"><span class="bx-read">{p['read']} MIN</span><span class="bx-ico" aria-hidden="true"></span></div>
           <div class="bx-body"><span class="bx-date">{DATE_ES.upper()} · {p['cat'].upper()}</span><h3>{p['h1']}</h3><p>{p['excerpt']}</p></div>
         </a>
@@ -99,6 +99,8 @@ def index(posts):
         for i, p in enumerate(posts[:3]))
     body = f'''<main id="top" class="bx-page">
   <section class="bx-hero">
+    <div class="bx-shapes" aria-hidden="true"><i class="bx-sh bx-sh--star" data-d="40"></i><i class="bx-sh bx-sh--bloom" data-d="-30"></i><i class="bx-sh bx-sh--swoosh" data-d="-45"></i><i class="bx-sh bx-sh--mark" data-d="25"></i></div>
+    <span class="bx-sticker" aria-hidden="true">✦ guías<br>sin relleno</span>
     <p class="bx-kicker">BLOG · WOW</p>
     <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
     <p class="bx-sub">Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia. Lo que aprendemos en el taller, sin guardarnos nada.</p>
@@ -117,12 +119,15 @@ def index(posts):
       </ul>
     </div>
   </section>
-  <div class="bx-ticker" aria-hidden="true"><div class="bx-ticker-track">{ticker}{ticker}</div></div>
+  <div class="bx-tapes" aria-hidden="true">
+    <div class="bx-tape bx-tape--a"><div class="bx-ticker-track">{ticker}{ticker}</div></div>
+    <div class="bx-tape bx-tape--b"><div class="bx-ticker-track bx-rev">{ticker}{ticker}</div></div>
+  </div>
 
   <section class="bx-sec" id="para-empezar">
-    <header class="bx-head"><h2>Para empezar</h2><span class="bx-tag">SELECCIÓN WOW</span></header>
+    <header class="bx-head bx-rv"><h2>Para empezar</h2><span class="bx-tag">SELECCIÓN WOW</span></header>
     <p class="bx-lead">Si solo vas a leer una guía, que sea esta.</p>
-    <a class="bx-feature" href="{feat['slug']}.html" data-cat="{feat['cat']}">
+    <a class="bx-feature bx-rv" href="{feat['slug']}.html" data-cat="{feat['cat']}">
       <span class="bx-feature-ico" aria-hidden="true"></span>
       <span class="bx-feature-cat">{feat['cat'].upper()}</span>
       <h3>{feat['h1']}</h3>
@@ -132,7 +137,7 @@ def index(posts):
   </section>
 
   <section class="bx-sec" id="articulos">
-    <header class="bx-head"><h2>Todos los artículos</h2><span class="bx-count" id="bxCount">{n}</span></header>
+    <header class="bx-head bx-rv"><h2>Todos los artículos</h2><span class="bx-count" id="bxCount">{n}</span></header>
     <p class="bx-lead">Filtra por tema o busca lo que necesitas.</p>
     <div class="bx-filters">
       <div class="bx-pills" role="group" aria-label="Filtrar por tema">{pills}</div>
@@ -145,13 +150,13 @@ def index(posts):
   </section>
 
   <section class="bx-sec" id="esenciales">
-    <header class="bx-head"><h2>Guías esenciales</h2><span class="bx-tag">EMPIEZA POR AQUÍ</span></header>
+    <header class="bx-head bx-rv"><h2>Guías esenciales</h2><span class="bx-tag">EMPIEZA POR AQUÍ</span></header>
     <p class="bx-lead">Tres lecturas para ordenar tu marketing digital antes de gastar un peso más.</p>
     <div class="bx-ess-list">
       {essentials}</div>
   </section>
 
-  <section class="bx-cta">
+  <section class="bx-cta bx-rv"><span class="bx-spin" aria-hidden="true">✦</span>
     <h2>¿Prefieres que lo hagamos <em>juntos?</em></h2>
     <p>Cuéntanos tu proyecto y te respondemos en máximo 1 día hábil.</p>
     <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
@@ -194,6 +199,18 @@ def index(posts):
   [].forEach.call(document.querySelectorAll('.bx-sug'), function (s) {{ s.addEventListener('click', function () {{
     inputs.forEach(function (i) {{ i.value = s.dataset.q; }}); state.q = s.dataset.q; state.p = 1; render(); document.getElementById('articulos').scrollIntoView({{ behavior: 'smooth' }}); }}); }});
   render();
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rv = [].slice.call(document.querySelectorAll('.bx-rv'));
+  if (rm || !('IntersectionObserver' in window)) {{ rv.forEach(function (e) {{ e.classList.add('is-in'); }}); }}
+  else {{
+    var io = new IntersectionObserver(function (es) {{ es.forEach(function (e) {{ if (e.isIntersecting) {{ e.target.classList.add('is-in'); io.unobserve(e.target); }} }}); }}, {{ rootMargin: '0px 0px -8% 0px' }});
+    rv.forEach(function (e, i) {{ e.style.setProperty('--i', i % 4); io.observe(e); }});
+    var sh = [].slice.call(document.querySelectorAll('.bx-sh')), hero = document.querySelector('.bx-hero');
+    hero.addEventListener('pointermove', function (ev) {{
+      var r = hero.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
+      sh.forEach(function (n) {{ var d = +n.dataset.d; n.style.translate = (x * d) + 'px ' + (y * d) + 'px'; }});
+    }});
+  }}
 }})();
 </script>
 '''
