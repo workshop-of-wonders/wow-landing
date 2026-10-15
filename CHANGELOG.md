@@ -57,6 +57,13 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: hub de herramientas + 3 herramientas nuevas + entrada por servicio
+- Nueva página `playground.html` (hub): tarjetas de las 11 simuladores existentes (enlazan a su sección en cada servicio) + 3 herramientas nuevas, con filtro por objetivo y por servicio (`playground.html?servicio=seo`). JS: `src/js/playground.js`. Enlazado en menú, footer, sitemap y `llms.txt` (home y servicios).
+- Herramientas nuevas en `playground/`: `encabezados.html` (identificador de H1–H6 a partir de un link; endpoint `api/headings.js` con protección SSRF: IP pública validada en cada conexión, puertos 80/443, redirects revalidados, límite de tiempo y tamaño), `colores.html` (paleta por sector y personalidad, contraste WCAG, vista previa, copia como variables CSS; 100 % en el navegador) y `keywords.html` (ideas por intención + CSV; plantillas, sin datos de volumen).
+- Cada página de servicio tiene una franja "Playground de X" sobre su primer simulador, que lleva al hub filtrado.
+- Pendiente de esta línea: mecanismo común de captura de correo (desbloquear el resultado completo con el correo, guardando puntaje/respuestas en `leads`), formatos propios para los chequeos y migrar los simuladores a páginas propias; cambiar el texto "no guardamos nada" cuando se guarden datos.
+- Nota: `src/styles.css` tiene un `=======` suelto (línea ~5744, previo a este cambio) que descarta la regla `.bl-post-head`; queda como tarea aparte.
+
 ### 2026-10-15 — Home: herramientas como pills con logo + nombre, arrastrables
 - Giro más natural: velocidad angular amortiguada (×0.97) y con tope (0.05 rad/frame), enderezado más suave (×0.92); rebote más vivo (restitution 0.95) para que reboten al caer unas sobre otras.
 - Rebote y giro libres otra vez (el enderezado y el límite del contenedor los frenaban): en el aire giran y rebotan; el límite del recuadro ahora rebota en vez de frenar en seco, y solo cuando la pill ya está casi quieta se endereza sola, así que siempre queda derecha al caer.
