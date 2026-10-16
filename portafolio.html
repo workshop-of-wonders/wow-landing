@@ -93,9 +93,32 @@
     <img src="design-system/logo/wow-logo-white.webp" alt="Workshop of Wonders" class="logo-img" width="773" height="295">
   </a>
   <nav class="nav-links">
-    <a href="servicios.html">Servicios</a>
+    <div class="nav-item">
+      <a href="servicios.html" class="nav-item-trigger"><span>Servicios</span> <span class="nav-item-caret"><i class="wic wic-c" aria-hidden="true"></i></span></a>
+      <div class="nav-dropdown" id="navServicesDropdown">
+        <div class="nav-dropdown-grid">
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat">Diseño web</p>
+            <a href="servicios/diseno-web.html" class="nav-dropdown-link"><span class="nav-dd-n">01</span><span class="nav-dd-t">Diseño web</span><span class="nav-dd-d">Sitios a la medida que representan tu marca</span></a>
+            <a href="servicios/ecommerce.html" class="nav-dropdown-link"><span class="nav-dd-n">02</span><span class="nav-dd-t">Tiendas virtuales</span><span class="nav-dd-d">E-commerce listo para vender, del catálogo al checkout</span></a>
+            <a href="servicios/diseno-grafico.html" class="nav-dropdown-link"><span class="nav-dd-n">03</span><span class="nav-dd-t">Diseño gráfico</span><span class="nav-dd-d">Piezas para redes y material digital con tu estética</span></a>
+          </div>
+          <div class="nav-dropdown-col">
+            <p class="nav-dropdown-cat">Marketing digital</p>
+            <a href="servicios/seo.html" class="nav-dropdown-link"><span class="nav-dd-n">01</span><span class="nav-dd-t">SEO, GEO y AEO</span><span class="nav-dd-d">Aparece en Google y en las respuestas de la IA</span></a>
+            <a href="servicios/seo-local.html" class="nav-dropdown-link"><span class="nav-dd-n">02</span><span class="nav-dd-t">Google My Business</span><span class="nav-dd-d">Tu perfil en Google optimizado para que te encuentren cerca</span></a>
+            <a href="servicios/pauta-digital.html" class="nav-dropdown-link"><span class="nav-dd-n">03</span><span class="nav-dd-t">Pauta digital</span><span class="nav-dd-d">Meta, Google y TikTok Ads que venden</span></a>
+            <a href="servicios/configuracion-analitica-tracking.html" class="nav-dropdown-link"><span class="nav-dd-n">04</span><span class="nav-dd-t">Analítica y tracking</span><span class="nav-dd-d">GA4, Tag Manager y eventos de conversión bien configurados</span></a>
+            <a href="servicios/analitica-de-datos.html" class="nav-dropdown-link"><span class="nav-dd-n">05</span><span class="nav-dd-t">Dashboards y consultoría de datos</span><span class="nav-dd-d">Reportes claros y decisiones basadas en datos</span></a>
+          </div>
+        </div>
+        <a href="#contacto" class="nav-dropdown-cta" data-open-form>Hablemos de tu proyecto</a>
+      </div>
+    </div>
     <a href="index.html#labs">Labs</a>
-    <a href="portafolio.html" aria-current="page">Trabajo</a>
+    <a href="playground.html">Playground</a>
+    <a href="index.html#trabajo">Trabajo</a>
+    <a href="blog/">Blog</a>
     <a href="#contacto" class="btn btn-primary btn-sm" data-open-form>Hablemos de tu proyecto</a>
   </nav>
   <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMobileMenu">
@@ -113,11 +136,13 @@
       </button>
     </div>
     <nav class="nav-mobile-links">
-      <a href="servicios.html">Servicios</a>
+      <a href="servicios.html"><span>Servicios</span></a>
       <a href="index.html#labs">Labs</a>
-      <a href="portafolio.html">Trabajo</a>
+      <a href="playground.html">Playground</a>
+      <a href="index.html#trabajo"><span>Trabajo</span></a>
+      <a href="blog/"><span>Blog</span></a>
     </nav>
-    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form>Hablemos de tu proyecto <span class="nav-mobile-cta-arrow"><i class="wic wic-r" aria-hidden="true"></i></span></a>
+    <a href="#contacto" class="btn btn-primary nav-mobile-cta" data-open-form><span>Hablemos de tu proyecto</span> <span class="nav-mobile-cta-arrow"><i class="wic wic-r" aria-hidden="true"></i></span></a>
     <div class="nav-mobile-foot">
       <span class="nav-mobile-foot-mark"><i class="wsp" aria-hidden="true"></i></span>
       <a href="https://instagram.com/efectowow.co" target="_blank" rel="noopener">Instagram</a>

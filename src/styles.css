@@ -4254,7 +4254,7 @@ main { padding-top: var(--nav-h); }
 .faq-chat .fc-q:focus-visible { outline: 3px solid var(--lima); outline-offset: 3px; }
 .faq-chat .fc-a { display: flex; align-items: flex-end; gap: var(--space-1); max-width: 88%; }
 .faq-chat .fc-a[hidden] { display: none; }
-.faq-chat .fc-avatar { flex: 0 0 36px; width: 36px; height: 36px; padding: 6px; border-radius: 50%; background: var(--white); box-sizing: border-box; }
+.faq-chat .fc-avatar { flex: 0 0 36px; width: 36px; height: 36px; padding: 4px; border-radius: 50%; background: var(--white); box-sizing: border-box; }
 .faq-chat .fc-bubble { margin: 0; padding: 14px 20px; background: var(--white); color: var(--ink); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); animation: fc-in .2s ease both; }
 .faq-chat .fc-typing { display: none; padding: 18px 20px; background: var(--white); border-radius: 22px 22px 22px 6px; box-shadow: 0 2px 12px rgba(56,7,87,.08); gap: 5px; }
 .faq-chat .fc-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); opacity: .35; animation: fc-dot .9s infinite ease-in-out; }
@@ -6586,3 +6586,6 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .wic-ne { -webkit-mask: url(/design-system/iconos-wow/IconoWoW_flecha_derecha.svg) center / contain no-repeat; mask: url(/design-system/iconos-wow/IconoWoW_flecha_derecha.svg) center / contain no-repeat; transform: rotate(-45deg); }
 .wic-c { width: .7em; height: .7em; vertical-align: -.02em; -webkit-mask: url(/design-system/iconos-wow/IconoWoW_flecha_abajo.svg) center / contain no-repeat; mask: url(/design-system/iconos-wow/IconoWoW_flecha_abajo.svg) center / contain no-repeat; }
 .wic-x { -webkit-mask: url(/design-system/iconos-wow/IconoWoW_equis.svg) center / contain no-repeat; mask: url(/design-system/iconos-wow/IconoWoW_equis.svg) center / contain no-repeat; }
+
+/* Con "Blog" el menú tiene un enlace más: entre 901 y 1120px se aprieta un poco para que el botón no se parta en dos líneas */
+@media (min-width: 901px) and (max-width: 1120px) { .nav-links { gap: 18px; } .nav-links .btn { white-space: nowrap; } }
