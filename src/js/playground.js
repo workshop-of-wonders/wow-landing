@@ -15,7 +15,7 @@
   if (svc) {
     document.getElementById('pgSvcName').textContent = 'Playground de ' + NAMES[svc] + '.';
     document.getElementById('pgSvc').hidden = false;
-    document.getElementById('pgTitle').textContent = 'Juguetes de ' + NAMES[svc];
+    document.getElementById('pgTitle').textContent = 'Herramientas de ' + NAMES[svc];
     document.querySelector('.pg-chips').hidden = true;
   }
   chips.forEach(function (b) {
@@ -67,11 +67,11 @@
     });
     if (!items.length) return;
 
-    var board = el('div', 'pg-board'); board.id = 'pgBoard'; board.setAttribute('role', 'group'); board.setAttribute('aria-label', 'Patio de herramientas');
+    var board = el('div', 'pg-board'); board.id = 'pgBoard'; board.setAttribute('role', 'group'); board.setAttribute('aria-label', 'Herramientas sueltas');
     var tip = el('div', 'pg-tip'); tip.hidden = true;
     var tools = el('div', 'pg-tools');
-    var hint = el('p', 'pg-hint', 'Agarra un juguete y lánzalo · tócalo para jugar');
-    var bShake = el('button', 'pg-act', 'Sacude el patio'); bShake.type = 'button';
+    var hint = el('p', 'pg-hint', 'Agarra una herramienta y lánzala · tócala para abrirla');
+    var bShake = el('button', 'pg-act', 'Sacúdelas'); bShake.type = 'button';
     var bSurp = el('button', 'pg-act', 'Sorpréndeme'); bSurp.type = 'button';
     tools.appendChild(bShake); tools.appendChild(bSurp); tools.appendChild(hint);
     grid.parentNode.insertBefore(tools, grid); grid.parentNode.insertBefore(board, grid);
