@@ -55,6 +55,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — El asterisco amarillo pasa a ser `IconoWoW_asterisco_fino` (solo local, sin commit)
+- Decisión de la dueña: el asterisco del sitio es el **fino** (`IconoWoW_asterisco_fino`, amarillo `#f6f05c`), no el grueso. Se regeneraron `design-system/icons/icon-asterisco.svg` (suelto: home que gira, Labs/Insight, caída) e `icon-star.svg` (mismo lienzo y recuadro de siempre, para los ~17 usos decorativos) y se ajustó el tamaño en `falling-icons.js` (`w: 469, h: 471`). El IconoWoW grueso (`IconoWoW_asterisco`) sigue en `iconos-wow/` pero ya no se usa.
+
 ### 2026-10-15 — Íconos de los Labs
 - Decisión de la dueña: **Insight Lab = asterisco** (`IconoWoW_asterisco`, amarillo, `design-system/icons/icon-asterisco.svg`) y **Brand & Experience Lab = flor** (`IconoWoW_flor`, rosa, `icon-flor.svg`). Se aplicó en las 6 `<img>` de Labs del home (etiqueta vertical, etiqueta del botón y ícono grande de fondo al hover). No usar lupa ni paleta para los Labs.
 
