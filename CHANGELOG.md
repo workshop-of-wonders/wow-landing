@@ -55,6 +55,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — El cohete mira hacia donde avanza, sin girar (solo local, sin commit)
+- El cohete del proceso no rota con la curva (`offset-rotate: 0deg`; el móvil sin `rotate`): siempre se ve como el ícono, nariz arriba a la derecha. Como en el arco de abajo avanza hacia la izquierda, ahí se voltea en espejo (nariz arriba a la izquierda) y en los arcos de la derecha y la izquierda queda normal. Implementación: en las 9 páginas con el diagrama el `<image>` ahora va dentro de `<g class="wm-rocket">` (el grupo sigue la ruta) y la imagen interna `.wm-rocket-img` lleva la animación `wm-flip` (`scale: -1 1` entre 40.5 % y 59.5 % del ciclo de 9 s). **No** voltear con `scale` en el propio `.wm-rocket`: con `offset-path` el espejo se aplica alrededor del origen del SVG y el cohete sale de la pantalla. Probado en pantalla: abajo sale espejado, derecha normal.
+
 ### 2026-10-15 — Cohete del proceso en naranja (solo local, sin commit)
 - El cohete que orbita el círculo del proceso pasa de lima (`#dce157`, se perdía sobre las flechas lima) a naranja `#f97316` (`design-system/icons/icon-cohete.svg`; lo usan también el cohete móvil y cualquier página con el diagrama). Probado en pantalla en el home: se distingue sobre la flecha.
 
