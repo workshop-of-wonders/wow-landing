@@ -55,6 +55,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Asterisco grueso nuevo en la biblioteca (solo local, sin commit)
+- `design-system/iconos-wow/IconoWoW_asterisco.svg` (el grueso) se reemplaza por el dibujo de `Desktop/WoW/SVG/Recurso 135.svg` (mismo lienzo 36.89×39.9). El sitio sigue usando el **fino** (`IconoWoW_asterisco_fino`); este archivo es solo de la biblioteca de íconos y no está referenciado en el sitio.
+
+### 2026-10-15 — Florecita nueva (solo local, sin commit)
+- La flor del sitio se reemplaza por la de `Desktop\WoW\SVG\Recurso 134.svg` (mismo lienzo 152.69×143.88 que la anterior): ahora es `design-system/iconos-wow/IconoWoW_flor.svg` (la anterior se perdió del repo salvo en git: commit `89276dc` o anterior). Se regeneraron `design-system/icons/icon-flor.svg` (rosa `#ec4899`; home que cae y gira, Labs/Brand & Experience) e `icon-bloom.svg` (mismo recuadro de siempre; formas decorativas de las páginas). No hizo falta tocar JS ni HTML.
+
 ### 2026-10-15 — El asterisco amarillo pasa a ser `IconoWoW_asterisco_fino` (solo local, sin commit)
 - Decisión de la dueña: el asterisco del sitio es el **fino** (`IconoWoW_asterisco_fino`, amarillo `#f6f05c`), no el grueso. Se regeneraron `design-system/icons/icon-asterisco.svg` (suelto: home que gira, Labs/Insight, caída) e `icon-star.svg` (mismo lienzo y recuadro de siempre, para los ~17 usos decorativos) y se ajustó el tamaño en `falling-icons.js` (`w: 469, h: 471`). El IconoWoW grueso (`IconoWoW_asterisco`) sigue en `iconos-wow/` pero ya no se usa.
 
