@@ -308,11 +308,11 @@ body.is-open .stage { animation: exit .7s .5s cubic-bezier(.6, 0, .4, 1) forward
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
   .logo { height: 34px; }
-  .ig { font-size: 11px; padding: 8px 12px; }
+  .ig { font-size: 12px; padding: 14px 14px; }
   .stage { justify-content: center; padding-top: 0; padding-bottom: 8px; }
   .title { font-size: clamp(2rem, 10vw, 3.2rem); }
   .title .line:nth-child(2) { white-space: nowrap; }
-  .gate-msg { font-size: 11px; }
+  .gate-msg { font-size: 12px; }
   .eyebrow { margin-bottom: 16px; }
   .lead { max-width: min(72vw, 340px); font-size: 14px; line-height: 1.55; margin-top: 20px; }
   .progress { width: min(58vw, 320px); }

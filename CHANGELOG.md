@@ -55,6 +55,14 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-16 — Optimización móvil del resto del sitio (servicios/*, labs, blog, playground/*, pronto, política, 404)
+- Auditadas 31 páginas a 375px con un iframe (sin scroll horizontal en ninguna). Cambios en `src/styles.css` (bloques ≤900px al final) y `pronto/pronto.css`.
+- Sliders: los nativos (`.sc-in`, `.ss-time`) a 44px de alto; los personalizados (`.sl-ctl`, `.cl-slide`) con borde transparente de 16px para conservar la pista de 12px y tener 44px de zona táctil. Campos de texto, `summary`, `.btn-sm`, migas `.sp-crumbs`, `.sp-lab-pill a`, filtros/paginación del blog (`.bx-pill`, `.bx-num`, `.bx-next`) y etiquetas con radio/checkbox a 44px.
+- Textos de 10–11px a 12px en HUD y estadísticas de los simuladores (`.hud-score small`, `.ss-row small`, `.sp-stats small`, `.sc-kpis small`, `.pt-lab`, `.pgs-tag`, `.ss-note`, etc.).
+- "¿Te encuentran cerca?": con 12px las 5 caras no cabían en fila ("Totalmente" se salía de la tarjeta); ≤520px ahora van apiladas (icono + etiqueta).
+- `.switch` con `min-width:76px` (la etiqueta OFF de 12px desbordaba el botón).
+- Sin tocar a propósito: enlaces de texto dentro de párrafos/listas (exentos), honeypot `.ld-hp` (oculto), `blog/*` artículos.
+
 ### 2026-10-16 — Optimización táctil móvil (auditoría UX a 320/375px)
 - Sin scroll horizontal en ninguna página (ya estaba bien). Cambios en `src/styles.css` (bloque "Táctil móvil" al final, solo ≤900px) + `src/js/common.js`, regenerados con `npm run minify`; `index.html` no se tocó.
 - Campos `input/select/textarea` a 16px (evita el zoom automático de iOS Safari al enfocar).

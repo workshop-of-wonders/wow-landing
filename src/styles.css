@@ -6723,3 +6723,36 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
   .project-field label, .lightbox-label, .switch-label, .sv-tn { font-size: 12px; }
   .sv-tablist button { font-size: 12px; letter-spacing: 0; }
 }
+
+/* Táctil móvil, páginas internas, blog y simuladores (≤900px) — auditoría UX 2026-10-16 */
+@media (max-width: 900px) {
+  .sc-in input[type="range"], .ss-time input[type="range"] { min-height: 44px; }
+  .sl-ctl input[type=range], .cl-slide input[type=range] { box-sizing: content-box; min-height: 0; height: 12px; padding: 0; border: 16px solid transparent; border-inline: 0; background-clip: padding-box; }
+  input[type="text"]:not(.ld-hp), input[type="url"], input[type="email"], input[type="search"], input[type="number"] { min-height: 44px; }
+  label:has(> input[type="radio"]), label:has(> input[type="checkbox"]) { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+  summary { padding-block: 13px; margin-block: -13px; }
+  .sp-lab-pill a { position: relative; }
+  .sp-lab-pill a::after { content: ""; position: absolute; inset: -9px -4px; }
+  .bx-pill { padding-block: 14px; }
+  .bx-num { width: 44px; height: 44px; }
+  .bx-next { padding: 15px 20px; }
+  .bx-pill b, .bx-read, .bx-date, .pgs-tag, .ss-note, small, .sc-lab, .pt-role, .hp-start, .sp-q, .sp-av, legend { font-size: 12px; }
+}
+@media (max-width: 900px) {
+  .sp-crumbs a { display: inline-block; padding-block: 15px; margin-block: -15px; }
+  summary { padding-block: 14px; margin-block: -14px; }
+  .hud-score small, .ss-row small, .ss-stats small, .ss-time-l label, .ss-time-l span, .fc-face span, .tt-cell small, .sb-b small,
+  .sp-row small, .sp-stats small, .sc-kpis small, .pt-lab small, .pt-lab em, .pt-role, .rm-keys legend { font-size: 12px; }
+}
+@media (max-width: 900px) {
+  .btn-sm, .pt-info .btn { min-height: 44px; }
+  .pt-info .pt-role { font-size: 12px; }
+}
+/* ¿Te encuentran cerca?: con etiquetas de 12px las 5 caras no caben en fila ("Totalmente" se salía de su tarjeta); en móvil van apiladas, icono + etiqueta */
+@media (max-width: 520px) {
+  .fc-row { grid-template-columns: 1fr; gap: 8px; }
+  .fc-face { grid-auto-flow: column; justify-content: start; align-items: center; gap: 16px; padding: 8px 16px; min-height: 56px; }
+  .fc-face svg { width: 40px; }
+  .fc-face span { font-size: 14px; }
+}
+@media (max-width: 900px) { .switch { min-width: 76px; } }
