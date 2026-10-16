@@ -55,6 +55,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Nueva W de WOW (solo local, sin commit)
+- La W de marca se reemplaza por la de `Desktop/WoW/SVG/Recurso 24.svg` (lienzo 210.14×258.61; antes se había puesto `w de wow.svg`, y la original era 227.14×257.27): `design-system/logo/wow-mark.svg` (blanca), `wow-mark-purple.svg` (`#380757`) y `favicon.svg` (centrada de nuevo en el cuadro morado). Cambia en los ~154 usos (centro del proceso, íconos que caen y giran, avatares del FAQ, adornos de héroes, máscaras `.bx-sh--mark`, etc.). En `falling-icons.js` se ajustó el tamaño de la W (`w: 210.14, h: 258.61`).
+- **Sigue con la W vieja** (son imágenes, no SVG): `design-system/logo/wow-logo-white.webp` (el logo completo con el texto "Workshop of Wonders", 144 usos: menú y pie de todas las páginas y `/pronto`), `design-system/og-image.jpg` (vista previa al compartir) y las fotos de héroe donde salga. Hay que re-exportar el logo completo con la W nueva (SVG o WebP) para cambiarlo. Probado en pantalla: centro del proceso.
+
 ### 2026-10-15 — El cohete cambia de color al llegar a cada nodo (solo local, sin commit)
 - El cohete del proceso toma el color del nodo al que acaba de llegar: sale de Wonder en azul `#3b82f6`, en Optimize pasa a rosa `#ec4899` y en Win a lila `#c4a8f5` (los mismos colores de los conectores). El cambio ocurre en los tramos en que está oculto, así que no se ve el salto. Para poder recolorearlo ya no es una imagen sino un SVG en línea (`<g class="wm-rocket"><g class="wm-rocket-img"><svg … fill=currentColor>` con los 4 trazos de `IconoWoW_cohete`) en las 9 páginas con el diagrama; el color va en `.wm-rocket { animation-name: wm-orbit, wm-rocket-color }`. El cohete del móvil usa máscara + `background` animado con los mismos tres colores (`wm-fall-color`). `design-system/icons/icon-cohete.svg` (naranja) ya no se usa en el sitio. Verificado el color en 7 tiempos del ciclo; el móvil no se vio en pantalla.
 
