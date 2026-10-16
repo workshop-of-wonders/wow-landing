@@ -55,6 +55,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — El cohete cambia de color al llegar a cada nodo (solo local, sin commit)
+- El cohete del proceso toma el color del nodo al que acaba de llegar: sale de Wonder en azul `#3b82f6`, en Optimize pasa a rosa `#ec4899` y en Win a lila `#c4a8f5` (los mismos colores de los conectores). El cambio ocurre en los tramos en que está oculto, así que no se ve el salto. Para poder recolorearlo ya no es una imagen sino un SVG en línea (`<g class="wm-rocket"><g class="wm-rocket-img"><svg … fill=currentColor>` con los 4 trazos de `IconoWoW_cohete`) en las 9 páginas con el diagrama; el color va en `.wm-rocket { animation-name: wm-orbit, wm-rocket-color }`. El cohete del móvil usa máscara + `background` animado con los mismos tres colores (`wm-fall-color`). `design-system/icons/icon-cohete.svg` (naranja) ya no se usa en el sitio. Verificado el color en 7 tiempos del ciclo; el móvil no se vio en pantalla.
+
 ### 2026-10-15 — El cohete mira hacia donde avanza, sin girar (solo local, sin commit)
 - El cohete del proceso no rota con la curva (`offset-rotate: 0deg`; el móvil sin `rotate`): siempre se ve como el ícono, nariz arriba a la derecha. Como en el arco de abajo avanza hacia la izquierda, ahí se voltea en espejo (nariz arriba a la izquierda) y en los arcos de la derecha y la izquierda queda normal. Implementación: en las 9 páginas con el diagrama el `<image>` ahora va dentro de `<g class="wm-rocket">` (el grupo sigue la ruta) y la imagen interna `.wm-rocket-img` lleva la animación `wm-flip` (`scale: -1 1` entre 40.5 % y 59.5 % del ciclo de 9 s). **No** voltear con `scale` en el propio `.wm-rocket`: con `offset-path` el espejo se aplica alrededor del origen del SVG y el cohete sale de la pantalla. Probado en pantalla: abajo sale espejado, derecha normal.
 

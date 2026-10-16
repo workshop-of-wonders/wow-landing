@@ -3766,6 +3766,9 @@ main { padding-top: var(--nav-h); }
 
 /* Abajo el cohete va hacia la izquierda: se voltea (solo la imagen interna, no el grupo que sigue la ruta) para que siempre mire hacia donde avanza */
 .wm-rocket-img { animation: wm-flip 9s linear infinite; }
+/* El cohete toma el color del nodo al que acaba de llegar: sale de Wonder en azul, en Optimize pasa a rosa y en Win a lila (el cambio ocurre cuando está oculto entre arcos) */
+.wm-rocket { color: #3b82f6; animation-name: wm-orbit, wm-rocket-color; }
+@keyframes wm-rocket-color { 0%, 33.2% { color: #3b82f6; } 33.4%, 66.5% { color: #ec4899; } 66.7%, 100% { color: #c4a8f5; } }
 @keyframes wm-flip { 0%, 40% { scale: 1; } 40.5%, 59.5% { scale: -1 1; } 60%, 100% { scale: 1; }
 
 }
@@ -4298,11 +4301,12 @@ main { padding-top: var(--nav-h); }
   .wm-diagram { position: relative; }
   .wm-rocket-m {
     display: block; position: absolute; left: 28px; top: 28px; z-index: 3;
-    width: 26px; height: 26px; background: url(/design-system/icons/icon-cohete.svg) center / contain no-repeat; pointer-events: none;
+    width: 26px; height: 26px; background: #3b82f6; -webkit-mask: url(/design-system/iconos-wow/IconoWoW_cohete.svg) center / contain no-repeat; mask: url(/design-system/iconos-wow/IconoWoW_cohete.svg) center / contain no-repeat; pointer-events: none;
     transform: translate(-50%, -50%);
-    animation: wm-fall 6s ease-in-out infinite;
+    animation: wm-fall 6s ease-in-out infinite, wm-fall-color 6s linear infinite;
   }
 }
+@keyframes wm-fall-color { 0%, 33% { background: #3b82f6; } 34%, 66% { background: #ec4899; } 67%, 100% { background: #c4a8f5; } }
 @keyframes wm-fall {
   0%   { top: 28px; opacity: 0; }
   8%   { opacity: 1; }
