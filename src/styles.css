@@ -3748,20 +3748,8 @@ main { padding-top: var(--nav-h); }
   }
 }
 @keyframes wm-orbit {
-  0%    { offset-distance: 0%; opacity: 0; }
-  7.5%  { opacity: 0; }
-  9%    { opacity: 1; }
-  24.5% { opacity: 1; }
-  26%   { opacity: 0; }
-  40.5% { opacity: 0; }
-  42%   { opacity: 1; }
-  58%   { opacity: 1; }
-  59.5% { opacity: 0; }
-  74%   { opacity: 0; }
-  75.5% { opacity: 1; }
-  91.5% { opacity: 1; }
-  93%   { opacity: 0; }
-  100%  { offset-distance: 100%; opacity: 0; }
+  0%    { offset-distance: 0%; }
+  100%  { offset-distance: 100%; }
 }
 
 /* Abajo el cohete va hacia la izquierda: se voltea (solo la imagen interna, no el grupo que sigue la ruta) para que siempre mire hacia donde avanza */
@@ -3769,7 +3757,7 @@ main { padding-top: var(--nav-h); }
 /* El cohete toma el color del nodo al que acaba de llegar: sale de Wonder en azul, en Optimize pasa a rosa y en Win a lila (el cambio ocurre cuando está oculto entre arcos) */
 .wm-rocket { color: #3b82f6; animation-name: wm-orbit, wm-rocket-color; }
 @keyframes wm-rocket-color { 0%, 33.2% { color: #3b82f6; } 33.4%, 66.5% { color: #ec4899; } 66.7%, 100% { color: #c4a8f5; } }
-@keyframes wm-flip { 0%, 40% { scale: 1; } 40.5%, 59.5% { scale: -1 1; } 60%, 100% { scale: 1; }
+@keyframes wm-flip { 0%, 32% { scale: 1; } 34.5%, 65% { scale: -1 1; } 67.5%, 100% { scale: 1; }
 
 }
 
@@ -3806,7 +3794,7 @@ main { padding-top: var(--nav-h); }
     content: ''; position: absolute; left: 27px; top: 60px; bottom: calc(-1 * var(--space-4) + 4px);
     border-left: 3px dashed var(--c); opacity: .6;
   }
-  .wm-node { width: 56px; height: 56px; grid-row: 1 / span 2; }
+  .wm-node { width: 56px; height: 56px; grid-row: 1 / span 2; position: relative; z-index: 4; }  /* encima del cohete (z 3): pasa por debajo de los nodos y encima de la línea */
   .wm-card { border-radius: 20px; padding: var(--space-3) 20px; cursor: pointer; }
   .wm-tag { white-space: normal; }
   .wm-list { margin-top: 0; max-height: 0; overflow: hidden; transition: max-height .35s ease, margin-top .35s ease; }
@@ -6556,7 +6544,7 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 
 /* Easter egg del home: clic en la W del centro del proceso y sale el wonder morado desde un portal */
 .wm-logo { cursor: pointer; }
-.wm-wonder { position: absolute; left: 50%; top: 374px; width: 168px; height: auto; margin-left: -84px; margin-top: -92px; pointer-events: none; user-select: none; opacity: 0; transform: translateY(26px) scale(.15); transform-origin: 50% 70%; z-index: 3; }
+.wm-wonder { position: absolute; left: 50%; top: 374px; width: 168px; height: auto; margin-left: -84px; margin-top: -82px; pointer-events: none; user-select: none; opacity: 0; transform: translateY(26px) scale(.15); transform-origin: 50% 70%; z-index: 3; }
 .wm-wonder.is-on { animation: wm-wonder-pop 2.8s cubic-bezier(.2, .8, .2, 1) forwards; }
 @keyframes wm-wonder-pop {
   0% { opacity: 0; transform: translateY(26px) scale(.15) rotate(-14deg); }

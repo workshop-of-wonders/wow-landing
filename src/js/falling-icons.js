@@ -27,7 +27,7 @@ function initFallingIcons() {
     { src: '/design-system/icons/icon-estrella.svg', w: 372, h: 406 },
     { src: '/design-system/icons/icon-flor.svg', w: 458, h: 432 },
     { src: '/design-system/icons/icon-comillas.svg', w: 436, h: 352 },
-    { src: '/design-system/logo/wow-mark-purple.svg', w: 296.24, h: 294.65 }
+    { src: '/design-system/logo/wow-mark-purple.svg', w: 296.24, h: 294.65, k: 1.9 }  /* la W va más grande que el resto */
   ];
   var ICON_SIZE = zone.offsetWidth < 500 ? 62 : 101;
 
@@ -75,7 +75,7 @@ function initFallingIcons() {
     iconSources.forEach(function (icon, i) {
       var startX = 50 + Math.random() * (width - 100);
       var startY = -100 - Math.random() * 1600;
-      var size = ICON_SIZE * (0.9 + Math.random() * 0.5);
+      var size = ICON_SIZE * (icon.k || 1) * (0.9 + Math.random() * 0.5);
       var scale = size / Math.max(icon.w, icon.h);
       var body = Bodies.circle(startX, startY, size / 2, {
         restitution: 0.9,

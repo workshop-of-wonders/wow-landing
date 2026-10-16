@@ -6,6 +6,9 @@
   if (!lists.length) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  /* En móvil y tablet (una sola columna) las pills quedan quietas, como chips normales: más fácil de leer y de tocar */
+  var narrowMQ = window.matchMedia ? window.matchMedia('(max-width: 1000px)') : { matches: false };
+
   function setup(list) {
     var M = window.Matter;
     var items = Array.prototype.slice.call(list.children);
@@ -102,23 +105,59 @@
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
         if (es[0].isIntersecting) {
-          if (!running) { running = true; last = 0; raf = requestAnimationFrame(tick); }
+          if (!running && !disabled) { running = true; last = 0; raf = requestAnimationFrame(tick); }
         } else { running = false; cancelAnimationFrame(raf); }
       }, { threshold: 0.3 }).observe(list);
     } else { running = true; raf = requestAnimationFrame(tick); }
 
-    window.addEventListener('resize', function () {
+    /* si cambia el ancho (girar la tablet, redimensionar) las pills se reacomodan al flujo nuevo, no se quedan apiñadas a la izquierda */
+    var disabled = false;
+    function freeze() {
+      disabled = true; running = false; cancelAnimationFrame(raf);
+      list.classList.remove('is-live');
+      list.style.height = '';
+      items.forEach(function (el) { el.style.transform = ''; });
+    }
+    function relayout() {
+      var wasDisabled = disabled;
+      disabled = false;
+      list.classList.remove('is-live');
+      list.style.height = '';
+      items.forEach(function (el) { el.style.transform = ''; });
+      var np = items.map(function (el) { return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; });
       w = list.clientWidth;
+      h = list.offsetHeight + 80;
+      list.classList.add('is-live');
+      list.style.height = h + 'px';
+      bodies.forEach(function (b, i) {
+        M.Body.setPosition(b, { x: np[i].x + b._w / 2, y: np[i].y + b._h / 2 });
+        M.Body.setVelocity(b, { x: 0, y: 0 });
+        M.Body.setAngle(b, 0); M.Body.setAngularVelocity(b, 0);
+        M.Sleeping.set(b, true);
+        b._touched = false;
+        b._el.style.transform = 'translate(' + np[i].x + 'px,' + np[i].y + 'px)';
+      });
       buildWalls();
+      if (wasDisabled && !running) { running = true; last = 0; raf = requestAnimationFrame(tick); }
+    }
+    var lastW = w, rt = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        if (narrowMQ.matches) { if (!disabled) freeze(); lastW = list.clientWidth; return; }
+        if (!disabled && list.clientWidth === lastW) return;
+        lastW = list.clientWidth;
+        relayout();
+      }, 150);
     });
   }
 
   /* espera a que carguen los logos para medir bien cada pill */
   function init() {
-    if (!window.Matter) return;
+    if (!window.Matter || narrowMQ.matches) return;
     var imgs = Array.prototype.slice.call(document.querySelectorAll('.wm-pills img'));
     Promise.all(imgs.map(function (im) { return im.complete ? 0 : new Promise(function (ok) { im.onload = im.onerror = ok; }); }))
-      .then(function () { lists.forEach(setup); });
+      .then(function () { if (!narrowMQ.matches) lists.forEach(setup); });
   }
   var loaded = false;
   function load() {

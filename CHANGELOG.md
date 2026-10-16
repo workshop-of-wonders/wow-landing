@@ -55,6 +55,15 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Método: wonder centrado, cohete bajo los nodos; FAQ cerradas; pills quietas en móvil
+- Easter egg del home (clic en la W del centro de `#metodologia`): el wonder del portal salía ~10 px arriba del centro del ciclo; `.wm-wonder` `margin-top` -92 → -82.
+- Cohete del ciclo (≥1280px): ya no se desvanece entre arcos; da la vuelta completa por encima de las flechas y por debajo de los nodos (los nodos lo tapan). El giro (`wm-flip`) y el cambio de color ocurren justo bajo Optimize/Win. En <1280px el cohete vertical queda debajo de los nodos (`.wm-node` `z-index: 4` vs cohete 3) y sobre la línea punteada.
+- FAQ del home: la primera respuesta venía abierta; ahora todas arrancan ocultas (revisadas las demás páginas con FAQ: ya estaban cerradas).
+- Pills de herramientas/IA (`js/tools-playground.js`): se reacomodan si cambia el ancho (antes quedaban apiñadas a la izquierda); en ≤1000px (móvil/tablet) quedan quietas, sin física ni arrastre, y sin la altura extra de la simulación (menos espacio en blanco). En escritorio siguen cayendo.
+- Íconos que caen (`js/falling-icons.js`): la W (`wow-mark-purple`) cae 1,9× más grande (`k: 1.9`).
+- Título del bloque: "ALGUNAS DE LAS HERRAMIENTAS QUE USAMOS" en el home y en las 7 páginas de servicios que tienen el bloque.
+- Fuente en `src/`; regenerado `styles.css`/`js/` con `node scripts/minify.mjs`.
+
 ### 2026-10-15 — Blog: índice en bloques como el resto del sitio, wonders de fondo en heros
 - Índice del blog (`/blog/`): sin cintas, "Para empezar", "Guías esenciales" ni CTA lima; hero morado de marca con píldora "Blog · Guías de WOW", título con acento en Playfair, buscador y silueta de la Rosa leyendo al fondo (recortada a la derecha); listado sobre blanco con tarjetas claras de portada plana por tema. Sin mayúsculas sostenidas. Cambios en `scripts/build-blog.py` + `src/styles.css` (`.bx-*`); regenerar con `build-blog.py` y `minify`.
 - Labs: silueta del wonder de fondo en el hero (`.lab-hero-wd`): Insight = azul, Brand & Experience = amarillo.
