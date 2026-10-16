@@ -248,3 +248,5 @@ module.exports = async function handler(req, res) {
   }
 };
 module.exports.analyze = analyze;
+// Para api/revisar.js: misma lectura de páginas (con la protección SSRF de arriba), sin duplicarla.
+module.exports.lib = { validate: validate, fetchOnce: fetchOnce, MAX_REDIRECTS: MAX_REDIRECTS, decode: decode, clean: clean };

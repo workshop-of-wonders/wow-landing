@@ -6641,3 +6641,29 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .pg-rec { margin: var(--space-3) 0 0; padding: 14px 20px; border-radius: 16px; background: var(--lima); color: var(--purple); font-size: 16px; }
 .pg-rec a { color: var(--purple); font-weight: 800; }
 .pg-svc:not([hidden]) ~ .pg-rec { display: none; }
+
+/* Playground: Revisión express (playground/revisa-tu-pagina.html) */
+.rv-out { max-width: 760px; margin: var(--space-5) auto 0; }
+.rv-card { padding: var(--space-4); border-radius: 24px; background: #fff; box-shadow: 0 18px 44px rgba(56,7,87,.14); border: 1px solid rgba(56,7,87,.08); color: var(--purple); }
+.rv-top { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.rv-ring { --p: 0; flex: none; width: 124px; height: 124px; border-radius: 50%; display: grid; place-content: center; text-align: center; background: radial-gradient(closest-side, #fff 78%, transparent 80%), conic-gradient(var(--purple) calc(var(--p) * 1%), #ebe3f2 0); }
+.rv-ring b { font-size: 38px; line-height: 1; font-family: var(--font-display); }
+.rv-ring small { font-size: 12px; opacity: .65; }
+.rv-top-t h3 { margin: 2px 0 4px; font-size: 26px; }
+.rv-top-t p { margin: 0; }
+.rv-site { font: 700 12px var(--font-mono, monospace); letter-spacing: .1em; text-transform: uppercase; opacity: .65; }
+.rv-h { margin: var(--space-4) 0 8px; font: 700 12px var(--font-mono, monospace); letter-spacing: .12em; text-transform: uppercase; }
+.rv-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rv-list li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: #f6f1fa; }
+.rv-list li.is-bad { background: #fff1f3; border: 1px solid #fecdd3; }
+.rv-list li div { display: grid; gap: 2px; font-size: 15px; line-height: 1.4; }
+.rv-list li b { font-size: 15px; }
+.rv-list li span:not(.rv-mark) { opacity: .8; }
+.rv-mark { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 14px; background: #22c55e; color: #fff; }
+.is-bad .rv-mark { background: #be123c; }
+.rv-lead { margin-top: var(--space-4); }
+.rv-note { margin: var(--space-3) 0 0; font-size: 13px; opacity: .65; }
+.rv-card--err { text-align: center; }
+.rv-err-t { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
+.rv-err-d { margin: 0; }
+@media (max-width: 520px) { .rv-top { justify-content: center; text-align: center; } }

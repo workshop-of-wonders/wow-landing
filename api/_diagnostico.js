@@ -68,7 +68,54 @@ function encabezados(run) {
   return { subject: subject, text: text.join('\n'), html: H };
 }
 
-var BUILDERS = { encabezados: encabezados };
+// Cómo arreglar cada punto de la Revisión express (api/revisar.js).
+var FIX_R = {
+  https: 'Instala un certificado SSL (casi todos los hostings lo dan gratis) y haz que http:// redirija siempre a https://.',
+  noindex: 'Quita la etiqueta "noindex" de la página (en WordPress: Ajustes → Lectura → desmarca "Disuadir a los motores de búsqueda"; o en tu plugin de SEO). Es lo primero: sin esto no apareces en Google.',
+  viewport: 'Agrega en el head: <meta name="viewport" content="width=device-width, initial-scale=1"> y revisa que el diseño se adapte al celular.',
+  no_title: 'Escribe un title de 30 a 60 caracteres con lo que ofreces y tu marca al final. Ejemplo: "Diseño web en Medellín | Tu Marca".',
+  title_len: 'Ajusta el title a 30–60 caracteres: más largo y Google lo corta, más corto y desaprovechas espacio.',
+  no_h1: 'Deja un solo H1 por página con la frase principal: qué ofreces y para quién. Los demás títulos deben ser H2 o H3.',
+  no_meta: 'Escribe una meta description de 120 a 160 caracteres que resuma la página e invite a hacer clic.',
+  meta_len: 'Reescribe la meta description entre 120 y 160 caracteres.',
+  no_sitemap: 'Genera un sitemap.xml (tu plugin de SEO o tu plataforma lo hacen) y envíalo en Google Search Console → Sitemaps.',
+  no_robots: 'Crea un archivo robots.txt en la raíz del sitio que diga qué puede recorrer Google e indique dónde está tu sitemap.',
+  no_ld: 'Agrega datos estructurados (JSON-LD) de tu organización o negocio local, y de preguntas frecuentes o productos si aplican. Ayudan a Google y a las IAs a entender quién eres.',
+  no_og: 'Agrega las etiquetas og:title, og:description y og:image (1200×630 px) para que tu enlace se vea bien al compartirlo en WhatsApp, LinkedIn y redes.',
+  alt: 'Describe cada imagen con un texto alt corto y real (qué muestra). Ayuda a las personas con lector de pantalla y a Google Imágenes.',
+  no_canonical: 'Agrega <link rel="canonical" href="..."> con la dirección principal de cada página para evitar páginas duplicadas.',
+  no_lang: 'Agrega lang="es" en la etiqueta <html> para indicar el idioma de la página.',
+  slow: 'Un servidor lento se arregla con mejor hosting, caché y menos plugins o scripts pesados. Mide también la velocidad completa en PageSpeed Insights.'
+};
+
+function revision(run) {
+  var r = typeof run.result === 'string' ? JSON.parse(run.result) : run.result;
+  var site = run.host.replace(/^www\./, '');
+  var score = r.score == null ? null : r.score;
+  var subject = 'Tu revisión express: ' + site + (score == null ? '' : ' (' + score + '/100)');
+  var issues = r.issues || [], passed = r.passed || [];
+  var text = ['Hola,', '', 'Esta es la revisión express de ' + run.url + '.', '', 'Puntaje: ' + (score == null ? 'n/d' : score + ' de 100')];
+  text.push('', issues.length ? 'QUÉ ARREGLAR, EN ORDEN (' + issues.length + ')' : 'NO ENCONTRAMOS ALERTAS BÁSICAS');
+  issues.forEach(function (i, n) { text.push((n + 1) + '. ' + i.msg, '   Cómo arreglarlo: ' + (FIX_R[i.code] || FALLBACK)); });
+  if (passed.length) { text.push('', 'LO QUE YA ESTÁ BIEN'); passed.forEach(function (t) { text.push('✓ ' + t); }); }
+  text.push('', 'Esta revisión mira lo básico del HTML. Una auditoría completa incluye velocidad real, contenido, enlaces y competencia.', '', '¿Quieres que lo revisemos contigo? Responde este correo o escríbenos a hola@efectowow.co.', '', 'Workshop of Wonders · efectowow.co');
+  var H = '<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1320;max-width:600px;margin:0 auto;padding:24px;line-height:1.55">' +
+    '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.14em;font-weight:700;color:#380757">WORKSHOP OF WONDERS · PLAYGROUND</p>' +
+    '<h1 style="margin:0 0 12px;font-size:24px;color:#380757">Tu revisión express</h1>' +
+    '<p style="margin:0 0 16px">Estos son los resultados de <a href="' + esc(run.url) + '" style="color:#380757">' + esc(run.url) + '</a>.</p>' +
+    '<div style="background:#dce157;border-radius:16px;padding:16px 20px;margin:0 0 20px"><b style="font-size:30px;color:#380757">' + (score == null ? 'n/d' : score + '/100') + '</b><span style="margin-left:10px;color:#380757">puntaje de lo básico</span></div>' +
+    '<h2 style="font-size:16px;color:#380757;margin:0 0 6px">' + (issues.length ? 'Qué arreglar, en orden' : 'No encontramos alertas básicas') + '</h2>';
+  issues.forEach(function (i) {
+    H += '<div style="border-left:4px solid ' + (i.type === 'error' ? '#be123c' : '#b45309') + ';background:#f6f1fa;border-radius:8px;padding:10px 14px;margin:0 0 10px"><b>' + esc(i.msg) + '</b><br><span style="color:#4a3b57">' + esc(FIX_R[i.code] || FALLBACK) + '</span></div>';
+  });
+  if (passed.length) H += '<h2 style="font-size:16px;color:#15803d;margin:20px 0 6px">Lo que ya está bien</h2><ul style="margin:0 0 20px;padding-left:20px">' + passed.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+  H += '<p style="color:#4a3b57;font-size:14px">Esta revisión mira lo básico del HTML. Una auditoría completa incluye velocidad real, contenido, enlaces y competencia.</p>' +
+    '<p style="margin:20px 0 0">¿Quieres que lo revisemos contigo? Responde este correo o escríbenos a <a href="mailto:hola@efectowow.co" style="color:#380757">hola@efectowow.co</a>.</p>' +
+    '<p style="margin:20px 0 0;font-size:12px;color:#7a6b88">Workshop of Wonders · efectowow.co</p></div>';
+  return { subject: subject, text: text.join('\n'), html: H };
+}
+
+var BUILDERS = { encabezados: encabezados, revision: revision };
 
 // null si ese simulador aún no tiene correo.
 function buildEmail(run) { return BUILDERS[run.tool] ? BUILDERS[run.tool](run) : null; }
@@ -109,6 +156,14 @@ var SAMPLES = {
       { code: 'meta_len', type: 'warning', msg: 'La meta description mide 98 caracteres (ideal 120–160).' }
     ], passed: ['El title existe y mide 54 caracteres', 'El primer encabezado es un H1'] }
   }
+};
+SAMPLES.revision = {
+  tool: 'revision', url: 'https://tusitio.com/', host: 'www.tusitio.com',
+  result: { score: 64, issues: [
+    { code: 'noindex', type: 'error', msg: 'Tu página le pide a Google que NO la guarde (noindex): no aparecerá en los resultados.' },
+    { code: 'no_meta', type: 'warn', msg: 'Tu página no tiene descripción (meta description): Google inventa una por ti.' },
+    { code: 'no_sitemap', type: 'warn', msg: 'No encontramos el mapa del sitio (sitemap.xml).' }
+  ], passed: ['Tu sitio usa HTTPS.', 'Tu página está preparada para el celular.'] }
 };
 function sampleEmail(tool) { return SAMPLES[tool] ? buildEmail(SAMPLES[tool]) : null; }
 

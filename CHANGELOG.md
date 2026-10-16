@@ -55,6 +55,11 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: nueva herramienta "Revisión express" (analiza la página real)
+- `playground/revisa-tu-pagina.html` + `api/revisar.js` + `src/js/playground-revision.js`: la persona pega su link y se revisan ~16 puntos reales (HTTPS, noindex, celular, title, H1, meta, sitemap, robots, datos estructurados, vista previa al compartir, alt, canonical, idioma, tiempo de respuesta) con puntaje. Reutiliza la lectura segura (SSRF) de `api/headings.js` (ahora exporta `lib`). El "cómo arreglarlo" llega por correo al dejar el email (`api/_diagnostico.js`, builder `revision`, textos en `FIX_R`); guarda el uso con `_runs.saveRun('revision', …)`.
+- En `playground.html` es la primera tarjeta de "Quiero que me encuentren" y la recomendación de arriba. Añadida al `sitemap.xml`.
+- Probado el backend con `node` contra www.efectowow.co y example.com; el front NO se vio en navegador (el pane rechaza localhost). Pendiente: probar en vivo, y ver el correo con RESEND configurado.
+
 ### 2026-10-15 — Playground: de patio con física a cuadrícula guiada por objetivo
 - `playground.html`: las 4 necesidades son tarjetas grandes (con descripción y conteo) y "Ver todas"; la cuadrícula sale ordenada por necesidad; línea de recomendación ("¿Te encuentran en Google?"); título "¿Qué quieres lograr?"; textos de las 14 herramientas reescritos en lenguaje simple (qué haces y qué obtienes) con tiempo (`Sliders · 2 min`) y botón "Empezar" (copy aprobado por la dueña).
 - El patio con física (Matter.js) ya no arranca solo: queda como easter egg en `playground.html?patio=1` (`src/js/playground.js`). Sin ese parámetro no se carga Matter.
