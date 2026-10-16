@@ -16,7 +16,7 @@
     var lab = el('label', 'sr-only', 'Tu correo'); var id = 'ld' + Math.random().toString(36).slice(2, 8); lab.setAttribute('for', id);
     var inp = el('input'); inp.type = 'email'; inp.id = id; inp.placeholder = 'tucorreo@empresa.com'; inp.autocomplete = 'email'; inp.inputMode = 'email'; inp.required = true; inp.value = remembered();
     var hp = el('input', 'ld-hp'); hp.type = 'text'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true'); hp.name = 'website';
-    var btn = el('button', 'btn btn-primary ld-btn'); btn.type = 'submit'; btn.innerHTML = 'Recibir diagnóstico completo gratis <span aria-hidden="true">→</span>';
+    var btn = el('button', 'btn btn-primary ld-btn'); btn.type = 'submit'; btn.innerHTML = 'Recibir diagnóstico completo gratis <i class="wic wic-r" aria-hidden="true"></i>';
     row.appendChild(lab); row.appendChild(inp); row.appendChild(hp); row.appendChild(btn);
     wrap.appendChild(row);
     var msg = el('p', 'ld-msg'); msg.setAttribute('role', 'status'); msg.setAttribute('aria-live', 'polite');

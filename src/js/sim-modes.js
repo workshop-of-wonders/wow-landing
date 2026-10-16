@@ -155,7 +155,7 @@
           var b = blocks[q.v]; if (!b) return; var v = a[k], t = b.querySelector('.sb-t');
           b.classList.remove('is-wait', 'is-yes', 'is-half', 'is-no');
           if (v == null) { b.classList.add('is-wait'); t.textContent = ''; }
-          else if (v >= 0.99) { b.classList.add('is-yes'); t.textContent = '✓'; }
+          else if (v >= 0.99) { b.classList.add('is-yes'); t.innerHTML = '<i class="wck" aria-hidden="true"></i>'; }
           else if (v > 0) { b.classList.add('is-half'); t.textContent = '½'; }
           else { b.classList.add('is-no'); t.textContent = 'falta'; }
         });
@@ -312,8 +312,8 @@
         card.appendChild(row);
       })(k);
       var foot = el('div', 'pgd-foot');
-      var back = el('button', 'qz-back', p ? '← Atrás' : ''); back.type = 'button'; if (!p) back.style.visibility = 'hidden';
-      var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado →' : 'Siguiente →'); next.type = 'button';
+      var back = el('button', 'qz-back', p ? '<i class="wic wic-l" aria-hidden="true"></i> Atrás' : ''); back.type = 'button'; if (!p) back.style.visibility = 'hidden';
+      var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado <i class="wic wic-r" aria-hidden="true"></i>' : 'Siguiente <i class="wic wic-r" aria-hidden="true"></i>'); next.type = 'button';
       foot.appendChild(back); foot.appendChild(next); card.appendChild(foot); box.appendChild(card);
       function sync() { var ok = true; for (var j = from; j < to; j++) if (a[j] == null) ok = false; next.disabled = !ok; }
       sync(); upd();
@@ -384,7 +384,7 @@
         ul.appendChild(li);
       });
       box.appendChild(ul);
-      var foot = el('div', 'sw-foot', '<button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <span aria-hidden="true">→</span></button>'); box.appendChild(foot);
+      var foot = el('div', 'sw-foot', '<button type="button" class="btn btn-primary sw-go">Ver mi diagnóstico <i class="wic wic-r" aria-hidden="true"></i></button>'); box.appendChild(foot);
       var card = foot, sw = ul.querySelectorAll('.switch');
       function upd() { var a = [].map.call(sw, function (s) { return s.classList.contains('is-on') ? 1 : 0; }), t = scoreOf(c, a); dial.set(t, { label: tierOf(c, t)[0] }); live.textContent = a.filter(function (x) { return x; }).length + ' de ' + n + ' encendidos'; return a; }
       function flip(s) { var on = !s.classList.contains('is-on'); s.classList.toggle('is-on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); s.querySelector('.switch-label').textContent = on ? 'ON' : 'OFF'; upd(); }
@@ -398,9 +398,10 @@
 
   /* ---------- 4. Caritas: qué tan de acuerdo estás ---------- */
   var FC = ['#ef4444', '#f97316', '#facc15', '#84cc16', '#22c55e'];
-  var MOUTH = ['M30 72 Q50 50 70 72', 'M32 68 Q50 58 68 68', 'M32 65 H68', 'M32 60 Q50 74 68 60', 'M28 56 Q50 88 72 56Z'];
   var FLAB = ['Nada de acuerdo', 'Poco', 'Más o menos', 'De acuerdo', 'Totalmente'];
-  function face(m) { return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="' + FC[m] + '" stroke="#1a1320" stroke-width="3"/><circle cx="36" cy="40" r="5" fill="#1a1320"/><circle cx="64" cy="40" r="5" fill="#1a1320"/><path d="' + MOUTH[m] + '" fill="' + (m === 4 ? '#1a1320' : 'none') + '" stroke="#1a1320" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+  /* Caritas IconoWoW (muy_mal, triste, neutral, feliz, muy_feliz): el color sube de rojo a verde y los ojos/boca quedan recortados */
+  var FACES = [{"vb":"0 0 377.28 342.24","d":["M144.03,335c-39.87-10.39-87.72-33.25-115.6-62.63C1.59,244.09-7.93,203.61,7.17,167.04c13.13-31.8,39.63-59.14,67.04-80,34.23-26.05,71-47.98,110.5-65.15,36.74-15.97,80.17-27.38,119.36-19.12,19.96,4.21,36.41,15.57,47.06,32.95,19.45,31.73,28.02,67.76,25.8,105.19-1.89,31.84-9.46,61.87-21.83,91.11-25.46,60.21-73.79,106.03-141.16,109.83-23.85,1.35-46.24-.67-69.92-6.84ZM117.31,184.19c15.33-7.85,29.89-16.33,44.68-25.14,4.1-2.44,6.58-6.87,6.83-10.77.3-4.61-1.37-9.22-5.14-12.27l-35.85-28.99c-6.65-5.38-15.89-4.37-20.42,2.64-4.23,6.56-1.93,14.25,4.64,19.12,6.74,4.99,13.15,9.95,19.85,16.19l-26.02,14.85c-6.68,3.81-9.34,11.21-5.91,18.35,2.71,5.64,10.42,9.55,17.32,6.02ZM274.45,183.69c7.17,4.04,14.84,1.69,18.57-4.29,3.93-6.3,2.22-14.23-4.48-18.31l-26.17-15.94,23.33-19.49c5.44-4.55,4.32-12.84-.46-17.54-4.24-4.18-11.37-5.69-17.01-1.75-13.86,9.67-26.85,20.08-39.77,30.95-3.75,3.15-4.49,8.97-3.63,12.87.95,4.33,3.71,7.63,7.89,9.99l41.73,23.53ZM239.16,268.68c5.5,6.12,13.79,8.56,21.6,5.66,7.01-2.6,12.35-9.43,12.68-17.77.23-5.93-1.73-11.42-4.52-16.77-19.61-37.56-64.79-57.54-105.7-40.42-22.24,9.31-41.1,27.1-49.92,49.44-3.72,9.42,1.29,19.43,8.49,23.63,8.34,4.86,17.78,2.45,24.29-4.41,6.03-6.34,12.73-11.42,20.42-15.62,26.02-14.23,53.08-5.51,72.66,16.27Z"]},{"vb":"0 0 369.26 341.57","d":["M217.43,340.43c-60.72,6.42-123.73-14.51-170.67-52.48C6.13,255.1-14.53,200.45,11.64,152.5c7.88-14.44,18.21-26.3,30.52-37.63,34.79-32.01,73.44-58.98,115.14-81.52,45.96-24.84,116.01-47.39,163.6-22.63,15.35,7.98,26.06,21.01,33.09,36.93,8.18,18.51,12.95,37.88,14.49,58.46,3.71,49.55-5.81,98.87-27.78,143.39-24.44,49.51-67.46,85.03-123.27,90.93ZM252.16,123.63c-2.8-6.36-8.52-10.46-14.65-10.93s-12.47,3.08-16.07,8.7c-7.42,11.6-7.86,32.8-.26,43.93,3.8,5.57,9.7,9.02,16.17,8.37,18.44-1.85,23.39-30.55,14.81-50.07ZM158.92,145.2c.3-16.1-5.66-31.85-20.09-31.83-21.14.04-24.92,37.23-14.08,52.4,3.29,4.61,8,7.67,13.27,7.9,13.13.58,20.62-13.18,20.91-28.48ZM234.14,262.87c7.49,7.2,17.39,8.85,25.64,3.32,7.48-5.01,10.76-14.48,7.03-23.58-2.58-6.29-6.31-11.71-11.11-16.92-19.92-21.64-48.52-33.48-78.43-30.3-29.06,3.09-55.2,19.72-70.52,43.89-5.76,9.09-3.06,20.24,4.05,26.02,8.14,6.62,18.9,4.9,26.57-2.04,12.36-11.19,26.99-18.82,43.94-20.02,19.74-1.4,38.39,5.74,52.83,19.62Z"]},{"vb":"0 0 362.14 338.92","d":["M265.25,332.57c-68.17,18.82-150.03-6.48-207.28-46.02-27.96-19.31-48.68-44.85-55.83-78.23-8.65-40.38,9.76-74.7,38.64-102.38C87.52,61.18,151.86,18.28,215.58,4.15c22.57-5.01,45.08-5.72,67.41-.81,22.36,4.92,39.97,18.18,51.25,37.9,16.8,29.38,25.92,61.49,27.55,95.57,2.33,48.93-6.62,109.4-33.75,150.59-14.83,22.52-36.7,37.98-62.79,45.18ZM244.77,172.58c6.08-2.96,10.09-8.39,12.16-14.39,7.59-21.98.14-51.81-19.94-51.93-21.02-.13-29.58,35.12-17,57.87,4.95,8.95,15.58,12.93,24.77,8.46ZM153.79,163.48c7.2-14.28,7.1-31.86-.05-45.62-3.59-6.92-10.64-10.89-17.6-10.64-7.01.25-13.51,4.52-17,11.48-11.42,22.84-3.22,55.54,16.91,55.7,6.96.06,14.07-3.64,17.74-10.91ZM242.01,251.58c11.82-.04,19.5-11.3,19.43-21.06.12-11-7.55-19.41-18.76-22.17l-111.22.04c-12.02,3-19.67,12.37-18.57,23.95,1.02,10.62,9.97,19.62,21.64,19.58l107.47-.34Z"]},{"vb":"0 0 370.22 333.59","d":["M194.81,331.96c-43.26-4.89-83.52-19.66-119.8-42.14-33.28-20.62-60.52-51.1-71.15-88.92-16.1-57.31,20.62-102.09,65.86-133.58C119.07,32.97,182.03,5.37,242.39.57c20.2-1.6,39.63.1,58.62,6.05,22.42,7.02,39.07,22.07,48.82,43.35,8.53,18.61,13.38,37.7,16.77,58.16,7.88,47.47,2.98,95.24-15.52,139.68-8.04,19.32-18.99,36.46-33.96,51.07-32.91,32.11-76.47,38.27-122.31,33.08ZM128,146.2c11.35-2.08,20.62,4.4,25.96,13.56,2.39,4.11,5.4,7.98,10.69,8.18,7.85.29,14.22-7.55,12.53-15.77-2.92-14.22-11.97-26.65-24.4-34.14-25.64-15.47-55.37,2.77-65.06,30.31-1.76,5.01-1.05,10.57,2.02,14.51,2.58,3.32,6.15,4.86,10.16,4.47,9.92-.98,11.44-18.05,28.11-21.11ZM278.59,153.58c8.19,7.15,9.73,16.12,19.05,15.17,7.32-.75,12.26-9.39,9.65-17.39-8.26-25.37-33.7-41.75-58.43-31.56-17.48,7.2-33.45,29.11-27.86,41.83,1.8,4.09,5.35,6.51,8.99,6.84,10.02.91,11.08-9.74,20.41-16.25,8.75-6.1,19.88-5.88,28.18,1.37ZM236.86,203.13c-12.26,13.56-29.48,20.64-47.36,18.16-14.08-1.95-25.67-10.03-34.47-20.58-5.52-6.62-15-7.64-21.9-3.34-6.25,3.9-9.92,12.36-6.98,20.44,10.56,29.06,38.78,49.23,70.37,48.96,30.88-.26,59.06-19.75,70.14-47.89,3.38-8.59-1.42-17.76-8.04-21.13-7.94-4.04-15.71-1.33-21.77,5.37Z"]},{"vb":"0 0 451.75 412.56","d":["M247.81,410.22c-74.23,10.76-155.68-16.18-207.78-70.09C3.91,302.75-15.29,250.53,15.05,204.24c9.86-15.04,21.58-27.66,35.06-39.93,27.48-25.02,57.09-46.83,89.36-65.36,34.1-19.58,70.68-32.51,109.94-26.21,19.41,3.11,35.76,12.49,48.78,27.26,19.74,22.39,35.75,47.3,48.13,74.6,24.6,54.24,26.08,117.01-2.7,169.23-20.02,36.32-54.57,60.42-95.82,66.39ZM279.1,223.38c3.16,6.13,8.78,9.43,14.49,7.98s10.85-6.6,10.24-13.33c-1.67-18.4-13.73-34.7-30.62-42.03-26.99-11.72-58.93,9-66.9,36.22-1.93,6.59,2.64,13.31,7.55,15.3,6.64,2.68,12.4-.41,16.33-6.02,5.31-7.57,13-13.73,22.4-14.72,11.71-1.23,21.16,6.24,26.51,16.62ZM123.36,224.03c8.54.3,14.77,5.2,19.91,10.66,4.35,4.62,10.53,6.45,15.84,3.23,14.41-8.72-.6-30.93-18.79-41.23-14.88-8.43-32.9-7.22-46.09,3.94-16.01,13.55-25.79,41.75-13.29,50.95,3.01,2.21,6.88,2.86,10.6,1.35,4.87-1.97,6.95-6.58,8.62-11.36,3.48-9.96,11.61-17.95,23.2-17.54ZM223.58,338.71c18.5-16.5,30.16-39.71,33.6-64.33.89-6.34-1.54-12.34-5.68-16.16-3.74-3.44-9.29-5.5-15.13-4.43l-94.63,17.33c-8.92,1.63-14.62,11.72-12.07,20.58,5.2,18.09,15.85,34.25,30.15,46.39,20.39,17.3,43.62,18.59,63.76.62Z","M357.4,117.27c-1.43-8.96,2.66-17.83,10.19-22.37l50.33-30.34c11-6.63,24.81-1.89,30.78,8.36,6.24,10.7,2.69,25.53-8.89,31.3l-53.97,26.86c-5.82,2.89-11.81,3.01-18.05-.06-4.44-2.18-9.28-6.74-10.39-13.75Z","M322.66,84.64c-7.37-4.1-10.52-13.42-8.16-21.05l15.02-48.73c2.61-8.47,10.62-13.4,18.18-14.57,9.22-1.42,17.85,2.46,22.67,10.33,4.25,6.95,3.52,15.03.18,22.24l-19.31,41.69c-4.93,10.64-17.44,16.29-28.58,10.1Z","M422.39,183.06l-41.05-5.74c-6.63-.93-9.99-8.48-9.27-14.54.65-5.51,5.32-12.29,12.06-12.02l42.59,1.72c8.46.34,13.49,9.74,12.65,17-.91,7.8-7.97,14.84-16.98,13.58Z"]}];
+  function face(m) { var f = FACES[m]; return '<svg viewBox="' + f.vb + '" fill="' + FC[m] + '" aria-hidden="true">' + f.d.map(function (d) { return '<path d="' + d + '"/>'; }).join('') + '</svg>'; }
   W.modes.faces = function (sec, c, H) {
     H.head(sec, c);
     var n = c.qs.length, a = [], i = 0, hud = W.hud(sec, c), box = el('div', 'qz qz--fc');
@@ -422,7 +423,7 @@
         row.appendChild(b);
       })(m);
       card.appendChild(row);
-      var foot = el('div', 'qz-foot', i ? '<button type="button" class="qz-back">← Atrás</button>' : '<span></span>'); card.appendChild(foot); box.appendChild(card);
+      var foot = el('div', 'qz-foot', i ? '<button type="button" class="qz-back"><i class="wic wic-l" aria-hidden="true"></i> Atrás</button>' : '<span></span>'); card.appendChild(foot); box.appendChild(card);
       var bk = card.querySelector('.qz-back'); if (bk) bk.addEventListener('click', function () { i--; q(-1); });
       if (dir) h.focus({ preventScroll: true });
       if (dir && i === 0) track('sim_start', { sim: sec.id });
@@ -442,7 +443,7 @@
       box.appendChild(el('p', 'po-help', 'Arrastra cada post-it a la columna que mejor lo describa. En el celular: toca el post-it y luego la columna.'));
       var pile = el('div', 'po-pile'); pile.setAttribute('aria-label', 'Post-its por ordenar'); box.appendChild(pile);
       var cols = el('div', 'po-cols'); box.appendChild(cols);
-      var foot = el('div', 'po-foot', '<span class="po-count" aria-live="polite"></span>'), go = el('button', 'btn btn-primary', 'Ver mi resultado →'); go.type = 'button'; go.disabled = true; foot.appendChild(go); box.appendChild(foot);
+      var foot = el('div', 'po-foot', '<span class="po-count" aria-live="polite"></span>'), go = el('button', 'btn btn-primary', 'Ver mi resultado <i class="wic wic-r" aria-hidden="true"></i>'); go.type = 'button'; go.disabled = true; foot.appendChild(go); box.appendChild(foot);
       var drops = COLS.map(function (col) { var s = el('section', 'po-col po-' + col[2], '<h4>' + col[0] + '</h4><div class="po-drop"></div>'); s._v = col[1]; cols.appendChild(s); return s; });
       var count = foot.querySelector('.po-count');
       function refresh() { var done = a.filter(function (v) { return v != null; }).length; count.textContent = done + ' de ' + n + ' pegados'; go.disabled = done < n; }
@@ -540,7 +541,7 @@
       var a = [], state = [], cellQ = [0, 1, 2, 3, -1, 4, 5, 6, 7], lines = 0, touched = {}; hud.reset();
       var wrap = el('div', 'tt'), board = el('div', 'tt-board'), side = el('div', 'qz-card tt-side');
       side.innerHTML = '<p class="qz-meta">TRES EN LÍNEA</p><h3 class="qz-text">Marca lo que ya tienes</h3><p class="tt-rule">Toca una casilla: <b>X</b> = lo tengo · <b>O</b> = en parte · vacía = todavía no. Si juntas 3 en línea, tu marca está bien amarrada.</p><p class="tt-detail" aria-live="polite">Toca o pasa el cursor por una casilla para ver la pregunta completa.</p><p class="tt-lines" aria-live="polite"></p>';
-      var go = el('button', 'btn btn-primary', 'Ver mi resultado →'); go.type = 'button'; side.appendChild(go);
+      var go = el('button', 'btn btn-primary', 'Ver mi resultado <i class="wic wic-r" aria-hidden="true"></i>'); go.type = 'button'; side.appendChild(go);
       var cells = [];
       cellQ.forEach(function (k, pos) {
         var b = el('button', 'tt-cell' + (k < 0 ? ' is-free' : '')); b.type = 'button';
@@ -594,8 +595,8 @@
           list.appendChild(row);
         })(k);
         left.appendChild(list);
-        var foot = el('div', 'pgd-foot'), back = el('button', 'qz-back', '← Atrás'); back.type = 'button'; if (!p) back.style.visibility = 'hidden';
-        var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado →' : 'Siguiente →'); next.type = 'button';
+        var foot = el('div', 'pgd-foot'), back = el('button', 'qz-back', '<i class="wic wic-l" aria-hidden="true"></i> Atrás'); back.type = 'button'; if (!p) back.style.visibility = 'hidden';
+        var next = el('button', 'btn btn-primary', p === pages - 1 ? 'Ver mi resultado <i class="wic wic-r" aria-hidden="true"></i>' : 'Siguiente <i class="wic wic-r" aria-hidden="true"></i>'); next.type = 'button';
         foot.appendChild(back); foot.appendChild(next); left.appendChild(foot);
         back.addEventListener('click', function () { p--; page(-1); });
         next.addEventListener('click', function () { if (p < pages - 1) { p++; page(1); } else W.result(box, c, a, sec, build, H); });

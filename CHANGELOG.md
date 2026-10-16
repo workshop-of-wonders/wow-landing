@@ -55,6 +55,39 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Cohete del proceso en naranja (solo local, sin commit)
+- El cohete que orbita el círculo del proceso pasa de lima (`#dce157`, se perdía sobre las flechas lima) a naranja `#f97316` (`design-system/icons/icon-cohete.svg`; lo usan también el cohete móvil y cualquier página con el diagrama). Probado en pantalla en el home: se distingue sobre la flecha.
+
+### 2026-10-15 — Optimize vuelve a `flechas_ciclo` (solo local, sin commit)
+- Decisión de la dueña: el nodo **Optimize** del proceso usa `IconoWoW_flechas_ciclo` (blanco), no el engranaje. `IconoWoW_engranaje.svg` queda en la biblioteca sin usarse en el sitio. Esto anula las dos entradas anteriores sobre el engranaje (lineal y WoW).
+
+### 2026-10-15 — Engranaje IconoWoW (solo local, sin commit)
+- Nuevo `design-system/iconos-wow/IconoWoW_engranaje.svg` (de `Recurso 246`, sin color propio). Reemplaza al engranaje lineal en el nodo **Optimize** del proceso (las 9 páginas con el diagrama), en blanco. Esto anula la entrada anterior del mismo día que dejaba el engranaje lineal. La **base de datos** sigue con su dibujo propio hasta que haya un `IconoWoW_base_de_datos`. Probado en pantalla en el home.
+
+### 2026-10-15 — Pin de lugar (solo local, sin commit)
+- Nuevo `design-system/iconos-wow/IconoWoW_pin_lugar.svg` (de `Recurso 245`; viene sin color, así que en el sitio va con `fill=currentColor`). Reemplaza a `estrella` en la tarjeta de **Google My Business** de `servicios.html` (era el sustituto por no tener pin). Probado en pantalla.
+
+### 2026-10-15 — Engranaje y base de datos vuelven a ser lo que son (solo local, sin commit)
+- Decisión de la dueña: el **engranaje** (nodo Optimize del proceso, en las 9 páginas con el diagrama) y la **base de datos** (píldora "Datos" del héroe de servicios) conservan su dibujo propio en vez de `flechas_ciclo` y `nube`. Se restauró el SVG lineal original (tomado de `git show e53da5d`). Si algún día se hacen IconoWoW de engranaje y base de datos, reemplazarlos ahí; las entradas anteriores que dicen `flechas_ciclo`/`nube` quedan sin efecto para esos dos.
+
+### 2026-10-15 — Caritas IconoWoW (solo local, sin commit)
+- 5 íconos nuevos en `design-system/iconos-wow/`: `IconoWoW_carita_muy_mal` (240), `_triste` (241), `_neutral` (242), `_feliz` (243), `_muy_feliz` (239). Se usan en la escala de caritas del Playground ("Qué tan de acuerdo estás", `sim-modes.js` → `face(m)`): las 5 formas inline con el color que ya tenían (rojo, naranja, amarillo, lima, verde), ojos y boca recortados; reemplazan los círculos dibujados con trazo. También reemplazan el dibujo de caritas de la tarjeta de "Te encuentran cerca" en `servicios/seo-local.html`. Probado en pantalla en ambos.
+
+### 2026-10-15 — Biblioteca de 108 íconos + íconos de interfaz WoW (solo local, sin commit)
+- `design-system/iconos-wow/` pasa a 108 `IconoWoW_*.svg` (se sumaron 53 de `Desktop/WoW/SVG`: interfaz, objetos, flechas, etc.; falta `IconoWoW_vacio_sin_dibujo`, que llegó vacío y no se copió; `check` y `equis` vienen en negro).
+- **Glifos de texto → íconos** (`.wic`, máscara CSS que toma color y tamaño del texto; `styles.css`): `→ ← ↓ ↑` = `flecha_derecha/izquierda/abajo/arriba`, `↗` = flecha derecha girada, `▾` = flecha abajo chica (caret del menú), `✕ ×` = `equis`. 414 reemplazos en las páginas HTML (solo nodos de texto; no títulos, metas ni JSON-LD) y en el JS que arma interfaz (`main.js`, `project-popup.js`, `servicios.js`, `sim-modes.js`, `playground-lead.js`). Los `content:` de CSS con `→ ↓ ✓` también usan máscara. El script de una sola vez no se guardó; las páginas nuevas deben usar `<i class="wic wic-r" aria-hidden="true"></i>` en vez del carácter.
+- **SVG de interfaz** (6): flecha de "Elige una sala", íconos de las pestañas de zona (laptop, cohete, barras) y lupa del mockup de búsqueda ahora son IconoWoW.
+- **Siguen sin ser IconoWoW** (a propósito o pendientes): menú hamburguesa (`.nav-burger`, tres rayas CSS que se animan a X), ilustraciones/mockups propios (`hx-lines`, `sv-big`, `sv-trend`, `od-big`, `oc-line`, `sl-bg`, `ob-cur`, cursores `sv-cur`/`cursor-arrow`/`cursor-hand`, flechas curvas y conectores del proceso y del hub), los 31 dibujos de las tarjetas del Playground, logos de herramientas/clientes, el `+`/`-` del FAQ (no verificado cómo está hecho), `→` en el texto plano de keywords (`playground-keywords.js`), símbolos matemáticos `× − ÷` de los simuladores y el `✓` del correo de texto plano.
+- Probado en pantalla: caret y flechas de tarjetas en `servicios/seo.html`, la X del modal en `404.html`. Sin ver: botones de los simuladores (Siguiente/Atrás), `door-cursor-arrow` del home, lupa y pestañas de `servicios.html`.
+
+### 2026-10-15 — Íconos check y alerta (solo local, sin commit)
+- Dos íconos nuevos en `design-system/iconos-wow/`: `IconoWoW_check_con_fondo.svg` (de `check con fondo.svg`) e `IconoWoW_alerta.svg` (de `Recurso 137.svg`); conservan sus colores originales (`#652adc` y `#6a21df`, no el `#9640d7` del resto).
+- **Alerta**: reemplaza el triángulo del recibo de error del simulador de encabezados (`warnIcon()` en `src/js/playground-headings.js`), en ámbar `#f59e0b`. Probado en pantalla.
+- **Check**: reemplaza el carácter `✓` en 5 sitios con la clase `.wck` (máscara CSS, toma el color del texto; el check queda recortado): filas de eventos del héroe de analítica (`.ht-row b`, verde `#16a34a`; probado), pastillas del héroe de servicios (`.sv-chk li::before`, lima), mensaje "¡Gracias por tu compra!" de e-commerce (`.os-ok`) y casillas de la rayuela del simulador (`.hp-sq.is-yes`, `sim-modes.js`). **Sin ver en pantalla:** `.sv-chk`, `.os-ok` y la rayuela. El `✓` del correo de texto plano (`api/_diagnostico.js`) se dejó: es texto sin imágenes.
+
+### 2026-10-15 — Cohete WoW en el proceso (solo local, sin commit)
+- El cohete que orbita el círculo del proceso (y su versión móvil `.wm-rocket-m`) deja de ser el cometa y pasa a ser el `IconoWoW_cohete` (de `Desktop/WoW/SVG/Recurso 136.svg`, guardado en `design-system/iconos-wow/IconoWoW_cohete.svg`), en lima `#dce157` como las flechas: `design-system/icons/icon-cohete.svg`. Se cambió el `<image>` en las 9 páginas con el diagrama y la regla de `styles.css`; `icon-cometa.svg` se borró. Misma orientación (nariz arriba a la derecha) que el emoji, así que el `offset-rotate` no cambió. Probado: se ve sobre la flecha del proceso en el home; el móvil no se vio en pantalla.
+
 ### 2026-10-15 — Asterisco grueso nuevo en la biblioteca (solo local, sin commit)
 - `design-system/iconos-wow/IconoWoW_asterisco.svg` (el grueso) se reemplaza por el dibujo de `Desktop/WoW/SVG/Recurso 135.svg` (mismo lienzo 36.89×39.9). El sitio sigue usando el **fino** (`IconoWoW_asterisco_fino`); este archivo es solo de la biblioteca de íconos y no está referenciado en el sitio.
 

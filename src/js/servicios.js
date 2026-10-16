@@ -451,7 +451,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     var h = el('div', 'sd-head', '<p class="eyebrow">' + c.eyebrow + '</p><h2 id="' + tid + '">' + c.title + '</h2><p class="sd-sub">' + c.sub + '</p>');
     sec.appendChild(h);
   }
-  function cta(c) { return '<a href="#contacto" class="btn btn-primary" data-open-form>' + c.cta + ' <span aria-hidden="true">→</span></a>'; }
+  function cta(c) { return '<a href="#contacto" class="btn btn-primary" data-open-form>' + c.cta + ' <i class="wic wic-r" aria-hidden="true"></i></a>'; }
 
   /* Chequeo tipo quiz: una pregunta a la vez (Sí = 100 % del peso, En parte = 50 %, No = 0). */
   var ANS = [['Sí', 1, 'yes'], ['En parte', 0.5, 'half'], ['No', 0, 'no']];
@@ -465,7 +465,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
     function intro() {
       box.className = 'qz qz--in';
-      box.innerHTML = '<div class="qz-card qz-intro"><p class="qz-meta">' + n + ' PREGUNTAS · MENOS DE 2 MINUTOS</p><h3>Responde con sinceridad: el resultado solo sirve si es real.</h3><p>Tu puntaje y tus prioridades aparecen al terminar. El cálculo ocurre en tu pantalla.</p><button type="button" class="btn btn-primary qz-start">Empezar <span aria-hidden="true">→</span></button></div>';
+      box.innerHTML = '<div class="qz-card qz-intro"><p class="qz-meta">' + n + ' PREGUNTAS · MENOS DE 2 MINUTOS</p><h3>Responde con sinceridad: el resultado solo sirve si es real.</h3><p>Tu puntaje y tus prioridades aparecen al terminar. El cálculo ocurre en tu pantalla.</p><button type="button" class="btn btn-primary qz-start">Empezar <i class="wic wic-r" aria-hidden="true"></i></button></div>';
       box.querySelector('.qz-start').addEventListener('click', function () { i = 0; a = []; question(1); if (window.gtag) window.gtag('event', 'sim_start', { sim: sec.id, page: location.pathname }); });
     }
     function question(dir) {
@@ -474,7 +474,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       box.innerHTML =
         '<div class="qz-top"><span class="qz-count">PREGUNTA ' + (i + 1) + ' DE ' + n + '</span><div class="qz-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + n + '" aria-valuenow="' + i + '"><i style="width:' + (i / n * 100) + '%"></i></div></div>' +
         '<div class="qz-card qz-q' + (reduce ? '' : dir > 0 ? ' qz-from-r' : ' qz-from-l') + '"><h3 class="qz-text" id="qzq' + uid + '" tabindex="-1">' + q.q + '</h3><div class="qz-ans" role="group" aria-labelledby="qzq' + uid + '"></div>' +
-        '<div class="qz-foot">' + (i ? '<button type="button" class="qz-back">← Atrás</button>' : '<span></span>') + '<span class="qz-hint">Atajos: 1 · 2 · 3</span></div></div>';
+        '<div class="qz-foot">' + (i ? '<button type="button" class="qz-back"><i class="wic wic-l" aria-hidden="true"></i> Atrás</button>' : '<span></span>') + '<span class="qz-hint">Atajos: 1 · 2 · 3</span></div></div>';
       var wrap = box.querySelector('.qz-ans');
       ANS.forEach(function (o, k) {
         var b = el('button', 'qz-opt qz-' + o[2] + (a[i] === o[1] ? ' is-on' : ''), '<kbd>' + (k + 1) + '</kbd><span>' + o[0] + '</span>'); b.type = 'button';

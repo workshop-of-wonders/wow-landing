@@ -58,15 +58,15 @@
   function wonder(file, w, h) { var i = el('img', 'wd wd--end'); i.src = '/design-system/wonders/Wonder_' + file + '.png'; i.alt = ''; i.width = w; i.height = h; i.loading = 'lazy'; return i; }
   var runner = el('img', 'wd ld--busy-wonder'); runner.src = '/design-system/wonders/Wonder_Morado_Corriendo.png'; runner.alt = ''; runner.width = 466; runner.height = 564; runner.hidden = true; status.parentNode.insertBefore(runner, status.nextSibling);
 
+  // Ícono de alerta: IconoWoW_alerta (triángulo con exclamación recortada), en ámbar.
   function warnIcon() {
     var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 48 44'); svg.setAttribute('width', '48'); svg.setAttribute('height', '44'); svg.setAttribute('aria-hidden', 'true');
-    var tri = document.createElementNS(NS, 'path'); tri.setAttribute('d', 'M24 3 L46 41 H2 Z'); tri.setAttribute('fill', '#f59e0b'); tri.setAttribute('stroke', '#b45309'); tri.setAttribute('stroke-width', '3'); tri.setAttribute('stroke-linejoin', 'round');
-    var bar = document.createElementNS(NS, 'rect'); bar.setAttribute('x', '22'); bar.setAttribute('y', '16'); bar.setAttribute('width', '4'); bar.setAttribute('height', '13'); bar.setAttribute('rx', '2'); bar.setAttribute('fill', '#1a1320');
-    var dot = document.createElementNS(NS, 'circle'); dot.setAttribute('cx', '24'); dot.setAttribute('cy', '34'); dot.setAttribute('r', '2.6'); dot.setAttribute('fill', '#1a1320');
-    svg.appendChild(tri); svg.appendChild(bar); svg.appendChild(dot);
+    svg.setAttribute('viewBox', '0 0 431.4 379.17'); svg.setAttribute('width', '48'); svg.setAttribute('height', '42'); svg.setAttribute('aria-hidden', 'true');
+    var p = document.createElementNS(NS, 'path'); p.setAttribute('d', 'M273.69,377.93c-40.69-.45-79.35-1.1-119.37.23-22.77.75-44.39,1.41-67,.73-12.18-.37-23.49-1.9-35-5.39-40.82-12.37-61.68-50.55-48.28-92.05,4.67-14.46,11.17-27.18,18.64-40.56,18.76-33.59,38.79-65.63,59.83-97.99l64.56-99.31C171.58,5.89,216.06-13.27,256.63,10.39c13.03,7.6,23.49,18.05,32.12,30.86,21.99,32.61,42.32,65.5,62.28,99.56l59.79,102.05c6.96,11.88,12.45,23.46,16.72,36.39,6.1,18.5,5,37.71-3.42,55.36-16.26,34.07-56.72,44.36-92.88,43.96l-57.54-.63ZM238.66,215.91c5.56-29.98,10.92-59.45,13.96-89.8,1.06-10.62-1.8-21.35-9.25-28.57-9.06-8.78-21.83-10.84-33.96-8.78-14.02,2.38-24.38,12.3-26.71,26.25-1.08,6.44-.76,12.47.07,19.09,3.48,27.65,7.82,54.63,12.93,82,2.09,11.21,11.44,17.98,22.03,17.75,10.16-.22,18.92-7.01,20.94-17.93ZM255.52,292.25c0-21.14-17.14-38.28-38.28-38.28s-38.28,17.14-38.28,38.28,17.14,38.28,38.28,38.28,38.28-17.14,38.28-38.28Z'); p.setAttribute('fill', '#f59e0b');
+    svg.appendChild(p);
     return svg;
   }
+
 
   // Bloque de error del recibo: la palabra ERROR, el triángulo de advertencia y la explicación.
   function errorBlock(add, info, code) {
