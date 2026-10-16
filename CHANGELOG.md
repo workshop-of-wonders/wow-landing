@@ -55,6 +55,16 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Correos del Playground y del formulario, Visibilidad con Sí/En parte/No, cierre por resultado
+- **Correo del plan de cada simulador de cuestionario** (los 8: visibilidad-google, te-encuentran-cerca, ias-te-citan, web-lista, medicion-instalada, datos-que-deciden, madurez-de-datos, marca-consistente): nuevo `api/simulador.js` recalcula puntaje y plan EN EL SERVIDOR con `api/_sims.json` (generado por `python -X utf8 scripts/build-sim-configs.py`; volver a correrlo si cambia el JSON `data-sim` de una página), guarda el uso (`tool = 'sim:<slug>'`) y devuelve un `runKey` que `sim-modes.js` manda a `/api/contact`; `api/_diagnostico.js` (`simulador`) arma el correo con fases 1-3, lo ya resuelto y botón al servicio. El navegador nunca manda texto del correo (evita usar el flujo para enviar mensajes a medida).
+- **Confirmación del formulario "Cuéntanos tu proyecto"** (`buildAck`/`contacto` en `_diagnostico.js`, enviada desde `api/contact.js`): correo fijo a quien escribió, máximo 1 por correo por hora. NO hay aviso al equipo (decisión previa: los leads se revisan en /admin).
+- Panel /admin: `api/admin/playground.js` lista también la Revisión express y los 8 cuestionarios con sus usos y plantilla de correo.
+- Visibilidad: 3 preguntas de sí/no (ficha de Google Business, schema, GA4) ahora son botones Sí/En parte/No (`"yn": true` en el JSON; soportado en el modo `sliders`).
+- Cierre por resultado: bajo el resultado de cada cuestionario sale "Tu punto más débil: … Es lo primero que haríamos contigo."
+- Tarjeta de la Revisión express también en `servicios/seo.html` y `servicios/diseno-web.html`.
+- **Pendiente de configuración (Vercel → Environment Variables):** `RESEND_API_KEY`, `MAIL_FROM` (dominio verificado en Resend) y opcional `MAIL_REPLY_TO`; sin ellas el lead se guarda pero no sale ningún correo. Conviene además una regla de límite de tasa del Firewall sobre `/api/revisar`, `/api/simulador` y `/api/headings`.
+- Probado de punta a punta en local con node (simulador → runKey → contact → correo de prueba); el front no se vio en navegador.
+
 ### 2026-10-15 — Simuladores: autocompletar con el link y respuestas compartidas entre herramientas
 - `api/revisar.js`: nuevo modo `detect` (POST `{url, detect:true}`) que devuelve `signals` (ga4, gtm, analytics, pixel, cookies, gsc, schema, faq, llms, mobile, contact, seo) leídas del HTML real; no guarda el uso. Si no se puede saber (p. ej. todo dentro de Tag Manager o sitio armado con JS) la clave no aparece.
 - `src/js/sim-modes.js`: `W.detector` (caja "¿Prefieres no responder todo?" + link → autocompleta) en los modos paged, chat, switch y sliders; `W.remember`/`known` guardan y reutilizan respuestas por `id` de pregunta en `localStorage` (`wow_pg_answers`), con botón "Borrar y empezar de cero" y marca "ya lo sabemos". Preguntas con `id` en medicion-instalada, ias-te-citan, web-lista y visibilidad-google (el JSON `data-sim` de cada página).

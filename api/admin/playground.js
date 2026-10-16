@@ -5,9 +5,12 @@
 //   GET /playground?view=template&sim=SLUG    -> correo que se envía (asunto, texto y HTML de ejemplo)
 const { requireAuth } = require('./_auth');
 
-// slug = nombre del archivo en /playground/. tracksRuns/hasEmail: hoy solo el simulador de encabezados guarda usos y envía correo.
+// slug = nombre del archivo en /playground/. tracksRuns/hasEmail: encabezados, la revisión express y los cuestionarios (api/simulador.js,
+// herramienta 'sim:<slug>') guardan usos y envían correo. toolKey = nombre con el que se guardan los usos (por defecto, el slug).
+const QUIZ = ['visibilidad-google', 'te-encuentran-cerca', 'ias-te-citan', 'web-lista', 'medicion-instalada', 'datos-que-deciden', 'madurez-de-datos', 'marca-consistente'];
 const SIMS = [
   { slug: 'encabezados', name: 'Encabezados H1–H6', tracksRuns: true, hasEmail: true },
+  { slug: 'revisa-tu-pagina', toolKey: 'revision', name: 'Revisión express de tu página', tracksRuns: true, hasEmail: true },
   { slug: 'colores', name: 'Colores según tu sector' },
   { slug: 'keywords', name: 'Generador de keywords' },
   { slug: 'visibilidad-google', name: 'Visibilidad en Google' },
@@ -22,7 +25,8 @@ const SIMS = [
   { slug: 'madurez-de-datos', name: 'Madurez de datos' },
   { slug: 'marca-consistente', name: 'Marca consistente' },
   { slug: 'otros', name: 'Desde páginas de servicio' }
-];
+].map((s) => (QUIZ.includes(s.slug) ? { ...s, toolKey: 'sim:' + s.slug, tracksRuns: true, hasEmail: true } : s));
+const toolOf = (s) => s.toolKey || s.slug;
 
 function localNoDb() { return !process.env.VERCEL && !process.env.POSTGRES_URL && !process.env.DATABASE_URL; }
 
@@ -59,16 +63,16 @@ module.exports = async function handler(req, res) {
   try {
     if (view === 'sims') {
       const [leads, runs] = await Promise.all([leadCounts(), require('../_runs').countRuns().catch(() => ({}))]);
-      return res.status(200).json({ success: true, sims: SIMS.map((s) => ({ ...s, leads: leads[s.slug] || 0, runs: runs[s.slug] || 0 })) });
+      return res.status(200).json({ success: true, sims: SIMS.map((s) => ({ ...s, leads: leads[s.slug] || 0, runs: runs[toolOf(s)] || 0 })) });
     }
     if (!sim) return res.status(404).json({ success: false, error: 'unknown_sim' });
     if (view === 'leads') return res.status(200).json({ success: true, sim, leads: await leadsFor(sim.slug) });
     if (view === 'runs') {
-      const runs = sim.tracksRuns ? await require('../_runs').listRuns(sim.slug, req.query.limit) : [];
+      const runs = sim.tracksRuns ? await require('../_runs').listRuns(toolOf(sim), req.query.limit) : [];
       return res.status(200).json({ success: true, sim, runs });
     }
     if (view === 'template') {
-      const mail = sim.hasEmail ? require('../_diagnostico').sampleEmail(sim.slug) : null;
+      const mail = sim.hasEmail ? require('../_diagnostico').sampleEmail(toolOf(sim)) : null;
       return res.status(200).json({ success: true, sim, template: mail ? { subject: mail.subject, text: mail.text, html: mail.html, sample: true } : null });
     }
     return res.status(400).json({ success: false, error: 'bad_view' });

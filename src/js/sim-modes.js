@@ -283,6 +283,7 @@
       scaleHtml(c, total, t) +
       '<p class="sd-steps-t">TU PRIMER PASO</p><ol class="qz-steps"><li>' + (gaps.length ? gaps[0].q.s + (a[gaps[0].k] === 0.5 ? ' (ya tienes una parte)' : '') : c.none) + '</li></ol>' +
       breakdownHtml(c, a) +
+      (gaps.length ? '<p class="qz-weak">Tu punto más débil: <b>' + gaps[0].q.s + '</b>. Es lo primero que haríamos contigo.</p>' : '') +
       '<div class="qz-lead"></div><div class="qz-lock"></div>' +
       '<div class="qz-act">' + H.cta(c) + '<button type="button" class="btn qz-share">Copiar mi resultado</button><button type="button" class="qz-again">Repetir</button></div>';
     box.appendChild(card);
@@ -309,7 +310,15 @@
       track('sim_unlock', { sim: sec.id });
     }
     teaser();
+    /* En /playground/<sim>.html el servidor recalcula el plan con las respuestas y guarda el uso: con esa clave el correo lleva el plan completo. */
+    var runKey = null;
+    if (/^\/playground\//.test(location.pathname)) {
+      fetch('/api/simulador', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sim: location.pathname.split('/').pop().replace(/\.html$/, ''), answers: a }) })
+        .then(function (r) { return r.json(); }).then(function (d) { runKey = d && d.runKey || null; }).catch(function () {});
+    }
     window.WOWLead.mount(card.querySelector('.qz-lead'), {
+      runKey: function () { return runKey; },
+      okText: function (email, d) { return d && (d.emailed === 'sent' || d.emailed === 'dry-run') ? '¡Listo! Aquí está tu plan y también te lo enviamos a ' + email + '. Si no lo ves en unos minutos, revisa tu carpeta de spam.' : 'Aquí está tu plan completo. Si quieres que lo revisemos contigo, escríbenos.'; },
       tool: (c.title || sec.id), pitch: 'Te mostramos al instante tu plan completo: cada paso, en qué orden hacerlo y cuántos puntos sumas.',
       data: function () { return { sim: sec.id, page: location.pathname, score: total, tier: t[0], respuestas: a.join(','), prioridades: gaps.slice(0, 4).map(function (g) { return g.q.s; }) }; },
       onUnlock: full
@@ -651,6 +660,11 @@
         var top = el('div', 'pgd-top'); top.innerHTML = '<span class="qz-count">PÁGINA ' + (p + 1) + ' DE ' + pages + '</span>'; left.appendChild(top);
         var list = el('div', 'sl-list' + (reduce ? '' : dir > 0 ? ' qz-from-r' : dir < 0 ? ' qz-from-l' : ''));
         for (var k = p * per; k < Math.min(n, p * per + per); k++) (function (k) {
+          if (c.qs[k].yn) {                 /* pregunta de sí o no: botones en vez de slider */
+            var yr = el('fieldset', 'pgd-q'); yr.appendChild(el('legend', null, c.qs[k].q + (pre[k] != null ? BADGE : '')));
+            yr.appendChild(opts(function (v) { a[k] = v; pre[k] = null; touched[k] = true; live(); }, touched[k] ? a[k] : undefined));
+            list.appendChild(yr); return;
+          }
           var id = 'slq' + (++uid), v = Math.round(a[k] * 10), row = el('div', 'sl-row');
           row.innerHTML = '<label for="' + id + '">' + (c.qs[k].st || c.qs[k].q) + (pre[k] != null ? BADGE : '') + '</label><div class="sl-ctl"><input type="range" id="' + id + '" min="0" max="10" step="1" value="' + v + '" style="--p:' + v * 10 + '%"><output for="' + id + '">' + QT[v] + '</output></div><div class="sl-ends" aria-hidden="true"><span>Nada</span><span>Totalmente</span></div>';
           var inp = row.querySelector('input'), out = row.querySelector('output');

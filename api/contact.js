@@ -4,10 +4,14 @@
 // STATUS: deployed and connected — index.html, portafolio.html and
 // servicios.html all POST here from their "Cuéntanos tu proyecto" form.
 // Every valid submission is persisted to the `leads` Postgres table and
-// shows up in the /admin dashboard. Intentionally no email notification —
-// leads are meant to be reviewed from /admin, not by inbox.
+// shows up in the /admin dashboard. Intentionally no email notification to the
+// team — leads are meant to be reviewed from /admin, not by inbox. The only
+// emails sent are to the visitor: Playground diagnostics and a fixed
+// confirmation (_diagnostico.js, buildAck) for the project form.
 //
 // This function never receives or stores credentials from the client.
+
+var ackSent = {};
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -108,6 +112,19 @@ module.exports = async function handler(req, res) {
       console.error('contact.js: no se pudo enviar el diagnóstico', mailErr);
       emailed = 'error';
     }
+  }
+  // Formulario "Cuéntanos tu proyecto": confirmación fija a quien escribió (no a Playground, que ya recibe su diagnóstico).
+  // Máximo 1 por correo cada hora (en memoria). Sin RESEND_API_KEY no sale nada; el lead ya quedó guardado.
+  if (!isPlayground) {
+    try {
+      var addr = email.toLowerCase(), now = Date.now();
+      ackSent = ackSent || {};
+      if (!ackSent[addr] || now - ackSent[addr] > 3600000) {
+        ackSent[addr] = now;
+        var diagAck = require('./_diagnostico');
+        emailed = await diagAck.sendMail(email, diagAck.buildAck({ name: name }));
+      }
+    } catch (ackErr) { console.error('contact.js: no se pudo enviar la confirmación', ackErr); }
   }
   return res.status(200).json({ success: true, emailed: emailed });
 };

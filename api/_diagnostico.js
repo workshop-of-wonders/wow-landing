@@ -115,10 +115,85 @@ function revision(run) {
   return { subject: subject, text: text.join('\n'), html: H };
 }
 
+// Plan de un simulador de cuestionario (api/simulador.js guarda el puntaje, el nivel y los pasos pendientes por prioridad).
+function simulador(run) {
+  var r = typeof run.result === 'string' ? JSON.parse(run.result) : run.result;
+  var x = r.extra || {}, gaps = x.gaps || [], tier = x.tier || ['', ''], score = r.score == null ? 0 : r.score;
+  var title = r.title || 'tu diagnóstico';
+  var subject = 'Tu plan: ' + title + ' (' + score + '/100)';
+  var ph1 = gaps.slice(0, 4), ph2 = gaps.slice(4, 7), ph3 = gaps.slice(7);
+  var gain1 = ph1.reduce(function (t, g) { return t + g.pts; }, 0);
+  var phases = [];
+  if (ph1.length) phases.push(['Fase 1 · Primeros 30 días', ph1, 'Pasarías de ' + score + ' a ' + Math.min(100, score + gain1) + ' puntos']);
+  if (ph2.length) phases.push(['Fase 2 · Meses 2 y 3', ph2, '']);
+  if (ph3.length) phases.push(['Fase 3 · Después', ph3, '']);
+  var link = x.service ? 'https://www.efectowow.co/servicios/' + x.service + '.html' : 'https://www.efectowow.co/servicios.html';
+  var passed = r.passed || [];
+
+  var text = ['Hola,', '', 'Este es tu plan de "' + title + '".', '', 'Puntaje: ' + score + ' de 100 · ' + tier[0], tier[1] || ''];
+  phases.forEach(function (ph) {
+    text.push('', ph[0].toUpperCase() + (ph[2] ? ' (' + ph[2] + ')' : ''));
+    ph[1].forEach(function (g, n) { text.push((n + 1) + '. ' + g.step + (g.half ? ' (ya tienes una parte)' : '') + ' · +' + g.pts + ' pts'); });
+  });
+  if (!gaps.length) text.push('', x.none || 'Sigue midiendo y mejorando cada mes.');
+  if (passed.length) { text.push('', 'LO QUE YA TIENES RESUELTO'); passed.forEach(function (t) { text.push('✓ ' + t); }); }
+  text.push('', 'Si quieres que lo hagamos contigo: ' + link, 'O responde este correo / escríbenos a hola@efectowow.co.', '', 'Los resultados son una simulación de referencia: dependen de tu negocio y de tu mercado.', '', 'Workshop of Wonders · efectowow.co');
+
+  var H = '<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1320;max-width:600px;margin:0 auto;padding:24px;line-height:1.55">' +
+    '<img src="https://www.efectowow.co/design-system/wonders/Wonder_Morado_Con_Idea.png" alt="" width="72" height="80" style="display:block;width:72px;height:auto;margin:0 0 6px;border:0">' +
+    '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.14em;font-weight:700;color:#380757">WORKSHOP OF WONDERS · PLAYGROUND</p>' +
+    '<h1 style="margin:0 0 12px;font-size:24px;color:#380757">Tu plan: ' + esc(title) + '</h1>' +
+    '<div style="background:#dce157;border-radius:16px;padding:16px 20px;margin:0 0 20px"><b style="font-size:30px;color:#380757">' + score + '/100</b>' +
+    '<span style="margin-left:10px;color:#380757;font-weight:700">' + esc(tier[0]) + '</span><br><span style="color:#380757">' + esc(tier[1] || '') + '</span></div>';
+  phases.forEach(function (ph) {
+    H += '<h2 style="font-size:16px;color:#380757;margin:0 0 6px">' + esc(ph[0]) + (ph[2] ? ' <span style="font-weight:400;color:#4a3b57">· ' + esc(ph[2]) + '</span>' : '') + '</h2>';
+    ph[1].forEach(function (g) {
+      H += '<div style="border-left:4px solid #380757;background:#f6f1fa;border-radius:8px;padding:10px 14px;margin:0 0 8px"><b>' + esc(g.step) + '</b>' +
+        (g.half ? ' <span style="color:#4a3b57">(ya tienes una parte)</span>' : '') + '<span style="float:right;color:#15803d;font-weight:700">+' + g.pts + ' pts</span></div>';
+    });
+    H += '<div style="height:12px"></div>';
+  });
+  if (!gaps.length) H += '<p>' + esc(x.none || 'Sigue midiendo y mejorando cada mes.') + '</p>';
+  if (passed.length) H += '<h2 style="font-size:16px;color:#15803d;margin:8px 0 6px">Lo que ya tienes resuelto</h2><ul style="margin:0 0 20px;padding-left:20px">' + passed.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>';
+  H += '<p style="margin:24px 0"><a href="' + esc(link) + '" style="display:inline-block;background:#380757;color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px">Quiero que lo hagamos juntos</a></p>' +
+    '<p style="color:#4a3b57;font-size:13px">Los resultados son una simulación de referencia: dependen de tu negocio y de tu mercado.</p>' +
+    '<p style="margin:16px 0 0">¿Dudas? Responde este correo o escríbenos a <a href="mailto:hola@efectowow.co" style="color:#380757">hola@efectowow.co</a>.</p>' +
+    '<p style="margin:20px 0 0;font-size:12px;color:#7a6b88">Workshop of Wonders · efectowow.co</p></div>';
+  return { subject: subject, text: text.join('\n'), html: H };
+}
+
+// Confirmación al formulario "Cuéntanos tu proyecto": le dice a la persona que recibimos su mensaje y qué sigue.
+// Contenido fijo (solo el nombre, escapado): no se puede usar para enviar mensajes a medida.
+function contacto(lead) {
+  var first = String(lead.name || '').trim().split(/\s+/)[0].slice(0, 40);
+  var hi = first ? 'Hola ' + first + ',' : 'Hola,';
+  var subject = 'Recibimos tu proyecto';
+  var text = [hi, '', 'Gracias por escribirnos: recibimos tu mensaje.', '',
+    'QUÉ SIGUE', '1. Leemos lo que nos cuentas y revisamos tu sitio o tu marca.', '2. Te escribimos con preguntas o con una propuesta de siguiente paso.', '3. Si te sirve, agendamos una llamada corta, sin compromiso.', '',
+    'Mientras tanto, puedes jugar con las herramientas gratis del Playground: https://www.efectowow.co/playground.html', '',
+    'Si quieres agregar algo, responde este correo.', '', 'Workshop of Wonders · efectowow.co'].join('\n');
+  var step = function (n, t) { return '<tr><td style="vertical-align:top;padding:0 12px 10px 0"><span style="display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;background:#dce157;color:#380757;font-weight:700">' + n + '</span></td><td style="padding:2px 0 10px">' + t + '</td></tr>'; };
+  var html = '<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1320;max-width:600px;margin:0 auto;padding:24px;line-height:1.55">' +
+    '<img src="https://www.efectowow.co/design-system/wonders/Wonder_Morado_Celebrando.png" alt="" width="72" height="71" style="display:block;width:72px;height:auto;margin:0 0 6px;border:0">' +
+    '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.14em;font-weight:700;color:#380757">WORKSHOP OF WONDERS</p>' +
+    '<h1 style="margin:0 0 12px;font-size:24px;color:#380757">Recibimos tu proyecto</h1>' +
+    '<p style="margin:0 0 16px">' + esc(hi) + ' gracias por escribirnos: recibimos tu mensaje.</p>' +
+    '<h2 style="font-size:16px;color:#380757;margin:0 0 8px">Qué sigue</h2><table role="presentation" style="border-collapse:collapse">' +
+    step(1, 'Leemos lo que nos cuentas y revisamos tu sitio o tu marca.') + step(2, 'Te escribimos con preguntas o con una propuesta de siguiente paso.') + step(3, 'Si te sirve, agendamos una llamada corta, sin compromiso.') + '</table>' +
+    '<p style="margin:16px 0">Mientras tanto, prueba las <a href="https://www.efectowow.co/playground.html" style="color:#380757;font-weight:700">herramientas gratis del Playground</a>.</p>' +
+    '<p style="margin:0">¿Quieres agregar algo? Responde este correo.</p>' +
+    '<p style="margin:20px 0 0;font-size:12px;color:#7a6b88">Workshop of Wonders · efectowow.co</p></div>';
+  return { subject: subject, text: text, html: html };
+}
+function buildAck(lead) { return contacto(lead); }
+
 var BUILDERS = { encabezados: encabezados, revision: revision };
 
 // null si ese simulador aún no tiene correo.
-function buildEmail(run) { return BUILDERS[run.tool] ? BUILDERS[run.tool](run) : null; }
+function buildEmail(run) {
+  if (String(run.tool).indexOf('sim:') === 0) return simulador(run);
+  return BUILDERS[run.tool] ? BUILDERS[run.tool](run) : null;
+}
 
 // Devuelve 'sent' | 'dry-run' | 'not_configured' | 'error'.
 async function sendMail(to, mail) {
@@ -165,6 +240,18 @@ SAMPLES.revision = {
     { code: 'no_sitemap', type: 'warn', msg: 'No encontramos el mapa del sitio (sitemap.xml).' }
   ], passed: ['Tu sitio usa HTTPS.', 'Tu página está preparada para el celular.'] }
 };
-function sampleEmail(tool) { return SAMPLES[tool] ? buildEmail(SAMPLES[tool]) : null; }
+SAMPLES['sim:ias-te-citan'] = {
+  tool: 'sim:ias-te-citan', url: 'https://www.efectowow.co/playground/ias-te-citan.html', host: 'www.efectowow.co',
+  result: { title: '¿Las IAs te recomiendan cuando alguien pregunta?', score: 38, passed: ['Tu web explica con claridad quién eres'],
+    extra: { service: 'seo', tier: ['Te conocen a medias', 'Las IAs ya encuentran algo de ti, pero rara vez te eligen como fuente.'], none: '',
+      gaps: [{ step: 'Crear contenido en formato pregunta-respuesta', pts: 14 }, { step: 'Ganar menciones en medios, directorios y reseñas', pts: 14 }, { step: 'Implementar schema en tus páginas clave', pts: 12, half: true }, { step: 'Publicar un llms.txt', pts: 8 }, { step: 'Monitorear menciones y citas', pts: 14 }] } }
+};
+function sampleEmail(tool) {
+  if (!SAMPLES[tool] && String(tool).indexOf('sim:') === 0) {
+    var cfg = require('./_sims.json')[tool.slice(4)], base = SAMPLES['sim:ias-te-citan'];
+    if (cfg) SAMPLES[tool] = { tool: tool, url: base.url, host: base.host, result: Object.assign({}, base.result, { title: cfg.title, extra: Object.assign({}, base.result.extra, { service: cfg.service, tier: cfg.tiers[1] }) }) };
+  }
+  return SAMPLES[tool] ? buildEmail(SAMPLES[tool]) : null;
+}
 
-module.exports = { buildEmail: buildEmail, sendMail: sendMail, sampleEmail: sampleEmail };
+module.exports = { buildAck: buildAck, buildEmail: buildEmail, sendMail: sendMail, sampleEmail: sampleEmail };

@@ -1,0 +1,522 @@
+{
+ "datos-que-deciden": {
+  "title": "¿Tus datos te ayudan a decidir o solo a reportar?",
+  "qs": [
+   {
+    "q": "¿Tienes definidos los 3 a 5 números que de verdad mueven tu negocio?",
+    "w": 14,
+    "s": "Definir tus KPIs prioritarios"
+   },
+   {
+    "q": "¿Tus datos de web, pauta y ventas se ven en un mismo tablero?",
+    "w": 14,
+    "s": "Unificar fuentes en un solo dashboard"
+   },
+   {
+    "q": "¿Tu tablero se actualiza solo, sin copiar y pegar a mano?",
+    "w": 12,
+    "s": "Automatizar la actualización de tus reportes"
+   },
+   {
+    "q": "¿Sabes de qué canal viene cada cliente?",
+    "w": 14,
+    "s": "Atribuir ventas y contactos a cada canal"
+   },
+   {
+    "q": "¿Revisas los números en una reunión periódica con decisiones al final?",
+    "w": 12,
+    "s": "Crear una rutina mensual de revisión con acciones"
+   },
+   {
+    "q": "¿Segmentas clientes (nuevos vs. recurrentes, por producto o ciudad)?",
+    "w": 10,
+    "s": "Segmentar audiencias y clientes"
+   },
+   {
+    "q": "¿Comparas resultados contra metas y periodos anteriores?",
+    "w": 12,
+    "s": "Definir metas y comparativos por periodo"
+   },
+   {
+    "q": "¿Confías en que los números son correctos?",
+    "w": 12,
+    "s": "Auditar y limpiar la calidad de tus datos"
+   }
+  ],
+  "tiers": [
+   [
+    "Decides casi a ciegas",
+    "Hoy es difícil saber qué funciona y qué no. Ordenar la base de datos es el mayor salto que puedes dar."
+   ],
+   [
+    "Tienes datos, pero sin un hilo conductor",
+    "Hay números sueltos que no se conectan con decisiones. Falta unificar y priorizar."
+   ],
+   [
+    "Tu analítica ya trabaja para ti",
+    "Gran parte del camino está hecho. Falta afinar atribución y rutina para decidir más rápido."
+   ],
+   [
+    "Decides con datos",
+    "Tienes un sistema claro. Ahora el reto es seguir encontrando oportunidades dentro de tus propios números."
+   ]
+  ],
+  "none": "Revisar tus datos con tu equipo cada mes y seguir afinando",
+  "service": "analitica-de-datos"
+ },
+ "ias-te-citan": {
+  "title": "¿Las IAs te recomiendan cuando alguien pregunta?",
+  "qs": [
+   {
+    "q": "¿Probaste preguntar a ChatGPT, Gemini o Perplexity por tu servicio y tu marca?",
+    "w": 10,
+    "s": "Auditar qué responden hoy las IAs sobre tu marca"
+   },
+   {
+    "q": "¿Tu web explica con claridad quién eres, qué haces y para quién?",
+    "w": 14,
+    "s": "Reescribir tu propuesta con claridad para humanos y máquinas"
+   },
+   {
+    "q": "¿Tienes páginas de preguntas frecuentes con respuestas directas?",
+    "w": 14,
+    "s": "Crear contenido en formato pregunta-respuesta"
+   },
+   {
+    "q": "¿Tu sitio usa datos estructurados (schema) en servicios, FAQ y organización?",
+    "w": 12,
+    "s": "Implementar schema en tus páginas clave"
+   },
+   {
+    "q": "¿Otros sitios confiables hablan de tu marca?",
+    "w": 14,
+    "s": "Ganar menciones en medios, directorios y reseñas"
+   },
+   {
+    "q": "¿Tienes un archivo llms.txt o una guía clara de tu sitio para las IAs?",
+    "w": 8,
+    "s": "Publicar un llms.txt y ordenar la arquitectura del sitio"
+   },
+   {
+    "q": "¿Tu contenido muestra experiencia real: casos, cifras, autores?",
+    "w": 14,
+    "s": "Sumar casos, datos propios y autoría visible"
+   },
+   {
+    "q": "¿Revisas cada mes si las IAs te citan?",
+    "w": 14,
+    "s": "Monitorear menciones y citas en buscadores de IA"
+   }
+  ],
+  "tiers": [
+   [
+    "Para las IAs, casi no existes",
+    "Cuando alguien pregunta por tu servicio, es poco probable que te nombren. Hay mucho espacio para ganar terreno temprano."
+   ],
+   [
+    "Te conocen a medias",
+    "Las IAs ya encuentran algo de ti, pero rara vez te eligen como fuente. Falta claridad y respaldo externo."
+   ],
+   [
+    "Eres una fuente creíble",
+    "Tienes buena base. Afinar formato y menciones puede convertirte en la respuesta recurrente."
+   ],
+   [
+    "Eres referencia para las IAs",
+    "Tu contenido es claro, respaldado y fácil de citar. Lo que sigue es monitorear y mantener ventaja."
+   ]
+  ],
+  "none": "Seguir midiendo citas y ampliando contenido de respuesta",
+  "service": "seo"
+ },
+ "madurez-de-datos": {
+  "title": "¿Qué tan madura está tu relación con los datos?",
+  "qs": [
+   {
+    "q": "¿Tu equipo sabe cuáles son los objetivos de negocio medibles?",
+    "w": 14,
+    "s": "Traducir objetivos de negocio a métricas"
+   },
+   {
+    "q": "¿Hay una persona responsable de los datos?",
+    "w": 12,
+    "s": "Asignar responsables y definir roles de datos"
+   },
+   {
+    "q": "¿Sabes qué herramientas usas hoy y para qué?",
+    "w": 12,
+    "s": "Hacer un inventario de herramientas y fuentes"
+   },
+   {
+    "q": "¿Tus áreas (ventas, marketing, operación) usan los mismos números?",
+    "w": 14,
+    "s": "Alinear definiciones entre áreas"
+   },
+   {
+    "q": "¿Has dejado de medir algo porque no aportaba?",
+    "w": 10,
+    "s": "Depurar métricas que no generan decisiones"
+   },
+   {
+    "q": "¿Tus reportes terminan en una acción concreta?",
+    "w": 14,
+    "s": "Convertir cada reporte en acciones"
+   },
+   {
+    "q": "¿Tienes un plan de medición documentado?",
+    "w": 12,
+    "s": "Documentar un plan de medición"
+   },
+   {
+    "q": "¿Tu equipo sabe leer e interpretar los reportes?",
+    "w": 12,
+    "s": "Capacitar al equipo en lectura de datos"
+   }
+  ],
+  "tiers": [
+   [
+    "Parten de cero",
+    "Aún no hay una base clara de qué medir ni para qué. Un buen diagnóstico ahorra meses de tanteo."
+   ],
+   [
+    "Hay intención, falta orden",
+    "Ya se mide algo, pero sin estrategia común. Priorizar evita gastar tiempo en números que no importan."
+   ],
+   [
+    "Buen nivel de madurez",
+    "Tienes procesos y criterio. Falta cerrar brechas entre áreas y documentar."
+   ],
+   [
+    "Cultura de datos sólida",
+    "Tu organización usa datos para decidir. Lo siguiente es ir por análisis más avanzados."
+   ]
+  ],
+  "none": "Documentar y revisar tu plan de medición cada trimestre",
+  "service": "analitica-de-datos"
+ },
+ "marca-consistente": {
+  "title": "¿Tu marca se ve igual en todas partes?",
+  "qs": [
+   {
+    "q": "¿Tienes un manual o guía de marca por escrito?",
+    "w": 16,
+    "s": "Crear una guía de marca con reglas claras"
+   },
+   {
+    "q": "¿Usas siempre los mismos colores y tipografías?",
+    "w": 14,
+    "s": "Definir paleta y tipografías oficiales"
+   },
+   {
+    "q": "¿Tu logo está disponible en versiones para fondo claro, oscuro y redes?",
+    "w": 12,
+    "s": "Preparar versiones del logo para cada uso"
+   },
+   {
+    "q": "¿Tus publicaciones en redes siguen un mismo estilo?",
+    "w": 14,
+    "s": "Diseñar plantillas para redes sociales"
+   },
+   {
+    "q": "¿Tus piezas impresas (tarjetas, empaques, brochures) se parecen a tu web?",
+    "w": 12,
+    "s": "Alinear las piezas impresas con tu identidad digital"
+   },
+   {
+    "q": "¿Quien diseña en tu equipo tiene plantillas editables?",
+    "w": 10,
+    "s": "Entregar plantillas editables a tu equipo"
+   },
+   {
+    "q": "¿Tus presentaciones y propuestas usan tu identidad?",
+    "w": 10,
+    "s": "Crear una plantilla de presentación y propuesta"
+   },
+   {
+    "q": "¿Alguien revisa que lo que se publica respete la marca?",
+    "w": 12,
+    "s": "Establecer un proceso de revisión de piezas"
+   }
+  ],
+  "tiers": [
+   [
+    "Tu marca cambia según donde la veas",
+    "Si cada pieza luce distinta, tu cliente tarda más en reconocerte y confiar. Unificar es la mejora más rápida."
+   ],
+   [
+    "Hay identidad, falta consistencia",
+    "Tienes elementos de marca, pero se aplican de forma irregular entre canales."
+   ],
+   [
+    "Tu marca se ve sólida",
+    "La mayor parte de tus piezas conversan entre sí. Faltan detalles para que sea impecable."
+   ],
+   [
+    "Marca consistente",
+    "Tu identidad se reconoce en cada punto de contacto. Ahora toca mantenerla viva y escalarla."
+   ]
+  ],
+  "none": "Revisar tus piezas cada trimestre para mantener consistencia",
+  "service": "diseno-grafico"
+ },
+ "medicion-instalada": {
+  "title": "¿Tu medición está bien instalada?",
+  "qs": [
+   {
+    "q": "¿Tienes Google Analytics 4 instalado y recibiendo datos?",
+    "w": 12,
+    "s": "Instalar y validar Google Analytics 4"
+   },
+   {
+    "q": "¿Usas Google Tag Manager para gestionar tus etiquetas?",
+    "w": 12,
+    "s": "Implementar Google Tag Manager"
+   },
+   {
+    "q": "¿Mides como conversión los formularios, llamadas y compras?",
+    "w": 16,
+    "s": "Configurar eventos y conversiones clave"
+   },
+   {
+    "q": "¿Usas parámetros UTM en todas tus campañas?",
+    "w": 12,
+    "s": "Estandarizar UTM en campañas y enlaces"
+   },
+   {
+    "q": "¿Tienes conectado el pixel de Meta o la API de conversiones?",
+    "w": 10,
+    "s": "Conectar píxeles y API de conversiones"
+   },
+   {
+    "q": "¿Cumples con el aviso de cookies y el consentimiento?",
+    "w": 10,
+    "s": "Configurar consentimiento de cookies y privacidad"
+   },
+   {
+    "q": "¿Tu web está conectada a Search Console?",
+    "w": 14,
+    "s": "Conectar Search Console y vincularlo con GA4"
+   },
+   {
+    "q": "¿Revisaste en el último año que todo siga midiendo bien?",
+    "w": 14,
+    "s": "Auditar tu implementación de seguimiento"
+   }
+  ],
+  "tiers": [
+   [
+    "Estás midiendo muy poco",
+    "Lo que no se mide, no se puede mejorar ni defender frente a una inversión. Instalar la base es lo primero."
+   ],
+   [
+    "Mides lo básico",
+    "Ya hay datos, pero faltan conversiones y orígenes claros para saber qué te trae clientes."
+   ],
+   [
+    "Tu medición es confiable",
+    "La base está bien armada. Faltan detalles que evitan huecos o datos duplicados."
+   ],
+   [
+    "Medición en orden",
+    "Tu seguimiento es completo. Lo que sigue es auditarlo cada cierto tiempo para que no se rompa."
+   ]
+  ],
+  "none": "Auditar tu seguimiento cada semestre",
+  "service": "configuracion-analitica-tracking"
+ },
+ "te-encuentran-cerca": {
+  "title": "¿Te encuentran cuando buscan cerca de ti?",
+  "qs": [
+   {
+    "q": "¿Tu ficha de Google Business está reclamada y verificada?",
+    "w": 14,
+    "s": "Reclamar y verificar tu ficha de Google Business"
+   },
+   {
+    "q": "¿Categoría, horarios, servicios y fotos están completos y al día?",
+    "w": 14,
+    "s": "Completar y actualizar los datos de tu ficha"
+   },
+   {
+    "q": "¿Recibes reseñas nuevas cada mes y las respondes?",
+    "w": 14,
+    "s": "Crear un sistema para pedir y responder reseñas"
+   },
+   {
+    "q": "¿Tu nombre, dirección y teléfono son idénticos en todos los sitios donde apareces?",
+    "w": 12,
+    "s": "Unificar tu nombre, dirección y teléfono en directorios"
+   },
+   {
+    "q": "¿Tienes una página para cada ciudad o zona donde atiendes?",
+    "w": 12,
+    "s": "Crear páginas por ciudad o zona de servicio"
+   },
+   {
+    "q": "¿Tu web muestra tu mapa y datos locales con marcado schema?",
+    "w": 10,
+    "s": "Agregar marcado schema local y mapa a tu web"
+   },
+   {
+    "q": "¿Publicas novedades, ofertas o fotos en tu ficha con regularidad?",
+    "w": 12,
+    "s": "Publicar novedades en tu ficha cada semana"
+   },
+   {
+    "q": "¿Mides llamadas, rutas y clics que llegan desde Google?",
+    "w": 12,
+    "s": "Medir llamadas, rutas y clics desde Google"
+   }
+  ],
+  "tiers": [
+   [
+    "Hoy el mapa de Google casi no te muestra",
+    "Quien busca cerca de ti probablemente llega primero a un competidor. Una ficha bien armada cambia eso en semanas."
+   ],
+   [
+    "Apareces, pero en segundo plano",
+    "Ya tienes presencia local, aunque faltan señales que Google usa para decidir quién sale en el mapa."
+   ],
+   [
+    "Tu presencia local va bien",
+    "Lo esencial está resuelto. Los siguientes pasos son los que desempatan frente a tus vecinos de búsqueda."
+   ],
+   [
+    "Dominas tu zona",
+    "Tu ficha y tu web envían buenas señales. Ahora toca sostener reseñas y medir qué te trae clientes."
+   ]
+  ],
+  "none": "Mantener reseñas y publicaciones y revisar métricas cada mes",
+  "service": "seo-local"
+ },
+ "visibilidad-google": {
+  "title": "Mide qué tan visible eres hoy",
+  "qs": [
+   {
+    "q": "En el celular, ¿tu web abre en menos de 3 segundos?",
+    "w": 15,
+    "s": "Acelerar la carga en celular"
+   },
+   {
+    "q": "¿Cada servicio que ofreces tiene su propia página?",
+    "w": 15,
+    "s": "Crear una página por servicio"
+   },
+   {
+    "q": "¿Tu ficha de Google Business está al día y con reseñas nuevas?",
+    "w": 13,
+    "s": "Actualizar tu ficha de Google Business"
+   },
+   {
+    "q": "¿Publicas algo útil (blog, guías, casos) cada mes?",
+    "w": 12,
+    "s": "Crear un calendario de contenido mensual"
+   },
+   {
+    "q": "¿Tu sitio incluye marcado schema para que Google lo entienda?",
+    "w": 10,
+    "s": "Implementar marcado schema"
+   },
+   {
+    "q": "¿Sabes cuántos contactos y ventas llegan desde Google (GA4)?",
+    "w": 10,
+    "s": "Configurar GA4 con tus conversiones"
+   },
+   {
+    "q": "¿Hay otras webs del sector que te mencionen o enlacen?",
+    "w": 12,
+    "s": "Ganar menciones en sitios del sector"
+   },
+   {
+    "q": "¿Tus textos responden dudas reales de tus clientes?",
+    "w": 13,
+    "s": "Escribir contenido que resuelva dudas reales"
+   }
+  ],
+  "tiers": [
+   [
+    "Hoy Google casi no te ve",
+    "Quien no te conoce difícilmente llegará a ti por una búsqueda. La buena noticia: partir de abajo significa que cada mejora se nota."
+   ],
+   [
+    "Tienes bases, pero te falta empuje",
+    "Google ya sabe que existes, aunque otros aparecen antes que tú. Con orden y un plan claro, se acorta la distancia."
+   ],
+   [
+    "Vas bien encaminado",
+    "Lo esencial está cubierto. Lo que falta es justo lo que te separa de quien hoy te supera."
+   ],
+   [
+    "Tu base SEO es sólida",
+    "Tienes casi todo en orden. Ahora toca medir, afinar y mantener el ritmo."
+   ]
+  ],
+  "none": "Revisar resultados cada mes y seguir optimizando",
+  "service": "seo"
+ },
+ "web-lista": {
+  "title": "¿Tu web está lista para trabajar por ti?",
+  "qs": [
+   {
+    "q": "¿Se ve y funciona bien en celular?",
+    "w": 16,
+    "s": "Adaptar tu web a celular"
+   },
+   {
+    "q": "¿Se entiende en 5 segundos qué ofreces y qué debe hacer el visitante?",
+    "w": 16,
+    "s": "Aclarar tu propuesta y llamado a la acción principal"
+   },
+   {
+    "q": "¿Carga rápido?",
+    "w": 12,
+    "s": "Optimizar velocidad e imágenes"
+   },
+   {
+    "q": "¿Muestra pruebas reales: casos, testimonios, logos de clientes?",
+    "w": 12,
+    "s": "Sumar pruebas de confianza a tus páginas"
+   },
+   {
+    "q": "¿Tiene formularios o botones de contacto visibles en todas las páginas?",
+    "w": 12,
+    "s": "Agregar vías de contacto en cada página"
+   },
+   {
+    "q": "¿Puedes editar los textos tú mismo, sin depender de un técnico?",
+    "w": 10,
+    "s": "Instalar un gestor de contenido sencillo"
+   },
+   {
+    "q": "¿Está preparada para aparecer en Google (títulos, descripciones, estructura)?",
+    "w": 12,
+    "s": "Ordenar la estructura SEO básica"
+   },
+   {
+    "q": "¿Mide cuántas personas la visitan y qué hacen?",
+    "w": 10,
+    "s": "Instalar analítica y medir conversiones"
+   }
+  ],
+  "tiers": [
+   [
+    "Tu web hoy no está trabajando",
+    "Puede verse correcta y aun así no generar contactos. Lo más urgente es claridad y facilidad de uso."
+   ],
+   [
+    "Tu web cumple, pero rinde por debajo",
+    "Tiene lo básico; faltan elementos de confianza y conversión para que sea tu mejor vendedor."
+   ],
+   [
+    "Tu web funciona bien",
+    "Está bien armada. Los ajustes finos pueden multiplicar su rendimiento."
+   ],
+   [
+    "Tu web está lista para crecer",
+    "Se ve bien, carga rápido y convierte. Ahora toca seguir iterando con datos."
+   ]
+  ],
+  "none": "Revisar tus datos y mejorar la web cada trimestre",
+  "service": "diseno-web"
+ }
+}

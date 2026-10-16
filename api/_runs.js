@@ -27,7 +27,8 @@ async function saveRun(tool, u, analysis, country) {
   var clean = u.origin + u.pathname, token = crypto.randomBytes(12).toString('hex');
   var result = JSON.stringify({
     title: analysis.title, score: analysis.score, counts: analysis.counts, jsRendered: analysis.jsRendered,
-    issues: analysis.issues.map(function (i) { return { code: i.code, type: i.type, msg: i.msg }; }), passed: analysis.passed
+    issues: analysis.issues.map(function (i) { return { code: i.code, type: i.type, msg: i.msg }; }), passed: analysis.passed,
+    extra: analysis.extra || undefined
   });
   if (useMemory()) {
     var id = 'L' + (++memSeq);
