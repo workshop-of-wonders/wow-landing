@@ -150,7 +150,7 @@ window.WOW_CASES = {
   },
 
   'Ser Niños': {
-    titulo: 'Un solo objetivo: vender más.',
+    titulo: 'Un solo juego: vender más.',
     reto: 'Ser Niños es una tienda de juguetes y educación consciente con sitio propio. Su objetivo era claro: vender más en línea.',
     insight: 'Las familias que buscan juguetes conscientes investigan antes de comprar: el sitio tenía que resolver sus dudas rápido.',
     construimos: 'Ajustes puntuales al sitio para que las familias encuentren rápido lo que buscan y entiendan el valor de cada juguete, y una estrategia de pauta digital medida contra un solo objetivo: las ventas.',
