@@ -55,6 +55,10 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Oferta de los servicios: escena fija con scroll (como SEO)
+- Las escenas `[data-seq]` de "Qué hacemos" (diseño web, e-commerce, pauta digital, diseño gráfico, analítica de datos, configuración de analítica) ahora se quedan fijas bajo el menú y el scroll avanza los pasos. Motor en `src/js/servicios.js` (`pin()` envuelve la escena en `.seq-track`); CSS al final de `src/styles.css`. Si la escena no cabe en pantalla (móvil/ventana baja) o hay `prefers-reduced-motion`, sigue el avance automático de antes. Clic en un paso = scroll a ese paso.
+- No probado en navegador (el pane rechazó localhost); revisar en vivo. `seo-local.html` (hotspots) y las páginas `que-incluye` no usan `data-seq`: sin cambio.
+
 ### 2026-10-15 — Método: wonder centrado, cohete bajo los nodos; FAQ cerradas; pills quietas en móvil
 - Easter egg del home (clic en la W del centro de `#metodologia`): el wonder del portal salía ~10 px arriba del centro del ciclo; `.wm-wonder` `margin-top` -92 → -82.
 - Cohete del ciclo (≥1280px): ya no se desvanece entre arcos; da la vuelta completa por encima de las flechas y por debajo de los nodos (los nodos lo tapan). El giro (`wm-flip`) y el cambio de color ocurren justo bajo Optimize/Win. En <1280px el cohete vertical queda debajo de los nodos (`.wm-node` `z-index: 4` vs cohete 3) y sobre la línea punteada.

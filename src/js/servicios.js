@@ -338,7 +338,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
    fuera de pantalla se detiene; el mouse encima la pausa. El CSS de cada escena reacciona a las clases que pone aquí:
    data-step="n", .cur-n (paso actual) y .on-1…on-n (pasos ya alcanzados, acumulativos).
    data-mode="build": 0 → n, se mantiene y reinicia (la escena se "construye"); data-mode="cycle": 1 → n y vuelve a 1 (rota entre pantallas).
-   Con prefers-reduced-motion queda en su estado final (build) o en el primer paso (cycle). Un clic en [data-go="n"] salta a ese paso. */
+   Con prefers-reduced-motion queda en su estado final (build) o en el primer paso (cycle). Un clic en [data-go="n"] salta a ese paso.
+   Si la escena cabe en pantalla se fija y el scroll manda los pasos (ver pin()); si no, usa el avance automático descrito arriba. */
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   [].forEach.call(document.querySelectorAll('[data-seq]'), function (el) {
@@ -361,9 +362,38 @@ document.getElementById('year').textContent = new Date().getFullYear();
       if (i > N) { set(0); return; }
       set(i + 1);
     }
-    function start() { if (timer || reduce) return; timer = setInterval(build ? build_tick : tick, ms); }
+    var scrub = false, track = null, range = 0;
+    function start() { if (timer || reduce || scrub) return; timer = setInterval(build ? build_tick : tick, ms); }
     function stop() { clearInterval(timer); timer = null; }
+    /* Modo scroll: la escena se queda fija bajo el menú y el scroll de la página avanza los pasos (como "Qué hacemos" de SEO).
+       Solo si la escena cabe en pantalla; si no cabe (móvil, ventana baja) vuelve a avanzar sola. */
+    function pin() {
+      var sec = el.closest('.sp-sec');
+      if (!sec || reduce) return;
+      if (!track) { track = document.createElement('div'); track.className = 'seq-track'; el.parentNode.insertBefore(track, el); track.appendChild(el); }
+      var navH = (document.querySelector('header, .nav') || {}).offsetHeight || 88;
+      var h = el.offsetHeight, fits = h <= window.innerHeight - navH - 40;
+      scrub = fits; track.classList.toggle('is-pin', fits); sec.classList.toggle('is-scrub', fits);
+      range = fits ? Math.max(240, window.innerHeight * 0.5) * N : 0;
+      track.style.height = fits ? (h + range) + 'px' : '';
+      if (fits) { stop(); onScroll(); } else if (visible) start();
+    }
+    function onScroll() {
+      if (!scrub) return;
+      var top = parseFloat(getComputedStyle(el).top) || 0;
+      var p = Math.min(1, Math.max(0, (top - track.getBoundingClientRect().top) / range));
+      var n = build ? Math.min(N, Math.floor(p * (N + 1))) : Math.min(N, Math.floor(p * N) + 1);
+      if (n !== i) set(n);
+    }
+    function goTo(n) {
+      var top = parseFloat(getComputedStyle(el).top) || 0, k = build ? n : n - 1, d = build ? N + 1 : N;
+      window.scrollTo({ top: window.scrollY + track.getBoundingClientRect().top - top + range * (k + 0.5) / d, behavior: 'smooth' });
+    }
     set(reduce ? (build ? N : 1) : (build ? 0 : 1));
+    pin();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', pin);
+    window.addEventListener('load', pin);
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) {
         visible = en[0].isIntersecting; el.classList.toggle('is-live', visible);
@@ -371,7 +401,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
       }, { threshold: 0.35 }).observe(el);
     } else { set(build ? N : 1); }
     [].forEach.call(el.querySelectorAll('[data-go]'), function (b) {
-      b.addEventListener('click', function () { set(parseInt(b.getAttribute('data-go'), 10)); stop(); if (visible) start(); });
+      b.addEventListener('click', function () { var n = parseInt(b.getAttribute('data-go'), 10); if (scrub) { goTo(n); return; } set(n); stop(); if (visible) start(); });
     });
   });
 })();

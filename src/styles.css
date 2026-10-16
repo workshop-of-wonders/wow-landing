@@ -6638,3 +6638,7 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .labs-page .sp-hero--blue::before, .labs-page .sp-hero--pink::before { display: none; }
 .lab-hero-wd { position: absolute; z-index: 1; left: 50%; top: 50%; translate: 0 -50%; width: min(820px, 62vw); height: auto; filter: brightness(0) invert(1); opacity: .12; pointer-events: none; }
 @media (max-width: 820px) { .lab-hero-wd { left: 40%; width: 460px; } }
+
+/* Escenas de oferta con scroll fijo: .seq-track da el recorrido de scroll y la escena queda pegada bajo el menú (js/servicios.js → pin) */
+.seq-track.is-pin > .seq { position: sticky; top: calc(var(--nav-h) + var(--space-3)); }
+.sp-sec.is-scrub { overflow: clip; }
