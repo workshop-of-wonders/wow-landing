@@ -27,7 +27,7 @@ function initFallingIcons() {
     { src: '/design-system/icons/icon-estrella.svg', w: 372, h: 406 },
     { src: '/design-system/icons/icon-flor.svg', w: 458, h: 432 },
     { src: '/design-system/icons/icon-comillas.svg', w: 436, h: 352 },
-    { src: '/design-system/logo/wow-mark-purple.svg', w: 246.14, h: 294.61 }
+    { src: '/design-system/logo/wow-mark-purple.svg', w: 296.24, h: 294.65 }
   ];
   var ICON_SIZE = zone.offsetWidth < 500 ? 62 : 101;
 

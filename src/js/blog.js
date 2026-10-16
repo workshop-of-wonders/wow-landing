@@ -16,7 +16,7 @@
     cards.forEach(function (c) { c.hidden = true; });
     hits.slice((state.p - 1) * PAGE, state.p * PAGE).forEach(function (c) { c.hidden = false; });
     count.textContent = hits.length; empty.hidden = hits.length > 0;
-    pg.textContent = 'PÁG ' + state.p + ' DE ' + pages;
+    pg.textContent = 'Pág. ' + state.p + ' de ' + pages;
     nums.innerHTML = '';
     for (var i = 1; i <= pages; i++) {
       var b = document.createElement('button'); b.type = 'button'; b.textContent = i; b.className = 'bx-num' + (i === state.p ? ' is-on' : '');

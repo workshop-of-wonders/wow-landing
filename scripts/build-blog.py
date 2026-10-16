@@ -71,8 +71,8 @@ def card(p, featured=False):
 
 def bx_card(p):
     return f'''<a class="bx-card bx-rv" href="/{p['slug']}" data-cat="{p['cat']}">
-          <div class="bx-cover" data-cat="{p['cat']}"><span class="bx-read">{p['read']} MIN</span><span class="bx-ico" aria-hidden="true"></span></div>
-          <div class="bx-body"><span class="bx-date">{DATE_ES.upper()} · {p['cat'].upper()}</span><h3>{p['h1']}</h3><p>{p['excerpt']}</p></div>
+          <div class="bx-cover" data-cat="{p['cat']}"><span class="bx-read">{p['read']} min</span><span class="bx-ico" aria-hidden="true"></span></div>
+          <div class="bx-body"><span class="bx-date">{DATE_ES} · {p['cat']}</span><h3>{p['h1']}</h3><p>{p['excerpt']}</p></div>
         </a>
         '''
 
@@ -92,51 +92,16 @@ def index(posts):
     counts = {c: sum(1 for p in posts if p['cat'] == c) for c in CATS}
     pills = f'<button type="button" class="bx-pill is-on" data-f="">Todos <b>{n}</b></button>' + ''.join(
         f'<button type="button" class="bx-pill" data-f="{c}">{c} <b>{counts[c]}</b></button>' for c in CATS if counts[c])
-    sugg = ''.join(f'<button type="button" class="bx-sug" data-q="{s}">{s}</button>' for s in SUGGEST)
-    ticker = ''.join(f'<span>{t}</span><i class="wsp" aria-hidden="true"></i>' for t in TOPICS)
-    feat = posts[0]
-    essentials = ''.join(
-        f'<a class="bx-ess" href="/{p["slug"]}"><span class="bx-ess-n">0{i + 1}</span><span class="bx-ess-t">{p["h1"]}</span><span class="bx-ess-go" aria-hidden="true">→</span></a>\n      '
-        for i, p in enumerate(posts[:3]))
     body = f'''<main id="top" class="bx-page">
   <section class="bx-hero">
-    <div class="bx-shapes" aria-hidden="true"><i class="bx-sh bx-sh--star" data-d="40"></i><i class="bx-sh bx-sh--bloom" data-d="-30"></i><i class="bx-sh bx-sh--swoosh" data-d="-45"></i><i class="bx-sh bx-sh--mark" data-d="25"></i></div>
-    <span class="bx-sticker" aria-hidden="true"><i class="wsp" aria-hidden="true"></i> guías<br>sin relleno</span>
-    <p class="bx-kicker">BLOG · WOW</p>
+    <p class="bx-kicker">Blog · WOW</p>
     <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
     <p class="bx-sub">Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia. Lo que aprendemos en el taller, sin guardarnos nada.</p>
-    <div class="bx-hero-row">
-      <div class="bx-hero-search">
-        <form class="bx-search" role="search" data-hero-search>
-          <input type="search" placeholder="Busca un tema, una ciudad o una herramienta…" aria-label="Buscar en el blog" autocomplete="off">
-          <button type="submit" class="bx-go">Buscar</button>
-        </form>
-        <p class="bx-try">Prueba con: {sugg}</p>
-      </div>
-      <ul class="bx-stats">
-        <li><b>{n}</b><span>Artículos</span></li>
-        <li><b>{len([c for c in CATS if counts[c]])}</b><span>Temas</span></li>
-        <li><b>{avg}&prime;</b><span>Lectura promedio</span></li>
-      </ul>
-    </div>
+    <form class="bx-search" role="search" data-hero-search>
+      <input type="search" placeholder="Busca un tema, una ciudad o una herramienta…" aria-label="Buscar en el blog" autocomplete="off">
+      <button type="submit" class="bx-go">Buscar</button>
+    </form>
   </section>
-  <div class="bx-tapes" aria-hidden="true">
-    <div class="bx-tape bx-tape--a"><div class="bx-ticker-track">{ticker}{ticker}</div></div>
-    <div class="bx-tape bx-tape--b"><div class="bx-ticker-track bx-rev">{ticker}{ticker}</div></div>
-  </div>
-
-  <section class="bx-sec" id="para-empezar">
-    <header class="bx-head bx-rv"><h2>Para empezar</h2><span class="bx-tag">SELECCIÓN WOW</span></header>
-    <p class="bx-lead">Si solo vas a leer una guía, que sea esta.</p>
-    <a class="bx-feature bx-rv" href="{feat['slug']}.html" data-cat="{feat['cat']}">
-      <span class="bx-feature-ico" aria-hidden="true"></span>
-      <span class="bx-feature-cat">{feat['cat'].upper()}</span>
-      <h3>{feat['h1']}</h3>
-      <p>{feat['excerpt']}</p>
-      <span class="bx-feature-meta">{DATE_ES.upper()} · {feat['read']} MIN DE LECTURA <b>LEER →</b></span>
-    </a>
-  </section>
-
   <section class="bx-sec" id="articulos">
     <header class="bx-head bx-rv"><h2>Todos los artículos</h2><span class="bx-count" id="bxCount">{n}</span></header>
     <p class="bx-lead">Filtra por tema o busca lo que necesitas.</p>
@@ -147,21 +112,9 @@ def index(posts):
     <div class="bx-grid" id="bxGrid">
         {''.join(bx_card(p) for p in posts)}</div>
     <p class="bx-empty" id="bxEmpty" hidden>No encontramos artículos con esa búsqueda. <button type="button" class="bx-link" id="bxReset">Ver todos</button></p>
-    <nav class="bx-pager" aria-label="Paginación"><span class="bx-pg" id="bxPg">PÁG 1 DE 1</span><span class="bx-nums" id="bxNums"></span><button type="button" class="bx-next" id="bxNext">SIGUIENTE →</button></nav>
+    <nav class="bx-pager" aria-label="Paginación"><span class="bx-pg" id="bxPg">Pág. 1 de 1</span><span class="bx-nums" id="bxNums"></span><button type="button" class="bx-next" id="bxNext">Siguiente →</button></nav>
   </section>
 
-  <section class="bx-sec" id="esenciales">
-    <header class="bx-head bx-rv"><h2>Guías esenciales</h2><span class="bx-tag">EMPIEZA POR AQUÍ</span></header>
-    <p class="bx-lead">Tres lecturas para ordenar tu marketing digital antes de gastar un peso más.</p>
-    <div class="bx-ess-list">
-      {essentials}</div>
-  </section>
-
-  <section class="bx-cta bx-rv"><span class="bx-spin" aria-hidden="true"><i class="wsp" aria-hidden="true"></i></span>
-    <h2>¿Prefieres que lo hagamos <em>juntos?</em></h2>
-    <p>Cuéntanos tu proyecto y te respondemos en máximo 1 día hábil.</p>
-    <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
-  </section>
   <div class="bx-wordmark" aria-hidden="true"><div class="bx-wordmark-track"><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i></div></div>
 </main>
 <script src="../js/blog.js" defer></script>
