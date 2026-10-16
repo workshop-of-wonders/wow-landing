@@ -8,6 +8,51 @@
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function track(n, p) { if (window.gtag) window.gtag('event', n, p || {}); }
   var ANS = [['Sí', 1, 'yes'], ['En parte', 0.5, 'half'], ['No', 0, 'no']];
+  /* Memoria entre simuladores: las preguntas con "id" comparten respuesta (solo en el navegador de la persona, localStorage).
+     W.detector además la llena leyendo la página real de la persona (/api/revisar, modo detect). */
+  var MEM_KEY = 'wow_pg_answers', DET = { ga4: 1, gtm: 1, analytics: 1, pixel: 1, cookies: 1, gsc: 1, schema: 1, faq: 1, llms: 1, mobile: 1, contact: 1, seo: 1 };
+  var LAB = { 1: 'Sí', 0.5: 'En parte', 0: 'No' }, BADGE = ' <em class="dt-badge">ya lo sabemos</em>';
+  function memGet() { try { return JSON.parse(localStorage.getItem(MEM_KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function memPut(o) { try { var m = memGet(); Object.keys(o).forEach(function (k) { m[k] = o[k]; }); localStorage.setItem(MEM_KEY, JSON.stringify(m)); } catch (e) {} }
+  function memClear() { try { localStorage.removeItem(MEM_KEY); } catch (e) {} }
+  function known(c) { var m = memGet(); return c.qs.map(function (q) { return q.id && typeof m[q.id] === 'number' ? (m[q.id] >= 0.75 ? 1 : m[q.id] >= 0.25 ? 0.5 : 0) : null; }); }
+  W.remember = function (c, a) { var o = {}; c.qs.forEach(function (q, k) { if (q.id && a[k] != null) o[q.id] = a[k]; }); memPut(o); };
+  W.detector = function (sec, c, restart) {
+    if (!c.qs.some(function (q) { return DET[q.id]; })) return;
+    var id = 'dtU' + (++uid), f = el('form', 'dt'); f.noValidate = true;
+    f.innerHTML = '<p class="dt-t"><b>¿Prefieres no responder todo?</b> Escribe el link de tu página y contestamos por ti lo que podamos ver en ella. Solo leemos la parte pública y no guardamos nada.</p>' +
+      '<div class="dt-row"><label class="sr-only" for="' + id + '">Link de tu página</label><input id="' + id + '" type="text" inputmode="url" autocomplete="url" placeholder="www.tusitio.com"><button type="submit" class="btn btn-primary">Autocompletar</button></div><p class="dt-msg" role="status" aria-live="polite"></p>';
+    var inp = f.querySelector('input'), btn = f.querySelector('button'), msg = f.querySelector('.dt-msg');
+    function remembered() {
+      var n = known(c).filter(function (v) { return v != null; }).length;
+      if (!n) return;
+      msg.textContent = '';
+      msg.appendChild(document.createTextNode(n + (n === 1 ? ' respuesta ya estaba lista' : ' respuestas ya estaban listas') + ' (de otra herramienta o de tu página). Puedes cambiarlas. '));
+      var b = el('button', 'dt-clear', 'Borrar y empezar de cero'); b.type = 'button';
+      b.addEventListener('click', function () { memClear(); msg.textContent = 'Listo, empezamos de cero.'; restart(); });
+      msg.appendChild(b);
+    }
+    remembered();
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var url = inp.value.trim();
+      if (!url) { msg.textContent = 'Escribe el link de tu página, por ejemplo tusitio.com'; inp.focus(); return; }
+      btn.disabled = true; msg.textContent = 'Leyendo tu página…';
+      fetch('/api/revisar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url, detect: true }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          if (!d.success || !d.signals) throw new Error(d.error || 'error');
+          memPut(d.signals);
+          var got = c.qs.filter(function (q) { return q.id && typeof d.signals[q.id] === 'number'; }).length;
+          track('sim_detect', { sim: sec.id, found: got });
+          restart();
+          msg.textContent = got ? 'Listo: contestamos ' + got + ' de ' + c.qs.length + ' preguntas con tu página. Revísalas y cámbialas si no son así.' : 'Leímos tu página, pero no pudimos responder ninguna de estas preguntas. Respóndelas tú.';
+        })
+        .catch(function () { msg.textContent = 'No pudimos leer esa página. Revisa el link o responde a mano.'; })
+        .then(function () { btn.disabled = false; });
+    });
+    sec.appendChild(f);
+  };
   function scoreOf(c, a) { return Math.round(c.qs.reduce(function (t, q, k) { return t + (a[k] == null ? 0 : q.w * a[k]); }, 0)); }
   function tierOf(c, total) { var cuts = [30, 60, 85, 101], i = cuts.findIndex(function (x) { return total < x; }); return c.tiers[i < 0 ? 3 : i]; }
   function ring(total) { return '<div class="sd-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="sd-ring-bg" cx="100" cy="100" r="88"/><circle class="sd-ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:' + (553 * (1 - total / 100)) + '"/></svg><div class="sd-score"><strong>' + total + '</strong><span>DE 100</span></div></div>'; }
@@ -228,6 +273,7 @@
     return '<details class="qz-how" open><summary>Cómo se calculó tu puntaje</summary><ul class="qz-brl">' + rows + '</ul><p class="qz-how-n">Cada criterio pesa según su impacto en resultados. Sí suma el 100 % de su peso, En parte el 50 % y No cero; la suma da tu puntaje sobre 100. Es un diagnóstico de referencia basado en buenas prácticas, no una auditoría: para revisar tu caso con datos reales lo hacemos contigo.</p></details>';
   }
   W.result = function (box, c, a, sec, again, H) {
+    W.remember(c, a);
     var total = scoreOf(c, a), t = tierOf(c, total);
     var gaps = c.qs.map(function (q, k) { return { q: q, k: k, lost: q.w * (1 - a[k]) }; }).filter(function (g) { return g.lost > 0.01; }).sort(function (x, y) { return y.lost - x.lost; });
     var strong = c.qs.filter(function (q, k) { return a[k] >= 0.99; });
@@ -295,11 +341,12 @@
   /* ---------- 1. Encuesta por páginas ---------- */
   W.modes.paged = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, per = c.per || 3, pages = Math.ceil(n / per), p = 0, a = [], hud = W.hud(sec, c), box = el('div', 'qz qz--pg');
+    W.detector(sec, c, function () { again(); });
+    var pre = known(c), n = c.qs.length, per = c.per || 3, pages = Math.ceil(n / per), p = 0, a = pre.slice(), hud = W.hud(sec, c), box = el('div', 'qz qz--pg');
     var site = c.viz === 'site' ? W.site(c) : null, layout = el('div', 'pgd-wrap' + (site ? ' has-site' : ''));
     sec.appendChild(layout); layout.appendChild(box); if (site) { layout.appendChild(site.el); site.set([]); }
     function upd() { hud.set(a); if (site) site.set(a); }
-    function again() { a = []; p = 0; hud.reset(); if (site) site.set([]); page(1); }
+    function again() { pre = known(c); a = pre.slice(); p = 0; hud.reset(); if (site) site.set([]); page(1); }
     function page(dir) {
       box.className = 'qz qz--pg'; box.textContent = '';
       var dots = ''; for (var d = 0; d < pages; d++) dots += '<i class="' + (d === p ? 'is-on' : d < p ? 'is-done' : '') + '"></i>';
@@ -307,8 +354,8 @@
       var card = el('div', 'qz-card pgd-card' + (reduce ? '' : dir > 0 ? ' qz-from-r' : ' qz-from-l'));
       var from = p * per, to = Math.min(n, from + per);
       for (var k = from; k < to; k++) (function (k) {
-        var row = el('fieldset', 'pgd-q'); row.appendChild(el('legend', null, c.qs[k].q));
-        row.appendChild(opts(function (v) { a[k] = v; upd(); sync(); }, a[k]));
+        var row = el('fieldset', 'pgd-q'); row.appendChild(el('legend', null, c.qs[k].q + (pre[k] != null ? BADGE : '')));
+        row.appendChild(opts(function (v) { a[k] = v; pre[k] = null; upd(); sync(); }, a[k]));
         card.appendChild(row);
       })(k);
       var foot = el('div', 'pgd-foot');
@@ -327,12 +374,13 @@
   /* ---------- 2. Chatbot ---------- */
   W.modes.chat = function (sec, c, H) {
     H.head(sec, c);
-    var n = c.qs.length, a = [], i = 0, hud = W.hud(sec, c), box = el('div', 'qz qz--ch');
+    W.detector(sec, c, function () { start(); });
+    var pre = [], n = c.qs.length, a = [], i = 0, hud = W.hud(sec, c), box = el('div', 'qz qz--ch');
     sec.appendChild(box);
     var REACT = { 1: ['¡Eso suma!', 'Bien, anotado.', 'Perfecto, sigamos.'], 0.5: ['Algo es algo.', 'Anotado: hay camino por recorrer.'], 0: ['Sin problema, ahí hay oportunidad.', 'Tranqui, lo vemos en tu plan.'] };
     function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function start() {
-      a = []; i = 0; hud.reset(); box.className = 'qz qz--ch'; box.textContent = '';
+      pre = known(c); a = []; i = 0; hud.reset(); box.className = 'qz qz--ch'; box.textContent = '';
       var chat = el('div', 'ch'), log = el('div', 'ch-log'), reply = el('div', 'ch-reply');
       log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite');
       chat.appendChild(el('div', 'ch-bar', '<i></i><b>WOW-bot</b><small>en línea</small>')); chat.appendChild(log); chat.appendChild(reply); box.appendChild(chat);
@@ -344,8 +392,14 @@
         var ty = el('div', 'ch-msg ch-bot ch-typing', '<i></i><i></i><i></i>'); log.appendChild(ty); log.scrollTop = log.scrollHeight;
         setTimeout(function () { ty.remove(); put(); }, 550 + Math.min(text.length * 8, 500));
       }
+      function finish() { say('bot', 'Listo, ya hice las cuentas…', function () { setTimeout(function () { hud.hide(); W.result(box, c, a, sec, start, H); }, reduce ? 0 : 700); }); }
       function ask() {
         reply.textContent = '';
+        if (pre[i] != null) {
+          var kk = i; a[kk] = pre[kk]; hud.set(a);
+          say('bot', (kk + 1) + '/' + n + ' · Esta ya la sabía: ' + c.qs[kk].q + ' → ' + LAB[pre[kk]], function () { i++; if (i < n) ask(); else finish(); });
+          return;
+        }
         say('bot', (i + 1) + '/' + n + ' · ' + c.qs[i].q, function () {
           ANS.forEach(function (o) {
             var b = el('button', 'ch-quick', o[0]); b.type = 'button';
@@ -369,9 +423,11 @@
   /* ---------- 3. Tablero de switches ---------- */
   W.modes['switch'] = function (sec, c, H) {
     H.head(sec, c);
+    W.detector(sec, c, function () { build(); });
     var n = c.qs.length, box = el('div', 'qz qz--sw');
     sec.appendChild(box);
     function build() {
+      var pre = known(c);
       box.className = 'qz qz--sw'; box.textContent = '';
       var top = el('aside', 'sd-card rs-top'), dh = el('div', 'rs-dial'), live = el('p', 'sw-live'); live.setAttribute('aria-live', 'polite');
       top.appendChild(dh); top.appendChild(live); box.appendChild(top);
@@ -389,6 +445,12 @@
       function upd() { var a = [].map.call(sw, function (s) { return s.classList.contains('is-on') ? 1 : 0; }), t = scoreOf(c, a); dial.set(t, { label: tierOf(c, t)[0] }); live.textContent = a.filter(function (x) { return x; }).length + ' de ' + n + ' encendidos'; return a; }
       function flip(s) { var on = !s.classList.contains('is-on'); s.classList.toggle('is-on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); s.querySelector('.switch-label').textContent = on ? 'ON' : 'OFF'; upd(); }
       [].forEach.call(sw, function (s) { s.addEventListener('click', function (e) { e.stopPropagation(); flip(s); }); s.parentNode.addEventListener('click', function () { flip(s); }); });
+      pre.forEach(function (v, i) {
+        if (v == null) return;
+        var s = sw[i];
+        if (v >= 0.5) { s.classList.add('is-on'); s.setAttribute('aria-checked', 'true'); s.querySelector('.switch-label').textContent = 'ON'; }
+        s.parentNode.querySelector('.toggle-text').insertAdjacentHTML('beforeend', BADGE);
+      });
       upd();
       card.querySelector('.sw-go').addEventListener('click', function () { W.result(box, c, upd(), sec, build, H); });
       track('sim_start', { sim: sec.id });
@@ -570,11 +632,12 @@
   var QT = ['Nada', 'Casi nada', 'Poco', 'Poco', 'Más o menos', 'Más o menos', 'Más o menos', 'Bastante', 'Bastante', 'Casi todo', 'Totalmente'];
   W.modes.sliders = function (sec, c, H) {
     H.head(sec, c);
+    W.detector(sec, c, function () { build(); });
     var n = c.qs.length, per = c.per || 4, pages = Math.ceil(n / per), box = el('div', 'qz qz--sl');
     sec.appendChild(box);
     function build() {
       box.className = 'qz qz--sl'; box.textContent = '';
-      var p = 0, a = c.qs.map(function () { return 0; }), touched = c.qs.map(function () { return false; });
+      var p = 0, pre = known(c), a = c.qs.map(function (q, k) { return pre[k] != null ? pre[k] : 0; }), touched = c.qs.map(function (q, k) { return pre[k] != null; });
       var top = el('aside', 'sd-card rs-top'), dh = el('div', 'rs-dial'), liv = el('p', 'sw-live'); liv.setAttribute('aria-live', 'polite');
       top.appendChild(dh); top.appendChild(liv); box.appendChild(top);
       var dial = W.dial(dh, QZ), serp = c.viz === 'serp' ? W.serp() : null;
@@ -589,7 +652,7 @@
         var list = el('div', 'sl-list' + (reduce ? '' : dir > 0 ? ' qz-from-r' : dir < 0 ? ' qz-from-l' : ''));
         for (var k = p * per; k < Math.min(n, p * per + per); k++) (function (k) {
           var id = 'slq' + (++uid), v = Math.round(a[k] * 10), row = el('div', 'sl-row');
-          row.innerHTML = '<label for="' + id + '">' + (c.qs[k].st || c.qs[k].q) + '</label><div class="sl-ctl"><input type="range" id="' + id + '" min="0" max="10" step="1" value="' + v + '" style="--p:' + v * 10 + '%"><output for="' + id + '">' + QT[v] + '</output></div><div class="sl-ends" aria-hidden="true"><span>Nada</span><span>Totalmente</span></div>';
+          row.innerHTML = '<label for="' + id + '">' + (c.qs[k].st || c.qs[k].q) + (pre[k] != null ? BADGE : '') + '</label><div class="sl-ctl"><input type="range" id="' + id + '" min="0" max="10" step="1" value="' + v + '" style="--p:' + v * 10 + '%"><output for="' + id + '">' + QT[v] + '</output></div><div class="sl-ends" aria-hidden="true"><span>Nada</span><span>Totalmente</span></div>';
           var inp = row.querySelector('input'), out = row.querySelector('output');
           inp.addEventListener('input', function () { var x = +inp.value; a[k] = x / 10; touched[k] = true; inp.style.setProperty('--p', x * 10 + '%'); out.textContent = QT[x]; live(); });
           list.appendChild(row);

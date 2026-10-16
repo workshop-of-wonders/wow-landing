@@ -99,6 +99,39 @@ function analyze(html, finalUrl, ms, hasRobots, hasSitemap) {
   };
 }
 
+// Señales que se pueden ver en el HTML y responden preguntas de los simuladores (Medición, IAs, Web lista, Visibilidad).
+// Valor 1 = sí, 0.5 = en parte, 0 = no; si no se puede saber (p. ej. todo puede estar dentro de Tag Manager), la clave no aparece.
+function signals(html, hasLlms) {
+  var body = html.replace(/<!--[\s\S]*?-->/g, '');
+  var head = (body.match(/<head[\s\S]*?<\/head>/i) || [body.slice(0, 20000)])[0];
+  var visible = body.replace(/<(script|style|noscript|template)[\s\S]*?<\/>/gi, '');
+  var text = L.clean(visible.replace(/<head[\s\S]*?<\/head>/i, ''));
+  var spa = text.length < 500 && /id=["'](root|__next|__nuxt|app)["']/i.test(body);
+  var out = {};
+  function put(k, v) { if (v === undefined) return; if (spa && v < 1) return; out[k] = v; }
+  var gtm = /googletagmanager\.com\/gtm\.js|GTM-[A-Z0-9]{4,}/.test(body);
+  var ga4 = /googletagmanager\.com\/gtag\/js\?id=G-|["']G-[A-Z0-9]{8,}["']/.test(body);
+  put('ga4', ga4 ? 1 : gtm ? undefined : 0);
+  put('gtm', gtm ? 1 : 0);
+  put('analytics', ga4 || gtm || /google-analytics\.com|plausible\.io|matomo|hotjar|clarity\.ms/i.test(body) ? 1 : 0);
+  put('pixel', /connect\.facebook\.net\/[^"']*fbevents|fbq\(/.test(body) ? 1 : gtm ? undefined : 0);
+  put('cookies', /cookiebot|onetrust|cookieyes|complianz|cookie-law|cookie-notice|iubenda|osano|termly|borlabs|cookie[-_]?(banner|consent|notice)|cc-window/i.test(body) ? 1 : gtm ? undefined : 0);
+  if (metaContent(head, 'name', 'google-site-verification')) put('gsc', 1);
+  var lds = body.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [], ldText = lds.join(' ');
+  var types = {};
+  (ldText.match(/"@type"\s*:\s*"[A-Za-z]+"/g) || []).forEach(function (t) { types[t.replace(/.*:\s*"/, '').replace('"', '')] = 1; });
+  var hasOrg = types.Organization || types.LocalBusiness, hasRich = types.Service || types.FAQPage || types.Product;
+  put('schema', hasOrg && hasRich ? 1 : lds.length ? 0.5 : 0);
+  put('faq', types.FAQPage ? 1 : /preguntas frecuentes|faq/i.test(text) ? 0.5 : 0);
+  put('llms', hasLlms ? 1 : 0);
+  put('mobile', metaContent(head, 'name', 'viewport') ? 1 : 0);
+  put('contact', /href=["'](tel:|mailto:|https?:\/\/(wa\.me|api\.whatsapp\.com|wa\.link))|<form/i.test(visible) ? 1 : 0);
+  var title = /<title[^>]*>\s*\S/i.test(visible), desc = !!metaContent(head, 'name', 'description'), h1 = (visible.match(/<h1/gi) || []).length === 1;
+  var n = (title ? 1 : 0) + (desc ? 1 : 0) + (h1 ? 1 : 0);
+  put('seo', n === 3 ? 1 : n === 2 ? 0.5 : 0);
+  return out;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ success: false, error: 'method_not_allowed' }); }
   if (rateLimited(req)) { res.setHeader('Retry-After', '180'); return res.status(429).json({ success: false, error: 'rate_limited' }); }
@@ -115,6 +148,13 @@ module.exports = async function handler(req, res) {
     var r = got.result; u = got.u;
     if (r.notHtml) return res.status(422).json({ success: false, error: 'not_html' });
     if (r.status >= 400) return res.status(422).json({ success: false, error: 'http_' + r.status });
+    if (body.detect) {
+      // Modo "autocompletar" de los simuladores: solo devuelve las señales; no guarda el uso.
+      var llms = false;
+      try { var lr = (await load(L.validate(u.origin + '/llms.txt'))).result; llms = !!lr && lr.status === 200 && lr.notHtml === true; } catch (e2) {}
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).json({ success: true, url: u.toString(), signals: signals(r.html, llms) });
+    }
     var found = await Promise.all([exists(u.origin, '/robots.txt'), exists(u.origin, '/sitemap.xml')]);
     var analysis = analyze(r.html, u, ms, found[0], found[1]);
     res.setHeader('Cache-Control', 'no-store');
@@ -128,3 +168,4 @@ module.exports = async function handler(req, res) {
   }
 };
 module.exports.analyze = analyze;
+module.exports.signals = signals;

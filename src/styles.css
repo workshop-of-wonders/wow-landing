@@ -6667,3 +6667,14 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .rv-err-t { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
 .rv-err-d { margin: 0; }
 @media (max-width: 520px) { .rv-top { justify-content: center; text-align: center; } }
+
+/* Simuladores: autocompletar con el link y respuestas que ya sabemos */
+.dt { display: grid; gap: 10px; margin: 0 0 var(--space-3); padding: 16px 18px; border-radius: 18px; background: #f6f1fa; border: 1px dashed rgba(56,7,87,.3); color: var(--purple); }
+.dt-t { margin: 0; font-size: 15px; line-height: 1.45; }
+.dt-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.dt-row input { flex: 1 1 220px; min-width: 0; padding: 12px 16px; border-radius: 999px; border: 2px solid rgba(56,7,87,.25); background: #fff; font: inherit; color: var(--purple); }
+.dt-row input:focus-visible { outline: 3px solid var(--lima); outline-offset: 2px; }
+.dt-msg { margin: 0; min-height: 1.2em; font-size: 14px; font-weight: 600; }
+.dt-msg:empty { display: none; }
+.dt-clear { appearance: none; border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--purple); text-decoration: underline; cursor: pointer; }
+.dt-badge { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 999px; background: var(--lima); color: var(--purple); font: 700 11px var(--font-mono, monospace); font-style: normal; letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
