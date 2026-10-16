@@ -6622,3 +6622,22 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 /* Escenas de oferta con scroll fijo: .seq-track da el recorrido de scroll y la escena queda pegada bajo el menú (js/servicios.js → pin) */
 .seq-track.is-pin > .seq { position: sticky; top: calc(var(--nav-h) + var(--space-3)); }
 .sp-sec.is-scrub { overflow: clip; }
+
+/* Playground: las 4 necesidades son la puerta de entrada (tarjetas grandes), las herramientas salen ordenadas por necesidad */
+.pg-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.pg-chip { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; padding: 18px 20px; border-radius: 20px; border-width: 2px; min-height: 92px; }
+.pg-chip b { font-size: 18px; line-height: 1.2; }
+.pg-chip small { font-size: 13px; font-weight: 500; opacity: .7; }
+.pg-chip[data-f="vender"] { background: #f4f7c9; } .pg-chip[data-f="encontrar"] { background: #fdeaf4; } .pg-chip[data-f="datos"] { background: #e3f0ff; } .pg-chip[data-f="marca"] { background: #fff0e0; }
+.pg-chip:not(.pg-chip--all)[aria-pressed="true"] { background: var(--purple); color: #fff; }
+.pg-chip::before { display: none !important; }
+.pg-chip--all { grid-column: 1 / -1; justify-self: start; min-height: 0; padding: 8px 4px; border: 0; background: transparent !important; text-decoration: underline; text-underline-offset: 4px; color: var(--purple); }
+.pg-chip--all[aria-pressed="true"] { color: var(--purple); font-weight: 800; text-decoration: none; }
+.pg-grid .pg-card[data-need="vender"] { order: 1; } .pg-grid .pg-card[data-need="encontrar"] { order: 2; } .pg-grid .pg-card[data-need="datos"] { order: 3; } .pg-grid .pg-card[data-need="marca"] { order: 4; }
+@media (max-width: 900px) { .pg-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .pg-chips { grid-template-columns: 1fr; } .pg-chip { min-height: 0; } }
+.pg-sub { margin: -8px 0 var(--space-3); font-size: 17px; color: var(--purple); opacity: .8; }
+.pg-chip small.pg-chip-n { font-size: 12px; font-family: var(--font-mono); letter-spacing: .04em; text-transform: uppercase; opacity: .55; margin-top: auto; }
+.pg-rec { margin: var(--space-3) 0 0; padding: 14px 20px; border-radius: 16px; background: var(--lima); color: var(--purple); font-size: 16px; }
+.pg-rec a { color: var(--purple); font-weight: 800; }
+.pg-svc:not([hidden]) ~ .pg-rec { display: none; }

@@ -55,6 +55,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Playground: de patio con física a cuadrícula guiada por objetivo
+- `playground.html`: las 4 necesidades son tarjetas grandes (con descripción y conteo) y "Ver todas"; la cuadrícula sale ordenada por necesidad; línea de recomendación ("¿Te encuentran en Google?"); título "¿Qué quieres lograr?"; textos de las 14 herramientas reescritos en lenguaje simple (qué haces y qué obtienes) con tiempo (`Sliders · 2 min`) y botón "Empezar" (copy aprobado por la dueña).
+- El patio con física (Matter.js) ya no arranca solo: queda como easter egg en `playground.html?patio=1` (`src/js/playground.js`). Sin ese parámetro no se carga Matter.
+- Quitados también los wonders de las tarjetas del playground (`210ee26`) y arreglada la barra de SEO (`1974d0c`).
+- No probado en navegador (el pane rechazó localhost).
+
 ### 2026-10-15 — Oferta de los servicios: escena fija con scroll (como SEO)
 - Las escenas `[data-seq]` de "Qué hacemos" (diseño web, e-commerce, pauta digital, diseño gráfico, analítica de datos, configuración de analítica) ahora se quedan fijas bajo el menú y el scroll avanza los pasos. Motor en `src/js/servicios.js` (`pin()` envuelve la escena en `.seq-track`); CSS al final de `src/styles.css`. Si la escena no cabe en pantalla (móvil/ventana baja) o hay `prefers-reduced-motion`, sigue el avance automático de antes. Clic en un paso = scroll a ese paso.
 - No probado en navegador (el pane rechazó localhost); revisar en vivo. `seo-local.html` (hotspots) y las páginas `que-incluye` no usan `data-seq`: sin cambio.

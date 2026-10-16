@@ -1,6 +1,6 @@
 /* Playground: hub de herramientas.
    Base (sin JS / con "reducir movimiento" / sin Matter): cuadrícula de tarjetas filtrable por objetivo o servicio (?servicio=seo).
-   Mejora: la cuadrícula se convierte en un patio de juegos: cada herramienta es un juguete que cae, rebota, se arrastra y se lanza;
+   Easter egg (solo con ?patio=1): la cuadrícula se convierte en un patio de juegos: cada herramienta es un juguete que cae, rebota, se arrastra y se lanza;
    un toque lo abre. Matter.js se carga bajo demanda (mismo CDN + SRI que tools-playground.js). */
 (function () {
   var grid = document.getElementById('pgGrid');
@@ -18,12 +18,17 @@
     document.getElementById('pgTitle').textContent = 'Juguetes de ' + NAMES[svc];
     document.querySelector('.pg-chips').hidden = true;
   }
+  chips.forEach(function (b) {
+    var n = b.querySelector('.pg-chip-n'), f = b.getAttribute('data-f');
+    if (n) { var k = cards.filter(function (c) { return c.getAttribute('data-need') === f; }).length; n.textContent = k + (k === 1 ? ' herramienta' : ' herramientas'); }
+  });
   function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
   function track(name, params) { if (window.gtag) window.gtag('event', name, params || {}); }
 
   var onFilter = null;                       /* lo reemplaza el patio cuando arranca */
   function setCount(n) { count.textContent = n + (n === 1 ? ' herramienta' : ' herramientas'); }
   function applyGrid(f) {
+    var rec = document.getElementById('pgRec'); if (rec) rec.hidden = !!svc || f !== 'todos';
     var n = 0;
     cards.forEach(function (c) {
       var show = svc ? c.getAttribute('data-svc') === svc : (f === 'todos' || c.getAttribute('data-need') === f);
@@ -44,6 +49,8 @@
     if (a) track('playground_tool_click', { tool: a.getAttribute('href') });
   });
 
+  /* El patio con física ya no es la vista principal: queda como easter egg en playground.html?patio=1 */
+  if (!/[?&]patio(=|&|$)/.test(location.search)) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var ICON = {
