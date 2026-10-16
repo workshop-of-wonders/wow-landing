@@ -94,13 +94,18 @@ def index(posts):
         f'<button type="button" class="bx-pill" data-f="{c}">{c} <b>{counts[c]}</b></button>' for c in CATS if counts[c])
     body = f'''<main id="top" class="bx-page">
   <section class="bx-hero">
-    <p class="bx-kicker">Blog · WOW</p>
-    <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
-    <p class="bx-sub">Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia. Lo que aprendemos en el taller, sin guardarnos nada.</p>
-    <form class="bx-search" role="search" data-hero-search>
-      <input type="search" placeholder="Busca un tema, una ciudad o una herramienta…" aria-label="Buscar en el blog" autocomplete="off">
-      <button type="submit" class="bx-go">Buscar</button>
-    </form>
+    <div class="bx-hero-in">
+      <div class="bx-hero-copy">
+        <p class="bx-pill-hero"><b>Blog</b><span>Guías de WOW</span></p>
+        <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
+        <p class="bx-sub">Guías de marketing digital, SEO y diseño web para clínicas, pymes y marcas en Colombia.</p>
+        <form class="bx-search" role="search" data-hero-search>
+          <input type="search" placeholder="Busca un tema, una ciudad o una herramienta…" aria-label="Buscar en el blog" autocomplete="off">
+          <button type="submit" class="bx-go">Buscar</button>
+        </form>
+      </div>
+      <img class="bx-hero-wd" src="../design-system/wonders/Wonder_Rosa_Leyendo_Libro.png" alt="" width="1200" height="1139">
+    </div>
   </section>
   <section class="bx-sec" id="articulos">
     <header class="bx-head bx-rv"><h2>Todos los artículos</h2><span class="bx-count" id="bxCount">{n}</span></header>

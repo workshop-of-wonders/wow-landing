@@ -5621,7 +5621,7 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .bx-tag { font-size: 12px; color: #bfa9d3; }
 .bx-count { font-family: var(--font-display); font-size: clamp(40px, 6vw, 80px); line-height: 1; color: var(--magenta); }
 .bx-lead { margin: var(--space-2) 0 var(--space-3); color: #cdb9de; font-size: 17px; }
-.bx-feature { --fc: var(--magenta); position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; min-height: clamp(360px, 46vw, 520px); padding: var(--space-5); border-radius: 28px; overflow: hidden; color: var(--white); text-decoration: none; background: linear-gradient(150deg, var(--fc), #380757 78%); transition: transform .3s ease; }
+.bx-feature { --fc: var(--magenta); position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; min-height: clamp(360px, 46vw, 520px); padding: var(--space-5); border-radius: 28px; overflow: hidden; color: var(--white); text-decoration: none; background: var(--fc); transition: transform .3s ease; }
 .bx-feature:hover { transform: translateY(-4px); }
 .bx-feature[data-cat="Marketing médico"] { --fc: #8b5cf6; } .bx-feature[data-cat="Redes y pauta"] { --fc: #EC4899; } .bx-feature[data-cat="Diseño web y e-commerce"] { --fc: #3B82F6; } .bx-feature[data-cat="Agencias y pymes"] { --fc: #f97316; }
 .bx-feature-ico { position: absolute; right: -4%; top: -8%; width: min(46%, 440px); aspect-ratio: 1; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; opacity: .22; }
@@ -5639,7 +5639,7 @@ a.sp-geo-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(
 .bx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); }
 .bx-card { display: flex; flex-direction: column; gap: 14px; color: inherit; text-decoration: none; }
 .bx-card[hidden] { display: none; }
-.bx-cover { --cc: var(--magenta); position: relative; aspect-ratio: 16 / 10; border-radius: 20px; overflow: hidden; background: linear-gradient(150deg, var(--cc), #380757 90%); transition: transform .3s ease; }
+.bx-cover { --cc: var(--magenta); position: relative; aspect-ratio: 16 / 10; border-radius: 20px; overflow: hidden; background: var(--cc); transition: transform .3s ease; }
 .bx-cover[data-cat="Marketing médico"] { --cc: #8b5cf6; } .bx-cover[data-cat="Redes y pauta"] { --cc: #EC4899; } .bx-cover[data-cat="Diseño web y e-commerce"] { --cc: #3B82F6; } .bx-cover[data-cat="Agencias y pymes"] { --cc: #f97316; }
 .bx-card:hover .bx-cover { transform: translateY(-4px); }
 .bx-ico { position: absolute; right: -8%; bottom: -14%; width: 62%; aspect-ratio: 1; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; opacity: .28; }
@@ -6586,3 +6586,67 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 
 /* Con "Blog" el menú tiene un enlace más: entre 901 y 1120px se aprieta un poco para que el botón no se parta en dos líneas */
 @media (min-width: 901px) and (max-width: 1120px) { .nav-links { gap: 18px; } .nav-links .btn { white-space: nowrap; } }
+
+/* Blog índice: bloques alternados como el resto del sitio (hero morado de marca, listado sobre blanco) */
+.bx-page { --bx-bg: var(--white); --bx-line: rgba(56, 7, 87, .16); background: var(--white); color: var(--ink); }
+.bx-hero { background: var(--purple); }
+.bx-hero::before { content: ""; position: absolute; right: -6%; top: -30%; width: 640px; height: 640px; background: url(design-system/icons/icon-star.svg) center / contain no-repeat; filter: brightness(0) invert(1); opacity: .1; pointer-events: none; }
+.bx-hero::after { content: ""; position: absolute; left: -5%; bottom: -30%; width: 380px; height: 380px; background: url(design-system/logo/wow-mark.svg) center / contain no-repeat; filter: brightness(0) invert(1); opacity: .08; pointer-events: none; }
+.bx-hero .bx-search { --bx-line: rgba(255, 255, 255, .22); }
+.bx-hero { padding-bottom: var(--space-6); }
+.bx-sec { padding-top: var(--space-6); }
+.bx-page > .bx-sec:last-of-type { padding-bottom: var(--space-6); }
+.bx-head h2 { color: var(--purple); }
+.bx-tag { color: rgba(26, 19, 32, .55); }
+.bx-lead { color: rgba(26, 19, 32, .7); }
+.bx-pill { color: var(--purple); background: var(--white); }
+.bx-pill:hover { border-color: var(--purple); }
+.bx-search--sm { background: var(--white); border-color: var(--bx-line); }
+.bx-search--sm input { color: var(--ink); }
+.bx-search--sm input::placeholder { color: rgba(26, 19, 32, .5); }
+.bx-search--sm:focus-within { background: var(--white); border-color: var(--purple); }
+.bx-card { background: var(--white); border: 1px solid var(--bx-line); border-radius: 24px; padding: 12px 12px 22px; transition: box-shadow .25s ease, transform .25s ease; }
+.bx-card:hover { box-shadow: 0 14px 34px rgba(56, 7, 87, .12); transform: translateY(-3px); }
+.bx-card:hover .bx-cover { transform: none; }
+.bx-body { padding: 0 8px; }
+.bx-date { color: var(--magenta); }
+.bx-card h3 { color: var(--purple); }
+.bx-card:hover h3 { color: var(--purple-accent); }
+.bx-card p { color: rgba(26, 19, 32, .72); }
+.bx-empty { color: rgba(26, 19, 32, .7); }
+.bx-link { color: var(--purple); }
+.bx-pg { color: rgba(26, 19, 32, .6); }
+.bx-num { color: var(--purple); }
+.bx-num.is-on { background: var(--purple); border-color: var(--purple); color: var(--white); }
+.bx-wordmark-track { -webkit-text-stroke: 2px rgba(56, 7, 87, .22); }
+.bx-wordmark-track i { background: var(--magenta); }
+.bx-head h2 { background: none; -webkit-text-fill-color: currentColor; color: var(--purple); }
+.bx-hero-in { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: var(--space-5); align-items: center; }
+.bx-pill-hero { margin: 0 0 var(--space-3); width: fit-content; display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 22px; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .3); font-size: 14px; color: var(--cloud); }
+.bx-pill-hero b { padding: 4px 12px; border-radius: 999px; background: var(--white); color: var(--purple); font-size: 13px; font-weight: 700; }
+.bx-hero h1 { max-width: 12em; }
+.bx-sub { max-width: 30em; }
+.bx-hero .bx-search { max-width: 520px; }
+.bx-hero-wd { width: 100%; height: auto; justify-self: center; position: relative; z-index: 2; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .25)); }
+@media (max-width: 820px) { .bx-hero-in { grid-template-columns: minmax(0, 1fr); } .bx-hero-wd { max-width: 130px; order: -1; justify-self: start; margin-bottom: -8px; } }
+.bx-hero::before { display: none; }
+.bx-hero-in { grid-template-columns: minmax(0, 1fr); position: relative; z-index: 2; }
+.bx-hero-wd { position: absolute; z-index: 1; right: -4%; top: 50%; translate: 0 -50%; width: min(620px, 62vw); max-width: none; height: auto; filter: brightness(0) invert(1); opacity: .1; pointer-events: none; }
+@media (max-width: 820px) { .bx-hero-wd { order: 0; right: -18%; top: 40%; width: 420px; margin: 0; } }
+.bx-hero-wd { right: -12%; width: min(560px, 50vw); opacity: .06; }
+@media (max-width: 820px) { .bx-hero-wd { right: -30%; width: 380px; } }
+.bx-hero-wd { right: -26%; }
+@media (max-width: 820px) { .bx-hero-wd { right: -42%; } }
+.bx-hero-wd { width: min(820px, 68vw); right: -30%; }
+@media (max-width: 820px) { .bx-hero-wd { width: 520px; right: -50%; } }
+.bx-hero-wd { right: -14%; }
+@media (max-width: 820px) { .bx-hero-wd { right: -40%; } }
+.bx-hero-wd { right: -24%; }
+@media (max-width: 820px) { .bx-hero-wd { right: -46%; } }
+.bx-hero-wd { left: 64%; right: auto; width: min(760px, 56vw); }
+@media (max-width: 820px) { .bx-hero-wd { left: 52%; right: auto; width: 420px; } }
+
+/* Labs: silueta del wonder como fondo del hero (Insight: azul, Brand: amarillo) */
+.labs-page .sp-hero--blue::before, .labs-page .sp-hero--pink::before { display: none; }
+.lab-hero-wd { position: absolute; z-index: 1; left: 50%; top: 50%; translate: 0 -50%; width: min(820px, 62vw); height: auto; filter: brightness(0) invert(1); opacity: .12; pointer-events: none; }
+@media (max-width: 820px) { .lab-hero-wd { left: 40%; width: 460px; } }

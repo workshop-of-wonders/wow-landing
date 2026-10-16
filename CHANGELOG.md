@@ -55,6 +55,12 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Blog: índice en bloques como el resto del sitio, wonders de fondo en heros
+- Índice del blog (`/blog/`): sin cintas, "Para empezar", "Guías esenciales" ni CTA lima; hero morado de marca con píldora "Blog · Guías de WOW", título con acento en Playfair, buscador y silueta de la Rosa leyendo al fondo (recortada a la derecha); listado sobre blanco con tarjetas claras de portada plana por tema. Sin mayúsculas sostenidas. Cambios en `scripts/build-blog.py` + `src/styles.css` (`.bx-*`); regenerar con `build-blog.py` y `minify`.
+- Labs: silueta del wonder de fondo en el hero (`.lab-hero-wd`): Insight = azul, Brand & Experience = amarillo.
+- Playfair Display cargada en todas las páginas. Regla de la dueña: sin degradés en las tarjetas (solo ahí; el resto del sitio los conserva). Se borró una línea `=======` suelta de `styles.css` que invalidaba `.bl-post-head`.
+- Pendiente: revisar artículos individuales (mayúsculas sostenidas) y limpiar CSS sin uso del blog (`.bx-tape`, `.bx-feature`, `.bx-ess`, `.bx-cta`).
+
 ### 2026-10-15 — W con sparkle (solo local, sin commit)
 - La W de marca pasa a ser la de `Desktop/WoW/SVG/w con sparkle.svg`: W más una chispa lima `#d3d740` arriba a la derecha (lienzo 260.24×258.65, con margen de 18 por lado: `viewBox="-18 -18 296.24 294.65"`). `wow-mark.svg` (W blanca) y `wow-mark-purple.svg` (W `#380757`) llevan la chispa lima en ambas; `favicon.svg` se recentró (`scale .28`); `falling-icons.js` usa `w: 296.24, h: 294.65`. Donde la W se usa como máscara (`.bx-sh--mark`, `sp-row-shape--mark`, etc.) la chispa sale del mismo color que la W porque la máscara solo toma la silueta. Como el lienzo ahora es casi cuadrado y más ancho, se agrandó la W en el centro del proceso (`.wm-logo` 64 → 84 px) y en el hub de servicios (`.hub-w` 38 → 46 %). Revisado en pantalla: centro del proceso.
 - **Ojo:** mientras se hacía esto, otra sesión editó en la misma carpeta (fuente `Playfair Display` en el `<link>` de fuentes de ~50 páginas, titular del héroe del blog en `src/styles.css`/`styles.css` y `scripts/build-blog.py`). No son cambios de esta entrada y no se deben mezclar en un mismo commit sin revisarlos.
