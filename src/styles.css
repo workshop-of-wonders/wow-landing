@@ -6522,26 +6522,6 @@ body:not(:has(#filosofia)) .footer::after { content: ""; position: absolute; rig
 body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); }
 @media (prefers-reduced-motion: reduce) { body:not(:has(#filosofia)) .footer::after { transition: none; } }
 @media (max-width: 720px) { body:not(:has(#filosofia)) .footer::after { width: 56px; } }
-/* Un wonder por tema en cada tarjeta del Playground (se elige por el enlace de la tarjeta) */
-.pgs-vc { position: relative; }
-.pgs-vc::after { content: ""; position: absolute; right: 10px; top: 72px; width: 58px; height: 58px; background: var(--wd) center / contain no-repeat; pointer-events: none; filter: drop-shadow(0 3px 6px rgba(26,19,32,.18)); transition: transform .25s ease; }
-.pgs-vc:hover::after { transform: translateY(-6px) rotate(-4deg); }
-@media (prefers-reduced-motion: reduce) { .pgs-vc::after { transition: none; } }
-.pgs-vc[href$="encabezados.html"] { --wd: url(design-system/wonders/Wonder_Morado_Boca_Abajo.png); }
-.pgs-vc[href$="colores.html"] { --wd: url(design-system/wonders/Wonder_Morado_Pintando.png); }
-.pgs-vc[href$="keywords.html"] { --wd: url(design-system/wonders/Wonder_Morado_Con_Idea.png); }
-.pgs-vc[href$="te-encuentran-cerca.html"] { --wd: url(design-system/wonders/Wonder_Naranja_Con_Linterna.png); }
-.pgs-vc[href$="web-lista.html"] { --wd: url(design-system/wonders/Wonder_Morado_Con_Laptop.png); }
-.pgs-vc[href$="visibilidad-google.html"] { --wd: url(design-system/wonders/Wonder_Verde_Con_Varita.png); }
-.pgs-vc[href$="ranking-mes-a-mes.html"] { --wd: url(design-system/wonders/Wonder_Morado_Corriendo.png); }
-.pgs-vc[href$="ias-te-citan.html"] { --wd: url(design-system/wonders/Wonder_Morado_En_Portal.png); }
-.pgs-vc[href$="carritos-abandonados.html"] { --wd: url(design-system/wonders/Wonder_Morado_Revisando_Celular.png); }
-.pgs-vc[href$="pauta-retorno.html"] { --wd: url(design-system/wonders/Wonder_Amarillo_Con_Audifonos.png); }
-.pgs-vc[href$="medicion-instalada.html"] { --wd: url(design-system/wonders/Wonder_Azul_Analizando_Datos.png); }
-.pgs-vc[href$="datos-que-deciden.html"] { --wd: url(design-system/wonders/Wonder_Morado_Sentado.png); }
-.pgs-vc[href$="madurez-de-datos.html"] { --wd: url(design-system/wonders/Wonder_Rosa_Leyendo_Libro.png); }
-.pgs-vc[href$="marca-consistente.html"] { --wd: url(design-system/wonders/Wonder_Morado_Mostrando_Celular.png); }
-
 /* Easter egg del home: clic en la W del centro del proceso y sale el wonder morado desde un portal */
 .wm-logo { cursor: pointer; }
 .wm-wonder { position: absolute; left: 50%; top: 374px; width: 168px; height: auto; margin-left: -84px; margin-top: -82px; pointer-events: none; user-select: none; opacity: 0; transform: translateY(26px) scale(.15); transform-origin: 50% 70%; z-index: 3; }
