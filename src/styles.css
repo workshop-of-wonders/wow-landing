@@ -6682,3 +6682,44 @@ body:not(:has(#filosofia)) .footer:hover::after { transform: translateY(-10px); 
 .sl-list .pgd-q legend { font-size: clamp(16px, 2vw, 19px); }
 .qz-weak { margin: var(--space-3) 0 0; padding: 12px 16px; border-radius: 14px; background: rgba(220,225,87,.16); border: 1px solid rgba(220,225,87,.5); font-size: 15px; line-height: 1.45; }
 .qz-weak b { color: var(--lima); }
+
+/* ------------------------------------------------------------------
+   Táctil móvil (≤900px) — auditoría UX 2026-10-15.
+   · Campos de formulario a 16px: con menos, iOS Safari hace zoom al enfocar.
+   · Zonas táctiles de 44px: donde el elemento es un botón/pill visible, se amplía el área con un ::after invisible
+     (el diseño no cambia); en enlaces de texto se usa padding + margen negativo (sin mover nada).
+   · Textos de 10–11px a 12px (mínimo legible).
+   ------------------------------------------------------------------ */
+@media (max-width: 900px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea { font-size: 16px !important; }
+
+  .nav-burger::after { content: ""; position: absolute; inset: -2px; }
+  .nav-mobile-close::after { content: ""; position: absolute; inset: -3px; }
+  .labs-toggle::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; }
+  .switch { position: relative; }
+  .switch::after { content: ""; position: absolute; inset: -8px -4px; }
+  .hub-pill, .sv-lab, .hb-go { position: relative; }
+  .hub-pill::after, .sv-lab::after, .hb-go::after { content: ""; position: absolute; inset: -7px 0; }
+  .sv-lab::after { inset: -9px 0; }
+
+  .labs-panel-link, .nav-mobile-foot a { display: inline-block; padding-block: 13px; margin-block: -13px; }
+  .nav-mobile-foot a { padding-block: 16px; margin-block: 0; }
+  h3 > a { display: inline-block; padding-block: 8px; margin-block: -8px; }
+
+  .footer-socials a { padding: 15px 0; }
+  .footer-col a { display: inline-flex; align-items: center; min-height: 44px; padding: 0; }
+  .footer-col ul { gap: 0; }
+  .footer-contact .footer-mail { min-height: 44px; display: inline-flex; align-items: center; }
+  .footer-contact .footer-cta { padding: 14px 20px; }
+
+  .lightbox-close::after, .pc-nav::after, .project-modal-close::after { content: ""; position: absolute; inset: -4px; }
+  .sp-link { position: relative; }
+  .sp-link::after { content: ""; position: absolute; inset: -11px 0; }
+  .pg-chip { min-height: 44px; }
+  .nav-mobile-foot a { padding-block: 17px; }
+
+  .project-field label, .lightbox-label, .switch-label, .sv-tn { font-size: 12px; }
+  .sv-tablist button { font-size: 12px; letter-spacing: 0; }
+}

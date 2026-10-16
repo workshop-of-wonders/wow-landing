@@ -114,6 +114,7 @@ function createFocusTrap(modalEl, isOpen) {
   function setOpen(isOpen) {
     burger.classList.toggle('is-open', isOpen);
     burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    burger.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
     menu.classList.toggle('is-open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }

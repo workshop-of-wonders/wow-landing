@@ -55,6 +55,15 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-16 — Optimización táctil móvil (auditoría UX a 320/375px)
+- Sin scroll horizontal en ninguna página (ya estaba bien). Cambios en `src/styles.css` (bloque "Táctil móvil" al final, solo ≤900px) + `src/js/common.js`, regenerados con `npm run minify`; `index.html` no se tocó.
+- Campos `input/select/textarea` a 16px (evita el zoom automático de iOS Safari al enfocar).
+- Zonas táctiles a 44px sin cambiar el diseño visible: `::after` invisible en burger, cierre del menú, `labs-toggle`, `switch`, `hub-pill`, `sv-lab`, `hb-go`, `sp-link`, cierre/flechas de lightbox y modal; padding + margen negativo en enlaces de texto; footer con `min-height:44px`; `.pg-chip` min-height 44.
+- Textos de 10–11px a 12px (etiquetas del formulario, `.lightbox-label`, `.switch-label`, `.sv-tn`, pestañas `.sv-tablist`).
+- El botón del menú ahora alterna `aria-label` "Abrir menú"/"Cerrar menú".
+- Verificado en el navegador a 375px (inicio, servicios, portafolio, playground): 0 objetivos <44px de alto, 0 campos <16px. Los contadores "+0" del home NO son un bug: el panel de vista previa no dispara `requestAnimationFrame`.
+- Pendiente (no hecho, `index.html` es intocable): 17 imágenes del home sin `width/height` y 41 sin `loading="lazy"`; medir con Lighthouse en la URL en vivo antes de decidir.
+
 ### 2026-10-15 — Sin "jugar/juego/juguete" en los textos del sitio
 - A pedido de la dueña: `playground.html` ("Herramientas gratis para tu marca." / "Ver las herramientas"), "Más herramientas de …" en las páginas de herramientas, título del filtro por servicio ("Herramientas de …") y textos del easter egg `?patio=1`; en Ser Niños sí se pueden usar juego/juguete (es su negocio y su caso): título del caso se mantiene "Un solo juego: vender más." Convención: no usar jugar/juego/juguete para hablar de las herramientas del Playground.
 
