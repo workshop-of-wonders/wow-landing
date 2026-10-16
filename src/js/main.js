@@ -37,7 +37,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
      two transforms never fight over the same inline style */
   cursor.innerHTML =
     '<div class="door-cursor-inner">' +
-      '<span class="door-cursor-spark door-cursor-spark-1">✦</span>' +
+      '<span class="door-cursor-spark door-cursor-spark-1"><i class="wsp" aria-hidden="true"></i></span>' +
       '<span class="door-cursor-spark door-cursor-spark-2">✧</span>' +
       '<span class="door-cursor-frame">' +
         '<span class="door-cursor-leaf">' +

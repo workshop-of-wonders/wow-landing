@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" zoomAndPan="magnify" viewBox="0 0 810 1012.49997" height="1350" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="5f9efc92d7"><path d="M 0.199219 51.039062 L 809.800781 51.039062 L 809.800781 931 L 0.199219 931 Z M 0.199219 51.039062 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#5f9efc92d7)"><path fill="#a5d8ff" d="M 402.4375 51.644531 C 402.4375 51.644531 405 491.039062 0.195312 494.878906 C 0.195312 494.878906 405 491.039062 402.4375 930.429688 C 402.4375 930.429688 402.4375 492.316406 809.804688 491.039062 C 809.804688 491.039062 402.4375 492.316406 402.4375 51.644531 Z M 402.4375 51.644531 " fill-opacity="1" fill-rule="nonzero"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 810 1012.5" preserveAspectRatio="xMidYMid meet" version="1.0"><svg x="3.62" y="54.00" width="801.77" height="875.00" viewBox="0.0 0.0 46.53 50.78">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #a5d8ff;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <path class="cls-1" d="M44.57,26.99c-19.13,6.33-18.1,24.61-21.42,23.76-.64-.16-1.5-.76-1.76-1.99C17.1,28.89.24,27.9,0,25.66c-.31-2.97,17.25-3.79,21.16-23.27C21.43,1.07,22.25-.01,23.34,0c3.19.03,2.34,17.85,21.5,23.28.94.27,1.63.83,1.68,1.6.07.98-.77,1.71-1.96,2.1Z"/>
+  </g>
+</svg></svg>

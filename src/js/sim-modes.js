@@ -544,7 +544,7 @@
       var cells = [];
       cellQ.forEach(function (k, pos) {
         var b = el('button', 'tt-cell' + (k < 0 ? ' is-free' : '')); b.type = 'button';
-        if (k < 0) { b.innerHTML = '<span class="tt-mark">✦</span><small>Tu marca</small>'; b.disabled = true; state[pos] = 'X'; }
+        if (k < 0) { b.innerHTML = '<span class="tt-mark"><i class="wsp" aria-hidden="true"></i></span><small>Tu marca</small>'; b.disabled = true; state[pos] = 'X'; }
         else { b.innerHTML = '<span class="tt-mark"></span><small>' + (c.qs[k].t || c.qs[k].s) + '</small>'; b.setAttribute('aria-label', c.qs[k].q + ' — vacío'); a[k] = 0;
           b.addEventListener('click', function () { var s = state[pos]; s = !s ? 'X' : s === 'X' ? 'O' : null; state[pos] = s; a[k] = s === 'X' ? 1 : s === 'O' ? 0.5 : 0; touched[k] = 1; hud.set(a, Object.keys(touched).length); b.className = 'tt-cell' + (s ? ' is-' + s : ''); b.querySelector('.tt-mark').innerHTML = s === 'X' ? X : s === 'O' ? O : ''; b.setAttribute('aria-label', c.qs[k].q + ' — ' + (s === 'X' ? 'lo tengo' : s === 'O' ? 'en parte' : 'vacío')); detail(k); lineCheck(true); });
           b.addEventListener('mouseenter', function () { detail(k); }); b.addEventListener('focus', function () { detail(k); }); }

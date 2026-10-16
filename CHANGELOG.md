@@ -55,6 +55,16 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Íconos de los Labs
+- Decisión de la dueña: **Insight Lab = asterisco** (`IconoWoW_asterisco`, amarillo, `design-system/icons/icon-asterisco.svg`) y **Brand & Experience Lab = flor** (`IconoWoW_flor`, rosa, `icon-flor.svg`). Se aplicó en las 6 `<img>` de Labs del home (etiqueta vertical, etiqueta del botón y ícono grande de fondo al hover). No usar lupa ni paleta para los Labs.
+
+### 2026-10-15 — Todos los íconos del sitio pasan al set IconoWoW (solo local, sin commit)
+- **Formas decorativas** (floaters, fondos de héroes, Labs, filas de servicios; ~60 usos en HTML y CSS): `design-system/icons/icon-star|bloom|swoosh|arch.svg` conservan nombre y tamaño de lienzo (810×1012.5) pero ahora dibujan los IconoWoW: star→`asterisco` (amarillo), bloom→`flor` (rosa), swoosh→`estrella_cuatro_puntas` (azul), arch→`comillas` (naranja), escalados al mismo recuadro que tenían. Cualquier página nueva que use esos 4 archivos ya sale con el set nuevo.
+- **Íconos en línea** (script de una sola vez sobre todas las páginas, 52 reemplazos): tarjetas de servicios `sv-ic` (laptop=diseño web, celular_punto=tiendas, paleta_pincel=gráfico, lupa=SEO, estrella=Google My Business, megáfono=pauta, linea_tendencia=analítica, barras=dashboards; estrella_cuatro_puntas en las del Playground), nodos del proceso `wm-node` (brillo=Wonder, flechas_ciclo=Optimize, barras=Win, en blanco), píldoras del héroe de servicios `hx-pill` (laptop, barras, nube). Van como `<svg fill=currentColor>` con el path del IconoWoW.
+- **Caracteres `✦`** (147 en HTML, más CSS y JS): ahora `<i class="wsp">` (máscara CSS de `IconoWoW_estrella_cuatro_puntas`, toma color y tamaño del texto; `.wsp` está en `styles.css`, `pronto.css` y `admin.css`); los `content: "✦"` de CSS también usan la máscara. `build-blog.py` ya genera el markup nuevo. **🚀** → `IconoWoW_cometa` en lima (`design-system/icons/icon-cometa.svg`) en el cohete que orbita el proceso (`<image>`, ruta absoluta) y en el cohete del móvil.
+- **No se tocaron** (a propósito): íconos funcionales de interfaz (flechas →, menú hamburguesa, cerrar, chevrones, cursores), logos de marcas/herramientas, las ilustraciones propias de cada herramienta del Playground y los dibujos grandes de los héroes (`sv-big`, `od-big`, `oc-line`, etc.), y la consola. Sin cambios en ese set habría que hacer un ícono WoW nuevo (p. ej. carrito o pin de mapa).
+- Probado en local: nodos del proceso, tarjetas de servicios, blog (ticker, sticker, flor y estrella). Sin ver en pantalla: el cohete-cometa orbitando, el cohete móvil y `/pronto`.
+
 ### 2026-10-15 — Íconos del home: se suma el asterisco
 - Los que caen (`falling-icons.js`) y los que giran (`.icon-morph`) quedan en 5: asterisco (amarillo `#f6f05c`, `IconoWoW_asterisco` → `design-system/icons/icon-asterisco.svg`), estrellita (azul), flor (rosa), comillas (naranja) y W (morada). El giro vuelve a 7.5 s con 5 íconos (1.5 s cada uno). Probado: los 5 rotan en orden.
 

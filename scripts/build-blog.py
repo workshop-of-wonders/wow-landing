@@ -93,7 +93,7 @@ def index(posts):
     pills = f'<button type="button" class="bx-pill is-on" data-f="">Todos <b>{n}</b></button>' + ''.join(
         f'<button type="button" class="bx-pill" data-f="{c}">{c} <b>{counts[c]}</b></button>' for c in CATS if counts[c])
     sugg = ''.join(f'<button type="button" class="bx-sug" data-q="{s}">{s}</button>' for s in SUGGEST)
-    ticker = ''.join(f'<span>{t}</span><i aria-hidden="true">✦</i>' for t in TOPICS)
+    ticker = ''.join(f'<span>{t}</span><i class="wsp" aria-hidden="true"></i>' for t in TOPICS)
     feat = posts[0]
     essentials = ''.join(
         f'<a class="bx-ess" href="/{p["slug"]}"><span class="bx-ess-n">0{i + 1}</span><span class="bx-ess-t">{p["h1"]}</span><span class="bx-ess-go" aria-hidden="true">→</span></a>\n      '
@@ -101,7 +101,7 @@ def index(posts):
     body = f'''<main id="top" class="bx-page">
   <section class="bx-hero">
     <div class="bx-shapes" aria-hidden="true"><i class="bx-sh bx-sh--star" data-d="40"></i><i class="bx-sh bx-sh--bloom" data-d="-30"></i><i class="bx-sh bx-sh--swoosh" data-d="-45"></i><i class="bx-sh bx-sh--mark" data-d="25"></i></div>
-    <span class="bx-sticker" aria-hidden="true">✦ guías<br>sin relleno</span>
+    <span class="bx-sticker" aria-hidden="true"><i class="wsp" aria-hidden="true"></i> guías<br>sin relleno</span>
     <p class="bx-kicker">BLOG · WOW</p>
     <h1>Lo que funciona en digital, <em>sin rodeos.</em></h1>
     <p class="bx-sub">Guías prácticas de marketing digital, SEO, pauta, diseño web y e-commerce para clínicas, pymes y marcas en Colombia. Lo que aprendemos en el taller, sin guardarnos nada.</p>
@@ -157,12 +157,12 @@ def index(posts):
       {essentials}</div>
   </section>
 
-  <section class="bx-cta bx-rv"><span class="bx-spin" aria-hidden="true">✦</span>
+  <section class="bx-cta bx-rv"><span class="bx-spin" aria-hidden="true"><i class="wsp" aria-hidden="true"></i></span>
     <h2>¿Prefieres que lo hagamos <em>juntos?</em></h2>
     <p>Cuéntanos tu proyecto y te respondemos en máximo 1 día hábil.</p>
     <a href="#contacto" class="btn btn-primary" data-open-form>Hablemos de tu proyecto</a>
   </section>
-  <div class="bx-wordmark" aria-hidden="true"><div class="bx-wordmark-track"><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i><span>WORKSHOP OF WONDERS</span><i>✦</i></div></div>
+  <div class="bx-wordmark" aria-hidden="true"><div class="bx-wordmark-track"><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i><span>WORKSHOP OF WONDERS</span><i class="wsp" aria-hidden="true"></i></div></div>
 </main>
 <script src="../js/blog.js" defer></script>
 '''

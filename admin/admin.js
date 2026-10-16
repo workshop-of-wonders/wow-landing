@@ -31,7 +31,7 @@ function renderLogin(errorMsg) {
   wrap.className = 'login-screen';
   wrap.innerHTML = `
     <div class="login-box">
-      <div class="login-mark">✦</div>
+      <div class="login-mark"><i class="wsp" aria-hidden="true"></i></div>
       <h1>Workshop of Wonders</h1>
       <p class="sub">Panel de administración</p>
       <div class="field"><label>Usuario</label><input id="u" type="text" autocomplete="username"></div>
@@ -69,7 +69,7 @@ async function renderShell() {
   app.innerHTML = `
     <div class="shell">
       <div class="sidebar">
-        <div class="brand"><div class="mark">✦</div><span>WOW Admin</span></div>
+        <div class="brand"><div class="mark"><i class="wsp" aria-hidden="true"></i></div><span>WOW Admin</span></div>
         <nav id="nav">
           <button data-view="leads" class="active"><span class="dot"></span>Leads / CRM</button>
           <div class="nav-label">Simuladores</div>
