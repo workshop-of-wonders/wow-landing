@@ -669,17 +669,18 @@ main { padding-top: var(--nav-h); }
   object-fit: contain;
   padding: 24px;
   opacity: 0;
-  animation: morphCycle 6s infinite;
+  animation: morphCycle 7.5s infinite;
 }
 .mi-1 { animation-delay: 0s; }
 .mi-2 { animation-delay: 1.5s; }
 .mi-3 { animation-delay: 3s; }
 .mi-4 { animation-delay: 4.5s; }
+.mi-5 { animation-delay: 6s; }
 @keyframes morphCycle {
   0% { opacity: 0; transform: scale(0.5) rotate(-30deg); }
-  5% { opacity: 1; transform: scale(1) rotate(0deg); }
-  20% { opacity: 1; transform: scale(1) rotate(0deg); }
-  25% { opacity: 0; transform: scale(0.5) rotate(30deg); }
+  4% { opacity: 1; transform: scale(1) rotate(0deg); }
+  16% { opacity: 1; transform: scale(1) rotate(0deg); }
+  20% { opacity: 0; transform: scale(0.5) rotate(30deg); }
   100% { opacity: 0; }
 }
 @media (min-width: 901px) {

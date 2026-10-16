@@ -55,6 +55,9 @@ This file is the working log for this project. **Claude: at the start of a sessi
 
 ## Log
 
+### 2026-10-15 — Íconos del home: se suma el asterisco
+- Los que caen (`falling-icons.js`) y los que giran (`.icon-morph`) quedan en 5: asterisco (amarillo `#f6f05c`, `IconoWoW_asterisco` → `design-system/icons/icon-asterisco.svg`), estrellita (azul), flor (rosa), comillas (naranja) y W (morada). El giro vuelve a 7.5 s con 5 íconos (1.5 s cada uno). Probado: los 5 rotan en orden.
+
 ### 2026-10-15 — Íconos WoW: nueva carpeta y íconos que caen/giran en el home (solo local, sin commit)
 - Nueva carpeta `design-system/iconos-wow/` con los 55 íconos `IconoWoW_<nombre>.svg` (monocolor `#9640d7`, de `Desktop\WoW\WoW\iconos wow\SVG`). Variantes recoloreadas con los colores de marca que ya había, en `design-system/icons/`: `icon-estrella.svg` (`IconoWoW_estrella_cuatro_puntas`, azul `#a5d8ff`), `icon-flor.svg` (rosa `#ec4899`), `icon-comillas.svg` (naranja `#f97316`), con `width`/`height` explícitos (Matter.js los necesita para escalar el sprite). Para otro color: copiar el SVG de `iconos-wow/` y cambiar `#9640d7`.
 - A pedido de la dueña (excepción a la regla del home): los íconos que caen en el cierre del home (`src/js/falling-icons.js`) y los que giran en Nosotros (`.icon-morph` en `index.html`) pasan a ser solo 4: W (`wow-mark-purple.svg`, morado), estrellita, flor y comillas. Se quitaron el asterisco amarillo, la estrella azul de 4 puntas y las comillas "arch" viejas de esos dos lugares (siguen en otras partes del sitio: floaters, fondos de Labs y las páginas de servicio). El ciclo de `morphCycle` pasó de 7.5 s/5 íconos a 6 s/4 íconos (mismos 1.5 s por ícono). Se corrió `npm run minify` y solo quedaron modificados `js/falling-icons.js`, `js/main.js` y `styles.css`.

@@ -23,6 +23,7 @@ function initFallingIcons() {
       MouseConstraint = Matter.MouseConstraint;
 
   var iconSources = [
+    { src: '/design-system/icons/icon-asterisco.svg', w: 148, h: 160 },
     { src: '/design-system/icons/icon-estrella.svg', w: 372, h: 406 },
     { src: '/design-system/icons/icon-flor.svg', w: 458, h: 432 },
     { src: '/design-system/icons/icon-comillas.svg', w: 436, h: 352 },
